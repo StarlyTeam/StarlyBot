@@ -1,6 +1,5 @@
 package kr.starly.discordbot.command.slash;
 
-
 import lombok.Getter;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

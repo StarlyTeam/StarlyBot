@@ -1,6 +1,5 @@
 package kr.starly.discordbot.command.slash;
 
-
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 import java.lang.annotation.ElementType;
