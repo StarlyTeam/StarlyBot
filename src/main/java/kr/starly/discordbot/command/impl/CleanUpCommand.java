@@ -3,7 +3,6 @@ package kr.starly.discordbot.command.impl;
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigManager;
-import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.util.AdminRoleChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,7 +12,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.awt.*;
 import java.util.List;
 
-@BotCommand(command = "청소")
+@BotCommand(
+        command = "청소",
+        description = "<개수>만큼 메시지를 청소(삭제)합니다.",
+        usage = "?청소 <개수>"
+)
 public class CleanUpCommand implements DiscordCommand {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
