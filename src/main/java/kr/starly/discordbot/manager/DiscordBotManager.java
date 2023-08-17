@@ -1,5 +1,6 @@
 package kr.starly.discordbot.manager;
 
+import kr.starly.discordbot.command.CommandListenerBase;
 import kr.starly.discordbot.configuration.ConfigManager;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -38,6 +39,8 @@ public class DiscordBotManager {
         try {
             JDABuilder builder = JDABuilder.createDefault(BOT_TOKEN);
             configureBot(builder);
+            CommandListenerBase commandListener = new CommandListenerBase();
+            builder.addEventListeners(commandListener);
             jda = builder.build();
         } catch (Exception e) {
             LOGGER.severe("봇을 실행하는 도중에 오류가 발생하였습니다." + e.getMessage());
