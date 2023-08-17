@@ -35,5 +35,5 @@ application {
 
 shadowJar {
     archiveFileName = "StarlyBot.jar"
-    destinationDirectory.set(file('파일위치'))
+    destinationDirectory.set(file('C:\\Users\\PC\\Desktop\\스탈리 봇'))
 }
