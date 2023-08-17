@@ -4,11 +4,11 @@ import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-@BotCommand(command = "ping")
-public class PingCommand implements DiscordCommand {
+@BotCommand(command = "청소")
+public class CleanUpCommand implements DiscordCommand {
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        event.getChannel().sendMessage("pong!").queue();
+        event.getChannel().sendMessage("청소 안할거야 븅신아").queue();
     }
 }

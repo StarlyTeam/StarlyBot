@@ -24,7 +24,7 @@ public class CommandListenerBase extends ListenerAdapter {
             if (annotation != null) {
                 try {
                     DiscordCommand commandInstance = commandClass.getDeclaredConstructor().newInstance();
-                    commands.put(annotation.value(), commandInstance);
+                    commands.put(annotation.command(), commandInstance);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
