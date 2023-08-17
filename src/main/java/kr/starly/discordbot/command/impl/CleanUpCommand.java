@@ -17,7 +17,7 @@ import java.util.List;
         description = "<개수>만큼 메시지를 청소(삭제)합니다.",
         usage = "?청소 <개수>"
 )
-public class CleanUpCommand implements DiscordCommand {
+public class CleanUpCommand extends DiscordCommand {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
@@ -25,16 +25,7 @@ public class CleanUpCommand implements DiscordCommand {
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        boolean hasAdminRole = AdminRoleChecker.hasAdminRole(event.getMember());
-        if (!hasAdminRole) {
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_ERROR))
-                    .setTitle("<a:loading:1141623256558866482> 오류 | 권한 없음 <a:loading:1141623256558866482>")
-                    .setDescription("**이 명령어를 사용할 권한이 없습니다.**");
-
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
-            return;
-        }
+        if (!checkAdminRole(event)) return;
 
         event.getMessage().delete().queue();
 
