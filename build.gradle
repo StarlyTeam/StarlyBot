@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'kr.starly.discordbot'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.jetbrains:annotations:24.0.1"
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    api 'net.dv8tion:JDA:5.0.0-beta.13'
+
+    api 'com.google.code.gson:gson:2.10.1'
+    api 'ch.qos.logback:logback-classic:1.2.9'
+    api 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
+    api 'com.zaxxer:HikariCP:5.0.1'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+application {
+    mainClassName = 'kr.starly.discordbot.Main'
+}
+
+shadowJar {
+    archiveFileName = "StarlyBot.jar"
+    destinationDirectory.set(file('파일위치'))
+}
