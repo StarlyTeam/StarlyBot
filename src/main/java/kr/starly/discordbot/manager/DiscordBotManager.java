@@ -1,7 +1,9 @@
 package kr.starly.discordbot.manager;
 
+import kr.starly.discordbot.command.CommandListenerBase;
 import kr.starly.discordbot.command.slash.SlashCommandListenerBase;
 import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.listener.BotEvent;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -12,7 +14,9 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.reflections.Reflections;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class DiscordBotManager {
@@ -24,30 +28,29 @@ public class DiscordBotManager {
         return instance;
     }
 
-    private DiscordBotManager() {
-    }
+    private DiscordBotManager() {}
 
     private static final Logger LOGGER = Logger.getLogger(DiscordBotManager.class.getName());
     private final ConfigManager configManager = ConfigManager.getInstance();
+    private final String GUILD_ID = configManager.getString("GUILD_ID");
 
     @Getter
     private JDA jda;
     private boolean isBotFullyLoaded = false;
 
-
     private SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
-
 
     public void startBot() {
         String BOT_TOKEN = configManager.getString("BOT_TOKEN");
 
         try {
             JDABuilder builder = JDABuilder.createDefault(BOT_TOKEN);
-            builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
-
             configureBot(builder);
-            jda = builder.build();
 
+            CommandListenerBase commandListener = new CommandListenerBase();
+            builder.addEventListeners(commandListener);
+            jda = builder.build();
+            registerEventListeners();
         } catch (Exception e) {
             LOGGER.severe("봇을 실행하는 도중에 오류가 발생하였습니다." + e.getMessage());
         }
@@ -86,12 +89,13 @@ public class DiscordBotManager {
                 .setStatus(OnlineStatus.valueOf(status));
 
         builder.addEventListeners(new ListenerAdapter() {
+            @Override
             public void onReady(ReadyEvent event) {
                 isBotFullyLoaded = true;
                 System.out.println("The bot is fully loaded and ready!");
 
                 slashCommandListenerBase.getCommands().forEach(commandData -> {
-                    jda.getGuildById("1141562591940968481").upsertCommand(commandData).queue();
+                    jda.getGuildById(GUILD_ID).upsertCommand(commandData).queue();
                 });
             }
         });
@@ -100,6 +104,27 @@ public class DiscordBotManager {
     private void enableAllIntents(JDABuilder builder) {
         for (GatewayIntent intent : GatewayIntent.values()) {
             builder.enableIntents(intent);
+        }
+    }
+
+    private void registerEventListeners() {
+        String packageName = "kr.starly.discordbot.listener";
+        Reflections reflections = new Reflections(packageName);
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotEvent.class);
+
+        for (Class<?> clazz : annotated) {
+            try {
+                Object instance = clazz.getDeclaredConstructor().newInstance();
+                if (instance instanceof ListenerAdapter) {
+                    jda.addEventListener(instance);
+                    LOGGER.severe("================================================================");
+                    LOGGER.severe("Registered listener: " + clazz.getName());
+                    LOGGER.severe("================================================================");
+                }
+            } catch (Exception e) {
+                LOGGER.severe("Could not instantiate listener: " + clazz.getName());
+                e.printStackTrace();
+            }
         }
     }
 }

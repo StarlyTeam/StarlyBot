@@ -16,14 +16,10 @@ import java.util.stream.Collectors;
 
 public class SlashCommandListenerBase extends ListenerAdapter {
 
-    private final Map<String, DiscordSlashCommand> commandActions = new HashMap<>();
-
     @Getter
     private List<CommandData> commands = new ArrayList<>();
-
-
-    private HashMap<String, OptionType> options = new HashMap<>();
-
+    private Map<String, OptionType> options = new HashMap<>();
+    private final Map<String, DiscordSlashCommand> commandActions = new HashMap<>();
 
     public SlashCommandListenerBase() {
         registerCommands();
@@ -70,7 +66,6 @@ public class SlashCommandListenerBase extends ListenerAdapter {
                 .map(clazz -> (Class<? extends DiscordSlashCommand>) clazz)
                 .collect(Collectors.toSet());
     }
-
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
