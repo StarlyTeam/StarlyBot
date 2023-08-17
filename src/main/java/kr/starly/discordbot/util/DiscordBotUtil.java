@@ -4,6 +4,8 @@ import kr.starly.discordbot.manager.DiscordBotManager;
 
 public class DiscordBotUtil {
 
+    private DiscordBotUtil() {}
+
     public static void waitForBotToLoad(DiscordBotManager botManager) {
         while (!botManager.isBotFullyLoaded()) {
             try {
