@@ -18,8 +18,6 @@ public class CreateVerifyCommand extends DiscordCommand {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");
-    private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
-    private final String EMBED_COLOR_ERROR = configManager.getString("EMBED_COLOR_ERROR");
 
     @Override
     public void execute(MessageReceivedEvent event) {

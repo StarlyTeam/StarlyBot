@@ -4,12 +4,10 @@ import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigManager;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
-import java.util.List;
 
 @BotCommand(
         command = "청소",
@@ -25,8 +23,6 @@ public class CleanUpCommand extends DiscordCommand {
     @Override
     public void execute(MessageReceivedEvent event) {
         if (!checkAdminRole(event)) return;
-
-        event.getMessage().delete().queue();
 
         String[] args = event.getMessage().getContentRaw().split("\\s", 2);
         if (args.length < 2) {
@@ -62,11 +58,9 @@ public class CleanUpCommand extends DiscordCommand {
     }
 
     private void deleteMessages(MessageChannel channel, int count) {
-        channel.getHistoryBefore(channel.getLatestMessageId(), count)
-                .queue(history -> {
-                    List<Message> messages = history.getRetrievedHistory();
-                    messages.forEach(message -> channel.deleteMessageById(message.getId()).queue());
-                });
+        channel.getIterableHistory()
+                .takeAsync(count + 1)
+                .thenAccept(channel::purgeMessages);
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                 .setTitle("<a:success:1141625729386287206> 성공 | 채팅청소 <a:success:1141625729386287206>")
