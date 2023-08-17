@@ -1,6 +1,6 @@
 package kr.starly.discordbot.manager;
 
-import kr.starly.discordbot.command.CommandListenerBase;
+import kr.starly.discordbot.command.slash.SlashCommandListenerBase;
 import kr.starly.discordbot.configuration.ConfigManager;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -24,7 +24,8 @@ public class DiscordBotManager {
         return instance;
     }
 
-    private DiscordBotManager() {}
+    private DiscordBotManager() {
+    }
 
     private static final Logger LOGGER = Logger.getLogger(DiscordBotManager.class.getName());
     private final ConfigManager configManager = ConfigManager.getInstance();
@@ -33,15 +34,20 @@ public class DiscordBotManager {
     private JDA jda;
     private boolean isBotFullyLoaded = false;
 
+
+    private SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
+
+
     public void startBot() {
         String BOT_TOKEN = configManager.getString("BOT_TOKEN");
 
         try {
             JDABuilder builder = JDABuilder.createDefault(BOT_TOKEN);
+            builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
+
             configureBot(builder);
-            CommandListenerBase commandListener = new CommandListenerBase();
-            builder.addEventListeners(commandListener);
             jda = builder.build();
+
         } catch (Exception e) {
             LOGGER.severe("봇을 실행하는 도중에 오류가 발생하였습니다." + e.getMessage());
         }
@@ -71,6 +77,8 @@ public class DiscordBotManager {
             System.out.println("존재하지 않는 Activity 타입입니다.");
         }
 
+        builder.addEventListeners(slashCommandListenerBase);
+
         enableAllIntents(builder);
         builder.setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableCache(CacheFlag.MEMBER_OVERRIDES)
@@ -78,10 +86,13 @@ public class DiscordBotManager {
                 .setStatus(OnlineStatus.valueOf(status));
 
         builder.addEventListeners(new ListenerAdapter() {
-            @Override
             public void onReady(ReadyEvent event) {
                 isBotFullyLoaded = true;
                 System.out.println("The bot is fully loaded and ready!");
+
+                slashCommandListenerBase.getCommands().forEach(commandData -> {
+                    jda.getGuildById("1141562591940968481").upsertCommand(commandData).queue();
+                });
             }
         });
     }
