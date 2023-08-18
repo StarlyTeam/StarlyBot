@@ -56,9 +56,9 @@ public class DiscordBotManager {
     }
 
     public void stopBot() {
-        System.out.println("Shutting down JDA...");
+        LOGGER.severe("Shutting down JDA...");
         jda.shutdown();
-        System.out.println("JDA has been shut down.");
+        LOGGER.severe("JDA has been shut down.");
     }
 
     public boolean isBotFullyLoaded() {
@@ -76,7 +76,7 @@ public class DiscordBotManager {
             Activity activity = Activity.of(type, activityName);
             builder.setActivity(activity);
         } catch (IllegalArgumentException e) {
-            System.out.println("존재하지 않는 Activity 타입입니다.");
+            LOGGER.severe("존재하지 않는 Activity 타입입니다.");
         }
 
         builder.addEventListeners(slashCommandListenerBase);
@@ -91,7 +91,7 @@ public class DiscordBotManager {
             @Override
             public void onReady(ReadyEvent event) {
                 isBotFullyLoaded = true;
-                System.out.println("The bot is fully loaded and ready!");
+                LOGGER.severe("The bot is fully loaded and ready!");
 
                 slashCommandListenerBase.getCommands().forEach(commandData -> {
                     jda.getGuildById(GUILD_ID).upsertCommand(commandData).queue();
