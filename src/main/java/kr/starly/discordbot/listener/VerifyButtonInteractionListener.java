@@ -35,7 +35,7 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
             case "helpVerify" -> {
                 MessageEmbed embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
-                        .setTitle("<:notice:1141720944935719002> 도움말 | 인증이 안되시나요? <:notice:1141720944935719002>")
+                        .setTitle("<:notice:1141720944935719002> 인증이 안되시나요? | 도움말 <:notice:1141720944935719002>")
                         .setDescription("> **인증이 안 될 경우 아래 항목을 확인해보세요.\n" +
                                 "> **문제가 계속되면 관리자에게 DM으로 문의해주세요.\n" +
                                 "\n" +
