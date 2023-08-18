@@ -33,6 +33,7 @@ public class DiscordBotManager {
     private static final Logger LOGGER = Logger.getLogger(DiscordBotManager.class.getName());
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String GUILD_ID = configManager.getString("GUILD_ID");
+    private final String BOT_TOKEN = configManager.getString("BOT_TOKEN");
 
     @Getter
     private JDA jda;
@@ -41,8 +42,6 @@ public class DiscordBotManager {
     private SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
 
     public void startBot() {
-        String BOT_TOKEN = configManager.getString("BOT_TOKEN");
-
         try {
             JDABuilder builder = JDABuilder.createDefault(BOT_TOKEN);
             configureBot(builder);
