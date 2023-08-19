@@ -22,12 +22,13 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
         String buttonId = event.getButton().getId();
 
         switch (buttonId) {
-
             case "successVerify" -> {
+                String discordId = event.getMember().getId();
+                String authLink = "http://localhost:8080/auth/" + discordId;
                 MessageEmbed embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                         .setTitle("<a:success:1141625729386287206> 성공 | 인증 완료 <a:success:1141625729386287206>")
-                        .setDescription("****")
+                        .setDescription("**인증을 완료하려면 [여기를 클릭](" + authLink + ")하세요**")
                         .build();
                 event.replyEmbeds(embedBuilder).setEphemeral(true).queue();
             }
