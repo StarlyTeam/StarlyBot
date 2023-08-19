@@ -18,7 +18,7 @@ public class MongoUserInfoRepository implements UserInfoRepository {
         Document document = new Document();
         document.put("discord-id", userInfo.discordId());
         document.put("ip", userInfo.ip());
-        document.put("join-date", userInfo.joinDate());
+        document.put("verify-date", userInfo.verifyDate());
         collection.insertOne(document);
     }
 
@@ -28,9 +28,9 @@ public class MongoUserInfoRepository implements UserInfoRepository {
         if (document != null) {
             String discordId = document.getString("discord-id");
             String ip = document.getString("ip");
-            LocalDateTime joinData = document.getDate("join-date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime verifyData = document.getDate("verify-date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-            UserInfo userInfo = new UserInfo(discordId, ip, joinData);
+            UserInfo userInfo = new UserInfo(discordId, ip, verifyData);
             return userInfo;
         }
         return null;

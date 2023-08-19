@@ -10,8 +10,8 @@ public record UserInfoService(UserInfoRepository userInfoRepository) {
     public void recordUserInfo(String takenDiscordId, String takenIp, LocalDateTime takenLocalDateTime) {
         String discordId = takenDiscordId;
         String ip = takenIp;
-        LocalDateTime joinData = takenLocalDateTime;
-        UserInfo userInfo = new UserInfo(discordId, ip, joinData);
+        LocalDateTime verifyDate = takenLocalDateTime;
+        UserInfo userInfo = new UserInfo(discordId, ip, verifyDate);
         userInfoRepository.save(userInfo);
     }
 
