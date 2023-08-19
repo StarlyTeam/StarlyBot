@@ -15,5 +15,9 @@
 
   "DB_HOST": "mongodb://localhost:27017",
   "DB_DATABASE": "StarlyBot",
-  "DB_COLLECTION_USER": "user"
+  "DB_COLLECTION_USER": "user",
+
+  "AUTH_LINK": "http://localhost",
+  "AUTH_PORT": 8080,
+  "AUTHORIZED_ROLE_ID": "1112485200933425272"
 }
