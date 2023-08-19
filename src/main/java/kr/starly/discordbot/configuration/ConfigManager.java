@@ -32,4 +32,8 @@ public class ConfigManager {
     public String getString(String key) {
         return config.get(key).getAsString();
     }
+
+    public int getInt(String key) {
+        return config.get(key).getAsInt();
+    }
 }
