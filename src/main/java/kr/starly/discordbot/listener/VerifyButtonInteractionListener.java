@@ -29,7 +29,7 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
         switch (buttonId) {
             case "successVerify" -> {
                 if (VerifyRoleChecker.hasVerifyRole(event.getMember())) {
-                    MessageEmbed embedBuilder = new EmbedBuilder()
+                    MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(Color.decode(EMBED_COLOR_ERROR))
                             .setTitle("<a:warn:1141721287526465656> 이미 인증된 유저입니다. | 오류 <a:warn:1141721287526465656>")
                             .setDescription("> **당신은 이미 인증된 유저이에요! \uD83C\uDF89**\n"
@@ -37,7 +37,7 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
                             .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                             .setFooter("이미 인증이 완료된 계정입니다.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                             .build();
-                    event.replyEmbeds(embedBuilder).setEphemeral(true).queue();
+                    event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
                     return;
                 }
 
@@ -45,7 +45,7 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
                 String token = authService.generateToken(discordId);
                 String authLink = AUTH_LINK + ":" + AUTH_PORT + "/auth/" + discordId + "/" + token;
 
-                MessageEmbed embedBuilder = new EmbedBuilder()
+                MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:success:1141625729386287206> 인증 단계를 완료해주세요! | 인증하기 <a:success:1141625729386287206>")
                         .setDescription("> **커뮤니티를 막힘 없이 이용하려면, 인증을 완료해주세요! 😊**\n"
@@ -54,11 +54,11 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
                         .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                         .setFooter("참고: DM을 허용해야 인증 성공 메시지를 받을 수 있습니다.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                         .build();
-                event.replyEmbeds(embedBuilder).setEphemeral(true).queue();
+                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }
 
             case "helpVerify" -> {
-                MessageEmbed embedBuilder = new EmbedBuilder()
+                MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
                         .setTitle("<:notice:1141720944935719002> 인증이 안되시나요? | 도움말 <:notice:1141720944935719002>")
                         .setDescription("> **인증이 안 될 경우 아래 항목을 확인해보세요.\n" +
@@ -77,29 +77,29 @@ public class VerifyButtonInteractionListener extends ListenerAdapter {
                         .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                         .setFooter("도움이 필요하시면 언제든지 관리자에게 문의하세요.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                         .build();
-                event.replyEmbeds(embedBuilder).setEphemeral(true).queue();
+                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }
 
             case "termsOfService" -> {
-                MessageEmbed embedBuilder = new EmbedBuilder()
+                MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:loading:1141623256558866482> 이용약관 | 필독사항 <a:loading:1141623256558866482>")
                         .setDescription("> **이용약관은 <#1141984482619035698> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
                         .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
                         .build();
-                event.replyEmbeds(embedBuilder).setEphemeral(true).queue();
+                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }
 
             case "serverRule" -> {
-                MessageEmbed embedBuilder = new EmbedBuilder()
+                MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:loading:1141623256558866482> 서버규칙 | 필독사항 <a:loading:1141623256558866482>")
                         .setDescription("> **서버규칙은 <#1141982220219846686> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
                         .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
                         .build();
-                event.replyEmbeds(embedBuilder).setEphemeral(true).queue();
+                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }
         }
     }

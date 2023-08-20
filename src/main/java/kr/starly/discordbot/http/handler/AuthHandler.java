@@ -60,7 +60,7 @@ public class AuthHandler implements HttpHandler {
         } else {
             guild.addRoleToMember(member, authorizedRole).queue();
 
-            MessageEmbed embedBuilder = new EmbedBuilder()
+            MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                     .setTitle("<a:success:1141625729386287206> 성공 | 인증 완료 <a:success:1141625729386287206>")
                     .setDescription("> **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**\n"
@@ -72,7 +72,7 @@ public class AuthHandler implements HttpHandler {
 
             User user = member.getUser();
             user.openPrivateChannel()
-                    .flatMap(channel -> channel.sendMessageEmbeds(embedBuilder))
+                    .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
                     .queue(null, throwable ->
                             LOGGER.severe("해당 유저에게 DM을 보낼 수 없습니다: " + throwable.getMessage()));
 

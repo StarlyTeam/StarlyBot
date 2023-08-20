@@ -1,9 +1,9 @@
-package kr.starly.discordbot.repository;
+package kr.starly.discordbot.repository.impl;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.UpdateOptions;
 import kr.starly.discordbot.entity.UserInfo;
+import kr.starly.discordbot.repository.UserInfoRepository;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
 

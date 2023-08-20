@@ -22,7 +22,7 @@ public class HelpCommand extends DiscordCommand {
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        if (!checkAdminRole(event)) return;
+        if (!checkAdminPermission(event)) return;
 
         event.getMessage().delete();
 
