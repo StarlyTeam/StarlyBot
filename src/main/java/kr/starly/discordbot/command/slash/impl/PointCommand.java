@@ -57,13 +57,13 @@ import java.util.List;
                         optionDescription = {"유저를 선택하세요."},
                         required = {true}
                 ),
-                 @BotSlashCommand.SubCommand(
+                @BotSlashCommand.SubCommand(
                         name = "순위",
                         description = "포인트 순위를 확인합니다."
                 )
         }
 )
-public class PointCommand implements DiscordSlashCommand {
+public class PointCommand extends DiscordSlashCommand {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");

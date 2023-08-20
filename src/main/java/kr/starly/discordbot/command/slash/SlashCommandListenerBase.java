@@ -18,7 +18,7 @@ public class SlashCommandListenerBase extends ListenerAdapter {
 
     @Getter
     private List<CommandData> commands = new ArrayList<>();
-    private final Map<String, DiscordSlashCommand> commandActions = new HashMap<>();
+    private final Map<String, DiscordSlashExecutor> commandActions = new HashMap<>();
 
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String GUILD_ID = configManager.getString("GUILD_ID");
@@ -28,12 +28,12 @@ public class SlashCommandListenerBase extends ListenerAdapter {
     }
 
     private void registerCommands() {
-        Set<Class<? extends DiscordSlashCommand>> commandClasses = getCommandClasses();
+        Set<Class<? extends DiscordSlashExecutor>> commandClasses = getCommandClasses();
         commandClasses.forEach(commandClass -> {
             BotSlashCommand annotation = commandClass.getAnnotation(BotSlashCommand.class);
             if (annotation != null) {
                 try {
-                    DiscordSlashCommand commandInstance = commandClass.getDeclaredConstructor().newInstance();
+                    DiscordSlashExecutor commandInstance = commandClass.getDeclaredConstructor().newInstance();
 
                     SlashCommandData commandData = Commands.slash(annotation.command(), annotation.description());
 
@@ -41,10 +41,9 @@ public class SlashCommandListenerBase extends ListenerAdapter {
                         SubcommandData subCommandData = new SubcommandData(subCommand.name(), subCommand.description());
                         if (subCommand.names().length > 0 &&
                                 subCommand.names().length == subCommand.optionType().length &&
-                                subCommand.names().length == subCommand.optionDescription().length &&
-                                subCommand.names().length == subCommand.required().length) {
+                                subCommand.names().length == subCommand.optionDescription().length) {
                             for (int i = 0; i < subCommand.names().length; i++) {
-                                subCommandData.addOption(subCommand.optionType()[i], subCommand.names()[i], subCommand.optionDescription()[i], subCommand.required()[i]);  // 수정된 부분
+                                subCommandData.addOption(subCommand.optionType()[i], subCommand.names()[i], subCommand.optionDescription()[i], subCommand.required()[i]);  // required 추가
                             }
                         }
                         commandData.addSubcommands(subCommandData);
@@ -56,8 +55,6 @@ public class SlashCommandListenerBase extends ListenerAdapter {
                         for (int i = 0; i < annotation.names().length; i++) {
                             commandData.addOption(annotation.optionType()[i], annotation.names()[i], annotation.optionDescription()[i]);
                         }
-                    } else if (annotation.names().length > 0) {
-                        System.err.println("BotSlashCommand의 names, optionType, optionDescription 배열의 길이가 일치하지 않습니다.");
                     }
 
                     commands.add(commandData);
@@ -69,15 +66,15 @@ public class SlashCommandListenerBase extends ListenerAdapter {
         });
     }
 
-    private Set<Class<? extends DiscordSlashCommand>> getCommandClasses() {
+    private Set<Class<? extends DiscordSlashExecutor>> getCommandClasses() {
         String packageName = "kr.starly.discordbot.command.slash.impl";
 
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotSlashCommand.class);
 
         return annotated.stream()
-                .filter(DiscordSlashCommand.class::isAssignableFrom)
-                .map(clazz -> (Class<? extends DiscordSlashCommand>) clazz)
+                .filter(DiscordSlashExecutor.class::isAssignableFrom)
+                .map(clazz -> (Class<? extends DiscordSlashExecutor>) clazz)
                 .collect(Collectors.toSet());
     }
 
@@ -89,10 +86,10 @@ public class SlashCommandListenerBase extends ListenerAdapter {
         command = command.replace("/", "");
 
         if (event.getGuild().getId().equals(GUILD_ID)) {
-            DiscordSlashCommand discordSlashCommand = commandActions.get(command);
+            DiscordSlashExecutor discordSlashExecutor = commandActions.get(command);
 
-            if (discordSlashCommand != null) {
-                discordSlashCommand.execute(event);
+            if (discordSlashExecutor != null) {
+                discordSlashExecutor.execute(event);
             }
         }
     }

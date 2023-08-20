@@ -116,9 +116,6 @@ public class DiscordBotManager {
                 Object instance = clazz.getDeclaredConstructor().newInstance();
                 if (instance instanceof ListenerAdapter) {
                     jda.addEventListener(instance);
-                    LOGGER.severe("================================================================");
-                    LOGGER.severe("Registered listener: " + clazz.getName());
-                    LOGGER.severe("================================================================");
                 }
             } catch (Exception e) {
                 LOGGER.severe("Could not instantiate listener: " + clazz.getName());
