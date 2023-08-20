@@ -71,7 +71,7 @@ public class AuthHandler implements HttpHandler {
 
                     if (userInfoService.getUserInfo(discordUserId) == null) {
                         LocalDateTime verifyDate = LocalDateTime.now();
-                        userInfoService.recordUserInfo(discordUserId, userIp, verifyDate);
+                        userInfoService.recordUserInfo(discordUserId, userIp, verifyDate, 0);
                         LOGGER.severe("유저 인증을 하였으므로 데이터를 추가했습니다: " + discordUserId);
                     } else {
                         LOGGER.severe("이미 데이터베이스에 존재하는 유저입니다: " + discordUserId);
