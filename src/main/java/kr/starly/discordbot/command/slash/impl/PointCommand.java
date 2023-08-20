@@ -76,77 +76,93 @@ public class PointCommand extends DiscordSlashCommand {
         EmbedBuilder embedBuilder;
 
         switch (subCommand) {
-            case "지급":
+            case "지급" -> {
                 String userIdForAdd = event.getOption("유저").getAsUser().getId();
+                String userAvatarForAdd = event.getOption("유저").getAsUser().getAvatarUrl();
                 int pointToAdd = getSafeIntFromOption(event.getOption("포인트"));
                 DatabaseConfig.getUserInfoService().addPoint(userIdForAdd, pointToAdd);
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
-                        .setTitle("✅ 포인트 지급 완료")
-                        .setDescription("사용자에게 **" + pointToAdd + " 포인트**가 지급되었습니다.");
+                        .setTitle("<a:success:1141625729386287206> 지급 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setDescription("> **<@" + userIdForAdd + ">님에게 " + pointToAdd + "포인트를 지급하였습니다.**")
+                        .setThumbnail(userAvatarForAdd);
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
-            case "제거":
+            }
+            case "제거" -> {
                 String userIdForRemove = event.getOption("유저").getAsUser().getId();
+                String userAvatarForRemove = event.getOption("유저").getAsUser().getAvatarUrl();
                 int pointToRemove = getSafeIntFromOption(event.getOption("포인트"));
                 DatabaseConfig.getUserInfoService().removePoint(userIdForRemove, pointToRemove);
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
-                        .setTitle("❌ 포인트 제거 완료")
-                        .setDescription("사용자의 **" + pointToRemove + " 포인트**가 제거되었습니다.");
+                        .setTitle("<a:success:1141625729386287206> 제거 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setDescription("> **<@" + userIdForRemove + ">님의 " + pointToRemove + "포인트를 제거하였습니다.**")
+                        .setThumbnail(userAvatarForRemove);
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
-            case "설정":
+            }
+            case "설정" -> {
                 String userIdForSet = event.getOption("유저").getAsUser().getId();
+                String userAvatarForSet = event.getOption("유저").getAsUser().getAvatarUrl();
                 int pointToSet = getSafeIntFromOption(event.getOption("포인트"));
                 DatabaseConfig.getUserInfoService().setPoint(userIdForSet, pointToSet);
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
-                        .setTitle("🔧 포인트 설정 완료")
-                        .setDescription("사용자의 포인트가 **" + pointToSet + "로** 설정되었습니다.");
+                        .setTitle("<a:success:1141625729386287206> 설정 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setDescription("> **<@" + userIdForSet + ">님의 포인트를 " + pointToSet + "로 설정되었습니다.**")
+                        .setThumbnail(userAvatarForSet);
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
-            case "확인":
+            }
+            case "확인" -> {
                 String userIdForCheck = event.getOption("유저").getAsUser().getId();
+                String userAvatarCheck = event.getOption("유저").getAsUser().getAvatarUrl();
                 int currentPoint = DatabaseConfig.getUserInfoService().getPoint(userIdForCheck);
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
-                        .setTitle("🔍 포인트 확인")
-                        .setDescription("사용자의 현재 포인트: **" + currentPoint + "**");
+                        .setTitle("<a:loading:1141623256558866482> 확인 | 포인트 <a:loading:1141623256558866482>")
+                        .setDescription("> **<@" + userIdForCheck + ">님의 현재 포인트: " + currentPoint + "**")
+                        .setThumbnail(userAvatarCheck);
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
-            case "초기화":
+            }
+            case "초기화" -> {
                 String userIdForReset = event.getOption("유저").getAsUser().getId();
+                String userAvatarReset = event.getOption("유저").getAsUser().getAvatarUrl();
                 DatabaseConfig.getUserInfoService().setPoint(userIdForReset, 0);
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
-                        .setTitle("🔄 포인트 초기화 완료")
-                        .setDescription("사용자의 포인트가 초기화되었습니다.");
+                        .setTitle("<a:success:1141625729386287206> 초기화 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setDescription("> **<@" + userIdForReset + ">님의 포인트를 초기화하였습니다.**")
+                        .setThumbnail(userAvatarReset);
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
-            case "순위":
+            }
+            case "순위" -> {
                 List<UserInfo> topUsers = DatabaseConfig.getUserInfoService().getTopUsersByPoints(10);
                 StringBuilder rankMessage = new StringBuilder();
                 int rank = 1;
                 for (UserInfo user : topUsers) {
                     String username = event.getJDA().getUserById(user.discordId()).getName();
-                    rankMessage.append(rank).append(". ").append(username).append(": ").append(user.point()).append(" 포인트\n");
+                    rankMessage.append("> ")
+                            .append("**" + rank)
+                            .append(".")
+                            .append(" " + username + " ")
+                            .append(": ")
+                            .append(user.point())
+                            .append(" 포인트**\n");
                     rank++;
                 }
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
-                        .setTitle("📊 포인트 순위")
-                        .setDescription(rankMessage.toString());
+                        .setTitle("<a:loading:1141623256558866482> 순위 | 포인트 <a:loading:1141623256558866482>")
+                        .setDescription(rankMessage)
+                        .setThumbnail("https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=568&height=568");
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
-
-            default:
+            }
+            default -> {
                 embedBuilder = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
-                        .setTitle("⚠️ 포인트 오류")
-                        .setDescription("알 수 없는 명령입니다.");
+                        .setTitle("<a:loading:1141623256558866482> 오류 | 포인트 <a:loading:1141623256558866482>")
+                        .setDescription("> **알 수 없는 명령입니다.**");
                 event.replyEmbeds(embedBuilder.build()).queue();
-                break;
+            }
         }
     }
 
