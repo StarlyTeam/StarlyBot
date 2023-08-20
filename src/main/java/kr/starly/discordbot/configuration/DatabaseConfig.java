@@ -27,4 +27,3 @@ public class DatabaseConfig {
     @Getter
     private static final UserInfoService userInfoService = new UserInfoService(userInfoRepository);
 }
-
