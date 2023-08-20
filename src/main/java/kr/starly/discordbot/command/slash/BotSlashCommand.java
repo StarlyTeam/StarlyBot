@@ -13,7 +13,18 @@ public @interface BotSlashCommand {
 
     String command();
     String description();
-    OptionType[] optionType() default {};
     String[] names() default "";
+    OptionType[] optionType() default {};
     String[] optionDescription() default {};
+
+    SubCommand[] subcommands() default {};
+
+    @interface SubCommand {
+        String name();
+        String description();
+        String[] names() default "";
+        OptionType[] optionType() default {};
+        String[] optionDescription() default {};
+        boolean[] required() default {};
+    }
 }

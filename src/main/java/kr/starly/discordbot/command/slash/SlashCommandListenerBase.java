@@ -1,12 +1,13 @@
 package kr.starly.discordbot.command.slash;
 
+import kr.starly.discordbot.configuration.ConfigManager;
 import lombok.Getter;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
@@ -17,8 +18,10 @@ public class SlashCommandListenerBase extends ListenerAdapter {
 
     @Getter
     private List<CommandData> commands = new ArrayList<>();
-    private Map<String, OptionType> options = new HashMap<>();
     private final Map<String, DiscordSlashCommand> commandActions = new HashMap<>();
+
+    private final ConfigManager configManager = ConfigManager.getInstance();
+    private final String GUILD_ID = configManager.getString("GUILD_ID");
 
     public SlashCommandListenerBase() {
         registerCommands();
@@ -31,18 +34,30 @@ public class SlashCommandListenerBase extends ListenerAdapter {
             if (annotation != null) {
                 try {
                     DiscordSlashCommand commandInstance = commandClass.getDeclaredConstructor().newInstance();
-                    List<String> newNames = new ArrayList<>();
 
                     SlashCommandData commandData = Commands.slash(annotation.command(), annotation.description());
 
-                    for (String name : annotation.names()) {
-                        newNames.add(name);
-                        int index = newNames.indexOf(name);
+                    for (BotSlashCommand.SubCommand subCommand : annotation.subcommands()) {
+                        SubcommandData subCommandData = new SubcommandData(subCommand.name(), subCommand.description());
+                        if (subCommand.names().length > 0 &&
+                                subCommand.names().length == subCommand.optionType().length &&
+                                subCommand.names().length == subCommand.optionDescription().length &&
+                                subCommand.names().length == subCommand.required().length) {
+                            for (int i = 0; i < subCommand.names().length; i++) {
+                                subCommandData.addOption(subCommand.optionType()[i], subCommand.names()[i], subCommand.optionDescription()[i], subCommand.required()[i]);  // 수정된 부분
+                            }
+                        }
+                        commandData.addSubcommands(subCommandData);
+                    }
 
-                        OptionType optionType = annotation.optionType()[index];
-                        String description = annotation.optionDescription()[index];
-                        options.put(name, optionType);
-                        commandData.addOption(optionType, name, description);
+                    if (annotation.names().length > 0 &&
+                            annotation.names().length == annotation.optionType().length &&
+                            annotation.names().length == annotation.optionDescription().length) {
+                        for (int i = 0; i < annotation.names().length; i++) {
+                            commandData.addOption(annotation.optionType()[i], annotation.names()[i], annotation.optionDescription()[i]);
+                        }
+                    } else if (annotation.names().length > 0) {
+                        System.err.println("BotSlashCommand의 names, optionType, optionDescription 배열의 길이가 일치하지 않습니다.");
                     }
 
                     commands.add(commandData);
@@ -73,7 +88,7 @@ public class SlashCommandListenerBase extends ListenerAdapter {
         command = command.split(" ")[0];
         command = command.replace("/", "");
 
-        if (event.getGuild().getId().equals("1141562591940968481")) {
+        if (event.getGuild().getId().equals(GUILD_ID)) {
             DiscordSlashCommand discordSlashCommand = commandActions.get(command);
 
             if (discordSlashCommand != null) {
