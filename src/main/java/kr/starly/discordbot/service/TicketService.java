@@ -2,27 +2,22 @@ package kr.starly.discordbot.service;
 
 
 import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.repository.TicketInfoRepo;
-import lombok.AllArgsConstructor;
 
+import kr.starly.discordbot.repository.TicketInfoRepository;
 
-@AllArgsConstructor
-public class TicketService {
+import java.time.LocalDateTime;
 
-    private final TicketInfoRepo ticketInfoRepo;
+public record TicketService(TicketInfoRepository ticketInfoRepo) {
 
-    public void registerPlugin(TicketInfo ticketInfo) {
-        ticketInfoRepo.add(ticketInfo);
+    public void save(TicketInfo ticketInfo) {
+        ticketInfoRepo.save(ticketInfo);
     }
 
-
-
-    public void removePlugin(String pluginName) {
-        ticketInfoRepo.delete(pluginName);
+    public TicketInfo load(String userId) {
+        return ticketInfoRepo.findTicketInfoById(userId);
     }
 
-    public TicketInfo getPluginInfo(String id) {
-        return ticketInfoRepo.findById(id);
+    public void update(String userId) {
+        ticketInfoRepo.updateCloseAtDate(userId, LocalDateTime.now().toString());
     }
-
 }

@@ -18,7 +18,7 @@ import java.awt.*;
 public class CreateVerifyCommand extends DiscordCommand {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");
+    private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -27,7 +27,7 @@ public class CreateVerifyCommand extends DiscordCommand {
         event.getMessage().delete().queue();
 
         MessageEmbed verifyEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
+                .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                 .setTitle("<a:success:1141625729386287206> 인증 | 스탈리 커뮤니티 <a:success:1141625729386287206>")
                 .setDescription("> **스탈리 커뮤니티에 오신걸 환영합니다.** \n" +
                         "> **서버에 입장하기 전 아래 `인증하기` 버튼을 클릭해주세요.** \n\n" +
@@ -40,8 +40,8 @@ public class CreateVerifyCommand extends DiscordCommand {
                                 "**> 자신의 디스코드 닉네임 또는 아이디가 부적절한지 확인해주세요. **\u1CBB", true)
                 .addField("> <a:loading:1141623256558866482> 인증 오류",
                         "**> 자신의 디스코드 계정에 전화번호가 추가되어있는지 확인해보세요.**\n" +
-                        "**> 30일 이내에 생성된 계정인지 확인해보세요.**\n" +
-                        "**> 블랙리스트 유저**", true)
+                                "**> 30일 이내에 생성된 계정인지 확인해보세요.**\n" +
+                                "**> 블랙리스트 유저**", true)
                 .addField("> <a:warn:1141721287526465656> 주의 사항",
                         "**> 3일 이내에서 서버를 퇴장할 경우 다운로드 금지가 됩니다.**\n" +
                                 "**> 부계정 사용을 금지합니다. **\n", true)

@@ -4,8 +4,11 @@ import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.awt.*;
 
@@ -19,23 +22,32 @@ public class CreateTicketCommand extends DiscordCommand {
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");
 
-
+    @Override
     public void execute(MessageReceivedEvent event) {
         if (!checkAdminPermission(event)) return;
 
         event.getMessage().delete().queue();
 
-        EmbedBuilder reportEmbed = new EmbedBuilder()
+        MessageEmbed reportEmbed = new EmbedBuilder()
                 .setColor(Color.decode(EMBED_COLOR))
                 .setTitle("플러그인 문의")
-                .setDescription("아래 버튼을 눌러 플러그인 문의 사항을 작성 하실 수 있습니다!");
+                .setDescription("아래 버튼을 눌러 플러그인 문의 사항을 작성 하실 수 있습니다!")
+                .build();
 
-        Button reportButton = Button.danger("ticket-report", "버그제보");
+        StringSelectMenu stringSelectMenu = StringSelectMenu.create("ticket-selectMenu")
+                .addOptions(SelectOption.of("구매문의", "ticket-purchase")
+                        .withDescription("구매관련")
+                        .withEmoji(Emoji.fromUnicode("\uD83C\uDFAB"))
+                )
+                .addOptions(SelectOption.of("버그제보", "report-bug")
+                        .withDescription("버그관련")
+                        .withEmoji(Emoji.fromUnicode("\uD83C\uDF9F\uFE0F"))
+                )
+                .addOptions(SelectOption.of("일반문의", "ticket-default")
+                        .withDescription("기타관련")
+                        .withEmoji(Emoji.fromUnicode("\uD83D\uDCF0")))
+                .build();
 
-        Button buyButton = Button.success("ticket-buy", "구매 문의");
-
-        Button defaultButton = Button.primary("ticket-default", "구매 문의");
-
-        event.getChannel().sendMessageEmbeds(reportEmbed.build()).addActionRow(reportButton, buyButton, defaultButton).queue();
+        event.getChannel().sendMessageEmbeds(reportEmbed).addActionRow(stringSelectMenu).queue();
     }
 }

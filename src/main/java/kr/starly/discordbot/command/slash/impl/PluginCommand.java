@@ -80,6 +80,7 @@ public class PluginCommand extends DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        if (!checkAdminPermission(event)) return;
         String subCommand = event.getSubcommandName();
 
         switch (subCommand) {
