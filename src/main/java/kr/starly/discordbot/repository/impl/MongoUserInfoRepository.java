@@ -47,8 +47,7 @@ public class MongoUserInfoRepository implements UserInfoRepository {
             LocalDateTime verifyData = document.getDate("verify-date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
             int point = document.getInteger("point");
 
-            UserInfo userInfo = new UserInfo(discordId, ip, verifyData, point);
-            return userInfo;
+            return new UserInfo(discordId, ip, verifyData, point);
         }
         return null;
     }
