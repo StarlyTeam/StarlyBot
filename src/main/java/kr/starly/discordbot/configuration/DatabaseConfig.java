@@ -4,8 +4,10 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import kr.starly.discordbot.repository.TicketRepository;
 import kr.starly.discordbot.repository.impl.MongoUserInfoRepository;
 import kr.starly.discordbot.repository.UserInfoRepository;
+
 import kr.starly.discordbot.repository.impl.TicketInfoRepository;
 import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.UserInfoService;
@@ -33,7 +35,9 @@ public class DatabaseConfig {
 
     private static final UserInfoRepository userInfoRepository = new MongoUserInfoRepository(userCollection);
 
-    private static final kr.starly.discordbot.repository.TicketInfoRepository ticketInfoRepository = new TicketInfoRepository(ticketCollection);
+
+    @Getter
+    private static final TicketInfoRepository ticketInfoRepository = new TicketInfoRepository(ticketCollection);
 
     @Getter
     private static final UserInfoService userInfoService = new UserInfoService(userInfoRepository);
