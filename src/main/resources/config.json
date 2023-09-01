@@ -5,7 +5,6 @@
   "ACTIVITY_NAME": "https://starly.kr",
   "ACTIVITY_TYPE": "playing",
   "STATUS": "ONLINE",
-
   "EMBED_COLOR": "#fbb500",
   "EMBED_COLOR_SUCCESS": "#7eff8e",
   "EMBED_COLOR_ERROR": "#ff4b4b",
@@ -24,5 +23,6 @@
   "AUTH_LINK": "http://59.4.140.144",
   "AUTH_PORT": 8080,
   "AUTHORIZED_ROLE_ID": "1112485200933425272",
-  "PREMIUM_CATEGORY_ID": "1141704277392375918"
+  "PREMIUM_CATEGORY_ID": "1141704277392375918",
+  "TICKET_PATH" : "D:\\Project\\Starly\\StarlyBot\\bot\\tickets\\"
 }

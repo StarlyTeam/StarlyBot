@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 @BotEvent
-public class VerifyButtonInteractionListener extends ListenerAdapter {
+public class VerifyButtonInteraction extends ListenerAdapter {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
     private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");

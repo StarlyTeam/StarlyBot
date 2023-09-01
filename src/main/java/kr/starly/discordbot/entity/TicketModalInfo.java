@@ -1,3 +1,26 @@
 package kr.starly.discordbot.entity;
 
-public record TicketModalInfo(String userId, String title, String message) {}
+import lombok.Getter;
+import lombok.Setter;
+
+public class TicketModalInfo {
+
+    @Getter
+    private String userId;
+
+    @Getter
+    private String title;
+
+    @Getter
+    private String message;
+
+    @Getter
+    @Setter
+    private TicketType type;
+
+    public TicketModalInfo(String userId, String title, String message) {
+        this.userId = userId;
+        this.title = title;
+        this.message = message;
+    }
+}

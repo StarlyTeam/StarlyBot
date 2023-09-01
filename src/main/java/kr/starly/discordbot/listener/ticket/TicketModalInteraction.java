@@ -4,17 +4,22 @@ import kr.starly.discordbot.configuration.ConfigManager;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
 import kr.starly.discordbot.entity.TicketModalInfo;
+import kr.starly.discordbot.entity.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
+
+import kr.starly.discordbot.repository.impl.TicketInfoFileRepository;
+import kr.starly.discordbot.service.TicketModalService;
+import kr.starly.discordbot.util.AdminRoleChecker;
 import kr.starly.discordbot.util.MemberRoleChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -27,15 +32,23 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
 
 @BotEvent
 public class TicketModalInteraction extends ListenerAdapter {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
 
-    private TicketInfo ticketInfo;
-    private TicketType ticketType;
-    private TicketModalInfo ticketModalInfo;
+    private final String AUTH_ROLE = configManager.getString("AUTH_ROLE");
+
+    private final TicketModalService ticketModalService = TicketModalService.getInstance();
+
+    private final TicketInfoFileRepository ticketInfoFileRepository = TicketInfoFileRepository.getInstance();
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
@@ -51,65 +64,103 @@ public class TicketModalInteraction extends ListenerAdapter {
         String title = event.getInteraction().getValue("ticket-title").getAsString();
         String message = event.getInteraction().getValue("ticket-message").getAsString();
 
-        this.ticketModalInfo = new TicketModalInfo(event.getUser().getId(), title, message);
+        String userId = event.getUser().getId();
+
+        TicketModalInfo origin = ticketModalService.getTicketModalInfo(userId);
+
+        TicketModalInfo ticketModalInfo = new TicketModalInfo(userId, title, message);
+        ticketModalInfo.setType(origin.getType());
+
+        ticketModalService.replaceModalInfo(userId, ticketModalInfo);
     }
 
     @Override
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
         TextChannel currentChannel = event.getChannel().asTextChannel();
 
-        String id = currentChannel.getId();
-
         Guild guild = event.getGuild();
         event.getChannel().asTextChannel().getMembers();
 
         Button button = Button.danger("close", "닫기");
 
-        MessageEmbed messageEmbed = new EmbedBuilder()
-                .setTitle("플러그인 요청 완료!")
-                .setDescription("관리자의 대답을 기다려 주세요.")
+        Role role = guild.getRoleById(AUTH_ROLE);
+        Member user = getMembersByRole(event.getChannel(), role).get(0);
+
+        String currentChannelId = currentChannel.getId();
+
+        TicketModalInfo ticketModalInfo = ticketModalService.getTicketModalInfo(user.getId());
+
+        DatabaseConfig.getTicketService().save(new TicketInfo(user.getId(), currentChannelId, ticketModalInfo.getType(), LocalDateTime.now().toString(), ""));
+
+        MessageEmbed embed = new EmbedBuilder()
+                .setTitle("티켓 알림")
+                .setDescription("<@" + user.getId() + ">님이 티켓을 열었습니다!" + "\n"
+                        + "티켓 " + ticketModalInfo.getType().name() + "\n"
+                        + "사유 : " + ticketModalInfo.getTitle() + "\n"
+                        + "설명 : " + ticketModalInfo.getMessage())
+                .setTimestamp(OffsetDateTime.now())
                 .build();
-        currentChannel.sendMessageEmbeds(messageEmbed).addActionRow(button).queue();
 
-        for (Member member : currentChannel.getMembers()) {
-            Role role = guild.getRolesByName("인증됨", true).get(0);
+        currentChannel.sendMessageEmbeds(embed).addActionRow(button).queue();
 
-            if (MemberRoleChecker.hasRole(member, role)) {
-                this.ticketInfo = new TicketInfo(member.getId(), id, ticketType, LocalDateTime.now().toString(), "");
+        getAdminMembers(event.getChannel()).forEach(admin -> {
+            currentChannel.sendMessage("<@" + admin.getId() + ">").queue((message -> {
+                message.delete().queue();
+            }));
+        });
 
-                DatabaseConfig.getTicketService().save(ticketInfo);
-                break;
-            }
-        }
+        ticketInfoFileRepository.setTicketInfo(ticketModalInfo);
+        ticketInfoFileRepository.save(ticketModalInfo, currentChannelId);
+
+        ticketModalService.removeById(user.getId());
     }
 
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         String componentId = event.getComponentId();
 
-
         if (componentId.equalsIgnoreCase("ticket-selectMenu")) {
             String value = event.getSelectedOptions().get(0).getValue();
 
             switch (value) {
-                case "ticket-purchase" -> {
-                    create(TicketType.PURCHASE_TICKET, event);
-
-
-                }
-                case "report-bug" -> {
-                    create(TicketType.REPORT_TICKET, event);
-
-                }
-
-                case "ticket-default" -> {
-                    create(TicketType.DEFAULT_TICKET, event);
-                }
+                case "ticket-purchase" -> createModal(TicketType.PURCHASE, event);
+                case "report-bug" -> createModal(TicketType.REPORT, event);
+                case "ticket-default" -> createModal(TicketType.NORMAL, event);
             }
         }
     }
 
-    private void create(TicketType type, StringSelectInteractionEvent event) {
+    @Override
+    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+        if (!AdminRoleChecker.hasAdminRole(event.getMember())) {
+            event.reply("관리자만 티켓을 닫을 수 있습니다!").setEphemeral(true).queue();
+            return;
+        }
+        if (event.getButton().getId().equals("close")) {
+            Role role = event.getGuild().getRoleById(AUTH_ROLE);
+
+            DatabaseConfig.getTicketService().update(event.getChannel().getId());
+
+            AtomicReference<User> openBy = new AtomicReference<>();
+
+            getMembersByRole(event.getChannel(), role).forEach(member -> {
+                openBy.set(member.getUser());
+            });
+
+            MessageHistory history = MessageHistory.getHistoryFromBeginning(event.getChannel()).complete();
+            List<Message> message = history.getRetrievedHistory();
+
+            String id = event.getChannel().getId();
+
+            TicketInfo ticketInfo = DatabaseConfig.getTicketInfoRepository().findTicketInfoById(id);
+            ticketInfoFileRepository.save(ticketInfo, id, message);
+
+            event.getChannel().delete().queue();
+        }
+    }
+
+
+    private void createModal(TicketType type, StringSelectInteractionEvent event) {
         TextInput test_name = TextInput.create("ticket-title", "Name", TextInputStyle.SHORT)
                 .setRequired(true)
                 .build();
@@ -120,29 +171,65 @@ public class TicketModalInteraction extends ListenerAdapter {
 
         Modal modal = null;
 
+        String userId = event.getUser().getId();
+
         switch (type) {
-            case REPORT_TICKET -> {
-                modal = Modal.create("test-modal", "버그 문의")
+            case REPORT -> {
+                modal = Modal.create("ticket-modal", "버그 문의")
                         .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
                         .build();
 
-                this.ticketType = TicketType.REPORT_TICKET;
-            }
-            case DEFAULT_TICKET -> {
-                modal = Modal.create("test-modal", "일반 문의")
-                        .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
-                        .build();
-                this.ticketType = TicketType.DEFAULT_TICKET;
 
+                ticketModalService.setTicketType(userId, TicketType.REPORT);
             }
-            case PURCHASE_TICKET -> {
-                modal = Modal.create("test-modal", "구매 문의")
+            case NORMAL -> {
+                modal = Modal.create("ticket-modal", "일반 문의")
                         .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
                         .build();
-                this.ticketType = TicketType.PURCHASE_TICKET;
+                ticketModalService.setTicketType(userId, TicketType.NORMAL);
+            }
+            case PURCHASE -> {
+                modal = Modal.create("ticket-modal", "구매 문의")
+                        .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
+                        .build();
+                ticketModalService.setTicketType(userId, TicketType.PURCHASE);
+
+
             }
         }
-
         event.replyModal(modal).queue();
+    }
+
+
+    private List<Member> getAdminMembers(ChannelUnion channel) {
+        List<Member> members = new ArrayList<>();
+
+        for (Member member : channel.asTextChannel().getMembers()) {
+            if (AdminRoleChecker.hasAdminRole(member)) {
+                members.add(member);
+            }
+        }
+        return members;
+    }
+
+    private List<Member> getMembersByRole(MessageChannelUnion channel, Role role) {
+        List<Member> members = new ArrayList<>();
+        for (Member member : channel.asTextChannel().getMembers()) {
+            if (MemberRoleChecker.hasRole(member, role)) {
+                members.add(member);
+            }
+        }
+        return members;
+    }
+
+
+    private List<Member> getMembersByRole(ChannelUnion channel, Role role) {
+        List<Member> members = new ArrayList<>();
+        for (Member member : channel.asTextChannel().getMembers()) {
+            if (MemberRoleChecker.hasRole(member, role)) {
+                members.add(member);
+            }
+        }
+        return members;
     }
 }

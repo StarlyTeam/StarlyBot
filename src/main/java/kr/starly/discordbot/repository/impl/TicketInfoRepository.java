@@ -2,21 +2,18 @@ package kr.starly.discordbot.repository.impl;
 
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Sorts;
 
 import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.listener.ticket.TicketType;
+import kr.starly.discordbot.entity.TicketType;
+import kr.starly.discordbot.repository.TicketRepository;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-
-import static com.mongodb.client.model.Filters.eq;
 
 @AllArgsConstructor
-public class TicketInfoRepository implements kr.starly.discordbot.repository.TicketInfoRepository {
+public class TicketInfoRepository implements TicketRepository {
 
     private final MongoCollection<Document> collection;
+
 
     @Override
     public void save(TicketInfo ticketInfo) {
@@ -50,8 +47,8 @@ public class TicketInfoRepository implements kr.starly.discordbot.repository.Tic
         collection.updateOne(searchDocument, setDocument);
     }
 
-    public TicketInfo findTicketInfoById(String userId) {
-        Document document = collection.find(new Document("openBy", userId)).first();
+    public TicketInfo findTicketInfoById(String channelId) {
+        Document document = collection.find(new Document("channelId", channelId)).first();
         if (document == null) return null;
 
         return new TicketInfo(
@@ -61,18 +58,5 @@ public class TicketInfoRepository implements kr.starly.discordbot.repository.Tic
                 document.getString("openAt"),
                 document.getString("closeAt")
         );
-    }
-
-
-    public Document getFieldById(String id) {
-        Bson projectionFields = Projections.fields(
-                Projections.include("openBy", id),
-                Projections.excludeId());
-
-        Document doc = collection.find(eq("title", "The Room"))
-                .projection(projectionFields)
-                .sort(Sorts.descending("imdb.rating"))
-                .first();
-        return doc;
     }
 }
