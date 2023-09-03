@@ -26,6 +26,7 @@ public class HelpCommand implements DiscordCommand {
     public void execute(MessageReceivedEvent event) {
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
+            return;
         }
 
         event.getMessage().delete();

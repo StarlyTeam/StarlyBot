@@ -27,6 +27,7 @@ public class CleanUpCommand implements DiscordCommand {
     public void execute(MessageReceivedEvent event) {
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
+            return;
         }
 
         String[] args = event.getMessage().getContentRaw().split("\\s", 2);
