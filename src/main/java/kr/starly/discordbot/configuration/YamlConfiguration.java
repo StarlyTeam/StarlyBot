@@ -2,11 +2,8 @@ package kr.starly.discordbot.configuration;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -19,9 +16,9 @@ public class YamlConfiguration extends FileConfiguration {
 
         ensureFileExists(filePath);
 
-        try (FileReader fileReader = new FileReader(filePath)) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8)) {
             Yaml yaml = new Yaml();
-            configuration.configData = (Map<String, Object>) yaml.load(fileReader);
+            configuration.configData = (Map<String, Object>) yaml.load(reader);
         } catch (IOException e) {
             e.printStackTrace();
         }

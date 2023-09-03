@@ -10,9 +10,7 @@ public class ConfigProvider {
     }
 
     public static ConfigProvider getInstance() {
-        if (instance == null) {
-            instance = new ConfigProvider();
-        }
+        if (instance == null) instance = new ConfigProvider();
         return instance;
     }
 
