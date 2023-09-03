@@ -2,7 +2,7 @@ package kr.starly.discordbot.command.slash.impl;
 
 import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.UserInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -67,10 +67,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 )
 public class PointCommand extends DiscordSlashCommand {
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");
-    private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
-    private final String EMBED_COLOR_ERROR = configManager.getString("EMBED_COLOR_ERROR");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
