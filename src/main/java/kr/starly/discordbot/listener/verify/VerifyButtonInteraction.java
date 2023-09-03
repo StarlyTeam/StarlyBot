@@ -31,7 +31,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(Color.decode(EMBED_COLOR_ERROR))
                             .setTitle("<a:warn:1141721287526465656> 오류 | 이미 인증된 유저입니다. <a:warn:1141721287526465656>")
-                            .setDescription("> **당신은 이미 인증된 유저이에요! \uD83C\uDF89**\n"
+                            .setDescription("> **당신은 이미 인증된 유저예요! \uD83C\uDF89**\n"
                                     + "> **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**\n\u1CBB")
                             .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
                             .setFooter("이미 인증이 완료된 계정입니다.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
@@ -43,7 +43,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                 TextInput verifyMessage = TextInput.create("verify-tos","이용약관에 동의하시면, '네'라고 입력 후 전송을 눌러주세요.", TextInputStyle.SHORT)
                         .setPlaceholder("네")
                         .setMinLength(1)
-                        .setMaxLength(1)
+                        .setMaxLength(2)
                         .setRequired(true)
                         .build();
 
