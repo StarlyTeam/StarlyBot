@@ -1,0 +1,24 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- MongoDB Driver Cluster 로깅 레벨 조정 -->
+    <logger name="org.mongodb.driver.cluster" level="ERROR" />
+
+    <!-- MongoDB Driver 로깅 레벨 조정 -->
+    <logger name="org.mongodb.driver" level="ERROR" />
+
+    <!-- Reflections 라이브러리 로깅 레벨 조정 -->
+    <logger name="org.reflections.Reflections" level="ERROR" />
+
+    <!-- JDA 로깅 레벨 조정 -->
+    <logger name="net.dv8tion.jda.api" level="ERROR" />
+
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
