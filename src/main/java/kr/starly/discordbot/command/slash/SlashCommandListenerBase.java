@@ -1,6 +1,6 @@
 package kr.starly.discordbot.command.slash;
 
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import lombok.Getter;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,22 +18,22 @@ public class SlashCommandListenerBase extends ListenerAdapter {
 
     @Getter
     private List<CommandData> commands = new ArrayList<>();
-    private final Map<String, DiscordSlashExecutor> commandActions = new HashMap<>();
+    private final Map<String, DiscordSlashCommand> commandActions = new HashMap<>();
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String GUILD_ID = configManager.getString("GUILD_ID");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String GUILD_ID = configProvider.getString("GUILD_ID");
 
     public SlashCommandListenerBase() {
         registerCommands();
     }
 
     private void registerCommands() {
-        Set<Class<? extends DiscordSlashExecutor>> commandClasses = getCommandClasses();
+        Set<Class<? extends DiscordSlashCommand>> commandClasses = getCommandClasses();
         commandClasses.forEach(commandClass -> {
             BotSlashCommand annotation = commandClass.getAnnotation(BotSlashCommand.class);
             if (annotation != null) {
                 try {
-                    DiscordSlashExecutor commandInstance = commandClass.getDeclaredConstructor().newInstance();
+                    DiscordSlashCommand commandInstance = commandClass.getDeclaredConstructor().newInstance();
 
                     SlashCommandData commandData = Commands.slash(annotation.command(), annotation.description());
 
@@ -66,15 +66,15 @@ public class SlashCommandListenerBase extends ListenerAdapter {
         });
     }
 
-    private Set<Class<? extends DiscordSlashExecutor>> getCommandClasses() {
+    private Set<Class<? extends DiscordSlashCommand>> getCommandClasses() {
         String packageName = "kr.starly.discordbot.command.slash.impl";
 
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotSlashCommand.class);
 
         return annotated.stream()
-                .filter(DiscordSlashExecutor.class::isAssignableFrom)
-                .map(clazz -> (Class<? extends DiscordSlashExecutor>) clazz)
+                .filter(DiscordSlashCommand.class::isAssignableFrom)
+                .map(clazz -> (Class<? extends DiscordSlashCommand>) clazz)
                 .collect(Collectors.toSet());
     }
 
@@ -86,10 +86,10 @@ public class SlashCommandListenerBase extends ListenerAdapter {
         command = command.replace("/", "");
 
         if (event.getGuild().getId().equals(GUILD_ID)) {
-            DiscordSlashExecutor discordSlashExecutor = commandActions.get(command);
+            DiscordSlashCommand discordSlashCommand = commandActions.get(command);
 
-            if (discordSlashExecutor != null) {
-                discordSlashExecutor.execute(event);
+            if (discordSlashCommand != null) {
+                discordSlashCommand.execute(event);
             }
         }
     }

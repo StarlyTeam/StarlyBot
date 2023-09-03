@@ -2,7 +2,7 @@ package kr.starly.discordbot.command.impl;
 
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.reflections.Reflections;
@@ -17,8 +17,8 @@ import java.util.Set;
 )
 public class HelpCommand extends DiscordCommand {
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR = configManager.getString("EMBED_COLOR");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
     @Override
     public void execute(MessageReceivedEvent event) {

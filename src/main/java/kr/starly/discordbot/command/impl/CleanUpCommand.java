@@ -2,7 +2,7 @@ package kr.starly.discordbot.command.impl;
 
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -17,9 +17,9 @@ import java.awt.*;
 )
 public class CleanUpCommand extends DiscordCommand {
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
-    private final String EMBED_COLOR_ERROR = configManager.getString("EMBED_COLOR_ERROR");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
 
     @Override
     public void execute(MessageReceivedEvent event) {

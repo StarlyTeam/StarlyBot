@@ -2,7 +2,7 @@ package kr.starly.discordbot.manager;
 
 import kr.starly.discordbot.command.CommandListenerBase;
 import kr.starly.discordbot.command.slash.SlashCommandListenerBase;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.listener.BotEvent;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -31,9 +31,9 @@ public class DiscordBotManager {
     private DiscordBotManager() {}
 
     private static final Logger LOGGER = Logger.getLogger(DiscordBotManager.class.getName());
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String GUILD_ID = configManager.getString("GUILD_ID");
-    private final String BOT_TOKEN = configManager.getString("BOT_TOKEN");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String GUILD_ID = configProvider.getString("GUILD_ID");
+    private final String BOT_TOKEN = configProvider.getString("BOT_TOKEN");
 
     @Getter
     private JDA jda;
@@ -66,10 +66,10 @@ public class DiscordBotManager {
     }
 
     private void configureBot(JDABuilder builder) {
-        ConfigManager configManager = ConfigManager.getInstance();
-        String activityName = configManager.getString("ACTIVITY_NAME");
-        String activityType = configManager.getString("ACTIVITY_TYPE");
-        String status = configManager.getString("STATUS");
+        ConfigProvider configProvider = ConfigProvider.getInstance();
+        String activityName = configProvider.getString("ACTIVITY_NAME");
+        String activityType = configProvider.getString("ACTIVITY_TYPE");
+        String status = configProvider.getString("STATUS");
 
         try {
             Activity.ActivityType type = Activity.ActivityType.valueOf(activityType.toUpperCase());

@@ -2,7 +2,7 @@ package kr.starly.discordbot.command.impl;
 
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -17,8 +17,8 @@ import java.awt.*;
 )
 public class CreateVerifyCommand extends DiscordCommand {
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -27,8 +27,8 @@ public class CreateVerifyCommand extends DiscordCommand {
         event.getMessage().delete().queue();
 
         MessageEmbed verifyEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR_SUCCESS))
-                .setTitle("<a:success:1141625729386287206> 인증 | 스탈리 커뮤니티 <a:success:1141625729386287206>")
+                .setColor(Color.decode(EMBED_COLOR))
+                .setTitle("<a:success:1141625729386287206> 유저인증 | 스탈리 <a:success:1141625729386287206>")
                 .setDescription("> **스탈리 커뮤니티에 오신걸 환영합니다.** \n" +
                         "> **서버에 입장하기 전 아래 `인증하기` 버튼을 클릭해주세요.** \n\n" +
                         "─────────────────────────────────────────────────"

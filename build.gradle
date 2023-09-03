@@ -23,6 +23,7 @@ dependencies {
     api 'com.google.code.gson:gson:2.10.1'
     api 'ch.qos.logback:logback-classic:1.2.9'
     api 'org.mongodb:mongodb-driver-sync:4.10.2'
+    api 'org.yaml:snakeyaml:1.8'
 }
 
 tasks.withType(JavaCompile) {

@@ -1,6 +1,6 @@
 package kr.starly.discordbot.repository.impl;
 
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.entity.TicketInfo;
 import kr.starly.discordbot.entity.TicketModalInfo;
 import lombok.Setter;
@@ -17,15 +17,14 @@ public class TicketInfoFileRepository {
 
     private TicketInfoFileRepository() {}
 
-    private static final ConfigManager configManager = ConfigManager.getInstance();
-    private static final String TICKET_PATH = configManager.getString("TICKET_PATH");
+    private static final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private static final String TICKET_PATH = configProvider.getString("TICKET_PATH");
     private static TicketInfoFileRepository instance;
 
     public static TicketInfoFileRepository getInstance() {
         if (instance == null) instance = new TicketInfoFileRepository();
         return instance;
     }
-
 
     @Setter
     private TicketModalInfo ticketInfo;

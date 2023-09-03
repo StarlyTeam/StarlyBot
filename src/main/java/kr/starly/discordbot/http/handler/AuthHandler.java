@@ -3,7 +3,7 @@ package kr.starly.discordbot.http.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.http.service.AuthService;
 import kr.starly.discordbot.manager.DiscordBotManager;
@@ -22,9 +22,9 @@ public class AuthHandler implements HttpHandler {
     private final UserInfoService userInfoService = DatabaseConfig.getUserInfoService();
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configManager.getString("EMBED_COLOR_SUCCESS");
-    private final String AUTHORIZED_ROLE_ID = configManager.getString("AUTHORIZED_ROLE_ID");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final String AUTH_ROLE = configProvider.getString("AUTH_ROLE");
 
     private final AuthService authService = AuthService.getInstance();
 
@@ -48,9 +48,9 @@ public class AuthHandler implements HttpHandler {
             return;
         }
 
-        Role authorizedRole = guild.getRoleById(AUTHORIZED_ROLE_ID);
+        Role authorizedRole = guild.getRoleById(AUTH_ROLE);
         if (authorizedRole == null) {
-            System.out.println("Role with ID " + AUTHORIZED_ROLE_ID + " not found in server " + guild.getName());
+            System.out.println("Role with ID " + AUTH_ROLE + " not found in server " + guild.getName());
             sendErrorResponse(exchange, "Authorized role not found in the server.");
             return;
         }

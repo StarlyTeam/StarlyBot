@@ -1,6 +1,6 @@
 package kr.starly.discordbot.listener.ticket;
 
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
 import kr.starly.discordbot.entity.TicketModalInfo;
@@ -38,13 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-
 @BotEvent
 public class TicketModalInteraction extends ListenerAdapter {
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
 
-    private final String AUTH_ROLE = configManager.getString("AUTH_ROLE");
+    private final String AUTH_ROLE = configProvider.getString("AUTH_ROLE");
 
     private final TicketModalService ticketModalService = TicketModalService.getInstance();
 
@@ -52,7 +51,7 @@ public class TicketModalInteraction extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
-        String categoryId = configManager.getString("PREMIUM_CATEGORY_ID");
+        String categoryId = configProvider.getString("PREMIUM_CATEGORY_ID");
 
         Category ticketCategory = event.getGuild().getCategoryById(categoryId);
 
@@ -132,11 +131,12 @@ public class TicketModalInteraction extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        if (!AdminRoleChecker.hasAdminRole(event.getMember())) {
-            event.reply("관리자만 티켓을 닫을 수 있습니다!").setEphemeral(true).queue();
-            return;
-        }
         if (event.getButton().getId().equals("close")) {
+            if (!AdminRoleChecker.hasAdminRole(event.getMember())) {
+                event.reply("관리자만 티켓을 닫을 수 있습니다!").setEphemeral(true).queue();
+                return;
+            }
+
             Role role = event.getGuild().getRoleById(AUTH_ROLE);
 
             DatabaseConfig.getTicketService().update(event.getChannel().getId());
@@ -159,13 +159,12 @@ public class TicketModalInteraction extends ListenerAdapter {
         }
     }
 
-
     private void createModal(TicketType type, StringSelectInteractionEvent event) {
-        TextInput test_name = TextInput.create("ticket-title", "Name", TextInputStyle.SHORT)
+        TextInput ticketTitle = TextInput.create("ticket-title", "Name", TextInputStyle.SHORT)
                 .setRequired(true)
                 .build();
 
-        TextInput message = TextInput.create("ticket-message", "Message", TextInputStyle.PARAGRAPH)
+        TextInput ticketMessage = TextInput.create("ticket-message", "Message", TextInputStyle.PARAGRAPH)
                 .setRequired(true)
                 .build();
 
@@ -176,7 +175,7 @@ public class TicketModalInteraction extends ListenerAdapter {
         switch (type) {
             case REPORT -> {
                 modal = Modal.create("ticket-modal", "버그 문의")
-                        .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
+                        .addActionRows(ActionRow.of(ticketTitle), ActionRow.of(ticketMessage))
                         .build();
 
 
@@ -184,13 +183,13 @@ public class TicketModalInteraction extends ListenerAdapter {
             }
             case NORMAL -> {
                 modal = Modal.create("ticket-modal", "일반 문의")
-                        .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
+                        .addActionRows(ActionRow.of(ticketTitle), ActionRow.of(ticketMessage))
                         .build();
                 ticketModalService.setTicketType(userId, TicketType.NORMAL);
             }
             case PURCHASE -> {
                 modal = Modal.create("ticket-modal", "구매 문의")
-                        .addActionRows(ActionRow.of(test_name), ActionRow.of(message))
+                        .addActionRows(ActionRow.of(ticketTitle), ActionRow.of(ticketMessage))
                         .build();
                 ticketModalService.setTicketType(userId, TicketType.PURCHASE);
 
@@ -199,7 +198,6 @@ public class TicketModalInteraction extends ListenerAdapter {
         }
         event.replyModal(modal).queue();
     }
-
 
     private List<Member> getAdminMembers(ChannelUnion channel) {
         List<Member> members = new ArrayList<>();

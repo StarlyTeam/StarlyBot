@@ -11,19 +11,19 @@ import java.util.stream.Collectors;
 
 public class CommandListenerBase extends ListenerAdapter {
 
-    private final Map<String, DiscordExecutor> commands = new HashMap<>();
+    private final Map<String, DiscordCommand> commands = new HashMap<>();
 
     public CommandListenerBase() {
         registerCommands();
     }
 
     private void registerCommands() {
-        Set<Class<? extends DiscordExecutor>> commandClasses = getCommandClasses();
+        Set<Class<? extends DiscordCommand>> commandClasses = getCommandClasses();
         commandClasses.forEach(commandClass -> {
             BotCommand annotation = commandClass.getAnnotation(BotCommand.class);
             if (annotation != null) {
                 try {
-                    DiscordExecutor commandInstance = commandClass.getDeclaredConstructor().newInstance();
+                    DiscordCommand commandInstance = commandClass.getDeclaredConstructor().newInstance();
                     commands.put(annotation.command(), commandInstance);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -32,15 +32,15 @@ public class CommandListenerBase extends ListenerAdapter {
         });
     }
 
-    private Set<Class<? extends DiscordExecutor>> getCommandClasses() {
+    private Set<Class<? extends DiscordCommand>> getCommandClasses() {
         String packageName = "kr.starly.discordbot.command.impl";
 
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotCommand.class);
 
         return annotated.stream()
-                .filter(DiscordExecutor.class::isAssignableFrom)
-                .map(clazz -> (Class<? extends DiscordExecutor>) clazz)
+                .filter(DiscordCommand.class::isAssignableFrom)
+                .map(clazz -> (Class<? extends DiscordCommand>) clazz)
                 .collect(Collectors.toSet());
     }
 
@@ -52,7 +52,7 @@ public class CommandListenerBase extends ListenerAdapter {
 
         String[] split = message.substring(1).split(" ", 2);
         String command = split[0].toLowerCase();
-        DiscordExecutor commandExecutor = commands.get(command);
+        DiscordCommand commandExecutor = commands.get(command);
 
         if (commandExecutor != null) {
             commandExecutor.execute(event);

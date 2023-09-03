@@ -1,6 +1,6 @@
 package kr.starly.discordbot.command.slash;
 
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -8,10 +8,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 import java.awt.*;
 
-public abstract class DiscordSlashCommand implements DiscordSlashExecutor {
+public abstract class DiscordSlashCommand {
 
-    private final ConfigManager configManager = ConfigManager.getInstance();
-    private final String EMBED_COLOR_ERROR = configManager.getString("EMBED_COLOR_ERROR");
+    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
 
     public abstract void execute(SlashCommandInteractionEvent event);
 

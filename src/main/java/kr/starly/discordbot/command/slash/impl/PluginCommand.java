@@ -6,7 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
-import kr.starly.discordbot.configuration.ConfigManager;
+import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.entity.PluginInfo;
 import kr.starly.discordbot.repository.PluginRepository;
 import kr.starly.discordbot.repository.impl.MongoPluginInfoRepository;
@@ -65,10 +65,10 @@ public class PluginCommand extends DiscordSlashCommand {
     private final PluginRepository pluginInfoRepository;
 
     public PluginCommand() {
-        ConfigManager configManager = ConfigManager.getInstance();
-        String DB_CONNECTION_STRING = configManager.getString("DB_HOST");
-        String DB_NAME = configManager.getString("DB_DATABASE");
-        String DB_COLLECTION_PLUGIN = configManager.getString("DB_COLLECTION_PLUGIN");
+        ConfigProvider configProvider = ConfigProvider.getInstance();
+        String DB_CONNECTION_STRING = configProvider.getString("DB_HOST");
+        String DB_NAME = configProvider.getString("DB_DATABASE");
+        String DB_COLLECTION_PLUGIN = configProvider.getString("DB_COLLECTION_PLUGIN");
 
         MongoClient mongoClient = MongoClients.create(DB_CONNECTION_STRING);
         MongoDatabase database = mongoClient.getDatabase(DB_NAME);
