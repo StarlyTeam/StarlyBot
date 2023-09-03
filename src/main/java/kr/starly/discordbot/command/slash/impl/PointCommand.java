@@ -5,7 +5,9 @@ import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.UserInfo;
+import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -65,7 +67,7 @@ import java.util.concurrent.atomic.AtomicInteger;
                 )
         }
 )
-public class PointCommand extends DiscordSlashCommand {
+public class PointCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
@@ -81,7 +83,9 @@ public class PointCommand extends DiscordSlashCommand {
             return;
         }
 
-        if (!checkAdminPermission(event)) return;
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+        }
 
         MessageEmbed messageEmbed;
 
@@ -183,7 +187,9 @@ public class PointCommand extends DiscordSlashCommand {
         String userIdForCheck;
 
         if (event.getOption("유저") != null) {
-            if (!checkAdminPermission(event)) return;
+            if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                PermissionUtil.sendPermissionError(event.getChannel());
+            }
             userIdForCheck = event.getOption("유저").getAsUser().getId();
         } else {
             userIdForCheck = event.getUser().getId();

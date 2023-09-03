@@ -3,7 +3,9 @@ package kr.starly.discordbot.command.impl;
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
+import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.reflections.Reflections;
 
@@ -15,14 +17,16 @@ import java.util.Set;
         description = "물음표 명령어 사용법을 출력합니다.",
         usage = "?도움말"
 )
-public class HelpCommand extends DiscordCommand {
+public class HelpCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        if (!checkAdminPermission(event)) return;
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+        }
 
         event.getMessage().delete();
 

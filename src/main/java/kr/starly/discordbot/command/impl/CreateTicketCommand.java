@@ -3,7 +3,9 @@ package kr.starly.discordbot.command.impl;
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
+import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -17,14 +19,16 @@ import java.awt.*;
         description = "티켓 임베드를 생성합니다.",
         usage = "?티켓생성"
 )
-public class CreateTicketCommand extends DiscordCommand {
+public class CreateTicketCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        if (!checkAdminPermission(event)) return;
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+        }
 
         event.getMessage().delete().queue();
 

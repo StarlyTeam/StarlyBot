@@ -11,6 +11,8 @@ import kr.starly.discordbot.entity.PluginInfo;
 import kr.starly.discordbot.repository.PluginRepository;
 import kr.starly.discordbot.repository.impl.MongoPluginInfoRepository;
 import kr.starly.discordbot.service.PluginService;
+import kr.starly.discordbot.util.PermissionUtil;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.bson.Document;
@@ -59,7 +61,7 @@ import java.util.List;
                 )
         }
 )
-public class PluginCommand extends DiscordSlashCommand {
+public class PluginCommand implements DiscordSlashCommand {
 
     private final PluginService pluginService;
     private final PluginRepository pluginInfoRepository;
@@ -80,7 +82,9 @@ public class PluginCommand extends DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (!checkAdminPermission(event)) return;
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+        }
         String subCommand = event.getSubcommandName();
 
         switch (subCommand) {

@@ -3,7 +3,9 @@ package kr.starly.discordbot.command.impl;
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
+import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -15,7 +17,7 @@ import java.awt.*;
         description = "<개수>만큼 메시지를 청소(삭제)합니다.",
         usage = "?청소 <개수>"
 )
-public class CleanUpCommand extends DiscordCommand {
+public class CleanUpCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
@@ -23,7 +25,9 @@ public class CleanUpCommand extends DiscordCommand {
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        if (!checkAdminPermission(event)) return;
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+        }
 
         String[] args = event.getMessage().getContentRaw().split("\\s", 2);
         if (args.length < 2) {
