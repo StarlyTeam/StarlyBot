@@ -4,7 +4,6 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.http.VerifyHttpServer;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.util.DiscordBotUtil;
-import kr.starly.discordbot.configuration.YamlConfiguration;
 
 import java.io.IOException;
 import java.util.Scanner;
