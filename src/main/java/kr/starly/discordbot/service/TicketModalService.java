@@ -12,20 +12,17 @@ public class TicketModalService {
 
     private static TicketModalService instance;
 
-    private TicketModalService() {
-    }
+    private TicketModalService() {}
 
     public static TicketModalService getInstance() {
         if (instance == null) instance = new TicketModalService();
         return instance;
     }
 
-
     public void replaceModalInfo(String id, TicketModalInfo ticketModalInfo) {
         if (ticketModalInfoMap.containsKey(id))
             this.ticketModalInfoMap.replace(id, ticketModalInfo);
     }
-
 
     public void setTicketType(String id, TicketType type) {
         if (!ticketModalInfoMap.containsKey(id)) {
