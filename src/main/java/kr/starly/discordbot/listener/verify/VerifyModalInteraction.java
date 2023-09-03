@@ -24,6 +24,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
+        if (event.getInteraction().getValue("verify-tos") == null) return;
         String response = event.getInteraction().getValue("verify-tos").getAsString();
 
         if ("네".equals(response)) {
