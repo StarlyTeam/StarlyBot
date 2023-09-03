@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import java.awt.*;
 
 @BotCommand(
-        command = "티켓",
+        command = "티켓생성",
         description = "티켓 임베드를 생성합니다.",
         usage = "?티켓생성"
 )
