@@ -50,7 +50,7 @@ public class PluginSelectionMenuInteraction extends ListenerAdapter {
                         .addOption("유료", "premium", "구매가 필요한 유료 플러그인입니다.", Emoji.fromUnicode("💰"))
                         .build();
 
-                event.replyEmbeds(registerEmbed).addActionRow(registerSelectMenu).setEphemeral(true).queue();
+                event.replyEmbeds(registerEmbed).addActionRow(registerSelectMenu).queue();
                 event.editSelectMenu(event.getSelectMenu()).queue();
             }
 

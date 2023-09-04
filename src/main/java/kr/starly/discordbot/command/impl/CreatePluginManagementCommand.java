@@ -30,8 +30,6 @@ public class CreatePluginManagementCommand implements DiscordCommand {
             return;
         }
 
-        event.getMessage().delete().queue();
-
         MessageEmbed verifyEmbed = new EmbedBuilder()
                 .setColor(Color.decode(EMBED_COLOR))
                 .setTitle("<a:loading:1141623256558866482> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1141623256558866482>")
