@@ -93,7 +93,7 @@ public class PluginCommand implements DiscordSlashCommand {
             case "수정" -> modifyPlugin(event);
             case "목록" -> listPlugins(event);
             case "정보" -> showPluginInfo(event);
-            default -> event.reply("알 수 없는 서브 커맨드입니다.").queue();
+            default -> event.reply("알 수 없는 서브 커맨드입니다.").setEphemeral(true).queue();
         }
     }
 
