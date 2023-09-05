@@ -17,7 +17,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
     private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
-    private final String AUTH_LINK = configProvider.getString("AUTH_LINK");
+    private final String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
     private final int AUTH_PORT = configProvider.getInt("AUTH_PORT");
 
     private final AuthService authService = AuthService.getInstance();
@@ -30,7 +30,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
         if ("네".equals(response)) {
             String discordId = event.getMember().getId();
             String token = authService.generateToken(discordId);
-            String authLink = AUTH_LINK + ":" + AUTH_PORT + "/auth/" + discordId + "/" + token;
+            String authLink = "http://" + WEB_ADDRESS + ":" + AUTH_PORT + "/auth/" + discordId + "/" + token;
 
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))

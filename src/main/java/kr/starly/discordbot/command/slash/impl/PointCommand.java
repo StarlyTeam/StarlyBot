@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
                         names = {"유저"},
                         optionType = {OptionType.USER},
                         optionDescription = {"확인할 유저를 선택하세요. (선택하지 않으면 자신의 포인트를 확인합니다.)"},
-                        required = {false} //
+                        required = {false}
                 ),
                 @BotSlashCommand.SubCommand(
                         name = "초기화",
@@ -176,8 +176,7 @@ public class PointCommand implements DiscordSlashCommand {
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
                         .setTitle("<a:loading:1141623256558866482> 오류 | 포인트 <a:loading:1141623256558866482>")
                         .setDescription("> **알 수 없는 명령입니다.**")
-                        .build()
-                ;
+                        .build();
                 event.replyEmbeds(messageEmbed).queue();
             }
         }
@@ -205,7 +204,6 @@ public class PointCommand implements DiscordSlashCommand {
                 .build();
         event.replyEmbeds(messageEmbed).queue();
     }
-
 
     private int getSafeIntFromOption(OptionMapping option) {
         long value = option.getAsLong();

@@ -6,19 +6,25 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.entity.PluginInfoDTO;
+import kr.starly.discordbot.enums.UploadStatus;
 import kr.starly.discordbot.listener.BotEvent;
+import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.repository.PluginDataRepository;
 import kr.starly.discordbot.repository.impl.MongoPluginInfoRepository;
+import kr.starly.discordbot.util.TokenUtil;
+import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -30,12 +36,18 @@ import java.util.stream.Collectors;
 @BotEvent
 public class PluginManagerChatInteraction extends ListenerAdapter {
 
-    private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private static final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String GUILD_ID = configProvider.getString("CHANNEL_ID_PLUGIN_MANAGEMENT");
+    private static final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
     private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
 
     private final MongoPluginInfoRepository mongoRepo;
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    @Getter
+    private static final Map<Long, String> userTokens = new HashMap<>();
+    @Getter
+    private static MessageReceivedEvent lastEvent;
 
     public PluginManagerChatInteraction() {
         String DB_CONNECTION_STRING = configProvider.getString("DB_HOST");
@@ -55,6 +67,7 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
 
         if (!event.getAuthor().isBot()) {
             event.getMessage().delete().queue();
+            this.lastEvent = event;
         }
 
         long userId = event.getAuthor().getIdLong();
@@ -107,14 +120,23 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
 
             mongoRepo.save(existingData);
 
+            String token = TokenUtil.generateNewToken();
+            userTokens.put(userId, token);
+
+            String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
+            int SERVER_PORT = configProvider.getInt("PLUGIN_PORT");
+
+            String uploadLink = "http://" + WEB_ADDRESS + ":" + SERVER_PORT + "/upload/" + userId + "?token=" + token;
+
             String pluginInfoDescription = pluginInfoDescription(existingData);
+            System.out.println("HashMap put: " + userId);
 
             MessageEmbed successEmbed = new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                     .setTitle("<a:success:1141625729386287206> 플러그인 관리 | 스탈리 (관리자 전용) <a:success:1141625729386287206>")
                     .setDescription("> **`\uD83C\uDD99` GIF 파일이 성공적으로 업로드되었습니다. `\uD83C\uDD99`** \n" +
                             "> **`\uD83D\uDCE5` 데이터가 저장되었습니다. `\uD83D\uDCE5`**\n\n" +
-                            "> **`🚫` 20초 뒤에 모든 메시지가 삭제됩니다. `🚫`** \n\n" +
+                            "> **🔗 [여기를 클릭하여 플러그인 파일을 업로드하세요](" + uploadLink + ")**\n\n" +
                             "─────────────────────────────────────────────────\n" +
                             pluginInfoDescription +
                             "─────────────────────────────────────────────────"
@@ -123,12 +145,8 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
                     .setFooter("이 기능은 관리자 전용입니다.", "https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
                     .build();
 
-            event.getChannel().sendMessageEmbeds(successEmbed).queue(response -> {
-                scheduler.schedule(() -> event.getChannel().getHistory().retrievePast(100).queue(messages -> {
-                    messages.remove(messages.size() - 1);
-                    event.getChannel().purgeMessages(messages);
-                }), 20, TimeUnit.SECONDS);
-            });
+            UploadStatus.getUserUploadStatus().put(userId, UploadStatus.GIF_UPLOADED);
+            event.getChannel().sendMessageEmbeds(successEmbed).queue();
         }
     }
 
@@ -156,5 +174,64 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
         description.append("> **🎥 | GIF 링크: `").append(dto.getGifLink()).append("`**\n");
 
         return description.toString();
+    }
+
+    public static void createPluginChannel() {
+        Guild guild = lastEvent.getGuild();
+        long userId = lastEvent.getAuthor().getIdLong();
+
+        PluginDataRepository dataRepo = PluginDataRepository.getInstance();
+        PluginInfoDTO existingData = dataRepo.getData(userId);
+
+        String channelName = "\uD83D\uDCE6┃" + existingData.getPluginNameKorean();
+        if (channelName.length() > 100) {
+            channelName = channelName.substring(0, 100);
+        }
+
+        String FREE_PLUGIN_CATEGORY = configProvider.getString("FREE_PLUGIN_CATEGORY");
+        guild.getCategoryById(FREE_PLUGIN_CATEGORY).createTextChannel(channelName).queue();
+    }
+
+    public static void releaseNotice() {
+        long userId = lastEvent.getAuthor().getIdLong();
+        PluginDataRepository dataRepo = PluginDataRepository.getInstance();
+        PluginInfoDTO existingData = dataRepo.getData(userId);
+
+        String pluginFullName = existingData.getPluginNameEnglish() + "(" + existingData.getPluginNameKorean() + ")";
+
+        MessageEmbed noticeEmbed = new EmbedBuilder()
+                .setColor(Color.decode(EMBED_COLOR))
+                .setTitle("<a:success:1141625729386287206> " + pluginFullName + " | 신규 플러그인 <a:success:1141625729386287206>")
+                .setDescription("> **`\uD83C\uDF89`" + pluginFullName + " 플러그인이 출시되었습니다. `\uD83C\uDF89`** \n" +
+                        "> **`\uD83C\uDF1F` 많은 관심 부탁드립니다. `\uD83C\uDF1F`**\n\n" +
+                        "─────────────────────────────────────────────────"
+                )
+                .setImage(existingData.getGifLink())
+                .setThumbnail("https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
+                .setFooter("이 기능은 관리자 전용입니다.", "https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
+                .build();
+
+
+        String RELEASE_NOTICE_CHANNEL = configProvider.getString("RELEASE_NOTICE_CHANNEL");
+        TextChannel textChannel = DiscordBotManager.getInstance().getJda().getTextChannelById(RELEASE_NOTICE_CHANNEL);
+        textChannel.sendMessageEmbeds(noticeEmbed).queue();
+        textChannel.sendMessage("> @everyone").queue();
+    }
+
+    public static void checkAndDeleteMessages(TextChannel channel, long userId) {
+        if (getUserUploadStatus(userId) == UploadStatus.FILE_UPLOADED) {
+            scheduler.schedule(() -> channel.getHistory().retrievePast(100).queue(messages -> {
+                messages.remove(messages.size() - 1);
+                channel.purgeMessages(messages);
+            }), 15, TimeUnit.SECONDS);
+        }
+    }
+
+    public static void setUserUploadStatus(long userId, UploadStatus status) {
+        UploadStatus.getUserUploadStatus().put(userId, status);
+    }
+
+    private static UploadStatus getUserUploadStatus(long userId) {
+        return UploadStatus.getUserUploadStatus().getOrDefault(userId, UploadStatus.NONE);
     }
 }

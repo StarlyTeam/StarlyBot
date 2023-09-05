@@ -2,12 +2,13 @@ package kr.starly.discordbot.http;
 
 import com.sun.net.httpserver.HttpServer;
 import kr.starly.discordbot.http.handler.AuthHandler;
+import kr.starly.discordbot.http.handler.PluginFileUploadHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
-public class VerifyHttpServer {
+public class HttpServerMain {
 
     private HttpServer server;
 
@@ -15,8 +16,10 @@ public class VerifyHttpServer {
         if (isPortAvailable(port)) {
             server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/auth/", new AuthHandler());
+            server.createContext("/upload/", new PluginFileUploadHandler());
             server.setExecutor(null);
             server.start();
+            System.out.println("HTTP server started on port: " + port);
         } else {
             System.out.println("Port " + port + " is already in use.");
         }

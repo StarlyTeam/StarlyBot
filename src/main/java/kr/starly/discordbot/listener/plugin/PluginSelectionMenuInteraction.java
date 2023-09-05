@@ -51,36 +51,32 @@ public class PluginSelectionMenuInteraction extends ListenerAdapter {
                         .build();
 
                 event.replyEmbeds(registerEmbed).addActionRow(registerSelectMenu).queue();
-                event.editSelectMenu(event.getSelectMenu()).queue();
             }
 
             case "plugin-delete" -> {
                 // TODO 플러그인 삭제 관련 처리
                 event.reply("플러그인 삭제 시스템 구현중..").setEphemeral(true).queue();
-                event.editSelectMenu(event.getSelectMenu()).queue();
             }
 
             case "plugin-edit" -> {
                 // TODO 플러그인 수정 관련 처리
                 event.reply("플러그인 수정 시스템 구현중..").setEphemeral(true).queue();
-                event.editSelectMenu(event.getSelectMenu()).queue();
             }
 
             case "plugin-list" -> {
                 // TODO 플러그인 목록 조회 관련 처리
                 event.reply("플러그인 목록 조회 시스템 구현중..").setEphemeral(true).queue();
-                event.editSelectMenu(event.getSelectMenu()).queue();
             }
 
             case "plugin-info" -> {
                 // TODO 플러그인 정보 조회 관련 처리
                 event.reply("플러그인 정보 조회 시스템 구현중..").setEphemeral(true).queue();
-                event.editSelectMenu(event.getSelectMenu()).queue();
             }
 
             default -> {
                 // TODO 예상치 못한 선택 값에 대한 처리
             }
         }
+        event.editSelectMenu(event.getSelectMenu()).queue();
     }
 }
