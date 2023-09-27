@@ -22,7 +22,7 @@ import java.awt.*;
 public class CreateTicketCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -33,26 +33,43 @@ public class CreateTicketCommand implements DiscordCommand {
 
         event.getMessage().delete().queue();
 
-        MessageEmbed reportEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
-                .setTitle("플러그인 문의")
-                .setDescription("아래 버튼을 눌러 플러그인 문의 사항을 작성 하실 수 있습니다!")
+        StringSelectMenu stringSelectMenu = StringSelectMenu.create("ticket-select-category")
+                .setPlaceholder("상담 카테고리를 선택하여 주세요.")
+                .addOptions(SelectOption.of("일반", "normal-ticket")
+                        .withDescription("서비스 전반에 관한 기본적인 문의를 보내주세요.")
+                        .withEmoji(Emoji.fromUnicode("ℹ\uFE0F")))
+
+                .addOptions(SelectOption.of("질문", "question-ticket")
+                        .withDescription("제품/서비스에 대한 일반적인 궁금증을 문의하세요.")
+                        .withEmoji(Emoji.fromUnicode("❓")))
+
+                .addOptions(SelectOption.of("상담", "consulting-ticket")
+                        .withDescription("개인화된 조언이나 지원에 관한 문의입니다.")
+                        .withEmoji(Emoji.fromUnicode("\uD83D\uDDE3\uFE0F")))
+
+                .addOptions(SelectOption.of("결제", "purchase-inquiry-ticket")
+                        .withDescription("결제/환불/청구와 관련된 문의를 해주세요.")
+                        .withEmoji(Emoji.fromUnicode("\uD83D\uDCB3")))
+
+                .addOptions(SelectOption.of("이용제한", "use-restriction-ticket")
+                        .withDescription("계정/서비스의 이용제한에 대한 문의입니다.")
+                        .withEmoji(Emoji.fromUnicode("\uD83D\uDCCE")))
+
+                .addOptions(SelectOption.of("버그", "bug-report-ticket")
+                        .withDescription("시스템의 오류나 버그 관련 문의를 해주세요.")
+                        .withEmoji(Emoji.fromUnicode("\uD83D\uDC1E")))
+
+                .addOptions(SelectOption.of("기타", "etc-ticket")
+                        .withDescription("기타 분류되지 않은 모든 문의를 보내주세요.")
+                        .withEmoji(Emoji.fromUnicode("\uD83D\uDEAB")))
                 .build();
 
-        StringSelectMenu stringSelectMenu = StringSelectMenu.create("ticket-selectMenu")
-                .addOptions(SelectOption.of("구매문의", "ticket-purchase")
-                        .withDescription("구매관련")
-                        .withEmoji(Emoji.fromUnicode("\uD83C\uDFAB"))
-                )
-                .addOptions(SelectOption.of("버그제보", "report-bug")
-                        .withDescription("버그관련")
-                        .withEmoji(Emoji.fromUnicode("\uD83C\uDF9F\uFE0F"))
-                )
-                .addOptions(SelectOption.of("일반문의", "ticket-default")
-                        .withDescription("기타관련")
-                        .withEmoji(Emoji.fromUnicode("\uD83D\uDCF0")))
+        MessageEmbed embed = new EmbedBuilder()
+                .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                .setTitle("고객센터 주의사항")
+                .setDescription("직원에게 폭언, 성희롱을 할 시 법적 조치를 받으실 수 있습니다.")
                 .build();
 
-        event.getChannel().sendMessageEmbeds(reportEmbed).addActionRow(stringSelectMenu).queue();
+        event.getChannel().sendMessageEmbeds(embed).addActionRow(stringSelectMenu).queue();
     }
 }

@@ -20,12 +20,12 @@ public class MongoUserInfoRepository implements UserInfoRepository {
     @Override
     public void save(UserInfo userInfo) {
         Document searchDocument = new Document("discord-id", userInfo.discordId());
-
         Document updateDocument = new Document();
+
         updateDocument.put("ip", userInfo.ip());
         updateDocument.put("verify-date", userInfo.verifyDate());
         updateDocument.put("point", userInfo.point());
-
+        updateDocument.put("warn", userInfo.warn());
         Document setDocument = new Document("$set", updateDocument);
 
         if (collection.find(searchDocument).first() != null) {
@@ -39,6 +39,14 @@ public class MongoUserInfoRepository implements UserInfoRepository {
     }
 
     @Override
+    public void updateWarn(String discordId, int newWarn) {
+        Document searchDocument = new Document("discord-id", discordId);
+        Document setDocument = new Document("$set", new Document("warn", newWarn));
+        collection.updateOne(searchDocument, setDocument);
+    }
+
+
+    @Override
     public UserInfo findByDiscordId(String takenDiscordId) {
         Document document = collection.find(new Document("discord-id", takenDiscordId)).first();
         if (document != null) {
@@ -47,7 +55,8 @@ public class MongoUserInfoRepository implements UserInfoRepository {
             LocalDateTime verifyData = document.getDate("verify-date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
             int point = document.getInteger("point");
 
-            return new UserInfo(discordId, ip, verifyData, point);
+            int warn = document.getInteger("warn");
+            return new UserInfo(discordId, ip, verifyData, point, warn);
         }
         return null;
     }
@@ -73,7 +82,7 @@ public class MongoUserInfoRepository implements UserInfoRepository {
             LocalDateTime verifyDate = document.getDate("verify-date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
             int point = document.getInteger("point");
 
-            UserInfo userInfo = new UserInfo(discordId, ip, verifyDate, point);
+            UserInfo userInfo = new UserInfo(discordId, ip, verifyDate, point, 0);
             topUsers.add(userInfo);
         }
 

@@ -1,3 +1,5 @@
 package kr.starly.discordbot.entity;
 
-public record TicketInfo(String openBy, String channelId, TicketType ticketType, String openAt, String closeAt) {}
+import kr.starly.discordbot.enums.TicketStatus;
+
+public record TicketInfo(long openBy, long closeBy, long channelId, TicketStatus ticketStatus) {}
