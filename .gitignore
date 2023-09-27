@@ -42,3 +42,6 @@ bin/
 
 ### Project ###
 /src/test/
+
+### Other ###
+src/main/java/kr/starly/discordbot/command/impl/TestCommand.java
