@@ -10,4 +10,5 @@ public interface UserInfoRepository {
     UserInfo findByDiscordId(String discordId);
     void updatePoint(String discordId, int newPoint);
     List<UserInfo> getTopUsersByPoints(int limit);
+    void updateWarn(String discordId, int newWarn);
 }
