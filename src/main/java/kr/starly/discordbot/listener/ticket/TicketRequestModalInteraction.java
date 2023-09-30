@@ -3,9 +3,10 @@ package kr.starly.discordbot.listener.ticket;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.enums.TicketStatus;
+import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.repository.TicketModalDataRepository;
+import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
 
 import net.dv8tion.jda.api.Permission;
@@ -26,16 +27,22 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
+
+    private final TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
     private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
         if (!event.getChannel().asTextChannel().getId().equals(TICKET_CHANNEL_ID)) return;
 
-        TextChannel textChannel = null;
+        TextChannel textChannel;
+
+        long discordId = event.getUser().getIdLong();
+        TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(discordId);
+
         try {
             Category category = event.getGuild().getCategoryById(TICKET_CATEGORY_ID);
-            textChannel = category.createTextChannel(ticketInfoService.getLastIndex() + "-" + event.getUser().getGlobalName())
+            textChannel = category.createTextChannel((ticketInfoService.getLastIndex() + 1) + "-" + event.getUser().getGlobalName() + "-" + ticketStatus.getName())
                     .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .complete();
 
@@ -44,12 +51,10 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
             event.reply("모달 처리 과정 중 오류가 발생하였습니다. 잠시만 기달려 주십시오.").setEphemeral(true).queue();
             return;
         }
+        TicketInfo ticketInfo = new TicketInfo(discordId, 0, textChannel.getIdLong(), ticketStatus, 0);
+        ticketInfoService.recordTicketInfo(ticketInfo);
 
-        long discordId = event.getUser().getIdLong();
-        TicketStatus ticketStatus = TicketStatus.getUserTicketStatusMap().get(discordId);
-
-        ticketInfoService.recordTicketInfo(new TicketInfo(discordId, 0, textChannel.getIdLong(), ticketStatus));
-
+        ticketUserDataRepository.registerUser(discordId, event.getUser());
         switch (event.getModalId()) {
             case "modal-normal-ticket" -> {
                 String title = event.getValue("text-input-normal-title").getAsString();

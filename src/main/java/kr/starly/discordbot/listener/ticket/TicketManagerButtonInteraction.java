@@ -3,14 +3,18 @@ package kr.starly.discordbot.listener.ticket;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.entity.WarnInfo;
 import kr.starly.discordbot.listener.BotEvent;
+import kr.starly.discordbot.repository.TicketFileRepository;
+import kr.starly.discordbot.repository.TicketModalFileRepository;
 import kr.starly.discordbot.service.TicketInfoService;
-import kr.starly.discordbot.service.UserInfoService;
+import kr.starly.discordbot.service.WarnService;
 import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -21,20 +25,25 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @BotEvent
 public class TicketManagerButtonInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
-
     private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
 
+    private final String WARN_CHANNEL_ID = configProvider.getString("WARN_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
 
     private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
+    private final WarnService warnService = DatabaseConfig.getWarnService();
 
-    private final UserInfoService userInfoService = DatabaseConfig.getUserInfoService();
+    private final TicketFileRepository ticketFileRepository = TicketFileRepository.getInstance();
+
+    private final TicketModalFileRepository ticketModalFileRepository = TicketModalFileRepository.getInstance();
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
@@ -91,8 +100,15 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             );
 
             TicketInfo ticketInfo = ticketInfoService.findByChannel(textChannel.getIdLong());
-            ticketInfoService.recordTicketInfo(new TicketInfo(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketStatus()));
-            event.getChannel().delete().queue();
+
+            MessageHistory history = MessageHistory.getHistoryFromBeginning(textChannel).complete();
+            ticketFileRepository.save(history.getRetrievedHistory(), ticketInfo);
+
+            ticketInfoService.recordTicketInfo(
+                    new TicketInfo(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
+            );
+
+            event.getChannel().delete().queueAfter(3, TimeUnit.SECONDS);
             return;
         }
 
@@ -102,23 +118,33 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                 return;
             }
 
-            String ticketUserId = event.getComponentId().replace("ticket-check-joke-", "");
+            long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-joke-", ""));
             User ticketUser = textChannel.getJDA().getUserById(ticketUserId);
 
+            TicketInfo ticketInfo = ticketInfoService.findByChannel(textChannel.getIdLong());
+
+            ticketInfoService.recordTicketInfo(
+                    new TicketInfo(ticketUserId, 0, textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
+            );
+
             ticketUser.openPrivateChannel().queue(privateChannel -> {
+                WarnInfo warnInfo = new WarnInfo(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
-                        .setTitle("고객센터 도우미")
-                        .setDescription("장난으로 티켓을 열어 경고 1회가 추가가 되었습니다.")
-                        .addField("현제 경고", userInfoService.getWarn(ticketUserId) + "", false)
+                        .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
+                        .setDescription("> **" + ticketUser.getAsMention() + " 님에게 " + warnInfo.warn() + "경고를 추가 하였습니다.** \n" +
+                                "> 사유 : " + warnInfo.reason())
+                        .setThumbnail(ticketUser.getAvatarUrl())
                         .build();
 
+
+                warnService.addWarn(warnInfo);
+                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(messageEmbed).queue();
 
                 privateChannel.sendMessageEmbeds(messageEmbed).queue();
             });
 
-            userInfoService.addWarn(ticketUserId, 1);
-            ticketInfoService.deleteTicket(event.getChannel().getId());
+            ticketModalFileRepository.delete(ticketInfoService.findByDiscordId(ticketUser.getIdLong()));
 
             event.getChannel().delete().queue();
         }

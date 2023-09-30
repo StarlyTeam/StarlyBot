@@ -3,9 +3,12 @@ package kr.starly.discordbot.listener.ticket;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.enums.TicketStatus;
+import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
+import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -30,34 +33,34 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         long userId = event.getUser().getIdLong();
         String buttonId = event.getButton().getId();
 
-        if (ticketInfoService.isNotValidUser(userId)) {
-            TicketInfo ticketInfo = ticketInfoService.findByDiscordId(userId);
-            TextChannel textChannel = event.getJDA().getTextChannelById(ticketInfo.channelId());
+        TicketInfo ticketInfo = ticketInfoService.findByDiscordId(userId);
 
-            event.reply("이미 티켓이 있습니다! " + textChannel.getAsMention()).setEphemeral(true).queue();
+        if (ticketInfo != null && isExistUserTicket(event.getJDA(), ticketInfo.channelId())) {
+            TextChannel textChannel = event.getJDA().getTextChannelById(ticketInfo.channelId());
+            String message = textChannel != null ? "이미 티켓이 있습니다! " + textChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해주세요.";
+            event.reply(message).setEphemeral(true).queue();
             return;
         }
 
-        TicketStatus ticketStatusFormat = TicketStatus.valueOf(buttonId.replace("button-", "").replace("-", "_").toUpperCase());
+        TicketType ticketStatusFormat = TicketType.valueOf(buttonId.replace("button-", "").replace("-", "_").toUpperCase());
 
         addUserTicketStatus(userId, ticketStatusFormat);
 
-        TicketStatus ticketStatus = TicketStatus.getUserTicketStatusMap().get(userId);
+        TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(userId);
 
         Modal modal = generateModalForType(ticketStatus);
         event.getInteraction().replyModal(modal).queue();
     }
 
-    private void addUserTicketStatus(long userId, TicketStatus ticketStatus) {
-        if (!TicketStatus.getUserTicketStatusMap().containsKey(userId)) {
-            TicketStatus.getUserTicketStatusMap().put(userId, ticketStatus);
+    private void addUserTicketStatus(long userId, TicketType ticketStatus) {
+        if (!TicketType.getUserTicketStatusMap().containsKey(userId)) {
+            TicketType.getUserTicketStatusMap().put(userId, ticketStatus);
             return;
         }
-
-        TicketStatus.getUserTicketStatusMap().replace(userId, ticketStatus);
+        TicketType.getUserTicketStatusMap().replace(userId, ticketStatus);
     }
 
-    private Modal generateModalForType(TicketStatus ticketStatus) {
+    private Modal generateModalForType(TicketType ticketStatus) {
         Modal modal = null;
 
         switch (ticketStatus) {
@@ -258,5 +261,9 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
             }
         }
         return modal;
+    }
+
+    private boolean isExistUserTicket(JDA jda, long channelId) {
+        return jda.getTextChannelById(channelId) != null;
     }
 }

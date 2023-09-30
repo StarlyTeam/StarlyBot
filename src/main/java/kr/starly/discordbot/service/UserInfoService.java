@@ -17,34 +17,6 @@ public record UserInfoService(UserInfoRepository userInfoRepository) {
         return userInfoRepository.findByDiscordId(discordId);
     }
 
-    public void addWarn(String discordId, int warnToAdd) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        if (userInfo != null) {
-            int newPoint = userInfo.warn() + warnToAdd;
-            userInfoRepository.updateWarn(discordId, newPoint);
-        }
-    }
-
-    public void removeWarn(String discordId, int warnToAdd) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        if (userInfo != null) {
-            int newPoint = userInfo.point() + warnToAdd;
-            userInfoRepository.updateWarn(discordId, newPoint);
-        }
-    }
-
-    public void setWarn(String discordId, int newWarn) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        if (userInfo != null) {
-            userInfoRepository.updateWarn(discordId, newWarn);
-        }
-    }
-
-    public int getWarn(String discordId) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        return (userInfo != null) ? userInfo.warn() : 0;
-    }
-
     public void addPoint(String discordId, int pointToAdd) {
         UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
         if (userInfo != null) {

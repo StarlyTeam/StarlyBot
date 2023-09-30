@@ -2,10 +2,12 @@ package kr.starly.discordbot.listener.ticket;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.enums.TicketStatus;
+import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.repository.TicketModalDataRepository;
 import kr.starly.discordbot.repository.TicketModalFileRepository;
+import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
 import kr.starly.discordbot.util.AdminRoleChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -34,6 +36,9 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
     private final TicketModalFileRepository ticketModalFileRepository = TicketModalFileRepository.getInstance();
+
+    private final TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
+
     private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
 
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
@@ -45,7 +50,17 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
         List<String> data = ticketModalDataRepository.retrieveModalData(channelId);
 
-        TicketStatus ticketStatus = TicketStatus.getUserTicketStatusMap().get(user.getIdLong());
+        if (data.isEmpty()) {
+            user.openPrivateChannel().queue(
+                    privateChannel -> {
+                        privateChannel.sendMessage("티켓을 생성하는데 오류가 발생 하였습니다.").queue();
+                    }
+            );
+            return;
+        }
+
+        TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(user.getIdLong());
+        TicketInfo ticketInfo = ticketInfoService.findByDiscordId(user.getIdLong());
 
         Button button = Button.danger("ticket-close" + user.getIdLong(), "닫기");
         MessageEmbed messageEmbed = null;
@@ -61,7 +76,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("설명", "```" + description + "```", false)
                         .build();
 
-                ticketModalFileRepository.save(ticketStatus, textChannel.getIdLong(),
+                ticketModalFileRepository.save(ticketInfo,
                         "제목: " + title + "\n" +
                                 "본문: " + description);
             }
@@ -79,7 +94,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("설명", "```" + description + "```", false)
                         .build();
 
-                ticketModalFileRepository.save(ticketStatus, textChannel.getIdLong(),
+                ticketModalFileRepository.save(ticketInfo,
                         "제목: " + title + "\n" +
                                 "태그: " + tag + "\n" +
                                 "본문: " + description);
@@ -99,7 +114,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("설명", "```" + description + "```", false)
                         .build();
 
-                ticketModalFileRepository.save(ticketStatus, textChannel.getIdLong(),
+                ticketModalFileRepository.save(ticketInfo,
                         "제목: " + title + "\n" +
                                 "본문: " + description);
 
@@ -120,7 +135,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                             .addField("설명", "```" + description + "```", false)
                             .build();
 
-                    ticketModalFileRepository.save(ticketStatus, textChannel.getIdLong(),
+                    ticketModalFileRepository.save(ticketInfo,
                             "version: " + version + "\n" +
                                     "본문: " + description);
 
@@ -134,12 +149,12 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String description = data.get(2);
 
                 String log = data.get(3);
-                ticketModalFileRepository.save(ticketStatus, textChannel.getIdLong(),
+                ticketModalFileRepository.save(ticketInfo,
                         "버전: " + version + "\n" +
                                 "본문: " + description + "\n" +
                                 "로그 \n" + log);
 
-                File file = ticketModalFileRepository.getFile(channelId, ticketStatus);
+                File file = ticketModalFileRepository.getFile(ticketInfo);
 
                 descriptionEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
@@ -204,6 +219,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         });
 
         ticketModalDataRepository.removeModalData(channelId);
+        ticketUserDataRepository.deleteUser(user.getIdLong());
     }
 
     private List<User> getAdminUsers(TextChannel textChannel) {
@@ -221,8 +237,8 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
     private User getUserFromTextChannel(List<Member> members) {
         for (Member member : members) {
             User user = member.getUser();
-            if (ticketInfoService.isNotValidUser(user.getIdLong())) {
-                return user;
+            if (ticketUserDataRepository.contains(user.getIdLong())) {
+                return ticketUserDataRepository.retrieveUser(user.getIdLong());
             }
         }
         return null;

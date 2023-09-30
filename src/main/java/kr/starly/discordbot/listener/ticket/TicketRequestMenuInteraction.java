@@ -3,10 +3,11 @@ package kr.starly.discordbot.listener.ticket;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.enums.TicketStatus;
+import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.service.TicketInfoService;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -35,18 +36,14 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             long discordId = user.getIdLong();
 
             String selectedValue = event.getValues().get(0);
-            TicketStatus ticketStatus = TicketStatus.valueOf(selectedValue.toUpperCase(Locale.ROOT).replace("-", "_"));
 
-            if (ticketStatus == null) {
-                event.reply("티켓요청 거부 : UNKNOWN TICKET TYPE \n 관리자에게 문의 부탁드립니다.").setEphemeral(true).queue();
-                return;
-            }
+            TicketType ticketStatus = TicketType.valueOf(selectedValue.toUpperCase(Locale.ROOT).replace("-", "_"));
+            TicketInfo ticketInfo = ticketInfoService.findByDiscordId(discordId);
 
-            if (ticketInfoService.isNotValidUser(discordId)) {
-                TicketInfo ticketInfo = ticketInfoService.findByDiscordId(discordId);
+            if (ticketInfo != null && isExistUserTicket(event.getJDA(), ticketInfo.channelId())) {
                 TextChannel textChannel = event.getJDA().getTextChannelById(ticketInfo.channelId());
 
-                String message = textChannel != null ? "이미 티켓이 열려 있습니다!" + textChannel.getAsMention() : "관리자가 수동으로 티켓을 닫았습니다. 관리자에게 문의하여 주세요.";
+                String message = textChannel != null ? "관리자가 수동으로 티켓을 닫았습니다. 관리자에게 문의하여 주세요." : "이미 티켓이 열려 있습니다!" + textChannel.getAsMention();
                 event.reply(message).setEphemeral(true).queue();
                 return;
             }
@@ -87,16 +84,16 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
         }
     }
 
-    private void setTicketStatus(long discordId, TicketStatus ticketStatus) {
-        if (!TicketStatus.getUserTicketStatusMap().containsKey(discordId)) {
-            TicketStatus.getUserTicketStatusMap().put(discordId, ticketStatus);
+    private void setTicketStatus(long discordId, TicketType ticketStatus) {
+        if (!TicketType.getUserTicketStatusMap().containsKey(discordId)) {
+            TicketType.getUserTicketStatusMap().put(discordId, ticketStatus);
             return;
         }
 
-        TicketStatus.getUserTicketStatusMap().replace(discordId, ticketStatus);
+        TicketType.getUserTicketStatusMap().replace(discordId, ticketStatus);
     }
 
-    private List<Button> generateButtonsForType(TicketStatus ticketStatus) {
+    private List<Button> generateButtonsForType(TicketType ticketStatus) {
         List<Button> buttons = new ArrayList<>();
 
         switch (ticketStatus) {
@@ -135,7 +132,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
         return buttons;
     }
 
-    private MessageEmbed generateEmbedForType(TicketStatus ticketStatus) {
+    private MessageEmbed generateEmbedForType(TicketType ticketStatus) {
         return switch (ticketStatus) {
             case NORMAL_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR_SUCCESS))
@@ -176,5 +173,9 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
 
             default -> null;
         };
+    }
+
+    private boolean isExistUserTicket(JDA jda, long channelId) {
+        return jda.getTextChannelById(channelId) != null;
     }
 }

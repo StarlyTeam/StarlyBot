@@ -13,10 +13,6 @@ public record TicketInfoService(TicketRepository ticketRepository) {
         ticketRepository.updateRate(channelId, rate);
     }
 
-    public void deleteTicket(String channelId) {
-        ticketRepository.delete(channelId);
-    }
-
     public TicketInfo findByChannel(long channelId) {
         return ticketRepository.findByChannel(channelId);
     }

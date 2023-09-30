@@ -1,6 +1,9 @@
 package kr.starly.discordbot.repository;
 
-import kr.starly.discordbot.enums.TicketStatus;
+import kr.starly.discordbot.configuration.DatabaseConfig;
+import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.enums.TicketType;
+import kr.starly.discordbot.service.TicketInfoService;
 import lombok.Getter;
 
 import java.io.BufferedWriter;
@@ -20,26 +23,25 @@ public class TicketModalFileRepository {
 
     private TicketModalFileRepository() {}
 
-    public File getFile(long channelId, TicketStatus ticketStatus) {
-        String filePath = "ticket/" + ticketStatus.name().replace("_TICKET", "").replace("_", "-").toLowerCase() + "/" + channelId + "/log.txt";
-        File file = new File(local, filePath);
+    public File getFile(TicketInfo ticketInfo) {
+        String filePath = generatePath(ticketInfo);
+        File dir = new File(local, filePath);
+        File file = new File(dir.getPath(), "log.txt");
 
         return file.exists() ? file : null;
     }
 
-    public boolean delete(long channelId, TicketStatus ticketStatus) {
-        String filePath = "ticket/" + ticketStatus.name().replace("_TICKET", "").replace("_", "-").toLowerCase() + "/" + channelId + "/log.txt";
+    public boolean delete(TicketInfo ticketInfo) {
+        String filePath = generatePath(ticketInfo);
         File file = new File(local, filePath);
-
-        if (!file.exists()) return false;
-        file.delete();
+        deleteDir(file);
 
         return true;
     }
 
-    public void save(TicketStatus type, long channelId, String str) {
+    public void save(TicketInfo ticketInfo, String str) {
         try {
-            String filePath = "ticket/" + type.name().replace("_TICKET", "").replace("_", "-").toLowerCase() + "/" + channelId + "/";
+            String filePath = generatePath(ticketInfo);
             File dir = new File(local, filePath);
 
             if (!dir.exists()) dir.mkdirs();
@@ -55,5 +57,20 @@ public class TicketModalFileRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void deleteDir(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDir(f);
+            }
+        }
+        file.delete();
+    }
+
+    private String generatePath(TicketInfo ticketInfo) {
+        String nameByType = ticketInfo.ticketStatus().getName();
+        return "ticket/" + nameByType + "/" + ticketInfo.index() + "-" + ticketInfo.channelId() + "-" + nameByType + "/";
     }
 }
