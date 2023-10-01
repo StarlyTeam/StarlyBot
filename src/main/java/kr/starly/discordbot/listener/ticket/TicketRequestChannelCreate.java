@@ -9,7 +9,7 @@ import kr.starly.discordbot.repository.TicketModalDataRepository;
 import kr.starly.discordbot.repository.TicketModalFileRepository;
 import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
-import kr.starly.discordbot.util.AdminRoleChecker;
+import kr.starly.discordbot.util.RoleChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -226,7 +226,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         List<User> admins = new ArrayList<>();
 
         for (Member member : textChannel.getMembers()) {
-            if (AdminRoleChecker.hasAdminRole(member)) {
+            if (RoleChecker.hasAdminRole(member)) {
                 User user = member.getUser();
                 admins.add(user);
             }
