@@ -25,42 +25,42 @@ import java.util.Date;
                 @BotSlashCommand.SubCommand(
                         name = "추가",
                         description = "경고를 추가합니다.",
-                        names = {"유저", "경고", "사유"},
+                        optionName = {"유저", "경고", "사유"},
                         optionType = {OptionType.USER, OptionType.INTEGER, OptionType.STRING},
                         optionDescription = {"유저를 선택하세요.", "경고를 입력하세요.", "사유를 입력해 주세요."},
-                        required = {true, true, true}
+                        optionRequired = {true, true, true}
                 ),
                 @BotSlashCommand.SubCommand(
                         name = "제거",
                         description = "경고를 제거합니다.",
-                        names = {"유저", "경고", "사유"},
+                        optionName = {"유저", "경고", "사유"},
                         optionType = {OptionType.USER, OptionType.INTEGER, OptionType.STRING},
                         optionDescription = {"유저를 선택하세요.", "경고를 입력하세요.", "사유를 입력해 주세요."},
-                        required = {true, true, true}
+                        optionRequired = {true, true, true}
                 ),
                 @BotSlashCommand.SubCommand(
                         name = "설정",
                         description = "경고를 설정합니다.",
-                        names = {"유저", "경고"},
+                        optionName = {"유저", "경고"},
                         optionType = {OptionType.USER, OptionType.INTEGER, OptionType.STRING},
                         optionDescription = {"유저를 선택하세요.", "설정할 경고를 입력하세요.", "사유를 입력해 주세요."},
-                        required = {true, true, true}
+                        optionRequired = {true, true, true}
                 ),
                 @BotSlashCommand.SubCommand(
                         name = "확인",
                         description = "경고를 확인합니다.",
-                        names = {"유저"},
+                        optionName = {"유저"},
                         optionType = {OptionType.USER},
                         optionDescription = {"확인할 유저를 선택하세요. (선택하지 않으면 자신의 경고를 확인합니다.)"},
-                        required = {false}
+                        optionRequired = {false}
                 ),
                 @BotSlashCommand.SubCommand(
                         name = "초기화",
                         description = "경고를 초기화합니다.",
-                        names = {"유저", "사유"},
+                        optionName = {"유저", "사유"},
                         optionType = {OptionType.USER, OptionType.STRING},
                         optionDescription = {"유저를 선택하세요.", "사유를 입력해 주세요."},
-                        required = {true, true}
+                        optionRequired = {true, true}
                 )
         }
 )

@@ -39,21 +39,21 @@ public class SlashCommandListenerBase extends ListenerAdapter {
 
                     for (BotSlashCommand.SubCommand subCommand : annotation.subcommands()) {
                         SubcommandData subCommandData = new SubcommandData(subCommand.name(), subCommand.description());
-                        if (subCommand.names().length > 0 &&
-                                subCommand.names().length == subCommand.optionType().length &&
-                                subCommand.names().length == subCommand.optionDescription().length) {
-                            for (int i = 0; i < subCommand.names().length; i++) {
-                                subCommandData.addOption(subCommand.optionType()[i], subCommand.names()[i], subCommand.optionDescription()[i], subCommand.required()[i]);  // required 추가
+                        if (subCommand.optionName().length > 0 &&
+                                subCommand.optionName().length == subCommand.optionType().length &&
+                                subCommand.optionName().length == subCommand.optionDescription().length) {
+                            for (int i = 0; i < subCommand.optionName().length; i++) {
+                                subCommandData.addOption(subCommand.optionType()[i], subCommand.optionName()[i], subCommand.optionDescription()[i], subCommand.optionRequired()[i]);
                             }
                         }
                         commandData.addSubcommands(subCommandData);
                     }
 
-                    if (annotation.names().length > 0 &&
-                            annotation.names().length == annotation.optionType().length &&
-                            annotation.names().length == annotation.optionDescription().length) {
-                        for (int i = 0; i < annotation.names().length; i++) {
-                            commandData.addOption(annotation.optionType()[i], annotation.names()[i], annotation.optionDescription()[i]);
+                    if (annotation.optionName().length > 0 &&
+                            annotation.optionName().length == annotation.optionType().length &&
+                            annotation.optionName().length == annotation.optionDescription().length) {
+                        for (int i = 0; i < annotation.optionName().length; i++) {
+                            commandData.addOption(annotation.optionType()[i], annotation.optionName()[i], annotation.optionDescription()[i], annotation.optionRequired()[i]);
                         }
                     }
 
