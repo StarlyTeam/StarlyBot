@@ -13,20 +13,20 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.jetbrains:annotations:24.0.1"
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.jetbrains:annotations:24.0.1'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    api 'net.dv8tion:JDA:5.0.0-beta.13'
+    api 'net.dv8tion:JDA:5.0.0-beta.15'
 
-    api 'org.reflections:reflections:0.9.10'
+    api 'org.reflections:reflections:0.10.2'
     api 'com.google.code.gson:gson:2.10.1'
-    api 'ch.qos.logback:logback-classic:1.2.9'
+    api 'ch.qos.logback:logback-classic:1.4.11'
     api 'org.mongodb:mongodb-driver-sync:4.10.2'
-    api 'org.yaml:snakeyaml:1.8'
+    api 'org.yaml:snakeyaml:2.2'
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -36,5 +36,5 @@ application {
 
 shadowJar {
     archiveFileName = "StarlyBot.jar"
-    destinationDirectory.set(file('파일위치'))
+    destinationDirectory.set(file('D:\\TEAM\\StarlyTeam\\Projects\\StarlyBot\\setup'))
 }
