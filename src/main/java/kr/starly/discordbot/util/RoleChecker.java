@@ -6,9 +6,11 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
-public class AdminRoleChecker {
+import java.util.List;
 
-    private AdminRoleChecker() {}
+public class RoleChecker {
+
+    private RoleChecker() {}
 
     private final static ConfigProvider configProvider = ConfigProvider.getInstance();
     private final static String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
@@ -16,8 +18,13 @@ public class AdminRoleChecker {
 
     public static boolean hasAdminRole(Member member) {
         Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
-        Role role = guild.getRoleById(ADMIN_ROLE);
+        Role adminRole = guild.getRoleById(ADMIN_ROLE);
 
-        return member.getRoles().contains(role);
+        return hasRole(member, adminRole);
+    }
+
+    public static boolean hasRole(Member member, Role role) {
+        List<Role> memberRoles = member.getRoles();
+        return memberRoles.contains(role);
     }
 }
