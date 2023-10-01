@@ -33,8 +33,8 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                             .setTitle("<a:warn:1141721287526465656> 오류 | 이미 인증된 유저입니다. <a:warn:1141721287526465656>")
                             .setDescription("> **당신은 이미 인증된 유저예요! \uD83C\uDF89**\n"
                                     + "> **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**\n\u1CBB")
-                            .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
-                            .setFooter("이미 인증이 완료된 계정입니다.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                            .setFooter("이미 인증이 완료된 계정입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                             .build();
                     event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
                     return;
@@ -71,8 +71,8 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                                 "> **`7️⃣` 30일 이내에 생성된 계정인지 확인하세요.**\n" +
                                 "> **`8️⃣` 디스코드 DM(Direct Message) 수신을 차단하였는지 확인하세요.**\n" +
                                 "> **`9️⃣` 블랙리스트 유저일 경우 인증이 되지 않을 수 있습니다.**\n\u1CBB")
-                        .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
-                        .setFooter("도움이 필요하시면 언제든지 관리자에게 문의하세요.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                        .setFooter("도움이 필요하시면 언제든지 관리자에게 문의하세요.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
                 event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }
@@ -82,8 +82,8 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:loading:1141623256558866482> 유저인증 | 이용약관 <a:loading:1141623256558866482>")
                         .setDescription("> **이용약관은 <#1141984482619035698> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
-                        .setThumbnail("https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
-                        .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                        .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
                 event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }
@@ -93,8 +93,8 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:loading:1141623256558866482> 유저인증 | 서버규칙 <a:loading:1141623256558866482>")
                         .setDescription("> **서버규칙은 <#1141982220219846686> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
-                        .setThumbnail("https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
-                        .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=671&height=671")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                        .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
                 event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             }

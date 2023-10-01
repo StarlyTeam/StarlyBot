@@ -96,7 +96,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
-                        .setTitle("<a:success:1141625729386287206> 지급 완료 | 경고 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
                         .setDescription("> **" + userForAdd.getAsMention() + " 님에게 " + warnToAdd + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + reason)
                         .setThumbnail(userAvatarForAdd)
@@ -107,9 +107,15 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 WarnInfo warnInfo = new WarnInfo(userForAdd.getIdLong(), manager, reason, warnToAdd, new Date(System.currentTimeMillis()));
                 warnService.addWarn(warnInfo);
+
+                try {
+                    userForAdd.openPrivateChannel().queue(
+                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
+                    );
+                } catch (UnsupportedOperationException ignored) {}
             }
             case "제거" -> {
-                User userIdForRemove = event.getOption("유저").getAsUser();
+                User userForRemove = event.getOption("유저").getAsUser();
                 String userAvatarForRemove = event.getOption("유저").getAsUser().getAvatarUrl();
                 int warnToRemove = getSafeIntFromOption(event.getOption("경고"));
                 String reason = event.getOption("사유").getAsString();
@@ -117,18 +123,24 @@ public class WarnCommand implements DiscordSlashCommand {
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
                         .setTitle("<a:success:1141625729386287206> 제거 완료 | 경고 <a:success:1141625729386287206>")
-                        .setDescription("> **" + userIdForRemove.getAsMention() + ">님의 경고를" + warnToRemove + "만큼 제거하였습니다.** \n" +
+                        .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + warnToRemove + "만큼 제거하였습니다.** \n" +
                                 "사유 > `" + reason + "`")
                         .setThumbnail(userAvatarForRemove)
                         .build();
 
-                WarnInfo warnInfo = new WarnInfo(userIdForRemove.getIdLong(), event.getUser().getIdLong(), reason, warnToRemove, new Date(System.currentTimeMillis()));
+                WarnInfo warnInfo = new WarnInfo(userForRemove.getIdLong(), event.getUser().getIdLong(), reason, warnToRemove, new Date(System.currentTimeMillis()));
                 warnService.removeWarn(warnInfo);
 
                 event.replyEmbeds(messageEmbed).queue();
+
+                try {
+                    userForRemove.openPrivateChannel().queue(
+                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
+                    );
+                } catch (UnsupportedOperationException ignored) {}
             }
             case "설정" -> {
-                User userIdForRemove = event.getOption("유저").getAsUser();
+                User userForRemove = event.getOption("유저").getAsUser();
 
                 String userAvatarForSet = event.getOption("유저").getAsUser().getAvatarUrl();
                 int warnToSet = getSafeIntFromOption(event.getOption("경고"));
@@ -137,11 +149,17 @@ public class WarnCommand implements DiscordSlashCommand {
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:success:1141625729386287206> 설정 완료 | 경고 <a:success:1141625729386287206>")
-                        .setDescription("> **" + userIdForRemove.getAsMention() + "님의 경고를 " + warnToSet + "로 설정 되었습니다.** \n" +
+                        .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 " + warnToSet + "로 설정 되었습니다.** \n" +
                                 "사유 > " + reason)
                         .setThumbnail(userAvatarForSet)
                         .build();
                 event.replyEmbeds(messageEmbed).queue();
+
+                try {
+                    userForRemove.openPrivateChannel().queue(
+                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
+                    );
+                } catch (UnsupportedOperationException ignored) {}
             }
             case "확인" -> handleCheckCommand(event);
             case "초기화" -> {
@@ -157,6 +175,12 @@ public class WarnCommand implements DiscordSlashCommand {
 
 
                 event.replyEmbeds(messageEmbed).queue();
+
+                try {
+                    userForRemove.openPrivateChannel().queue(
+                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
+                    );
+                } catch (UnsupportedOperationException ignored) {}
             }
             default -> {
                 messageEmbed = new EmbedBuilder()
@@ -169,6 +193,7 @@ public class WarnCommand implements DiscordSlashCommand {
         }
     }
 
+    @SuppressWarnings("all")
     private void handleCheckCommand(SlashCommandInteractionEvent event) {
         String userIdForCheck;
 

@@ -42,7 +42,6 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
     private final WarnService warnService = DatabaseConfig.getWarnService();
 
     private final TicketFileRepository ticketFileRepository = TicketFileRepository.getInstance();
-
     private final TicketModalFileRepository ticketModalFileRepository = TicketModalFileRepository.getInstance();
 
     @Override
@@ -93,11 +92,17 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     .addOption("매우 불만족", "ticket-rate-1")
                     .build();
 
-            ticketUser.openPrivateChannel().queue(
-                    privateChannel -> {
-                        privateChannel.sendMessageEmbeds(messageEmbed).addComponents(ActionRow.of(rateSelectMenu)).queue();
-                    }
-            );
+            ticketUser.openPrivateChannel().submit()
+                    .thenCompose(channel -> channel.sendMessageEmbeds(messageEmbed).submit())
+                    .whenComplete((message, error) -> {
+                        if (error != null);
+                    });
+            try {
+                ticketUser.openPrivateChannel().queue(
+                        privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).addComponents(ActionRow.of(rateSelectMenu)).queue()
+                );
+            } catch (UnsupportedOperationException ignored) {
+            }
 
             TicketInfo ticketInfo = ticketInfoService.findByChannel(textChannel.getIdLong());
 
@@ -108,7 +113,9 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     new TicketInfo(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
             );
 
-            event.getChannel().delete().queueAfter(3, TimeUnit.SECONDS);
+            event.reply("2초 후 채널이 삭제됩니다.").setEphemeral(true).queue();
+
+            event.getChannel().delete().queueAfter(2, TimeUnit.SECONDS);
             return;
         }
 
@@ -137,11 +144,12 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                         .setThumbnail(ticketUser.getAvatarUrl())
                         .build();
 
-
                 warnService.addWarn(warnInfo);
                 event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(messageEmbed).queue();
 
-                privateChannel.sendMessageEmbeds(messageEmbed).queue();
+                try {
+                    privateChannel.sendMessageEmbeds(messageEmbed).queue();
+                } catch (UnsupportedOperationException ignored) {}
             });
 
             ticketModalFileRepository.delete(ticketInfoService.findByDiscordId(ticketUser.getIdLong()));

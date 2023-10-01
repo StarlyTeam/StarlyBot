@@ -50,8 +50,8 @@ public class CreateVerifyCommand implements DiscordCommand {
                 .addField("> <a:warn:1141721287526465656> 주의 사항",
                         "**> 3일 이내에서 서버를 퇴장할 경우 다운로드 금지가 됩니다.**\n" +
                                 "**> 부계정 사용을 금지합니다. **\n", true)
-                .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
-                .setFooter("인증을 완료할 경우 위 내용을 모두 동의한 것으로 간주됩니다.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .setFooter("인증을 완료할 경우 위 내용을 모두 동의한 것으로 간주됩니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                 .build();
 
         Button verify = Button.success("successVerify", "인증하기");

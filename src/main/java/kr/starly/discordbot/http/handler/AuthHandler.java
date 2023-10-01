@@ -66,8 +66,8 @@ public class AuthHandler implements HttpHandler {
                     .setDescription("> **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**\n"
                             + "> **커뮤니티의 모든 기능을 마음껏 즐기세요! 🥳**\n"
                             + "> **즐거운 시간 보내세요! \uD83C\uDF88**\n\u1CBB")
-                    .setThumbnail("https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
-                    .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://media.discordapp.net/attachments/1059420652722999386/1141710970859835423/KakaoTalk_20230725_014437871_01.png?width=569&height=569")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                     .build();
 
             User user = member.getUser();

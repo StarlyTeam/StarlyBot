@@ -88,8 +88,8 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
                         .setTitle("<a:loading:1141623256558866482> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1141623256558866482>")
                         .setDescription("> **`📌` 이제 .gif 파일을 업로드하거나 링크를 제공해주세요.** \n\n" +
                                 "─────────────────────────────────────────────────")
-                        .setThumbnail("https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
 
                 event.getChannel().sendMessageEmbeds(gifRequestEmbed).queue();
@@ -141,8 +141,8 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
                             pluginInfoDescription +
                             "─────────────────────────────────────────────────"
                     )
-                    .setThumbnail("https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
 
             UploadStatus.getUserUploadStatus().put(userId, UploadStatus.GIF_UPLOADED);
@@ -188,8 +188,10 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
             channelName = channelName.substring(0, 100);
         }
 
-        String FREE_PLUGIN_CATEGORY = configProvider.getString("FREE_PLUGIN_CATEGORY");
-        guild.getCategoryById(FREE_PLUGIN_CATEGORY).createTextChannel(channelName).queue();
+        String FREE_PLUGIN_FORUM = configProvider.getString("FREE_PLUGIN_FORUM");
+
+        guild.getCategoryById(FREE_PLUGIN_FORUM).createForumChannel(channelName).queue();
+
     }
 
     public static void releaseNotice() {
@@ -207,8 +209,8 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
                         "─────────────────────────────────────────────────"
                 )
                 .setImage(existingData.getGifLink())
-                .setThumbnail("https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
-                .setFooter("이 기능은 관리자 전용입니다.", "https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .build();
 
 

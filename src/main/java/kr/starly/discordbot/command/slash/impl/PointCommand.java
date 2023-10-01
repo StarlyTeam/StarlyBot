@@ -164,7 +164,6 @@ public class PointCommand implements DiscordSlashCommand {
                                         .setColor(Color.decode(EMBED_COLOR))
                                         .setTitle("<a:loading:1141623256558866482> 순위 | 포인트 <a:loading:1141623256558866482>")
                                         .setDescription(rankMessage)
-                                        .setThumbnail("https://media.discordapp.net/attachments/1141992315406270484/1142168135768744077/KakaoTalk_20230726_065722121_01.png?width=568&height=568")
                                         .build();
                                 event.replyEmbeds(topEmbed).queue();
                             }
@@ -184,6 +183,7 @@ public class PointCommand implements DiscordSlashCommand {
         }
     }
 
+    @SuppressWarnings("all")
     private void handleCheckCommand(SlashCommandInteractionEvent event) {
         String userIdForCheck;
 

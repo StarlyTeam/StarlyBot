@@ -25,7 +25,7 @@ import java.util.Locale;
 public class TicketRequestMenuInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
     private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
 
@@ -64,14 +64,14 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             byte value = Byte.valueOf(event.getValues().get(0).replace("ticket-rate-", ""));
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("평점을 해주셔서 감사합니다!")
                     .setDescription("좋은평점을 주셔서 감사합니다!")
                     .build();
 
             if (value <= 2) {
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("평점을 해주셔서 감사합니다!")
                         .setDescription("다음에는 더욱 노력하여 성실히 답변에 임하겠습니다 :)")
                         .build();
@@ -135,38 +135,38 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
     private MessageEmbed generateEmbedForType(TicketType ticketStatus) {
         return switch (ticketStatus) {
             case NORMAL_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("자주 묻는 질문")
                     .addField("Q: 어떻게 플러그인을 적용하나요?", "A: .zip파일 을 압축 해제하여 폴더 안에 있는 .jar를 plugins 폴더에 넣으시면 됩니다.", true)
                     .addField("Q: 라이선스 양도가 가능할까요?", "A: 아뇨, 라이선스를 양도하는건 불가능합니다.", true)
                     .build();
             case QUESTION_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
             case CONSULTING_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
             case PURCHASE_INQUIRY_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
             case USE_RESTRICTION_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
             case BUG_REPORT_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
             case ETC_TICKET -> new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
