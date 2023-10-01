@@ -40,7 +40,7 @@ DB_DATABASE: "StarlyBot"
 DB_COLLECTION_USER: "user"
 DB_COLLECTION_PLUGIN: "plugin"
 DB_COLLECTION_TICKET: "ticket"
-
+DB_COLLECTION_WARN: "warn"
 
 # + -------------------------------------------------------------------------------- + #
 # | WEB SERVER CONFIGURATION ( 웹 서버 설정 )
@@ -75,3 +75,10 @@ CHANNEL_ID_PLUGIN_MANAGEMENT: "1148012770520989836"
 FREE_PLUGIN_CATEGORY: "1147998082336825515"
 PREMIUM_PLUGIN_CATEGORY: "1147998042985865216"
 RELEASE_NOTICE_CHANNEL: "1148487084626169906"
+
+# + -------------------------------------------------------------------------------- + #
+# | CF IMAGES CONFIGURATION ( 클라우드플레어 Images 설정 )
+# + -------------------------------------------------------------------------------- + #
+ACCOUNT_ID: "e644175af98fbd1549cea8ffd512536d"
+ACCOUNT_HASH: "zI1a4o7oosLEca8Wq4ML6w"
+API_TOKEN: "eQm1CexVtGxNf9mXueVGBhRLT4_1Mdang_JcrDj-"
