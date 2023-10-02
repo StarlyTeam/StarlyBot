@@ -6,7 +6,6 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -89,7 +88,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
                     .setTitle("<a:success:1141625729386287206> 성공 | 임베드생성 완료 <a:success:1141625729386287206>")
                     .setDescription("**성공적으로 임베드를 생성했습니다.**")
                     .build();
-            event.replyEmbeds(embed).setEphemeral(true).queue();
+            event.replyEmbeds(embed).queue();
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -98,7 +97,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
                     .setTitle("<a:success:1141625729386287206> 오류 | 임베드생성 실패 <a:success:1141625729386287206>")
                     .setDescription("**임베드를 생성하지 못했습니다.**")
                     .build();
-            event.replyEmbeds(embed).setEphemeral(true).queue();
+            event.replyEmbeds(embed).queue();
         }
     }
 
