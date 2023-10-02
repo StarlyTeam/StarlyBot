@@ -6,10 +6,14 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.service.ShortenLinkService;
 import kr.starly.discordbot.util.PermissionUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+
+import java.awt.*;
 
 @BotSlashCommand(
         command = "단축링크",
@@ -40,7 +44,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 public class ShortenLinkCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
+    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -56,12 +62,24 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
 
                 ShortenLinkService shortenLinkService = DatabaseManager.getShortenLinkService();
                 if (shortenLinkService.getDataByShortenUrl(shortenUrl) != null) {
-                    event.reply("해당 단축링크는 이미 존재합니다.").queue();
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setTitle("<a:loading:1141623256558866482> 오류 | 존재하는 링크 <a:loading:1141623256558866482>")
+                            .setDescription("> **해당 단축링크는 이미 존재합니다.**")
+                            .build();
+                    event.replyEmbeds(messageEmbed).queue();
                     return;
                 }
 
                 shortenLinkService.saveData(originUrl, shortenUrl);
-                event.reply("단축링크를 생성했습니다.").queue();
+                MessageEmbed messageEmbed = new EmbedBuilder()
+                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setTitle("<a:success:1141625729386287206> 성공 | 단축링크 생성 <a:success:1141625729386287206>")
+                        .setDescription("> **단축링크를 생성하였습니다.**\n" +
+                                "> **`" + originUrl + "` ↔ `" + shortenUrl + "`**"
+                        )
+                        .build();
+                event.replyEmbeds(messageEmbed).queue();
             }
 
             case "삭제" -> {
@@ -69,7 +87,12 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 OptionMapping shortenUrl = event.getOption("단축링크");
 
                 if (originUrl == null && shortenUrl == null) {
-                    event.reply("원본링크, 단축링크중 하나 이상은 입력해주세요.").queue();
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
+                            .setDescription("> **원본링크, 단축링크 중 하나 이상은 입력해 주세요.**")
+                            .build();
+                    event.replyEmbeds(messageEmbed).queue();
                     return;
                 }
 
@@ -79,7 +102,12 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                         shortenLinkService.getDataByShortenUrl(shortenUrl.getAsString())
                         : shortenLinkService.getDataByOriginUrl(originUrl.getAsString())
                 ) == null) {
-                    event.reply("해당 원본링크는 존재하지 않습니다.").queue();
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setTitle("<a:loading:1141623256558866482> 오류 | 미존재 <a:loading:1141623256558866482>")
+                            .setDescription("> **해당 원본링크는 존재하지 않습니다..**")
+                            .build();
+                    event.replyEmbeds(messageEmbed).queue();
                     return;
                 }
 
@@ -89,7 +117,14 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                     shortenLinkService.deleteDataByOriginUrl(originUrl.getAsString());
                 }
 
-                event.reply("단축링크를 삭제했습니다.").queue();
+                MessageEmbed messageEmbed = new EmbedBuilder()
+                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setTitle("<a:success:1141625729386287206> 성공 | 단축링크 삭제 <a:success:1141625729386287206>")
+                        .setDescription("> **단축링크를 삭제하였습니다.**\n" +
+                                "> **" + originUrl + " ↔ " + shortenUrl + "**"
+                        )
+                        .build();
+                event.replyEmbeds(messageEmbed).queue();
             }
 
             case "목록" -> {
@@ -97,16 +132,23 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
                 String WEB_PORT = configProvider.getString("WEB_PORT");
 
-                StringBuilder sb = new StringBuilder();
-                shortenLinkService.getAllData().forEach(shortenLink -> {
-                    sb
-                            .append(WEB_ADDRESS + ":" + WEB_PORT + "/" + shortenLink.shortenUrl())
-                            .append(" (" + shortenLink.originUrl() + ")")
-                            .append("\n");
-                });
+                EmbedBuilder embedBuilder = new EmbedBuilder()
+                        .setColor(Color.decode(EMBED_COLOR))
+                        .setTitle("<a:loading:1141623256558866482> 단축링크 목록 <a:loading:1141623256558866482>");
 
-                event.reply("**[단축링크 목록]**\n```\n" + sb + "```").queue();
+                StringBuilder descriptionBuilder = new StringBuilder("> **아래는 현재 등록된 단축 링크들의 목록입니다.**\n\n");
+                shortenLinkService.getAllData().forEach(shortenLink -> descriptionBuilder
+                        .append("> **단축 URL:** ")
+                        .append("`")
+                        .append(WEB_ADDRESS + ":" + WEB_PORT + "/" + shortenLink.shortenUrl())
+                        .append("`")
+                        .append("\n> **원본 URL: `")
+                        .append(shortenLink.originUrl() + "`**")
+                        .append("\n\n"));
+
+                embedBuilder.setDescription(descriptionBuilder.toString());
+                event.replyEmbeds(embedBuilder.build()).queue();
             }
         }
     }
-} // TODO : 메시지 디자인 작업
+}
