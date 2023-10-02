@@ -74,7 +74,7 @@ public class TicketFileRepository {
 
                             String fileName = index + "." + attachment.getFileExtension();
 
-                            attachment.downloadToFile(new File(attachmentFile.getPath(), fileName));
+                            attachment.getProxy().downloadToFile(new File(attachmentFile.getPath(), fileName));
                             contentMap.put("filePath", attachmentFile.getPath() + "\\" + fileName);
                         }
                 );
