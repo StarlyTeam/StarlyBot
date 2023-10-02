@@ -40,7 +40,6 @@ public record UserInfoService(UserInfoRepository userInfoRepository) {
         }
     }
 
-
     public int getPoint(String discordId) {
         UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
         return (userInfo != null) ? userInfo.point() : 0;
