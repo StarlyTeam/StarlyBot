@@ -1,9 +1,6 @@
 package kr.starly.discordbot.repository;
 
-import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.enums.TicketType;
-import kr.starly.discordbot.service.TicketInfoService;
 import lombok.Getter;
 
 import java.io.BufferedWriter;
