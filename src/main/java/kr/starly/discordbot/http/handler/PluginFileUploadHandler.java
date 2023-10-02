@@ -98,8 +98,8 @@ public class PluginFileUploadHandler implements HttpHandler {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String htmlContent = reader.lines().collect(Collectors.joining("\n"));
             String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
-            int SERVER_PORT = configProvider.getInt("PLUGIN_PORT");
-            return htmlContent.replace("URL", "http://" + WEB_ADDRESS + ":" + SERVER_PORT + "/upload/" + userId + "?token=" + token);
+            int WEB_PORT = configProvider.getInt("WEB_PORT");
+            return htmlContent.replace("URL", "http://" + WEB_ADDRESS + ":" + WEB_PORT + "/upload/" + userId + "?token=" + token);
         }
     }
 

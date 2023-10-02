@@ -124,9 +124,8 @@ public class PluginManagerChatInteraction extends ListenerAdapter {
             userTokens.put(userId, token);
 
             String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
-            int SERVER_PORT = configProvider.getInt("PLUGIN_PORT");
-
-            String uploadLink = "http://" + WEB_ADDRESS + ":" + SERVER_PORT + "/upload/" + userId + "?token=" + token;
+            int WEB_PORT = configProvider.getInt("WEB_PORT");
+            String uploadLink = "http://" + WEB_ADDRESS + ":" + WEB_PORT + "/upload/" + userId + "?token=" + token;
 
             String pluginInfoDescription = pluginInfoDescription(existingData);
             System.out.println("HashMap put: " + userId);

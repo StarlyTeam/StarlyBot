@@ -1,7 +1,7 @@
 package kr.starly.discordbot;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.http.HttpServerMain;
+import kr.starly.discordbot.http.WebServer;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.util.DiscordBotUtil;
 
@@ -13,8 +13,7 @@ public class Main {
     private static final ConfigProvider configProvider = ConfigProvider.getInstance();
     private static final DiscordBotManager botManager = DiscordBotManager.getInstance();
 
-    private static final HttpServerMain authHttpServer = new HttpServerMain();
-    private static final HttpServerMain pluginHttpServer = new HttpServerMain();
+    private static final WebServer webServer = new WebServer();
 
     public static void main(String[] args) {
         startDiscordBot();
@@ -28,12 +27,10 @@ public class Main {
     }
 
     private static void startHttpServer() {
-        int authPort = configProvider.getInt("AUTH_PORT");
-        int pluginPort = configProvider.getInt("PLUGIN_PORT");
+        int WEB_PORT = configProvider.getInt("WEB_PORT");
 
         try {
-            authHttpServer.start(authPort);
-            pluginHttpServer.start(pluginPort);
+            webServer.start(WEB_PORT);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Could not start HTTP Server due to: " + e.getMessage());
@@ -61,8 +58,7 @@ public class Main {
     private static void stopServices(Scanner scanner) {
         System.out.println("Stopping the bot...");
         botManager.stopBot();
-        authHttpServer.stop();
-        pluginHttpServer.stop();
+        webServer.stop();
         scanner.close();
     }
 
