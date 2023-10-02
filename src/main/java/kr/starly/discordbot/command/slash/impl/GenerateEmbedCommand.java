@@ -32,17 +32,17 @@ import java.awt.*;
                 OptionType.ATTACHMENT
         },
         optionDescription = {
-                "임베드의 title을 입력해주세요.",
-                "임베드의 title-url을 입력해주세요.",
-                "임베드의 description을 입력해주세요. (\\n 사용가능)",
-                "임베드의 color를 입력해주세요.",
-                "임베드의 thumbnail을 첨부해주세요.",
-                "임베드의 image를 첨부해주세요.",
-                "임베드의 footer-text를 입력해주세요.",
-                "임베드의 footer-icon을 첨부해주세요.",
-                "임베드의 author-text를 입력해주세요.",
-                "임베드의 author-url을 입력해주세요.",
-                "임베드의 footer-icon을 첨부해주세요."
+                "임베드의 title을 입력하세요.",
+                "임베드의 title-url을 입력하세요.",
+                "임베드의 description을 입력하세요. (\\n 사용가능)",
+                "임베드의 color를 입력하세요.",
+                "임베드의 thumbnail을 첨부하세요.",
+                "임베드의 image를 첨부하세요.",
+                "임베드의 footer-text를 입력하세요.",
+                "임베드의 footer-icon을 첨부하세요.",
+                "임베드의 author-text를 입력하세요.",
+                "임베드의 author-url을 입력하세요.",
+                "임베드의 footer-icon을 첨부하세요."
         },
         optionRequired = {false, false, false, false, false, false, false, false, false, false, false}
 )

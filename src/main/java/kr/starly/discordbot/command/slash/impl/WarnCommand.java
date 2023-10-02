@@ -43,7 +43,7 @@ import java.util.Date;
                         description = "경고를 설정합니다.",
                         optionName = {"유저", "경고"},
                         optionType = {OptionType.USER, OptionType.INTEGER, OptionType.STRING},
-                        optionDescription = {"유저를 선택하세요.", "설정할 경고를 입력하세요.", "사유를 입력해 주세요."},
+                        optionDescription = {"유저를 선택하세요.", "설정할 경고를 입력하세요.", "사유를 입력하세요."},
                         optionRequired = {true, true, true}
                 ),
                 @BotSlashCommand.SubCommand(
@@ -59,7 +59,7 @@ import java.util.Date;
                         description = "경고를 초기화합니다.",
                         optionName = {"유저", "사유"},
                         optionType = {OptionType.USER, OptionType.STRING},
-                        optionDescription = {"유저를 선택하세요.", "사유를 입력해 주세요."},
+                        optionDescription = {"유저를 선택하세요.", "사유를 입력하세요."},
                         optionRequired = {true, true}
                 )
         }
