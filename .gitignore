@@ -45,3 +45,4 @@ bin/
 
 ### Other ###
 src/main/java/kr/starly/discordbot/command/impl/TestCommand.java
+/setup/
