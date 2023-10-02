@@ -1,6 +1,6 @@
 package kr.starly.discordbot.repository;
 
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.entity.Ticket;
 import lombok.Getter;
 
 import java.io.BufferedWriter;
@@ -20,25 +20,25 @@ public class TicketModalFileRepository {
 
     private TicketModalFileRepository() {}
 
-    public File getFile(TicketInfo ticketInfo) {
-        String filePath = generatePath(ticketInfo);
+    public File getFile(Ticket ticket) {
+        String filePath = generatePath(ticket);
         File dir = new File(local, filePath);
         File file = new File(dir.getPath(), "log.txt");
 
         return file.exists() ? file : null;
     }
 
-    public boolean delete(TicketInfo ticketInfo) {
-        String filePath = generatePath(ticketInfo);
+    public boolean delete(Ticket ticket) {
+        String filePath = generatePath(ticket);
         File file = new File(local, filePath);
         deleteDir(file);
 
         return true;
     }
 
-    public void save(TicketInfo ticketInfo, String str) {
+    public void save(Ticket ticket, String str) {
         try {
-            String filePath = generatePath(ticketInfo);
+            String filePath = generatePath(ticket);
             File dir = new File(local, filePath);
 
             if (!dir.exists()) dir.mkdirs();
@@ -66,8 +66,8 @@ public class TicketModalFileRepository {
         file.delete();
     }
 
-    private String generatePath(TicketInfo ticketInfo) {
-        String nameByType = ticketInfo.ticketStatus().getName();
-        return "ticket/" + nameByType + "/" + ticketInfo.index() + "-" + ticketInfo.channelId() + "-" + nameByType + "/";
+    private String generatePath(Ticket ticket) {
+        String nameByType = ticket.ticketStatus().getName();
+        return "ticket/" + nameByType + "/" + ticket.index() + "-" + ticket.channelId() + "-" + nameByType + "/";
     }
 }

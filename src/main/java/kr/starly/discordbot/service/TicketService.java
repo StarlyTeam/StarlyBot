@@ -1,11 +1,11 @@
 package kr.starly.discordbot.service;
 
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.repository.TicketRepository;
 
-public record TicketInfoService(TicketRepository ticketRepository) {
+public record TicketService(TicketRepository ticketRepository) {
 
-    public void recordTicketInfo(TicketInfo ticketInfo) {
+    public void recordTicket(Ticket ticketInfo) {
         ticketRepository.save(ticketInfo);
     }
 
@@ -13,11 +13,11 @@ public record TicketInfoService(TicketRepository ticketRepository) {
         ticketRepository.updateRate(channelId, rate);
     }
 
-    public TicketInfo findByChannel(long channelId) {
+    public Ticket findByChannel(long channelId) {
         return ticketRepository.findByChannel(channelId);
     }
 
-    public TicketInfo findByDiscordId(long discordId) {
+    public Ticket findByDiscordId(long discordId) {
         return ticketRepository.findByDiscordId(discordId);
     }
 

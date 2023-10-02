@@ -2,7 +2,7 @@ package kr.starly.discordbot.repository.impl;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.repository.TicketRepository;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class MongoTicketRepository implements TicketRepository {
     private final MongoCollection<Document> collection;
 
     @Override
-    public void save(TicketInfo ticketInfo) {
+    public void save(Ticket ticketInfo) {
         Document document = new Document();
 
         document.put("openBy", ticketInfo.openBy());
@@ -45,7 +45,7 @@ public class MongoTicketRepository implements TicketRepository {
     }
 
     @Override
-    public TicketInfo findByChannel(long channelId) {
+    public Ticket findByChannel(long channelId) {
         Document query = new Document("channelId", channelId);
         FindIterable<Document> iterable = collection.find(query).sort(new Document("_id", -1)).limit(1);
 
@@ -57,11 +57,11 @@ public class MongoTicketRepository implements TicketRepository {
 
         TicketType ticketStatus = TicketType.valueOf((String) lastDocument.get("type"));
 
-        return lastDocument != null ? new TicketInfo(openBy, closedBy, channelId, ticketStatus, index) : null;
+        return lastDocument != null ? new Ticket(openBy, closedBy, channelId, ticketStatus, index) : null;
     }
 
     @Override
-    public TicketInfo findByDiscordId(long discordId) {
+    public Ticket findByDiscordId(long discordId) {
         Document query = new Document("openBy", discordId);
         FindIterable<Document> iterable = collection.find(query).sort(new Document("_id", -1)).limit(1);
 
@@ -78,7 +78,7 @@ public class MongoTicketRepository implements TicketRepository {
 
         TicketType ticketStatus = TicketType.valueOf((String) lastDocument.get("type"));
 
-        return new TicketInfo(openBy, closedBy, channelId, ticketStatus, index);
+        return new Ticket(openBy, closedBy, channelId, ticketStatus, index);
     }
 
     @Override

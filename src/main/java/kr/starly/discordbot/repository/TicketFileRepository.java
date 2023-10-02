@@ -2,7 +2,7 @@ package kr.starly.discordbot.repository;
 
 import com.google.gson.Gson;
 
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.entity.Ticket;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -29,9 +29,9 @@ public class TicketFileRepository {
 
     private TicketFileRepository() {}
 
-    public void save(List<Message> messageHistory, TicketInfo ticketInfo) {
+    public void save(List<Message> messageHistory, Ticket ticket) {
         try {
-            String filePath = generatePath(ticketInfo);
+            String filePath = generatePath(ticket);
             File dir = new File(local, filePath);
 
             if (!dir.exists()) dir.mkdirs();
@@ -94,8 +94,8 @@ public class TicketFileRepository {
         }
     }
 
-    private String generatePath(TicketInfo ticketInfo) {
-        String nameByType = ticketInfo.ticketStatus().getName();
-        return "ticket/" + nameByType + "/" + ticketInfo.index() + "-" + ticketInfo.channelId() + "-" + nameByType;
+    private String generatePath(Ticket ticket) {
+        String nameByType = ticket.ticketStatus().getName();
+        return "ticket/" + nameByType + "/" + ticket.index() + "-" + ticket.channelId() + "-" + nameByType;
     }
 }

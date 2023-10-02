@@ -4,7 +4,7 @@ package kr.starly.discordbot.http.handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
+import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.http.service.AuthService;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.UserInfoService;
@@ -14,12 +14,12 @@ import net.dv8tion.jda.api.entities.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.logging.Logger;
 
 public class AuthHandler implements HttpHandler {
 
-    private final UserInfoService userInfoService = DatabaseConfig.getUserInfoService();
+    private final UserInfoService userInfoService = DatabaseManager.getUserInfoService();
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
@@ -31,10 +31,10 @@ public class AuthHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String[] pathSegments = exchange.getRequestURI().getPath().split("/");
-        String discordUserId = pathSegments[2];
+        long userId = Long.parseLong(pathSegments[2]);
         String token = pathSegments[3];
 
-        if (!authService.validateToken(discordUserId, token)) {
+        if (!authService.validateToken(userId, token)) {
             sendErrorResponse(exchange, "Invalid or expired token.");
             return;
         }
@@ -42,7 +42,7 @@ public class AuthHandler implements HttpHandler {
         String userIp = exchange.getRemoteAddress().getAddress().getHostAddress();
 
         Guild guild = DiscordBotManager.getInstance().getJda().getGuilds().get(0);
-        Member member = guild.getMemberById(discordUserId);
+        Member member = guild.getMemberById(userId);
         if (member == null) {
             sendErrorResponse(exchange, "User not found.");
             return;
@@ -74,14 +74,13 @@ public class AuthHandler implements HttpHandler {
             user.openPrivateChannel()
                     .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
                     .queue(null, throwable ->
-                            LOGGER.severe("해당 유저에게 DM을 보낼 수 없습니다: " + throwable.getMessage()));
+                            LOGGER.warning("해당 유저에게 DM을 보낼 수 없습니다: " + throwable.getMessage()));
 
-            if (userInfoService.getUserInfo(discordUserId) == null) {
-                LocalDateTime verifyDate = LocalDateTime.now();
-                userInfoService.recordUserInfo(discordUserId, userIp, verifyDate, 0);
-                LOGGER.severe("유저 인증을 하였으므로 데이터를 추가했습니다: " + discordUserId);
+            if (userInfoService.getDataByDiscordId(userId) == null) {
+                userInfoService.saveData(userId, userIp, new Date(), 0);
+                LOGGER.info("유저 인증을 하였으므로 데이터를 추가했습니다: " + userId);
             } else {
-                LOGGER.severe("이미 데이터베이스에 존재하는 유저입니다: " + discordUserId);
+                LOGGER.warning("이미 데이터베이스에 존재하는 유저입니다: " + userId);
             }
 
             String response = "Successfully authenticated and role assigned!";
@@ -90,8 +89,8 @@ public class AuthHandler implements HttpHandler {
             os.write(response.getBytes());
             os.close();
 
-            if (authService.validateToken(discordUserId, token)) {
-                authService.removeTokenForUser(discordUserId);
+            if (authService.validateToken(userId, token)) {
+                authService.removeTokenForUser(userId);
             }
         }
     }

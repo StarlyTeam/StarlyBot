@@ -3,13 +3,12 @@ package kr.starly.discordbot.command.slash.impl;
 import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.entity.UserInfo;
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -92,9 +91,9 @@ public class PointCommand implements DiscordSlashCommand {
 
         switch (subCommand) {
             case "지급" -> {
-                User target = event.getOption("유저").getAsUser();
+                net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 int pointToAdd = getSafeIntFromOption(event.getOption("포인트"));
-                DatabaseConfig.getUserInfoService().addPoint(target.getId(), pointToAdd);
+                DatabaseManager.getUserInfoService().addPoint(target.getIdLong(), pointToAdd);
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                         .setTitle("<a:success:1141625729386287206> 지급 완료 | 포인트 <a:success:1141625729386287206>")
@@ -105,9 +104,9 @@ public class PointCommand implements DiscordSlashCommand {
             }
 
             case "제거" -> {
-                User target = event.getOption("유저").getAsUser();
+                net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 int pointToRemove = getSafeIntFromOption(event.getOption("포인트"));
-                DatabaseConfig.getUserInfoService().removePoint(target.getId(), pointToRemove);
+                DatabaseManager.getUserInfoService().removePoint(target.getIdLong(), pointToRemove);
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
                         .setTitle("<a:success:1141625729386287206> 제거 완료 | 포인트 <a:success:1141625729386287206>")
@@ -118,9 +117,9 @@ public class PointCommand implements DiscordSlashCommand {
             }
 
             case "설정" -> {
-                User target = event.getOption("유저").getAsUser();
+                net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 int pointToSet = getSafeIntFromOption(event.getOption("포인트"));
-                DatabaseConfig.getUserInfoService().setPoint(target.getId(), pointToSet);
+                DatabaseManager.getUserInfoService().setPoint(target.getIdLong(), pointToSet);
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("<a:success:1141625729386287206> 설정 완료 | 포인트 <a:success:1141625729386287206>")
@@ -131,8 +130,8 @@ public class PointCommand implements DiscordSlashCommand {
             }
 
             case "초기화" -> {
-                User target = event.getOption("유저").getAsUser();
-                DatabaseConfig.getUserInfoService().setPoint(target.getId(), 0);
+                net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
+                DatabaseManager.getUserInfoService().setPoint(target.getIdLong(), 0);
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_SUCCESS))
                         .setTitle("<a:success:1141625729386287206> 초기화 완료 | 포인트 <a:success:1141625729386287206>")
@@ -143,11 +142,11 @@ public class PointCommand implements DiscordSlashCommand {
             }
 
             case "순위" -> {
-                List<UserInfo> topUsers = DatabaseConfig.getUserInfoService().getTopUsersByPoints(10);
+                List<User> topUsers = DatabaseManager.getUserInfoService().getTopUsersByPoints(10);
                 StringBuilder rankMessage = new StringBuilder();
                 AtomicInteger processedUsers = new AtomicInteger(0);
 
-                for (UserInfo user : topUsers) {
+                for (User user : topUsers) {
                     event.getJDA().retrieveUserById(user.discordId()).queue(retrievedUser -> {
                         if (retrievedUser != null) {
                             rankMessage.append("> ")
@@ -185,23 +184,24 @@ public class PointCommand implements DiscordSlashCommand {
 
     @SuppressWarnings("all")
     private void handleCheckCommand(SlashCommandInteractionEvent event) {
-        String userIdForCheck;
-
+        long targetId;
         if (event.getOption("유저") != null) {
             if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
                 PermissionUtil.sendPermissionError(event.getChannel());
+                return;
             }
-            userIdForCheck = event.getOption("유저").getAsUser().getId();
+
+            targetId = event.getOption("유저").getAsUser().getIdLong();
         } else {
-            userIdForCheck = event.getUser().getId();
+            targetId = event.getUser().getIdLong();
         }
 
-        String userAvatarCheck = event.getJDA().retrieveUserById(userIdForCheck).complete().getAvatarUrl();
-        int currentPoint = DatabaseConfig.getUserInfoService().getPoint(userIdForCheck);
+        String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getAvatarUrl();
+        int currentPoint = DatabaseManager.getUserInfoService().getPoint(targetId);
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(Color.decode(EMBED_COLOR))
                 .setTitle("<a:loading:1141623256558866482> 확인 | 포인트 <a:loading:1141623256558866482>")
-                .setDescription("> **<@" + userIdForCheck + ">님의 현재 포인트: " + currentPoint + "**")
+                .setDescription("> **<@" + targetId + ">님의 현재 포인트: " + currentPoint + "**")
                 .setThumbnail(userAvatarCheck)
                 .build();
         event.replyEmbeds(messageEmbed).queue();

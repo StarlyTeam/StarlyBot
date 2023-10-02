@@ -1,14 +1,14 @@
 package kr.starly.discordbot.listener.ticket;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.repository.TicketModalDataRepository;
 import kr.starly.discordbot.repository.TicketModalFileRepository;
 import kr.starly.discordbot.repository.TicketUserDataRepository;
-import kr.starly.discordbot.service.TicketInfoService;
+import kr.starly.discordbot.service.TicketService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -37,7 +37,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
     private final TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
 
-    private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
+    private final TicketService ticketService = DatabaseManager.getTicketService();
 
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
         TextChannel textChannel = event.getChannel().asTextChannel();
@@ -58,7 +58,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         }
 
         TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(user.getIdLong());
-        TicketInfo ticketInfo = ticketInfoService.findByDiscordId(user.getIdLong());
+        Ticket ticket = ticketService.findByDiscordId(user.getIdLong());
 
         Button button = Button.danger("ticket-close" + user.getIdLong(), "닫기");
         MessageEmbed messageEmbed = null;
@@ -74,7 +74,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("설명", "```" + description + "```", false)
                         .build();
 
-                ticketModalFileRepository.save(ticketInfo,
+                ticketModalFileRepository.save(ticket,
                         "제목: " + title + "\n" +
                                 "본문: " + description);
             }
@@ -92,7 +92,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("설명", "```" + description + "```", false)
                         .build();
 
-                ticketModalFileRepository.save(ticketInfo,
+                ticketModalFileRepository.save(ticket,
                         "제목: " + title + "\n" +
                                 "태그: " + tag + "\n" +
                                 "본문: " + description);
@@ -112,7 +112,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("설명", "```" + description + "```", false)
                         .build();
 
-                ticketModalFileRepository.save(ticketInfo,
+                ticketModalFileRepository.save(ticket,
                         "제목: " + title + "\n" +
                                 "본문: " + description);
 
@@ -133,7 +133,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                             .addField("설명", "```" + description + "```", false)
                             .build();
 
-                    ticketModalFileRepository.save(ticketInfo,
+                    ticketModalFileRepository.save(ticket,
                             "version: " + version + "\n" +
                                     "본문: " + description);
 
@@ -147,12 +147,12 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String description = data.get(2);
 
                 String log = data.get(3);
-                ticketModalFileRepository.save(ticketInfo,
+                ticketModalFileRepository.save(ticket,
                         "버전: " + version + "\n" +
                                 "본문: " + description + "\n" +
                                 "로그 \n" + log);
 
-                File file = ticketModalFileRepository.getFile(ticketInfo);
+                File file = ticketModalFileRepository.getFile(ticket);
 
                 descriptionEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR))

@@ -1,14 +1,12 @@
 package kr.starly.discordbot.repository;
 
-import kr.starly.discordbot.entity.UserInfo;
+import kr.starly.discordbot.entity.User;
 
 import java.util.List;
 
 public interface UserInfoRepository {
 
-    void save(UserInfo userInfo);
-    UserInfo findByDiscordId(String discordId);
-    void updatePoint(String discordId, int newPoint);
-    List<UserInfo> getTopUsersByPoints(int limit);
-    void updateWarn(String discordId, int newWarn);
+    void put(User user);
+    User findByDiscordId(long discordId);
+    List<User> findAll();
 }

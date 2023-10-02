@@ -1,13 +1,13 @@
 package kr.starly.discordbot.listener.ticket;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.entity.TicketInfo;
-import kr.starly.discordbot.entity.WarnInfo;
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Ticket;
+import kr.starly.discordbot.entity.Warn;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.repository.TicketFileRepository;
 import kr.starly.discordbot.repository.TicketModalFileRepository;
-import kr.starly.discordbot.service.TicketInfoService;
+import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.WarnService;
 import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -38,8 +38,8 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
     private final String WARN_CHANNEL_ID = configProvider.getString("WARN_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
 
-    private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
-    private final WarnService warnService = DatabaseConfig.getWarnService();
+    private final TicketService ticketService = DatabaseManager.getTicketService();
+    private final WarnService warnService = DatabaseManager.getWarnService();
 
     private final TicketFileRepository ticketFileRepository = TicketFileRepository.getInstance();
     private final TicketModalFileRepository ticketModalFileRepository = TicketModalFileRepository.getInstance();
@@ -92,25 +92,19 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     .addOption("매우 불만족", "ticket-rate-1")
                     .build();
 
-            ticketUser.openPrivateChannel().submit()
-                    .thenCompose(channel -> channel.sendMessageEmbeds(messageEmbed).submit())
-                    .whenComplete((message, error) -> {
-                        if (error != null);
-                    });
             try {
                 ticketUser.openPrivateChannel().queue(
                         privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).addComponents(ActionRow.of(rateSelectMenu)).queue()
                 );
-            } catch (UnsupportedOperationException ignored) {
-            }
+            } catch (UnsupportedOperationException ignored) {}
 
-            TicketInfo ticketInfo = ticketInfoService.findByChannel(textChannel.getIdLong());
+            Ticket ticketInfo = ticketService.findByChannel(textChannel.getIdLong());
 
             MessageHistory history = MessageHistory.getHistoryFromBeginning(textChannel).complete();
             ticketFileRepository.save(history.getRetrievedHistory(), ticketInfo);
 
-            ticketInfoService.recordTicketInfo(
-                    new TicketInfo(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
+            ticketService.recordTicket(
+                    new Ticket(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
             );
 
             event.reply("2초 후 채널이 삭제됩니다.").setEphemeral(true).queue();
@@ -128,23 +122,24 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-joke-", ""));
             User ticketUser = textChannel.getJDA().getUserById(ticketUserId);
 
-            TicketInfo ticketInfo = ticketInfoService.findByChannel(textChannel.getIdLong());
+            Ticket ticketInfo = ticketService.findByChannel(textChannel.getIdLong());
 
-            ticketInfoService.recordTicketInfo(
-                    new TicketInfo(ticketUserId, 0, textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
+            ticketService.recordTicket(
+                    new Ticket(ticketUserId, 0, textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
             );
 
             ticketUser.openPrivateChannel().queue(privateChannel -> {
-                WarnInfo warnInfo = new WarnInfo(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
+                Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
+                warnService.saveData(warnInfo);
+                
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
                         .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
-                        .setDescription("> **" + ticketUser.getAsMention() + " 님에게 " + warnInfo.warn() + "경고를 추가 하였습니다.** \n" +
+                        .setDescription("> **" + ticketUser.getAsMention() + " 님에게 " + warnInfo.amount() + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + warnInfo.reason())
                         .setThumbnail(ticketUser.getAvatarUrl())
                         .build();
-
-                warnService.addWarn(warnInfo);
+                
                 event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(messageEmbed).queue();
 
                 try {
@@ -152,7 +147,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                 } catch (UnsupportedOperationException ignored) {}
             });
 
-            ticketModalFileRepository.delete(ticketInfoService.findByDiscordId(ticketUser.getIdLong()));
+            ticketModalFileRepository.delete(ticketService.findByDiscordId(ticketUser.getIdLong()));
 
             event.getChannel().delete().queue();
         }

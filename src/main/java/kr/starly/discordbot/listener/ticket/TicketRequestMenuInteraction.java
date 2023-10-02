@@ -1,11 +1,11 @@
 package kr.starly.discordbot.listener.ticket;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
-import kr.starly.discordbot.service.TicketInfoService;
+import kr.starly.discordbot.service.TicketService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -27,7 +27,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
-    private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
+    private final TicketService ticketService = DatabaseManager.getTicketService();
 
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
@@ -38,10 +38,10 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             String selectedValue = event.getValues().get(0);
 
             TicketType ticketStatus = TicketType.valueOf(selectedValue.toUpperCase(Locale.ROOT).replace("-", "_"));
-            TicketInfo ticketInfo = ticketInfoService.findByDiscordId(discordId);
+            Ticket ticket = ticketService.findByDiscordId(discordId);
 
-            if (ticketInfo != null && isExistUserTicket(event.getJDA(), ticketInfo.channelId())) {
-                TextChannel textChannel = event.getJDA().getTextChannelById(ticketInfo.channelId());
+            if (ticket != null && isExistUserTicket(event.getJDA(), ticket.channelId())) {
+                TextChannel textChannel = event.getJDA().getTextChannelById(ticket.channelId());
 
                 String message = textChannel != null ? "관리자가 수동으로 티켓을 닫았습니다. 관리자에게 문의하여 주세요." : "이미 티켓이 열려 있습니다!" + textChannel.getAsMention();
                 event.reply(message).setEphemeral(true).queue();
@@ -80,7 +80,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             event.getMessage().delete().queue();
 
-            ticketInfoService.updateRate(channelId, value);
+            ticketService.updateRate(channelId, value);
         }
     }
 
@@ -140,31 +140,37 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                     .addField("Q: 어떻게 플러그인을 적용하나요?", "A: .zip파일 을 압축 해제하여 폴더 안에 있는 .jar를 plugins 폴더에 넣으시면 됩니다.", true)
                     .addField("Q: 라이선스 양도가 가능할까요?", "A: 아뇨, 라이선스를 양도하는건 불가능합니다.", true)
                     .build();
+
             case QUESTION_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
+
             case CONSULTING_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
+
             case PURCHASE_INQUIRY_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
+
             case USE_RESTRICTION_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
+
             case BUG_REPORT_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")
                     .setDescription("자주 묻는 질문")
                     .build();
+
             case ETC_TICKET -> new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR))
                     .setTitle("주의")

@@ -19,9 +19,6 @@ public enum TicketType {
     BUG_REPORT_ETC_TICKET("기타 버그"),
     ETC_TICKET("기타");
 
-    @Getter
-    private String name;
-
-    @Getter
-    private static final Map<Long, TicketType> userTicketStatusMap = new HashMap<>();
+    @Getter private final String name;
+    @Getter private static final Map<Long, TicketType> userTicketStatusMap = new HashMap<>();
 }

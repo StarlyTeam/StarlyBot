@@ -56,9 +56,9 @@ public class DiscordBotManager {
     }
 
     public void stopBot() {
-        LOGGER.severe("Shutting down JDA...");
+        LOGGER.info("JDA를 종료합니다..");
         jda.shutdown();
-        LOGGER.severe("JDA has been shut down.");
+        LOGGER.info("JDA가 종료되었습니다.");
     }
 
     public boolean isBotFullyLoaded() {
@@ -76,7 +76,7 @@ public class DiscordBotManager {
             Activity activity = Activity.of(type, activityName);
             builder.setActivity(activity);
         } catch (IllegalArgumentException e) {
-            LOGGER.severe("존재하지 않는 Activity 타입입니다.");
+            LOGGER.warning("존재하지 않는 Activity 타입입니다.");
         }
 
         builder.addEventListeners(slashCommandListenerBase);
@@ -91,7 +91,7 @@ public class DiscordBotManager {
             @Override
             public void onReady(ReadyEvent event) {
                 isBotFullyLoaded = true;
-                LOGGER.severe("The bot is fully loaded and ready!");
+                LOGGER.info("봇을 성공적으로 실행하였습니다!");
 
                 slashCommandListenerBase.getCommands().forEach(commandData -> {
                     jda.getGuildById(GUILD_ID).upsertCommand(commandData).queue();
@@ -118,7 +118,7 @@ public class DiscordBotManager {
                     jda.addEventListener(instance);
                 }
             } catch (Exception e) {
-                LOGGER.severe("Could not instantiate listener: " + clazz.getName());
+                LOGGER.severe("리스너 인스턴스를 생성할 수 없습니다: " + clazz.getName());
                 e.printStackTrace();
             }
         }

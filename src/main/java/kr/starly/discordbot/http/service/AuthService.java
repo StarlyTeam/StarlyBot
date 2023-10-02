@@ -16,12 +16,12 @@ public class AuthService {
 
     private AuthService() {}
 
-    private final Map<String, String> userTokens = new HashMap<>();
-    private final Map<String, Instant> tokenCreationTimes = new HashMap<>();
+    private final Map<Long, String> userTokens = new HashMap<>();
+    private final Map<Long, Instant> tokenCreationTimes = new HashMap<>();
 
     private static final long TOKEN_EXPIRATION_TIME_MINUTES = 30;
 
-    public String generateToken(String userId) {
+    public String generateToken(long userId) {
         String token = UUID.randomUUID().toString();
         userTokens.put(userId, token);
 
@@ -30,7 +30,7 @@ public class AuthService {
         return token;
     }
 
-    public boolean validateToken(String userId, String token) {
+    public boolean validateToken(long userId, String token) {
         String storedToken = userTokens.get(userId);
 
         if (storedToken == null || !storedToken.equals(token)) {
@@ -49,7 +49,7 @@ public class AuthService {
         return true;
     }
 
-    public void removeTokenForUser(String userId) {
+    public void removeTokenForUser(long userId) {
         userTokens.remove(userId);
         tokenCreationTimes.remove(userId);
     }

@@ -28,7 +28,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
         String response = event.getInteraction().getValue("verify-tos").getAsString();
 
         if ("네".equals(response)) {
-            String discordId = event.getMember().getId();
+            long discordId = event.getMember().getIdLong();
             String token = authService.generateToken(discordId);
             String authLink = "http://" + WEB_ADDRESS + ":" + WEB_PORT + "/auth/" + discordId + "/" + token;
 
@@ -46,7 +46,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
         } else {
             MessageEmbed errorMessage = new EmbedBuilder()
                     .setColor(Color.decode(EMBED_COLOR_ERROR))
-                    .setTitle("<a:warn:1141721287526465656> 오류 | 인증 실패! <a:warn:1141721287526465656>")
+                    .setTitle("<a:amount:1141721287526465656> 오류 | 인증 실패! <a:amount:1141721287526465656>")
                     .setDescription("> **약관에 동의하지 않으셨습니다.**\n"
                             + "> **서비스 이용을 원하시면 약관에 동의해주세요.**\n\u1CBB")
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")

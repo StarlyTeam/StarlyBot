@@ -1,11 +1,11 @@
 package kr.starly.discordbot.listener.ticket;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.entity.TicketInfo;
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
-import kr.starly.discordbot.service.TicketInfoService;
+import kr.starly.discordbot.service.TicketService;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -22,7 +22,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String TICKET_CHANNEL_ID = configProvider.getString("TICKET_CHANNEL_ID");
 
-    private final TicketInfoService ticketInfoService = DatabaseConfig.getTicketInfoService();
+    private final TicketService ticketService = DatabaseManager.getTicketService();
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
@@ -31,10 +31,10 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         long userId = event.getUser().getIdLong();
         String buttonId = event.getButton().getId();
 
-        TicketInfo ticketInfo = ticketInfoService.findByDiscordId(userId);
+        Ticket Ticket = ticketService.findByDiscordId(userId);
 
-        if (ticketInfo != null && isExistUserTicket(event.getJDA(), ticketInfo.channelId())) {
-            TextChannel textChannel = event.getJDA().getTextChannelById(ticketInfo.channelId());
+        if (Ticket != null && isExistUserTicket(event.getJDA(), Ticket.channelId())) {
+            TextChannel textChannel = event.getJDA().getTextChannelById(Ticket.channelId());
             String message = textChannel != null ? "이미 티켓이 있습니다! " + textChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해주세요.";
             event.reply(message).setEphemeral(true).queue();
             return;

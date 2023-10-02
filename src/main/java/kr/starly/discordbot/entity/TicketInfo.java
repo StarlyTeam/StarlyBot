@@ -1,5 +1,0 @@
-package kr.starly.discordbot.entity;
-
-import kr.starly.discordbot.enums.TicketType;
-
-public record TicketInfo(long openBy, long closedBy, long channelId, TicketType ticketStatus, long index) {}

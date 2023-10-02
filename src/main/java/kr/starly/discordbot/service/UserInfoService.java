@@ -1,51 +1,47 @@
 package kr.starly.discordbot.service;
 
-import kr.starly.discordbot.entity.UserInfo;
+import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.repository.UserInfoRepository;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public record UserInfoService(UserInfoRepository userInfoRepository) {
 
-    public void recordUserInfo(String discordId, String ip, LocalDateTime verifyDate, int point) {
-        UserInfo userInfo = new UserInfo(discordId, ip, verifyDate, point, 0);
-        userInfoRepository.save(userInfo);
+    public void saveData(long discordId, String ip, Date verifiedAt, int point) {
+        User user = new User(discordId, ip, verifiedAt, point);
+        userInfoRepository.put(user);
     }
 
-    public UserInfo getUserInfo(String discordId) {
+    public User getDataByDiscordId(long discordId) {
         return userInfoRepository.findByDiscordId(discordId);
     }
 
-    public void addPoint(String discordId, int pointToAdd) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        if (userInfo != null) {
-            int newPoint = userInfo.point() + pointToAdd;
-            userInfoRepository.updatePoint(discordId, newPoint);
+    public void addPoint(long discordId, int amount) {
+        setPoint(discordId, getPoint(discordId) + amount);
+    }
+
+    public void removePoint(long discordId, int amount) {
+        setPoint(discordId, getPoint(discordId) - amount);
+    }
+
+    public void setPoint(long discordId, int newPoint) {
+        User user = userInfoRepository.findByDiscordId(discordId);
+        if (user != null) {
+            userInfoRepository.put(new User(discordId, user.ip(), user.verifiedAt(), newPoint));
         }
     }
 
-    public void removePoint(String discordId, int pointToRemove) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        if (userInfo != null && userInfo.point() >= pointToRemove) {
-            int newPoint = userInfo.point() - pointToRemove;
-            userInfoRepository.updatePoint(discordId, newPoint);
-        }
+    public int getPoint(long discordId) {
+        User user = userInfoRepository.findByDiscordId(discordId);
+        return (user != null) ? user.point() : 0;
     }
 
-    public void setPoint(String discordId, int newPoint) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        if (userInfo != null) {
-            userInfoRepository.updatePoint(discordId, newPoint);
-        }
-    }
-
-    public int getPoint(String discordId) {
-        UserInfo userInfo = userInfoRepository.findByDiscordId(discordId);
-        return (userInfo != null) ? userInfo.point() : 0;
-    }
-
-    public List<UserInfo> getTopUsersByPoints(int limit) {
-        return userInfoRepository.getTopUsersByPoints(limit);
+    public List<User> getTopUsersByPoints(int limit) {
+        return userInfoRepository.findAll()
+                .stream()
+                .sorted((user1, user2) -> user2.point() - user1.point())
+                .limit(limit)
+                .toList();
     }
 }
