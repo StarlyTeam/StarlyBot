@@ -43,6 +43,7 @@ DB_COLLECTION_USER: "user"
 DB_COLLECTION_PLUGIN: "plugin"
 DB_COLLECTION_TICKET: "ticket"
 DB_COLLECTION_WARN: "warn"
+DB_COLLECTION_SHORTEN_LINK: "shortenLink"
 
 # + -------------------------------------------------------------------------------- + #
 # | WEB SERVER CONFIGURATION ( 웹 서버 설정 )
