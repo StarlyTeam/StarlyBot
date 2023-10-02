@@ -3,8 +3,8 @@ package kr.starly.discordbot.command.slash.impl;
 import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.configuration.DatabaseConfig;
-import kr.starly.discordbot.entity.WarnInfo;
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Warn;
 import kr.starly.discordbot.service.WarnService;
 import kr.starly.discordbot.util.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -71,16 +71,16 @@ public class WarnCommand implements DiscordSlashCommand {
     private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
     private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
 
-    private final WarnService warnService = DatabaseConfig.getWarnService();
+    private final WarnService warnService = DatabaseManager.getWarnService();
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         String subCommand = event.getSubcommandName();
-
         if ("확인".equals(subCommand)) {
             handleCheckCommand(event);
             return;
         }
+
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
         }
@@ -105,8 +105,8 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 long manager = event.getUser().getIdLong();
 
-                WarnInfo warnInfo = new WarnInfo(userForAdd.getIdLong(), manager, reason, warnToAdd, new Date(System.currentTimeMillis()));
-                warnService.addWarn(warnInfo);
+                Warn warn = new Warn(userForAdd.getIdLong(), manager, reason, warnToAdd, new Date(System.currentTimeMillis()));
+                warnService.saveData(warn);
 
                 try {
                     userForAdd.openPrivateChannel().queue(
@@ -114,22 +114,23 @@ public class WarnCommand implements DiscordSlashCommand {
                     );
                 } catch (UnsupportedOperationException ignored) {}
             }
+
             case "제거" -> {
                 User userForRemove = event.getOption("유저").getAsUser();
                 String userAvatarForRemove = event.getOption("유저").getAsUser().getAvatarUrl();
-                int warnToRemove = getSafeIntFromOption(event.getOption("경고"));
+                int removeAmount = getSafeIntFromOption(event.getOption("경고"));
                 String reason = event.getOption("사유").getAsString();
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(Color.decode(EMBED_COLOR_ERROR))
                         .setTitle("<a:success:1141625729386287206> 제거 완료 | 경고 <a:success:1141625729386287206>")
-                        .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + warnToRemove + "만큼 제거하였습니다.** \n" +
+                        .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + removeAmount + "만큼 제거하였습니다.** \n" +
                                 "사유 > `" + reason + "`")
                         .setThumbnail(userAvatarForRemove)
                         .build();
 
-                WarnInfo warnInfo = new WarnInfo(userForRemove.getIdLong(), event.getUser().getIdLong(), reason, warnToRemove, new Date(System.currentTimeMillis()));
-                warnService.removeWarn(warnInfo);
+                Warn warn = new Warn(userForRemove.getIdLong(), event.getUser().getIdLong(), reason, removeAmount * -1, new Date(System.currentTimeMillis()));
+                warnService.saveData(warn);
 
                 event.replyEmbeds(messageEmbed).queue();
 
@@ -139,6 +140,7 @@ public class WarnCommand implements DiscordSlashCommand {
                     );
                 } catch (UnsupportedOperationException ignored) {}
             }
+
             case "설정" -> {
                 User userForRemove = event.getOption("유저").getAsUser();
 
@@ -161,7 +163,7 @@ public class WarnCommand implements DiscordSlashCommand {
                     );
                 } catch (UnsupportedOperationException ignored) {}
             }
-            case "확인" -> handleCheckCommand(event);
+
             case "초기화" -> {
                 User userForRemove = event.getOption("유저").getAsUser();
                 String userAvatarReset = event.getOption("유저").getAsUser().getAvatarUrl();
@@ -182,36 +184,30 @@ public class WarnCommand implements DiscordSlashCommand {
                     );
                 } catch (UnsupportedOperationException ignored) {}
             }
-            default -> {
-                messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_ERROR))
-                        .setTitle("<a:loading:1141623256558866482> 오류 | 경고 <a:loading:1141623256558866482>")
-                        .setDescription("> **알 수 없는 명령입니다.**")
-                        .build();
-                event.replyEmbeds(messageEmbed).queue();
-            }
         }
     }
 
     @SuppressWarnings("all")
     private void handleCheckCommand(SlashCommandInteractionEvent event) {
-        String userIdForCheck;
+        long targetId;
 
         if (event.getOption("유저") != null) {
             if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
                 PermissionUtil.sendPermissionError(event.getChannel());
+                return;
             }
-            userIdForCheck = event.getOption("유저").getAsUser().getId();
+
+            targetId = event.getOption("유저").getAsUser().getIdLong();
         } else {
-            userIdForCheck = event.getUser().getId();
+            targetId = event.getUser().getIdLong();
         }
 
-        String userAvatarCheck = event.getJDA().retrieveUserById(userIdForCheck).complete().getAvatarUrl();
+        String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getAvatarUrl();
 
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(Color.decode(EMBED_COLOR))
                 .setTitle("<a:loading:1141623256558866482> 확인 | 경고 <a:loading:1141623256558866482>")
-                .setDescription("> **<@" + userIdForCheck + ">님의 현재 경고: " + warnService.getWarn(Long.valueOf(userIdForCheck)) + "**")
+                .setDescription("> **<@" + targetId + ">님의 현재 경고: " + warnService.getTotalWarn(targetId) + "**")
                 .setThumbnail(userAvatarCheck)
                 .build();
         event.replyEmbeds(messageEmbed).queue();
