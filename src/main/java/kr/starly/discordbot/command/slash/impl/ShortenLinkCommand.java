@@ -105,7 +105,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(Color.decode(EMBED_COLOR_ERROR))
                             .setTitle("<a:loading:1141623256558866482> 오류 | 미존재 <a:loading:1141623256558866482>")
-                            .setDescription("> **해당 원본링크는 존재하지 않습니다..**")
+                            .setDescription("> **해당 단축링크는 존재하지 않습니다..**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
                     return;
