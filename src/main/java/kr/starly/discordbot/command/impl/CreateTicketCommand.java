@@ -22,7 +22,7 @@ import java.awt.*;
 public class CreateTicketCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -34,40 +34,47 @@ public class CreateTicketCommand implements DiscordCommand {
         event.getMessage().delete().queue();
 
         StringSelectMenu stringSelectMenu = StringSelectMenu.create("ticket-select-category")
-                .setPlaceholder("상담 카테고리를 선택하여 주세요.")
-                .addOptions(SelectOption.of("일반", "normal-ticket")
-                        .withDescription("서비스 전반에 관한 기본적인 문의를 보내주세요.")
+                .setPlaceholder("원하시는 상담 카테고리를 선택해 주세요.")
+                .addOptions(SelectOption.of("일반 문의", "normal-ticket")
+                        .withDescription("서비스에 대한 일반적인 문의사항을 전달해 주세요.")
                         .withEmoji(Emoji.fromUnicode("ℹ\uFE0F")))
 
-                .addOptions(SelectOption.of("질문", "question-ticket")
-                        .withDescription("제품/서비스에 대한 일반적인 궁금증을 문의하세요.")
+                .addOptions(SelectOption.of("제품 질문", "question-ticket")
+                        .withDescription("제품이나 서비스에 대한 궁금한 점을 알려주세요.")
                         .withEmoji(Emoji.fromUnicode("❓")))
 
-                .addOptions(SelectOption.of("상담", "consulting-ticket")
-                        .withDescription("개인화된 조언이나 지원에 관한 문의입니다.")
+                .addOptions(SelectOption.of("맞춤 상담", "consulting-ticket")
+                        .withDescription("개인 맞춤형 조언이나 지원을 원하시면 선택해주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDDE3\uFE0F")))
 
-                .addOptions(SelectOption.of("결제", "purchase-inquiry-ticket")
-                        .withDescription("결제/환불/청구와 관련된 문의를 해주세요.")
+                .addOptions(SelectOption.of("결제 문의", "purchase-inquiry-ticket")
+                        .withDescription("결제, 환불, 청구 등에 대한 문의사항을 보내주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDCB3")))
 
-                .addOptions(SelectOption.of("이용제한", "use-restriction-ticket")
-                        .withDescription("계정/서비스의 이용제한에 대한 문의입니다.")
+                .addOptions(SelectOption.of("서비스 제한 문의", "use-restriction-ticket")
+                        .withDescription("계정이나 서비스의 제한 관련 문의를 해주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDCCE")))
 
-                .addOptions(SelectOption.of("버그", "bug-report-ticket")
-                        .withDescription("시스템의 오류나 버그 관련 문의를 해주세요.")
+                .addOptions(SelectOption.of("버그 보고", "bug-report-ticket")
+                        .withDescription("시스템에 발견된 오류나 버그에 대해 알려주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDC1E")))
 
-                .addOptions(SelectOption.of("기타", "etc-ticket")
-                        .withDescription("기타 분류되지 않은 모든 문의를 보내주세요.")
+                .addOptions(SelectOption.of("기타 문의", "etc-ticket")
+                        .withDescription("기타 분류에 속하지 않는 문의사항을 보내주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDEAB")))
                 .build();
 
         MessageEmbed embed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR_SUCCESS))
-                .setTitle("고객센터 주의사항")
-                .setDescription("직원에게 폭언, 성희롱을 할 시 법적 조치를 받으실 수 있습니다.")
+                .setColor(Color.decode(EMBED_COLOR))
+                .setTitle("<:ticket:1158139819650711582> 고객센터 문의 | 스탈리 <:ticket:1158139819650711582>")
+                .setDescription("> **스탈리 고객센터에 오신 것을 환영합니다.** \n" +
+                        "> **여기에서는 귀하의 문의사항이나 건의사항을 기다리고 있습니다.** \n\n" +
+                        "─────────────────────────────────────────────────\n" +
+                        "> **`\uD83D\uDC5F` 모든 문의는 신속하고 친절하게 처리될 것입니다.** \n" +
+                        "> **`\uD83E\uDDE8` 직원에게 폭언이나 성희롱을 할 경우 법적 처벌을 받을 수 있습니다.** \n" +
+                        "> **`\uD83D\uDC9D` 스탈리에서 행복한 시간을 보내시길 바랍니다.** \n\u1CBB\n")
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                 .build();
 
         event.getChannel().sendMessageEmbeds(embed).addActionRow(stringSelectMenu).queue();

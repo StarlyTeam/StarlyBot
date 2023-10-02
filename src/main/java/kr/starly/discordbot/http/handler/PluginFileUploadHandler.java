@@ -70,8 +70,8 @@ public class PluginFileUploadHandler implements HttpHandler {
                                         "> **`🚫` 15초 뒤에 모든 메시지가 삭제됩니다. `🚫`** \n\n" +
                                         "─────────────────────────────────────────────────\n"
                                 )
-                                .setThumbnail("https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
-                                .setFooter("이 기능은 관리자 전용입니다.", "https://media.discordapp.net/attachments/1038091650674724954/1148008081784066108/YELLOWBACKGROUND.png?width=597&height=597")
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                 .build();
 
                         channel.sendMessageEmbeds(successEmbed).queue();

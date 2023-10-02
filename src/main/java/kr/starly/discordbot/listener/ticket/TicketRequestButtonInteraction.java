@@ -5,10 +5,8 @@ import kr.starly.discordbot.configuration.DatabaseConfig;
 import kr.starly.discordbot.entity.TicketInfo;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
-import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -66,12 +64,12 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         switch (ticketStatus) {
             case NORMAL_TICKET -> {
                 TextInput normalTitle = TextInput.create("text-input-normal-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("제목을 입력해 주세요.")
+                        .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
                 TextInput normalDescription = TextInput.create("text-input-normal-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("질문 내용을 입력해 주세요.")
+                        .setPlaceholder("내용을 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
 
@@ -84,18 +82,17 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
             case QUESTION_TICKET -> {
                 TextInput questionTitle = TextInput.create("text-question-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("질문 제목을 입력해 주세요.")
+                        .setPlaceholder("질문의 제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
                 TextInput questionType = TextInput.create("text-question-type", "사유", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("질문 사유를 입력해 주세요. \n" +
-                                "제품/서비스 기타 등등 입력")
+                        .setPlaceholder("질문의 사유를 입력해 주시기 바랍니다.\n(예: 제품/서비스)")
                         .setMaxLength(10)
                         .build();
 
                 TextInput questionDescription = TextInput.create("text-question-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("질문 내용을 입력해 주세요.")
+                        .setPlaceholder("질문의 내용을 입력해 주시기 바랍니다.")
                         .setMaxLength(880)
                         .build();
 
@@ -110,18 +107,17 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
             case CONSULTING_TICKET -> {
                 TextInput consultingTitle = TextInput.create("text-consulting-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("상담 제목을 입력하여 주세요")
+                        .setPlaceholder("상담의 제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
                 TextInput consultingDescription = TextInput.create("text-consulting-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("상담 내용을 입력하여 주세요")
+                        .setPlaceholder("상담의 내용을 입력해 주시기 바랍니다.")
                         .setMaxLength(950)
                         .build();
 
                 TextInput consultingCall = TextInput.create("text-consulting-call", "통화여부", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("상담원과 통화로 진행을 원하시면 (네) 를 입력하여 주세요. \n" +
-                                "생략시 채팅으로 상담 진행 됩니다. ")
+                        .setPlaceholder("통화를 원하시면 '네'라고 입력해 주시기 바랍니다.")
                         .setMaxLength(1)
                         .setRequired(false)
                         .build();
@@ -136,19 +132,17 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
             case PURCHASE_INQUIRY_TICKET -> {
                 TextInput purchaseInquiryTitle = TextInput.create("text-purchase-inquiry-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("제목을 입력해 주세요")
+                        .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
                 TextInput purchaseInquiryType = TextInput.create("text-purchase-inquiry-type", "타입", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("결제에 관해 상담하실 사유를 적어 주세요 \n" +
-                                "예시) 결제, 환불, 청구 기타 등등 \n" +
-                                "만약 사유가 공백일 경우 장난 티켓으로 간주되며 처벌을 받습니다.")
+                        .setPlaceholder("결제 관련 상담 사유를 입력해 주시기 바랍니다.\n(예: 결제, 환불, 청구)")
                         .setMaxLength(2)
 
                         .build();
                 TextInput purchaseInquiryDescription = TextInput.create("text-purchase-inquiry-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("상황 설명을 구체적으로 적어주세요.")
+                        .setPlaceholder("상황 설명을 구체적으로 적으세요.")
                         .setMaxLength(750)
                         .build();
 
@@ -162,18 +156,17 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
             }
             case USE_RESTRICTION_TICKET -> {
                 TextInput useRestrictionTitle = TextInput.create("text-use-restriction-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("제목을 입력해 주세요.")
+                        .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
                 TextInput useRestrictionType = TextInput.create("text-use-restriction-type", "타입", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("사용정지가 된 곳을 입력하여 주세요. \n" +
-                                "예시) 플러그인 라이센스, 플러그인 다운로드,경고 이의제기")
+                        .setPlaceholder("사용 정지가 된 곳을 입력해 주시기 바랍니다.\n(예: 다운로드/경고)")
                         .setMaxLength(10)
                         .build();
 
                 TextInput useRestrictionDescription = TextInput.create("text-use-restriction-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("정확한 사건 경위를 적어 주세요.")
+                        .setPlaceholder("정확한 사건 경위를 입력해 주시기 바랍니다.")
                         .setMaxLength(890)
                         .build();
 
@@ -188,18 +181,17 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
             case BUG_REPORT_ETC_TICKET -> {
                 TextInput bugReportTicketTitle = TextInput.create("text-bug-report-etc-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("제목을 입력해 주세요")
+                        .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
                 TextInput bugReportTicketTag = TextInput.create("text-bug-report-etc-tag", "태그", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("태그를 입력해 주세요 \n" +
-                                "예시) 웹 관련 버그, 디스코드 봇 관련 버그 등등")
+                        .setPlaceholder("태그를 입력해 주시기 바랍니다.\n(예: 봇/시스템)")
                         .setMaxLength(10)
                         .build();
 
                 TextInput bugReportTicketDescription = TextInput.create("text-bug-report-etc-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("상황 설명을 구체적으로 적어 주세요.")
+                        .setPlaceholder("상황 설명을 구체적으로 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
 
@@ -212,26 +204,25 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
             }
 
             case BUG_REPORT_BUKKIT_TICKET -> {
-                TextInput version = TextInput.create("text-bug-report-bukkit-version", "버킷 버젼", TextInputStyle.SHORT)
-                        .setPlaceholder("버킷 버젼을 입력해 주세요. (1.12.2 ~ 1.19.2) 중 입력")
+                TextInput version = TextInput.create("text-bug-report-bukkit-version", "버킷 버전", TextInputStyle.SHORT)
+                        .setPlaceholder("버킷 버전을 입력해 주시기 바랍니다. (예: 1.12.2/1.19.4)")
                         .setMaxLength(6)
                         .build();
 
                 TextInput log = TextInput.create("text-bug-report-bukkit-log", "버킷 로그", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("버킷 로그를 첨부해 주세요.")
+                        .setPlaceholder("버킷 로그를 첨부해 주시기 바랍니다.")
                         .setMaxLength(4000)
                         .setRequired(false)
                         .build();
 
                 TextInput bukkit = TextInput.create("text-bug-report-bukkit-type", "버킷 종류", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("사용하시는 버킷 이름을 입력해 주세요. \n" +
-                                "(기본값: spigot)")
+                        .setPlaceholder("사용중인 버킷 이름을 입력해 주시기 바랍니다.\n(예: spigot/paper/purpur)")
                         .setMaxLength(10)
                         .setRequired(false)
                         .build();
 
                 TextInput description = TextInput.create("text-bug-report-bukkit-description", "상황", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("상황 설명을 구체적으로 적어주세요.")
+                        .setPlaceholder("상황 설명을 구체적으로 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
 
@@ -246,11 +237,11 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
             case ETC_TICKET -> {
                 TextInput etcTitle = TextInput.create("text-etc-title", "제목", TextInputStyle.SHORT)
-                        .setPlaceholder("제목을 입력해 주세요.")
+                        .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
                 TextInput etcDescription = TextInput.create("text-etc-description", "본문", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("본문을 입력해 주세요.")
+                        .setPlaceholder("본문을 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
                 modal = Modal.create("modal-etc-ticket", "기타 문의")

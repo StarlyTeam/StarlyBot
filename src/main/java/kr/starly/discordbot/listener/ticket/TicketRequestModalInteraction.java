@@ -9,7 +9,9 @@ import kr.starly.discordbot.repository.TicketModalDataRepository;
 import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
@@ -17,6 +19,7 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.EnumSet;
 
 @BotEvent
@@ -25,6 +28,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String TICKET_CHANNEL_ID = configProvider.getString("TICKET_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
+    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
 
@@ -43,10 +47,19 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
         try {
             Category category = event.getGuild().getCategoryById(TICKET_CATEGORY_ID);
             textChannel = category.createTextChannel((ticketInfoService.getLastIndex() + 1) + "-" + event.getUser().getGlobalName() + "-" + ticketStatus.getName())
-                    .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
+                    .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                     .complete();
 
-            event.reply("성공적으로 티켓을 생성 하였습니다! " + textChannel.getAsMention()).setEphemeral(true).queue();
+            MessageEmbed messageEmbed = new EmbedBuilder()
+                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setTitle("<a:success:1141625729386287206> 티켓 생성 완료! <a:success:1141625729386287206>")
+                    .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
+                            "> **" + textChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .build();
+
+            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
         } catch (ErrorResponseException exception) {
             event.reply("모달 처리 과정 중 오류가 발생하였습니다. 잠시만 기달려 주십시오.").setEphemeral(true).queue();
             return;

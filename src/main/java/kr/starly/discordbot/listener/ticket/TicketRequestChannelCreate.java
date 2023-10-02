@@ -9,11 +9,8 @@ import kr.starly.discordbot.repository.TicketModalDataRepository;
 import kr.starly.discordbot.repository.TicketModalFileRepository;
 import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketInfoService;
-import kr.starly.discordbot.util.RoleChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -24,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 @BotEvent
@@ -32,7 +29,8 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
     private final TicketModalFileRepository ticketModalFileRepository = TicketModalFileRepository.getInstance();
@@ -70,7 +68,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String title = data.get(0);
                 String description = data.get(1);
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("제목", "```" + title + "```", true)
                         .addField("설명", "```" + description + "```", false)
@@ -87,7 +85,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String tag = data.get(2);
 
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("제목", "`" + title + "`", true)
                         .addField("태그", "`" + tag + "`", true)
@@ -107,7 +105,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String type = "네".equals(data.get(2)) && data.get(2) != null ? "통화" : "채팅";
 
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("제목", "`" + title + "`", true)
                         .addField("통화 여부", "`" + type + "`", true)
@@ -128,7 +126,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                     String description = data.get(2);
 
                     descriptionEmbed = new EmbedBuilder()
-                            .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                            .setColor(Color.decode(EMBED_COLOR))
                             .setTitle("고객센터 알림")
                             .addField("버전", "`" + version + "`", false)
                             .addField("버킷", "`" + bukkit + "`", false)
@@ -157,7 +155,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 File file = ticketModalFileRepository.getFile(ticketInfo);
 
                 descriptionEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("버전", "`" + version + "`", true)
                         .addField("버킷", "`" + bukkit + "`", true)
@@ -177,7 +175,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
             case BUG_REPORT_TICKET -> {
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("버전", "`" + data.get(0) + "`", false)
                         .addField("버킷", "`" + data.get(1) + "`", false)
@@ -187,7 +185,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
             case USE_RESTRICTION_TICKET, PURCHASE_INQUIRY_TICKET -> {
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("제목", "```" + data.get(0) + "```", true)
                         .addField("사유", "```" + data.get(1) + "```", false)
@@ -199,7 +197,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
             case QUESTION_TICKET -> {
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(Color.decode(EMBED_COLOR))
                         .setTitle("고객센터 알림")
                         .addField("제목", "`" + data.get(0) + "`", true)
                         .addField("사유", "`" + data.get(2) + "`", true)
@@ -210,28 +208,13 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
         textChannel.sendMessageEmbeds(messageEmbed).addActionRow(button).queue();
 
-        getAdminUsers(textChannel).forEach(admins -> {
-            textChannel.sendMessage(admins.getAsMention()).queue(
-                    message -> {
-                        message.delete().queue();
-                    }
-            );
-        });
+        textChannel.sendMessage(event.getJDA().getRoleById(ADMIN_ROLE).getAsMention())
+                .setAllowedMentions(EnumSet.of(Message.MentionType.ROLE))
+                .mentionRoles(ADMIN_ROLE)
+                .queue(message -> message.delete().queue());
 
         ticketModalDataRepository.removeModalData(channelId);
         ticketUserDataRepository.deleteUser(user.getIdLong());
-    }
-
-    private List<User> getAdminUsers(TextChannel textChannel) {
-        List<User> admins = new ArrayList<>();
-
-        for (Member member : textChannel.getMembers()) {
-            if (RoleChecker.hasAdminRole(member)) {
-                User user = member.getUser();
-                admins.add(user);
-            }
-        }
-        return admins;
     }
 
     private User getUserFromTextChannel(List<Member> members) {
