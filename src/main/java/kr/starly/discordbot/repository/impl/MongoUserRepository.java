@@ -2,7 +2,7 @@ package kr.starly.discordbot.repository.impl;
 
 import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.User;
-import kr.starly.discordbot.repository.UserInfoRepository;
+import kr.starly.discordbot.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-public class MongoUserRepository implements UserInfoRepository {
+public class MongoUserRepository implements UserRepository {
 
     private final MongoCollection<Document> collection;
 

@@ -7,7 +7,7 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.http.service.AuthService;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.service.UserInfoService;
+import kr.starly.discordbot.service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class AuthHandler implements HttpHandler {
 
-    private final UserInfoService userInfoService = DatabaseManager.getUserInfoService();
+    private final UserService userService = DatabaseManager.getUserService();
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
@@ -76,8 +76,8 @@ public class AuthHandler implements HttpHandler {
                     .queue(null, throwable ->
                             LOGGER.warning("해당 유저에게 DM을 보낼 수 없습니다: " + throwable.getMessage()));
 
-            if (userInfoService.getDataByDiscordId(userId) == null) {
-                userInfoService.saveData(userId, userIp, new Date(), 0);
+            if (userService.getDataByDiscordId(userId) == null) {
+                userService.saveData(userId, userIp, new Date(), 0);
                 LOGGER.info("유저 인증을 하였으므로 데이터를 추가했습니다: " + userId);
             } else {
                 LOGGER.warning("이미 데이터베이스에 존재하는 유저입니다: " + userId);

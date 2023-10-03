@@ -33,14 +33,14 @@ public class DatabaseManager {
     private static final MongoCollection<Document> blacklistCollection = database.getCollection(DB_COLLECTION_BLACKLIST);
 
 
-    private static final UserInfoRepository userInfoRepository = new MongoUserInfoRepository(userCollection);
+    private static final UserRepository userRepository = new MongoUserRepository(userCollection);
     private static final TicketRepository ticketRepository = new MongoTicketRepository(ticketCollection);
     private static final WarnRepository warnRepository = new MongoWarnRepository(warnCollection);
     private static final ShortenLinkRepository shortenLinkRepository = new MongoShortenLinkRepository(shortenLinkCollection);
     private static final BlacklistRepository blacklistRepository = new MongoBlacklistRepository(blacklistCollection);
 
 
-    @Getter private static final UserInfoService userInfoService = new UserInfoService(userInfoRepository);
+    @Getter private static final UserService userService = new UserService(userRepository);
     @Getter private static final TicketService ticketService = new TicketService(ticketRepository);
     @Getter private static final WarnService warnService = new WarnService(warnRepository);
     @Getter private static final ShortenLinkService shortenLinkService = new ShortenLinkService(shortenLinkRepository);

@@ -4,7 +4,7 @@ import kr.starly.discordbot.entity.User;
 
 import java.util.List;
 
-public interface UserInfoRepository {
+public interface UserRepository {
 
     void put(User user);
     User findByDiscordId(long discordId);
