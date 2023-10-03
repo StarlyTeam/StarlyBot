@@ -56,6 +56,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
+            return;
         }
 
         try {
@@ -95,7 +96,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:success:1141625729386287206> 오류 | 임베드생성 실패 <a:success:1141625729386287206>")
-                    .setDescription("**임베드를 생성하지 못했습니다.**")
+                    .setDescription("**임베드를 생성하지 못 했습니다.**")
                     .build();
             event.replyEmbeds(embed).queue();
         }
