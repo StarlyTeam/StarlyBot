@@ -1,11 +1,12 @@
 package kr.starly.discordbot.entity;
 
 import kr.starly.discordbot.enums.TicketType;
+import org.jetbrains.annotations.NotNull;
 
 public record Ticket(
-        long openBy,
-        long closedBy,
-        long channelId,
-        TicketType ticketStatus,
-        long index
+        @NotNull long openBy,
+        @NotNull long closedBy,
+        @NotNull long channelId,
+        @NotNull TicketType ticketStatus,
+        @NotNull long index
 ) {}

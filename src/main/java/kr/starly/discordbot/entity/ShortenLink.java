@@ -1,6 +1,8 @@
 package kr.starly.discordbot.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 public record ShortenLink(
-        String originUrl,
-        String shortenUrl
+        @NotNull String originUrl,
+        @NotNull String shortenUrl
 ) {}
