@@ -11,7 +11,7 @@ public record Plugin(
         @NotNull String KRName,
         @NotNull Emoji emoji,
         @NotNull String wikiUrl,
-        @Nullable String iconUrl,
+        @NotNull String iconUrl,
         @Nullable String videoUrl,
         @NotNull String gifUrl,
         @NotNull List<String> dependency,
