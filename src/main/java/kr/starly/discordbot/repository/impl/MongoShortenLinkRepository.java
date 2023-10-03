@@ -17,12 +17,13 @@ public class MongoShortenLinkRepository implements ShortenLinkRepository {
 
     @Override
     public void put(ShortenLink shortenLink) {
+        Document filter = new Document("shortenUrl", shortenLink.shortenUrl());
+
         Document document = new Document();
         document.put("originUrl", shortenLink.originUrl());
         document.put("shortenUrl", shortenLink.shortenUrl());
 
-        if (findByOriginUrl(shortenLink.originUrl()) != null) {
-            Document filter = new Document("originUrl", shortenLink.originUrl());
+        if (collection.find(filter).first() != null) {
             collection.updateOne(filter, new Document("$set", document));
         } else {
             collection.insertOne(document);
@@ -32,12 +33,8 @@ public class MongoShortenLinkRepository implements ShortenLinkRepository {
     @Override
     public ShortenLink findByOriginUrl(String originUrl) {
         Document filter = new Document("originUrl", originUrl);
-
         Document document = collection.find(filter).first();
-        if (document == null) return null;
-
-        String shortenUrl = document.getString("shortenUrl");
-        return new ShortenLink(originUrl, shortenUrl);
+        return parseShortenLink(document);
     }
 
     @Override
