@@ -83,6 +83,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
+            return;
         }
 
         MessageEmbed messageEmbed;

@@ -52,6 +52,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
+            return;
         }
 
         String subCommand = event.getSubcommandName();
