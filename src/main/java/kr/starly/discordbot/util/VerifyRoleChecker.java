@@ -10,9 +10,9 @@ public class VerifyRoleChecker {
 
     private VerifyRoleChecker() {}
 
-    private final static ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final static String AUTH_ROLE = configProvider.getString("AUTH_ROLE");
-    private final static String GUILD_ID = configProvider.getString("GUILD_ID");
+    private static final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private static final String AUTH_ROLE = configProvider.getString("AUTH_ROLE");
+    private static final String GUILD_ID = configProvider.getString("GUILD_ID");
 
     public static boolean hasVerifyRole(Member member) {
         Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);

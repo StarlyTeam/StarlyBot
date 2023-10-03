@@ -12,9 +12,9 @@ public class RoleChecker {
 
     private RoleChecker() {}
 
-    private final static ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final static String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
-    private final static String GUILD_ID = configProvider.getString("GUILD_ID");
+    private static final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private static final String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
+    private static final String GUILD_ID = configProvider.getString("GUILD_ID");
 
     public static boolean hasAdminRole(Member member) {
         Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
