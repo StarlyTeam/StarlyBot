@@ -2,7 +2,6 @@ package kr.starly.discordbot.http;
 
 import com.sun.net.httpserver.HttpServer;
 import kr.starly.discordbot.http.handler.AuthHandler;
-import kr.starly.discordbot.http.handler.PluginFileUploadHandler;
 import kr.starly.discordbot.http.handler.ShortenLinkHandler;
 
 import java.io.IOException;
@@ -17,7 +16,6 @@ public class WebServer {
         if (isPortAvailable(port)) {
             server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/auth/", new AuthHandler());
-            server.createContext("/upload/", new PluginFileUploadHandler());
             server.createContext("/", new ShortenLinkHandler());
             server.setExecutor(null);
             server.start();
