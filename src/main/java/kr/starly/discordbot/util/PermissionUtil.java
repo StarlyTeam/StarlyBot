@@ -13,7 +13,7 @@ public class PermissionUtil {
 
     private PermissionUtil() {}
 
-    private final static ConfigProvider configProvider = ConfigProvider.getInstance();
+    private static final ConfigProvider configProvider = ConfigProvider.getInstance();
 
     public static boolean hasPermission(Member member, Permission permission) {
         return member.hasPermission(permission);
