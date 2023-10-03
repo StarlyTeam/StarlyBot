@@ -60,6 +60,7 @@ public class Main {
         botManager.stopBot();
         webServer.stop();
         scanner.close();
+        System.exit(0);
     }
 
     private static void restartBot() {
