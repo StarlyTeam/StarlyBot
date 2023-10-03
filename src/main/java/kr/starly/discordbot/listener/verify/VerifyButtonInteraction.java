@@ -59,7 +59,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<:notice:1141720944935719002> 유저인증 | 인증이 안되시나요? <:notice:1141720944935719002>")
                         .setDescription("> **인증이 안 될 경우 아래 항목을 확인해보세요.\n" +
-                                "> **문제가 계속되면 관리자에게 DM으로 문의해주세요.\n" +
+                                "> **문제가 계속되면 관리자에게 DM으로 문의해 주세요.\n" +
                                 "\n" +
                                 "───────────────────────────────────────────────── \n" +
                                 "> **`1️⃣` 계정 상태 (인증된 계정, 차단된 계정 등)를 확인하세요.**\n" +

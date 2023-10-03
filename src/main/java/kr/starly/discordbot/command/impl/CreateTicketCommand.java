@@ -44,7 +44,7 @@ public class CreateTicketCommand implements DiscordCommand {
                         .withEmoji(Emoji.fromUnicode("❓")))
 
                 .addOptions(SelectOption.of("맞춤 상담", "consulting-ticket")
-                        .withDescription("개인 맞춤형 조언이나 지원을 원하시면 선택해주세요.")
+                        .withDescription("개인 맞춤형 조언이나 지원을 원하시면 선택해 주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDDE3\uFE0F")))
 
                 .addOptions(SelectOption.of("결제 문의", "purchase-inquiry-ticket")
@@ -52,7 +52,7 @@ public class CreateTicketCommand implements DiscordCommand {
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDCB3")))
 
                 .addOptions(SelectOption.of("서비스 제한 문의", "use-restriction-ticket")
-                        .withDescription("계정이나 서비스의 제한 관련 문의를 해주세요.")
+                        .withDescription("계정이나 서비스의 제한 관련 문의를 해 주세요.")
                         .withEmoji(Emoji.fromUnicode("\uD83D\uDCCE")))
 
                 .addOptions(SelectOption.of("버그 보고", "bug-report-ticket")

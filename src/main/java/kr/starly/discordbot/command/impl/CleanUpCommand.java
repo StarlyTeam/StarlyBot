@@ -35,7 +35,7 @@ public class CleanUpCommand implements DiscordCommand {
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
-                    .setDescription("**청소할 메시지의 개수를 입력해주세요. 예) ?청소 10**")
+                    .setDescription("**청소할 메시지의 개수를 입력해 주세요. 예) ?청소 10**")
                     .build();
 
             event.getChannel().sendMessageEmbeds(messageEmbed).queue();
@@ -59,7 +59,7 @@ public class CleanUpCommand implements DiscordCommand {
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
-                    .setDescription("**유효한 숫자를 입력해주세요. 예) ?청소 10**")
+                    .setDescription("**유효한 숫자를 입력해 주세요. 예) ?청소 10**")
                     .build();
 
             event.getChannel().sendMessageEmbeds(messageEmbed).queue();
@@ -73,7 +73,7 @@ public class CleanUpCommand implements DiscordCommand {
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1141625729386287206> 성공 | 채팅청소 <a:success:1141625729386287206>")
-                .setDescription("**" + count + "개의 메시지를 청소했습니다.**")
+                .setDescription("**" + count + "개의 메시지를 청소 했습니다.**")
                 .build();
 
         channel.sendMessageEmbeds(messageEmbed).queue();

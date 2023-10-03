@@ -35,7 +35,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
         if (Ticket != null && isExistUserTicket(event.getJDA(), Ticket.channelId())) {
             TextChannel textChannel = event.getJDA().getTextChannelById(Ticket.channelId());
-            String message = textChannel != null ? "이미 티켓이 있습니다! " + textChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해주세요.";
+            String message = textChannel != null ? "이미 티켓이 있습니다! " + textChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해 주세요.";
             event.reply(message).setEphemeral(true).queue();
             return;
         }
@@ -204,7 +204,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
             }
 
             case BUG_REPORT_BUKKIT_TICKET -> {
-                TextInput version = TextInput.create("text-bug-report-bukkit-version", "버킷 버전", TextInputStyle.SHORT)
+                TextInput version = TextInput.create("text-bug-report-bukkit-mcVersion", "버킷 버전", TextInputStyle.SHORT)
                         .setPlaceholder("버킷 버전을 입력해 주시기 바랍니다. (예: 1.12.2/1.19.4)")
                         .setMaxLength(6)
                         .build();
