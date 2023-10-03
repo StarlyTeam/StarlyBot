@@ -15,8 +15,8 @@ import java.awt.*;
 public class VerifyModalInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
-    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
     private final int WEB_PORT = configProvider.getInt("WEB_PORT");
 
@@ -33,7 +33,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
             String authLink = "http://" + WEB_ADDRESS + ":" + WEB_PORT + "/auth/" + discordId + "/" + token;
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR))
+                    .setColor(EMBED_COLOR)
                     .setTitle("<a:success:1141625729386287206> 유저인증 | 인증 단계를 완료해주세요! <a:success:1141625729386287206>")
                     .setDescription("> **커뮤니티를 막힘 없이 이용하려면, 인증을 완료해주세요! 😊**\n"
                             + "> **[여기를 클릭](" + authLink + ")하여 인증을 완료해 주세요.**\n"
@@ -45,7 +45,7 @@ public class VerifyModalInteraction extends ListenerAdapter {
 
         } else {
             MessageEmbed errorMessage = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_ERROR))
+                    .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:amount:1141721287526465656> 오류 | 인증 실패! <a:amount:1141721287526465656>")
                     .setDescription("> **약관에 동의하지 않으셨습니다.**\n"
                             + "> **서비스 이용을 원하시면 약관에 동의해주세요.**\n\u1CBB")

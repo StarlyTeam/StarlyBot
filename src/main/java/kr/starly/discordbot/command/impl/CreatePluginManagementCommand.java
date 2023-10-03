@@ -21,7 +21,7 @@ import java.awt.*;
 public class CreatePluginManagementCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -31,7 +31,7 @@ public class CreatePluginManagementCommand implements DiscordCommand {
         }
 
         MessageEmbed verifyEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
+                .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1141623256558866482> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1141623256558866482>")
                 .setDescription("> **플러그인 관리 메뉴입니다.** \n" +
                         "> **아래 선택 메뉴에서 원하는 작업을 선택하세요.** \n\n" +

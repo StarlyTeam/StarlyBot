@@ -100,10 +100,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                     request.close();
 
                     int status = conn.getResponseCode();
-                    if (status != HttpsURLConnection.HTTP_OK) {
-                        System.out.println(status);
-                        System.out.println(conn.getResponseMessage());
-                    } else {
+                    if (status == HttpsURLConnection.HTTP_OK) {
                         InputStream is;
                         if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
                             is = conn.getInputStream();
@@ -159,10 +156,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                     conn.setRequestProperty("Authorization", "Bearer " + API_TOKEN);
 
                     int status = conn.getResponseCode();
-                    if (status != HttpsURLConnection.HTTP_OK) {
-                        System.out.println(status);
-                        System.out.println(conn.getResponseMessage());
-                    } else {
+                    if (status == HttpsURLConnection.HTTP_OK) {
                         InputStream is;
                         if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
                             is = conn.getInputStream();
@@ -213,10 +207,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                     conn.setRequestProperty("Authorization", "Bearer " + API_TOKEN);
 
                     int status = conn.getResponseCode();
-                    if (status != HttpsURLConnection.HTTP_OK) {
-                        System.out.println(status);
-                        System.out.println(conn.getResponseMessage());
-                    } else {
+                    if (status == HttpsURLConnection.HTTP_OK) {
                         InputStream is;
                         if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
                             is = conn.getInputStream();

@@ -44,9 +44,9 @@ import java.awt.*;
 public class ShortenLinkCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
-    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -63,7 +63,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 ShortenLinkService shortenLinkService = DatabaseManager.getShortenLinkService();
                 if (shortenLinkService.getDataByShortenUrl(shortenUrl) != null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
-                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1141623256558866482> 오류 | 존재하는 링크 <a:loading:1141623256558866482>")
                             .setDescription("> **해당 단축링크는 이미 존재합니다.**")
                             .build();
@@ -73,7 +73,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
 
                 shortenLinkService.saveData(originUrl, shortenUrl);
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 성공 | 단축링크 생성 <a:success:1141625729386287206>")
                         .setDescription("> **단축링크를 생성하였습니다.**\n" +
                                 "> **`" + originUrl + "` ↔ `" + shortenUrl + "`**"
@@ -88,7 +88,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
 
                 if (originUrl == null && shortenUrl == null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
-                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
                             .setDescription("> **원본링크, 단축링크 중 하나 이상은 입력해 주세요.**")
                             .build();
@@ -103,7 +103,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                         : shortenLinkService.getDataByOriginUrl(originUrl.getAsString())
                 ) == null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
-                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1141623256558866482> 오류 | 미존재 <a:loading:1141623256558866482>")
                             .setDescription("> **해당 단축링크는 존재하지 않습니다..**")
                             .build();
@@ -118,7 +118,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 }
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 성공 | 단축링크 삭제 <a:success:1141625729386287206>")
                         .setDescription("> **단축링크를 삭제하였습니다.**\n" +
                                 "> **" + originUrl + " ↔ " + shortenUrl + "**"
@@ -133,7 +133,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 String WEB_PORT = configProvider.getString("WEB_PORT");
 
                 EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR))
+                        .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1141623256558866482> 단축링크 목록 <a:loading:1141623256558866482>");
 
                 StringBuilder descriptionBuilder = new StringBuilder("> **아래는 현재 등록된 단축 링크들의 목록입니다.**\n\n");

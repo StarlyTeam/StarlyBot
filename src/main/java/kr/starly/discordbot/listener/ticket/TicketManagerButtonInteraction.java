@@ -32,8 +32,8 @@ import java.util.concurrent.TimeUnit;
 public class TicketManagerButtonInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
-    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final String WARN_CHANNEL_ID = configProvider.getString("WARN_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
@@ -77,7 +77,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             User ticketUser = textChannel.getJDA().getUserById(ticketUserId);
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("고객센터 도우미")
                     .setDescription("상담이 도움 되셨나요? 아래 별점을 통해 평가해 주세요!")
                     .build();
@@ -133,7 +133,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                 warnService.saveData(warnInfo);
                 
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_ERROR))
+                        .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
                         .setDescription("> **" + ticketUser.getAsMention() + " 님에게 " + warnInfo.amount() + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + warnInfo.reason())

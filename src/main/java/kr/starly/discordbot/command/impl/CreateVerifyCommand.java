@@ -20,7 +20,7 @@ import java.awt.*;
 public class CreateVerifyCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -32,7 +32,7 @@ public class CreateVerifyCommand implements DiscordCommand {
         event.getMessage().delete().queue();
 
         MessageEmbed verifyEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
+                .setColor(EMBED_COLOR)
                 .setTitle("<a:success:1141625729386287206> 유저인증 | 스탈리 <a:success:1141625729386287206>")
                 .setDescription("> **스탈리 커뮤니티에 오신걸 환영합니다.** \n" +
                         "> **서버에 입장하기 전 아래 `인증하기` 버튼을 클릭해주세요.** \n\n" +

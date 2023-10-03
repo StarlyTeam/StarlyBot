@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-public class MongoUserInfoRepository implements UserInfoRepository {
+public class MongoUserRepository implements UserInfoRepository {
 
     private final MongoCollection<Document> collection;
 
@@ -19,16 +19,16 @@ public class MongoUserInfoRepository implements UserInfoRepository {
     public void put(User user) {
         Document filter = new Document("discordId", user.discordId());
 
-        Document newDocument = new Document();
-        newDocument.put("discordId", user.discordId());
-        newDocument.put("ip", user.ip());
-        newDocument.put("verifiedAt", user.verifiedAt());
-        newDocument.put("point", user.point());
+        Document document = new Document();
+        document.put("discordId", user.discordId());
+        document.put("ip", user.ip());
+        document.put("verifiedAt", user.verifiedAt());
+        document.put("point", user.point());
 
         if (collection.find(filter).first() != null) {
-            collection.updateOne(filter, new Document("$set", newDocument));
+            collection.updateOne(filter, new Document("$set", document));
         } else {
-            collection.insertOne(newDocument);
+            collection.insertOne(document);
         }
     }
 

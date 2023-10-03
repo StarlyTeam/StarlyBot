@@ -67,9 +67,9 @@ import java.util.Date;
 public class WarnCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
-    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final WarnService warnService = DatabaseManager.getWarnService();
 
@@ -95,7 +95,7 @@ public class WarnCommand implements DiscordSlashCommand {
                 int warnToAdd = getSafeIntFromOption(event.getOption("경고"));
 
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
                         .setDescription("> **" + userForAdd.getAsMention() + " 님에게 " + warnToAdd + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + reason)
@@ -122,7 +122,7 @@ public class WarnCommand implements DiscordSlashCommand {
                 String reason = event.getOption("사유").getAsString();
 
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_ERROR))
+                        .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:success:1141625729386287206> 제거 완료 | 경고 <a:success:1141625729386287206>")
                         .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + removeAmount + "만큼 제거하였습니다.** \n" +
                                 "사유 > `" + reason + "`")
@@ -149,7 +149,7 @@ public class WarnCommand implements DiscordSlashCommand {
                 String reason = event.getOption("사유").getAsString();
 
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR))
+                        .setColor(EMBED_COLOR)
                         .setTitle("<a:success:1141625729386287206> 설정 완료 | 경고 <a:success:1141625729386287206>")
                         .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 " + warnToSet + "로 설정 되었습니다.** \n" +
                                 "사유 > " + reason)
@@ -169,7 +169,7 @@ public class WarnCommand implements DiscordSlashCommand {
                 String userAvatarReset = event.getOption("유저").getAsUser().getAvatarUrl();
 
                 messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 초기화 완료 | 경고 <a:success:1141625729386287206>")
                         .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 초기화 하였습니다.**")
                         .setThumbnail(userAvatarReset)
@@ -205,7 +205,7 @@ public class WarnCommand implements DiscordSlashCommand {
         String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getAvatarUrl();
 
         MessageEmbed messageEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
+                .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1141623256558866482> 확인 | 경고 <a:loading:1141623256558866482>")
                 .setDescription("> **<@" + targetId + ">님의 현재 경고: " + warnService.getTotalWarn(targetId) + "**")
                 .setThumbnail(userAvatarCheck)

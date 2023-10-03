@@ -20,7 +20,7 @@ import java.util.Set;
 public class HelpCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -32,7 +32,7 @@ public class HelpCommand implements DiscordCommand {
         event.getMessage().delete();
 
         EmbedBuilder embed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
+                .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1141623256558866482> 도움말 | 물음표 명령어 <a:loading:1141623256558866482>");
 
         String packageName = "kr.starly.discordbot.command.impl";

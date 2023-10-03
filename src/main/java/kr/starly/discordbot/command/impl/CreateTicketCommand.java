@@ -22,7 +22,7 @@ import java.awt.*;
 public class CreateTicketCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -65,7 +65,7 @@ public class CreateTicketCommand implements DiscordCommand {
                 .build();
 
         MessageEmbed embed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR))
+                .setColor(EMBED_COLOR)
                 .setTitle("<:ticket:1158139819650711582> 고객센터 문의 | 스탈리 <:ticket:1158139819650711582>")
                 .setDescription("> **스탈리 고객센터에 오신 것을 환영합니다.** \n" +
                         "> **여기에서는 귀하의 문의사항이나 건의사항을 기다리고 있습니다.** \n\n" +

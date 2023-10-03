@@ -47,9 +47,9 @@ import java.util.List;
 public class BlacklistCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR = configProvider.getString("EMBED_COLOR");
-    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -67,7 +67,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 BlacklistService blacklistService = DatabaseManager.getBlacklistService();
                 if (blacklistService.getDataByUserId(target.getIdLong()) != null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
-                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1141623256558866482> 오류 | 등록된 유저 <a:loading:1141623256558866482>")
                             .setDescription("> **" + target.getAsMention() + "님은 이미 블랙리스트에 등록되어 있습니다.**")
                             .build();
@@ -78,7 +78,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 blacklistService.saveData(target.getIdLong(), event.getUser().getIdLong(), reason, new Date());
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 성공 | 블랙리스트 등록 <a:success:1141625729386287206>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에 등록하였습니다.**")
                         .build();
@@ -92,7 +92,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 if (blacklistService.getDataByUserId(target.getIdLong()) == null) {
 
                     MessageEmbed messageEmbed = new EmbedBuilder()
-                            .setColor(Color.decode(EMBED_COLOR_ERROR))
+                            .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1141623256558866482> 오류 | 미등록 유저 <a:loading:1141623256558866482>")
                             .setDescription("> **" + target.getAsMention() + "님은 블랙리스트에 등록되어 있지 않습니다.**")
                             .build();
@@ -103,7 +103,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 blacklistService.deleteDataByUserId(target.getIdLong());
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 성공 | 블랙리스트 해제 <a:success:1141625729386287206>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에서 해제하였습니다.**")
                         .build();
@@ -115,7 +115,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 List<Blacklist> blacklists = blacklistService.getAllData();
 
                 EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR))
+                        .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1141623256558866482> 블랙리스트 목록 <a:loading:1141623256558866482>");
 
                 StringBuilder descriptionBuilder = new StringBuilder("> **아래는 현재 블랙리스트에 등록된 유저들의 목록입니다.**\n\n");

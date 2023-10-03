@@ -28,7 +28,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String TICKET_CHANNEL_ID = configProvider.getString("TICKET_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
 
@@ -51,7 +51,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                     .complete();
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1141625729386287206> 티켓 생성 완료! <a:success:1141625729386287206>")
                     .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
                             "> **" + textChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")

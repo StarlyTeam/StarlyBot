@@ -23,7 +23,7 @@ public class AuthHandler implements HttpHandler {
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final String AUTH_ROLE = configProvider.getString("AUTH_ROLE");
 
     private final AuthService authService = AuthService.getInstance();
@@ -61,7 +61,7 @@ public class AuthHandler implements HttpHandler {
             guild.addRoleToMember(member, authorizedRole).queue();
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                    .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1141625729386287206> 성공 | 인증 완료 <a:success:1141625729386287206>")
                     .setDescription("> **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**\n"
                             + "> **커뮤니티의 모든 기능을 마음껏 즐기세요! 🥳**\n"

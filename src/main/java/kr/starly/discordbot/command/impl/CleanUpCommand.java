@@ -20,8 +20,8 @@ import java.awt.*;
 public class CleanUpCommand implements DiscordCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String EMBED_COLOR_SUCCESS = configProvider.getString("EMBED_COLOR_SUCCESS");
-    private final String EMBED_COLOR_ERROR = configProvider.getString("EMBED_COLOR_ERROR");
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     @Override
     public void execute(MessageReceivedEvent event) {
@@ -33,7 +33,7 @@ public class CleanUpCommand implements DiscordCommand {
         String[] args = event.getMessage().getContentRaw().split("\\s", 2);
         if (args.length < 2) {
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_ERROR))
+                    .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
                     .setDescription("**청소할 메시지의 개수를 입력해주세요. 예) ?청소 10**")
                     .build();
@@ -46,7 +46,7 @@ public class CleanUpCommand implements DiscordCommand {
             int count = Integer.parseInt(args[1]);
             if (count < 1 || count > 99) {
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(Color.decode(EMBED_COLOR_ERROR))
+                        .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
                         .setDescription("**메시지는 1개에서 99개까지만 삭제할 수 있습니다.**")
                         .build();
@@ -57,7 +57,7 @@ public class CleanUpCommand implements DiscordCommand {
             }
         } catch (NumberFormatException e) {
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(Color.decode(EMBED_COLOR_ERROR))
+                    .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
                     .setDescription("**유효한 숫자를 입력해주세요. 예) ?청소 10**")
                     .build();
@@ -71,7 +71,7 @@ public class CleanUpCommand implements DiscordCommand {
                 .takeAsync(count + 1)
                 .thenAccept(channel::purgeMessages);
         MessageEmbed messageEmbed = new EmbedBuilder()
-                .setColor(Color.decode(EMBED_COLOR_SUCCESS))
+                .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1141625729386287206> 성공 | 채팅청소 <a:success:1141625729386287206>")
                 .setDescription("**" + count + "개의 메시지를 청소했습니다.**")
                 .build();

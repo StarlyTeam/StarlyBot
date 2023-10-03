@@ -1,15 +1,14 @@
 package kr.starly.discordbot.repository;
 
-import kr.starly.discordbot.entity.PluginInfoDTO;
+import kr.starly.discordbot.entity.Plugin;
 
 import java.util.List;
 
 
 public interface PluginRepository {
 
-    void save(PluginInfoDTO pluginInfo);
-    void remove(String pluginNameEnglish);
-    PluginInfoDTO findByName(String pluginNameEnglish);
-    List<PluginInfoDTO> findAll();
-    void update(PluginInfoDTO pluginInfo);
+    void save(Plugin pluginInfo);
+    void deleteByPluginNameEN(String pluginNameEnglish);
+    Plugin findByName(String pluginNameEnglish);
+    List<Plugin> findAll();
 }
