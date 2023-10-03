@@ -46,12 +46,13 @@ public class CommandListenerBase extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        String message = event.getMessage().getContentDisplay();
+        if (event.getAuthor().isBot()) return;
 
+        String message = event.getMessage().getContentDisplay();
         if (!message.startsWith("?")) return;
 
-        String[] split = message.substring(1).split(" ", 2);
-        String command = split[0].toLowerCase();
+        String[] args = message.substring(1).split(" ", 1);
+        String command = args[0].toLowerCase();
         DiscordCommand commandExecutor = commands.get(command);
 
         if (commandExecutor != null) {
