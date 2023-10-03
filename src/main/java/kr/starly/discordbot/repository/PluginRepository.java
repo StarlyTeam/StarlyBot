@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface PluginRepository {
 
-    void save(Plugin pluginInfo);
-    void deleteByPluginNameEN(String pluginNameEnglish);
-    Plugin findByName(String pluginNameEnglish);
+    void save(Plugin plugin);
+    Plugin findByENName(String ENName);
     List<Plugin> findAll();
+    void deleteByENName(String ENName);
 }
