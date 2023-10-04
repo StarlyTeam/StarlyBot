@@ -51,7 +51,7 @@ public class CommandListenerBase extends ListenerAdapter {
         String message = event.getMessage().getContentDisplay();
         if (!message.startsWith("?")) return;
 
-        String[] args = message.substring(1).split(" ", 1);
+        String[] args = message.substring(1).split(" ", 2);
         String command = args[0].toLowerCase();
         DiscordCommand commandExecutor = commands.get(command);
 
