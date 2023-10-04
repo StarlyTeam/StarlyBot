@@ -2,7 +2,7 @@ package kr.starly.discordbot.service;
 
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.repository.PluginRepository;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public record PluginService(PluginRepository pluginRepository) {
     public void saveData(
             String ENName,
             String KRName,
-            Emoji emoji,
+            UnicodeEmoji emoji,
             String wikiUrl,
             String iconUrl,
             String videoUrl,

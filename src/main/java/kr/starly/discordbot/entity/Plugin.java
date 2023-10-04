@@ -1,6 +1,6 @@
 package kr.starly.discordbot.entity;
 
-import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,7 +9,7 @@ import java.util.List;
 public record Plugin(
         @NotNull String ENName,
         @NotNull String KRName,
-        @NotNull Emoji emoji,
+        @NotNull UnicodeEmoji emoji,
         @NotNull String wikiUrl,
         @NotNull String iconUrl,
         @Nullable String videoUrl,
