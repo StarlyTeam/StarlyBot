@@ -18,6 +18,8 @@ public class DatabaseManager {
     private static final String DB_HOST = configProvider.getString("DB_HOST");
     private static final String DB_DATABASE = configProvider.getString("DB_DATABASE");
     private static final String DB_COLLECTION_USER = configProvider.getString("DB_COLLECTION_USER");
+    private static final String DB_COLLECTION_PLUGIN = configProvider.getString("DB_COLLECTION_PLUGIN");
+    private static final String DB_COLLECTION_PLUGIN_FILE = configProvider.getString("DB_COLLECTION_PLUGIN_FILE");
     private static final String DB_COLLECTION_TICKET = configProvider.getString("DB_COLLECTION_TICKET");
     private static final String DB_COLLECTION_WARN = configProvider.getString("DB_COLLECTION_WARN");
     private static final String DB_COLLECTION_SHORTEN_LINK = configProvider.getString("DB_COLLECTION_SHORTEN_LINK");
@@ -27,6 +29,8 @@ public class DatabaseManager {
     private static final MongoDatabase database = mongoClient.getDatabase(DB_DATABASE);
 
     private static final MongoCollection<Document> userCollection = database.getCollection(DB_COLLECTION_USER);
+    private static final MongoCollection<Document> pluginCollection = database.getCollection(DB_COLLECTION_PLUGIN);
+    private static final MongoCollection<Document> pluginFileCollection = database.getCollection(DB_COLLECTION_PLUGIN_FILE);
     private static final MongoCollection<Document> ticketCollection = database.getCollection(DB_COLLECTION_TICKET);
     private static final MongoCollection<Document> warnCollection = database.getCollection(DB_COLLECTION_WARN);
     private static final MongoCollection<Document> shortenLinkCollection = database.getCollection(DB_COLLECTION_SHORTEN_LINK);
@@ -34,6 +38,8 @@ public class DatabaseManager {
 
 
     private static final UserRepository userRepository = new MongoUserRepository(userCollection);
+    private static final PluginRepository pluginRepository = new MongoPluginRepository(pluginCollection);
+    private static final PluginFileRepository pluginFileRepository = new MongoPluginFileRepository(pluginFileCollection);
     private static final TicketRepository ticketRepository = new MongoTicketRepository(ticketCollection);
     private static final WarnRepository warnRepository = new MongoWarnRepository(warnCollection);
     private static final ShortenLinkRepository shortenLinkRepository = new MongoShortenLinkRepository(shortenLinkCollection);
@@ -41,6 +47,8 @@ public class DatabaseManager {
 
 
     @Getter private static final UserService userService = new UserService(userRepository);
+    @Getter private static final PluginService pluginService = new PluginService(pluginRepository);
+    @Getter private static final PluginFileService pluginFileService = new PluginFileService(pluginFileRepository);
     @Getter private static final TicketService ticketService = new TicketService(ticketRepository);
     @Getter private static final WarnService warnService = new WarnService(warnRepository);
     @Getter private static final ShortenLinkService shortenLinkService = new ShortenLinkService(shortenLinkRepository);

@@ -41,27 +41,25 @@ public class CFImagesUtil {
         request.flush();
         request.close();
 
-        int status = conn.getResponseCode();
-        if (status == HttpsURLConnection.HTTP_OK) {
-            InputStream is;
-            if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+        InputStream is;
+        if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+            is = conn.getInputStream();
+        } else {
+            is = conn.getErrorStream();
+        }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            JsonObject jsonObject = JsonParser.parseString(br.lines().collect(Collectors.joining(""))).getAsJsonObject();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        JsonObject jsonObject = JsonParser.parseString(br.lines().collect(Collectors.joining(""))).getAsJsonObject();
 
-            JsonArray errors = jsonObject.get("errors").getAsJsonArray();
-            if (!errors.isEmpty()) {
-                return null;
-            }
+        JsonArray errors = jsonObject.get("errors").getAsJsonArray();
+        if (!errors.isEmpty()) {
+            System.out.println(errors);
+            return null;
+        }
 
-            JsonObject result = jsonObject.get("result").getAsJsonObject();
-            JsonArray variants = result.getAsJsonArray("variants");
-            return variants.get(0).getAsString();
-        } else return null;
+        JsonObject result = jsonObject.get("result").getAsJsonObject();
+        JsonArray variants = result.getAsJsonArray("variants");
+        return variants.get(0).getAsString();
     }
 
     public static void deleteImage(String imageId) throws IOException {
@@ -72,22 +70,19 @@ public class CFImagesUtil {
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Authorization", "Bearer " + API_TOKEN);
 
-        int status = conn.getResponseCode();
-        if (status == HttpsURLConnection.HTTP_OK) {
-            InputStream is;
-            if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+        InputStream is;
+        if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+            is = conn.getInputStream();
+        } else {
+            is = conn.getErrorStream();
+        }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            JsonObject jsonObject = JsonParser.parseString(br.lines().collect(Collectors.joining(""))).getAsJsonObject();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        JsonObject jsonObject = JsonParser.parseString(br.lines().collect(Collectors.joining(""))).getAsJsonObject();
 
-            JsonArray errors = jsonObject.get("errors").getAsJsonArray();
-            if (!errors.isEmpty()) {
-                throw new IOException();
-            }
+        JsonArray errors = jsonObject.get("errors").getAsJsonArray();
+        if (!errors.isEmpty()) {
+            System.out.println(errors);
         }
     }
 
@@ -99,22 +94,22 @@ public class CFImagesUtil {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + API_TOKEN);
 
-        int status = conn.getResponseCode();
-        if (status == HttpsURLConnection.HTTP_OK) {
-            InputStream is;
-            if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+        InputStream is;
+        if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+            is = conn.getInputStream();
+        } else {
+            is = conn.getErrorStream();
+        }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            JsonObject jsonObject = JsonParser.parseString(br.lines().collect(Collectors.joining(""))).getAsJsonObject();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        JsonObject jsonObject = JsonParser.parseString(br.lines().collect(Collectors.joining(""))).getAsJsonObject();
 
-            JsonArray errors = jsonObject.get("errors").getAsJsonArray();
-            if (!errors.isEmpty()) return null;
+        JsonArray errors = jsonObject.get("errors").getAsJsonArray();
+        if (!errors.isEmpty()) {
+            System.out.println(errors);
+            return null;
+        }
 
-            return jsonObject.get("result").getAsJsonObject().get("images").getAsJsonArray();
-        } else return null;
+        return jsonObject.get("result").getAsJsonObject().get("images").getAsJsonArray();
     }
 }

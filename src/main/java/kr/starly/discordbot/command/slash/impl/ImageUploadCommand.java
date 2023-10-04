@@ -98,7 +98,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 업로드 완료 | 이미지 <a:success:1141625729386287206>")
-                        .setDescription("**성공적으로 이미지 업로드했습니다.**\n\n```" + imageUrl + "```")
+                        .setDescription("**성공적으로 이미지를 업로드했습니다.**\n\n```" + imageUrl + "```")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();
             }

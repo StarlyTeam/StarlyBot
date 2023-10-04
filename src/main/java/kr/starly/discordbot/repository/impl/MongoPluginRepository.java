@@ -5,6 +5,7 @@ import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.repository.PluginRepository;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -16,19 +17,21 @@ public class MongoPluginRepository implements PluginRepository {
     private final MongoCollection<Document> collection;
 
     @Override
-    public void save(Plugin plugin) {
+    public void put(Plugin plugin) {
         Document filter = new Document("ENName", plugin.ENName());
 
         Document document = new Document();
         document.put("ENName", plugin.ENName());
         document.put("KRName", plugin.KRName());
-        document.put("emoji", plugin.emoji());
+        document.put("emoji", plugin.emoji().getAsCodepoints());
         document.put("wikiUrl", plugin.wikiUrl());
         document.put("iconUrl", plugin.iconUrl());
         document.put("videoUrl", plugin.videoUrl());
         document.put("gifUrl", plugin.gifUrl());
         document.put("dependency", plugin.dependency());
         document.put("manager", plugin.manager());
+        document.put("buyerRole", plugin.buyerRole());
+        document.put("threadId", plugin.threadId());
         document.put("version", plugin.version());
         document.put("price", plugin.price());
 
@@ -68,7 +71,7 @@ public class MongoPluginRepository implements PluginRepository {
 
         String ENName = document.getString("ENName");
         String KRName = document.getString("KRName");
-        Emoji emoji = document.get("emoji", Emoji.class);
+        UnicodeEmoji emoji = Emoji.fromUnicode(document.get("emoji", String.class));
         String wikiUrl = document.getString("wikiUrl");
         String iconUrl = document.getString("iconUrl");
         String videoUrl = document.getString("videoUrl");
@@ -76,9 +79,10 @@ public class MongoPluginRepository implements PluginRepository {
         List<String> dependency = document.get("dependency", List.class);
         List<Long> manager = document.get("manager", List.class);
         Long buyerRole = document.getLong("buyerRole");
+        Long postId = document.getLong("threadId");
         String version = document.getString("version");
         int price = document.getInteger("price");
 
-        return new Plugin(ENName, KRName, emoji, wikiUrl, iconUrl, videoUrl, gifUrl, dependency, manager, buyerRole, version, price);
+        return new Plugin(ENName, KRName, emoji, wikiUrl, iconUrl, videoUrl, gifUrl, dependency, manager, buyerRole, postId, version, price);
     }
 }

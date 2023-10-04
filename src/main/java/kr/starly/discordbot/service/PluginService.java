@@ -19,6 +19,7 @@ public record PluginService(PluginRepository pluginRepository) {
             List<String> dependency,
             List<Long> manager,
             long buyerRole,
+            long threadId,
             String version,
             int price
     ) {
@@ -33,10 +34,11 @@ public record PluginService(PluginRepository pluginRepository) {
                 dependency,
                 manager,
                 buyerRole,
+                threadId,
                 version,
                 price
         );
-        pluginRepository.save(plugin);
+        pluginRepository.put(plugin);
     }
 
     public Plugin getDataByENName(String ENName) {

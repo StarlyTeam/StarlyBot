@@ -41,6 +41,7 @@ DB_HOST: "mongodb://localhost:27017"
 DB_DATABASE: "StarlyBot"
 DB_COLLECTION_USER: "user"
 DB_COLLECTION_PLUGIN: "plugin"
+DB_COLLECTION_PLUGIN_FILE: "pluginFile"
 DB_COLLECTION_TICKET: "ticket"
 DB_COLLECTION_WARN: "warn"
 DB_COLLECTION_SHORTEN_LINK: "shortenLink"
@@ -74,10 +75,10 @@ TICKET_CHANNEL_ID: "1147915298628980879"
 # + -------------------------------------------------------------------------------- + #
 # | PLUGIN MANAGEMENT SETTINGS ( 플러그인 관리 설정 )
 # + -------------------------------------------------------------------------------- + #
-CHANNEL_ID_PLUGIN_MANAGEMENT: "1148012770520989836"
-FREE_PLUGIN_FORUM: "1147998082336825515"
-PREMIUM_PLUGIN_FORUM: "1147998042985865216"
-RELEASE_NOTICE_CHANNEL: "1148487084626169906"
+PLUGIN_MANAGEMENT_CHANNEL_ID: "1148012770520989836"
+FREE_PLUGIN_FORUM_ID: "1147998082336825515"
+PREMIUM_PLUGIN_FORUM_ID: "1147998042985865216"
+RELEASE_NOTICE_CHANNEL_ID: "1148487084626169906"
 
 # + -------------------------------------------------------------------------------- + #
 # | CF IMAGES CONFIGURATION ( 클라우드플레어 Images 설정 )

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PluginRepository {
 
-    void save(Plugin plugin);
+    void put(Plugin plugin);
     Plugin findByENName(String ENName);
     List<Plugin> findAll();
     void deleteByENName(String ENName);

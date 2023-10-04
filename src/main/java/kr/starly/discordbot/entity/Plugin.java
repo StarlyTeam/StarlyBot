@@ -17,6 +17,7 @@ public record Plugin(
         @NotNull List<String> dependency,
         @NotNull List<Long> manager,
         @Nullable Long buyerRole,
+        @NotNull Long threadId,
         @NotNull String version,
         @NotNull int price
 ) {}
