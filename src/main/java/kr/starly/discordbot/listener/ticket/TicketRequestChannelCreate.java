@@ -11,6 +11,7 @@ import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -40,6 +41,9 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
+        Channel channel = event.getChannel();
+        if (!(channel instanceof TextChannel)) return;
+
         TextChannel textChannel = event.getChannel().asTextChannel();
         if (!textChannel.getParentCategoryId().equals(TICKET_CATEGORY_ID)) return;
 
