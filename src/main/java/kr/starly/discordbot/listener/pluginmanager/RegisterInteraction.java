@@ -79,7 +79,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
         switch (registerStatusMap.get(userId)) {
             case MODAL_SUBMITTED -> {
-                // 의존성 설정
+                // 종속성 설정
 
                 List<String> dependency = Stream.of(messageContent.split(",")).map(String::trim).toList();
                 Plugin plugin = sessionDataMap.get(userId);
@@ -101,7 +101,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.DEPENDENCY_ENTERED);
 
-                event.getMessage().reply("의존성을 `" + String.join(", ", dependency) + "` (으)로 설정했습니다.\n아래에 이모지를 입력해 주세요. (백틱 사이에 넣어주세요.)")
+                event.getMessage().reply("종속성을 `" + String.join(", ", dependency) + "` (으)로 설정했습니다.\n아래에 이모지를 입력해 주세요. (백틱 사이에 넣어주세요.)")
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
             }
@@ -538,7 +538,7 @@ public class RegisterInteraction extends ListenerAdapter {
             sessionDataMap.put(userId, plugin);
             registerStatusMap.put(userId, RegisterStatus.MODAL_SUBMITTED);
 
-            event.reply("입력하신 내용입니다 : %s, %s, %s, %s, %d\n의존성을 입력해 주세요.\n예) StarlyCore, ProtocolLib".formatted(ENName, KRName, wikiUrl, videoUrl, price))
+            event.reply("입력하신 내용입니다 : %s, %s, %s, %s, %d\n종속성을 입력해 주세요.\n예) StarlyCore, ProtocolLib".formatted(ENName, KRName, wikiUrl, videoUrl, price))
                     .addActionRow(CANCEL_BUTTON)
                     .queue();
         }
