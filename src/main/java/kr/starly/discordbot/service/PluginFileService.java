@@ -33,15 +33,15 @@ public record PluginFileService(PluginFileRepository pluginFileRepository) {
         return pluginFileRepository.findOne(ENName, mcVersion, version);
     }
 
-    public void deleteDataByENName(String pluginNameEN) {
+    public void deleteData(String pluginNameEN) {
         pluginFileRepository.deleteMany(pluginNameEN);
     }
 
-    public void deleteDataByENName(String pluginNameEN, String version) {
+    public void deleteData(String pluginNameEN, String version) {
         pluginFileRepository.deleteMany(pluginNameEN, version);
     }
 
-    public void deleteDataByENName(String pluginNameEN, MCVersion mcVersion, String version) {
+    public void deleteData(String pluginNameEN, MCVersion mcVersion, String version) {
         pluginFileRepository.deleteOne(pluginNameEN, mcVersion, version);
     }
 }
