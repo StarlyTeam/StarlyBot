@@ -16,22 +16,22 @@ public class MongoPluginRepository implements PluginRepository {
 
     @Override
     public void put(Plugin plugin) {
-        Document filter = new Document("ENName", plugin.ENName());
+        Document filter = new Document("ENName", plugin.getENName());
 
         Document document = new Document();
-        document.put("ENName", plugin.ENName());
-        document.put("KRName", plugin.KRName());
-        document.put("emoji", plugin.emoji());
-        document.put("wikiUrl", plugin.wikiUrl());
-        document.put("iconUrl", plugin.iconUrl());
-        document.put("videoUrl", plugin.videoUrl());
-        document.put("gifUrl", plugin.gifUrl());
-        document.put("dependency", plugin.dependency());
-        document.put("manager", plugin.manager());
-        document.put("buyerRole", plugin.buyerRole());
-        document.put("threadId", plugin.threadId());
-        document.put("version", plugin.version());
-        document.put("price", plugin.price());
+        document.put("ENName", plugin.getENName());
+        document.put("KRName", plugin.getKRName());
+        document.put("emoji", plugin.getEmoji());
+        document.put("wikiUrl", plugin.getWikiUrl());
+        document.put("iconUrl", plugin.getIconUrl());
+        document.put("videoUrl", plugin.getVideoUrl());
+        document.put("gifUrl", plugin.getGifUrl());
+        document.put("dependency", plugin.getDependency());
+        document.put("manager", plugin.getManager());
+        document.put("buyerRole", plugin.getBuyerRole());
+        document.put("threadId", plugin.getThreadId());
+        document.put("version", plugin.getVersion());
+        document.put("price", plugin.getPrice());
 
         if (collection.find(filter).first() != null) {
             collection.updateOne(filter, new Document("$set", document));

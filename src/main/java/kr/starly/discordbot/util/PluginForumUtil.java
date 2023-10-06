@@ -30,12 +30,12 @@ public class PluginForumUtil {
     private PluginForumUtil() {}
 
     public static void createPluginChannel(Plugin plugin) {
-        String postName = plugin.emoji() + "┃" + plugin.KRName();
+        String postName = plugin.getEmoji() + "┃" + plugin.getKRName();
         if (postName.length() > 100) {
             postName = postName.substring(0, 100);
         }
 
-        boolean isPremium = plugin.price() != 0;
+        boolean isPremium = plugin.getPrice() != 0;
 
         JDA jda = DiscordBotManager.getInstance().getJda();
         ForumChannel channel = jda.getForumChannelById(isPremium ? PREMIUM_PLUGIN_FORUM_ID : FREE_PLUGIN_FORUM_ID);
@@ -45,32 +45,32 @@ public class PluginForumUtil {
 
             PluginService pluginService = DatabaseManager.getPluginService();
             Plugin newPlugin = new Plugin(
-                    plugin.ENName(),
-                    plugin.KRName(),
-                    plugin.emoji(),
-                    plugin.wikiUrl(),
-                    plugin.iconUrl(),
-                    plugin.videoUrl(),
-                    plugin.gifUrl(),
-                    plugin.dependency(),
-                    plugin.manager(),
-                    plugin.buyerRole(),
+                    plugin.getENName(),
+                    plugin.getKRName(),
+                    plugin.getEmoji(),
+                    plugin.getWikiUrl(),
+                    plugin.getIconUrl(),
+                    plugin.getVideoUrl(),
+                    plugin.getGifUrl(),
+                    plugin.getDependency(),
+                    plugin.getManager(),
+                    plugin.getBuyerRole(),
                     threadId,
-                    plugin.version(),
-                    plugin.price()
+                    plugin.getVersion(),
+                    plugin.getPrice()
             );
             pluginService.pluginRepository().put(newPlugin);
         });
     }
 
     public static void updatePluginChannel(Plugin plugin) {
-        String postName = plugin.emoji() + "┃" + plugin.KRName();
+        String postName = plugin.getEmoji() + "┃" + plugin.getKRName();
         if (postName.length() > 100) {
             postName = postName.substring(0, 100);
         }
 
         JDA jda = DiscordBotManager.getInstance().getJda();
-        ForumPost post = (ForumPost) jda.getThreadChannelById(plugin.threadId());
+        ForumPost post = (ForumPost) jda.getThreadChannelById(plugin.getThreadId());
 
         post.getMessage().editMessage(MessageEditData.fromCreateData(createMessageData(plugin))).queue();
         post.getThreadChannel().getManager().setName(postName).queue();
@@ -86,7 +86,7 @@ public class PluginForumUtil {
                             .build()
             );
             return MessageCreateBuilder.from(messageCreateData)
-                    .addFiles(FileUpload.fromData(new URL(plugin.iconUrl()).openStream(), "icon.png"))
+                    .addFiles(FileUpload.fromData(new URL(plugin.getIconUrl()).openStream(), "icon.png"))
                     .build();
         } catch (IOException ex) {
             ex.printStackTrace();

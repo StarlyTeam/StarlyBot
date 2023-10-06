@@ -3,13 +3,12 @@ package kr.starly.discordbot.listener.pluginmanager;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Plugin;
-import kr.starly.discordbot.enums.MCVersion;
 import kr.starly.discordbot.enums.RegisterStatus;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.service.PluginFileService;
 import kr.starly.discordbot.service.PluginService;
 import kr.starly.discordbot.util.PermissionUtil;
+import kr.starly.discordbot.util.PluginFileUtil;
 import kr.starly.discordbot.util.PluginForumUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -34,7 +33,6 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,19 +82,19 @@ public class RegisterInteraction extends ListenerAdapter {
                 List<String> dependency = Stream.of(messageContent.split(",")).map(String::trim).toList();
                 Plugin plugin = sessionDataMap.get(userId);
                 Plugin newPlugin = new Plugin(
-                        plugin.ENName(),
-                        plugin.KRName(),
-                        plugin.emoji(),
-                        plugin.wikiUrl(),
-                        plugin.iconUrl(),
-                        plugin.videoUrl(),
-                        plugin.gifUrl(),
+                        plugin.getENName(),
+                        plugin.getKRName(),
+                        plugin.getEmoji(),
+                        plugin.getWikiUrl(),
+                        plugin.getIconUrl(),
+                        plugin.getVideoUrl(),
+                        plugin.getGifUrl(),
                         dependency,
-                        plugin.manager(),
-                        plugin.buyerRole(),
-                        plugin.threadId(),
-                        plugin.version(),
-                        plugin.price()
+                        plugin.getManager(),
+                        plugin.getBuyerRole(),
+                        plugin.getThreadId(),
+                        plugin.getVersion(),
+                        plugin.getPrice()
                 );
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.DEPENDENCY_ENTERED);
@@ -128,19 +126,19 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Plugin plugin = sessionDataMap.get(userId);
                 Plugin newPlugin = new Plugin(
-                        plugin.ENName(),
-                        plugin.KRName(),
+                        plugin.getENName(),
+                        plugin.getKRName(),
                         messageContent.replace("`", ""),
-                        plugin.wikiUrl(),
-                        plugin.iconUrl(),
-                        plugin.videoUrl(),
-                        plugin.gifUrl(),
-                        plugin.dependency(),
-                        plugin.manager(),
-                        plugin.buyerRole(),
-                        plugin.threadId(),
-                        plugin.version(),
-                        plugin.price()
+                        plugin.getWikiUrl(),
+                        plugin.getIconUrl(),
+                        plugin.getVideoUrl(),
+                        plugin.getGifUrl(),
+                        plugin.getDependency(),
+                        plugin.getManager(),
+                        plugin.getBuyerRole(),
+                        plugin.getThreadId(),
+                        plugin.getVersion(),
+                        plugin.getPrice()
                 );
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.EMOJI_ENTERED);
@@ -162,19 +160,19 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Plugin plugin = sessionDataMap.get(userId);
                 Plugin newPlugin = new Plugin(
-                        plugin.ENName(),
-                        plugin.KRName(),
-                        plugin.emoji(),
-                        plugin.wikiUrl(),
+                        plugin.getENName(),
+                        plugin.getKRName(),
+                        plugin.getEmoji(),
+                        plugin.getWikiUrl(),
                         iconUrl,
-                        plugin.videoUrl(),
-                        plugin.gifUrl(),
-                        plugin.dependency(),
-                        plugin.manager(),
-                        plugin.buyerRole(),
-                        plugin.threadId(),
-                        plugin.version(),
-                        plugin.price()
+                        plugin.getVideoUrl(),
+                        plugin.getGifUrl(),
+                        plugin.getDependency(),
+                        plugin.getManager(),
+                        plugin.getBuyerRole(),
+                        plugin.getThreadId(),
+                        plugin.getVersion(),
+                        plugin.getPrice()
                 );
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.ICON_UPLOADED);
@@ -191,19 +189,19 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Plugin plugin = sessionDataMap.get(userId);
                 Plugin newPlugin = new Plugin(
-                        plugin.ENName(),
-                        plugin.KRName(),
-                        plugin.emoji(),
-                        plugin.wikiUrl(),
-                        plugin.iconUrl(),
-                        plugin.videoUrl(),
+                        plugin.getENName(),
+                        plugin.getKRName(),
+                        plugin.getEmoji(),
+                        plugin.getWikiUrl(),
+                        plugin.getIconUrl(),
+                        plugin.getVideoUrl(),
                         imageUrl,
-                        plugin.dependency(),
-                        plugin.manager(),
-                        plugin.buyerRole(),
-                        plugin.threadId(),
-                        plugin.version(),
-                        plugin.price()
+                        plugin.getDependency(),
+                        plugin.getManager(),
+                        plugin.getBuyerRole(),
+                        plugin.getThreadId(),
+                        plugin.getVersion(),
+                        plugin.getPrice()
                 );
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.GIF_UPLOADED);
@@ -407,26 +405,26 @@ public class RegisterInteraction extends ListenerAdapter {
                 List<User> users = event.getMentions().getUsers();
                 Plugin plugin = sessionDataMap.get(userId);
                 Plugin newPlugin = new Plugin(
-                        plugin.ENName(),
-                        plugin.KRName(),
-                        plugin.emoji(),
-                        plugin.wikiUrl(),
-                        plugin.iconUrl(),
-                        plugin.videoUrl(),
-                        plugin.gifUrl(),
-                        plugin.dependency(),
+                        plugin.getENName(),
+                        plugin.getKRName(),
+                        plugin.getEmoji(),
+                        plugin.getWikiUrl(),
+                        plugin.getIconUrl(),
+                        plugin.getVideoUrl(),
+                        plugin.getGifUrl(),
+                        plugin.getDependency(),
                         users.stream().map(User::getIdLong).toList(),
-                        plugin.buyerRole(),
-                        plugin.threadId(),
-                        plugin.version(),
-                        plugin.price()
+                        plugin.getBuyerRole(),
+                        plugin.getThreadId(),
+                        plugin.getVersion(),
+                        plugin.getPrice()
                 );
                 sessionDataMap.put(userId, newPlugin);
 
                 event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
 
                 String managerMention = users.stream().map(User::getAsMention).collect(Collectors.joining(", "));
-                if (plugin.price() != 0) {
+                if (plugin.getPrice() != 0) {
                     EntitySelectMenu roleSelectMenu = EntitySelectMenu.create(ID_PREFIX + "buyerrole", EntitySelectMenu.SelectTarget.ROLE).build();
                     event.getMessage().reply("담당자를 " + managerMention + "님으로 설정했습니다.\n아래에서 구매자 역할을 선택해 주세요.")
                             .addActionRow(roleSelectMenu)
@@ -449,19 +447,19 @@ public class RegisterInteraction extends ListenerAdapter {
                 Role role = event.getMentions().getRoles().get(0);
                 Plugin plugin = sessionDataMap.get(userId);
                 Plugin newPlugin = new Plugin(
-                        plugin.ENName(),
-                        plugin.KRName(),
-                        plugin.emoji(),
-                        plugin.wikiUrl(),
-                        plugin.iconUrl(),
-                        plugin.videoUrl(),
-                        plugin.gifUrl(),
-                        plugin.dependency(),
-                        plugin.manager(),
+                        plugin.getENName(),
+                        plugin.getKRName(),
+                        plugin.getEmoji(),
+                        plugin.getWikiUrl(),
+                        plugin.getIconUrl(),
+                        plugin.getVideoUrl(),
+                        plugin.getGifUrl(),
+                        plugin.getDependency(),
+                        plugin.getManager(),
                         role.getIdLong(),
-                        plugin.threadId(),
-                        plugin.version(),
-                        plugin.price()
+                        plugin.getThreadId(),
+                        plugin.getVersion(),
+                        plugin.getPrice()
                 );
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.BUYER_ROLE_SELECTED);
@@ -546,7 +544,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
     // UTILITY
     private void sendReleaseAnnouncement(Plugin plugin) {
-        String formattedPluginName = plugin.ENName() + "(" + plugin.KRName() + ")";
+        String formattedPluginName = plugin.getENName() + "(" + plugin.getKRName() + ")";
 
         MessageEmbed noticeEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
@@ -555,8 +553,8 @@ public class RegisterInteraction extends ListenerAdapter {
                         > **`\uD83C\uDF89` %s 플러그인이 출시되었습니다. `\uD83C\uDF89`**
                         > **`\uD83C\uDF1F` 많은 관심 부탁드립니다. `\uD83C\uDF1F`**
                         """.formatted(formattedPluginName))
-                .setImage(plugin.gifUrl())
-                .setThumbnail(plugin.iconUrl())
+                .setImage(plugin.getGifUrl())
+                .setThumbnail(plugin.getIconUrl())
                 .build();
 
         TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(RELEASE_NOTICE_CHANNEL_ID);

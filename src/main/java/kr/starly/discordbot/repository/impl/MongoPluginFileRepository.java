@@ -23,12 +23,12 @@ public class MongoPluginFileRepository implements PluginFileRepository {
     @Override
     public void put(PluginFile pluginFile) throws IOException {
         Document filter = new Document();
-        filter.put("ENName", pluginFile.plugin().ENName());
-        filter.put("mcVersion", pluginFile.mcVersion());
-        filter.put("version", pluginFile.version());
+        filter.put("ENName", pluginFile.getPlugin().getENName());
+        filter.put("mcVersion", pluginFile.getMcVersion());
+        filter.put("version", pluginFile.getVersion());
 
         Document document = new Document(filter);
-        document.put("filePath", pluginFile.file().getCanonicalPath());
+        document.put("filePath", pluginFile.getFile().getCanonicalPath());
 
         if (collection.find(filter).first() != null) {
             collection.updateOne(filter, new Document("$set", document));
