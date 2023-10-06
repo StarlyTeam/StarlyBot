@@ -4,8 +4,6 @@ import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.repository.PluginRepository;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class MongoPluginRepository implements PluginRepository {
         Document document = new Document();
         document.put("ENName", plugin.ENName());
         document.put("KRName", plugin.KRName());
-        document.put("emoji", plugin.emoji().getAsCodepoints());
+        document.put("emoji", plugin.emoji());
         document.put("wikiUrl", plugin.wikiUrl());
         document.put("iconUrl", plugin.iconUrl());
         document.put("videoUrl", plugin.videoUrl());
@@ -71,7 +69,7 @@ public class MongoPluginRepository implements PluginRepository {
 
         String ENName = document.getString("ENName");
         String KRName = document.getString("KRName");
-        UnicodeEmoji emoji = Emoji.fromUnicode(document.get("emoji", String.class));
+        String emoji = document.get("emoji", String.class);
         String wikiUrl = document.getString("wikiUrl");
         String iconUrl = document.getString("iconUrl");
         String videoUrl = document.getString("videoUrl");

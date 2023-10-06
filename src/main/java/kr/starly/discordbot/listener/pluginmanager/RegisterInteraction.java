@@ -101,7 +101,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionDataMap.put(userId, newPlugin);
                 registerStatusMap.put(userId, RegisterStatus.DEPENDENCY_ENTERED);
 
-                event.getMessage().reply("의존성을 `" + String.join(", ", dependency) + "` (으)로 설정했습니다.\n아래에 이모지를 입력해 주세요.")
+                event.getMessage().reply("의존성을 `" + String.join(", ", dependency) + "` (으)로 설정했습니다.\n아래에 이모지를 입력해 주세요. (백틱 사이에 넣어주세요.)")
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
             }
@@ -111,7 +111,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Emoji emoji;
                 try {
-                    emoji = Emoji.fromFormatted(messageContent);
+                    emoji = Emoji.fromFormatted(messageContent.replace("`", ""));
                 } catch (IllegalArgumentException ignored) {
                     event.getMessage().reply("올바른 이모지를 입력해 주세요.")
                             .addActionRow(CANCEL_BUTTON)
@@ -130,7 +130,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 Plugin newPlugin = new Plugin(
                         plugin.ENName(),
                         plugin.KRName(),
-                        (UnicodeEmoji) emoji,
+                        messageContent.replace("`", ""),
                         plugin.wikiUrl(),
                         plugin.iconUrl(),
                         plugin.videoUrl(),

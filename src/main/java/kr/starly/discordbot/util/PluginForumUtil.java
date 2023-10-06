@@ -1,5 +1,6 @@
 package kr.starly.discordbot.util;
 
+import ch.qos.logback.core.encoder.JsonEscapeUtil;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Plugin;
@@ -13,6 +14,7 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
+import org.yaml.snakeyaml.external.com.google.gdata.util.common.base.UnicodeEscaper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class PluginForumUtil {
     private PluginForumUtil() {}
 
     public static void createPluginChannel(Plugin plugin) {
-        String postName = plugin.emoji().getAsCodepoints() + "┃" + plugin.KRName();
+        String postName = plugin.emoji() + "┃" + plugin.KRName();
         if (postName.length() > 100) {
             postName = postName.substring(0, 100);
         }
@@ -62,7 +64,7 @@ public class PluginForumUtil {
     }
 
     public static void updatePluginChannel(Plugin plugin) {
-        String postName = plugin.emoji().getAsCodepoints() + "┃" + plugin.KRName();
+        String postName = plugin.emoji() + "┃" + plugin.KRName();
         if (postName.length() > 100) {
             postName = postName.substring(0, 100);
         }
