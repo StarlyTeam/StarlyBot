@@ -226,49 +226,21 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Plugin plugin = sessionDataMap.get(userId);
 
-                PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
-
-                int successCount = 0;
-                for (int i = 0; i < attachments.size(); i++) {
-                    Message.Attachment attachment = attachments.get(i);
-                    String fileName = attachment.getFileName();
-                    if (!List.of("jar", "zip").contains(attachment.getFileExtension())) {
-                        event.getMessage().reply("플러그인 파일은 .jar 또는 .zip 형식의 파일만 업로드 가능합니다. [" + fileName + "]").queue();
-                        continue;
-                    }
-
-                    String[] fileNameSplit = fileName.replace("." + attachment.getFileExtension(), "").split("-");
-                    if (fileNameSplit.length != 2) {
-                        event.getMessage().reply("플러그인 파일명이 올바르지 않습니다. 파일명을 확인해 주세요. [" + fileName + "]").queue();
-                        continue;
-                    }
-
-                    String mcVersion = fileNameSplit[0];
-                    String version = fileNameSplit[1];
-
-                    File pluginFile = new File("\\plugin\\%s\\%s.%s".formatted(plugin.ENName(), mcVersion + "-" + version, attachment.getFileExtension()));
-                    File pluginDir = pluginFile.getParentFile();
-
-                    if (!pluginDir.exists()) pluginDir.mkdirs();
-                    attachment.getProxy().downloadToFile(pluginFile);
-
-                    pluginFileService.saveData(pluginFile, plugin, MCVersion.valueOf(mcVersion), version);
-                    successCount++;
-                }
+                List<String> errors = PluginFileUtil.uploadPluginFile(plugin, attachments);
+                int successCount = attachments.size() - errors.size();
+                int failCount = errors.size();
 
                 if (successCount == 0) {
-                    event.getMessage().reply("플러그인 파일을 모두 업로드하지 못했습니다. 다시 시도해 주세요.")
+                    event.getMessage().reply("플러그인 파일을 모두 업로드하지 못했습니다. 다시 시도해 주세요.\n" + errors)
                             .addActionRow(CANCEL_BUTTON)
                             .queue();
                     return;
-                }
-
-                int failCount = attachments.size() - successCount;
-                if (failCount == 0) {
+                } else if (failCount == 0) {
                     event.getMessage().reply("플러그인 파일을 모두 업로드했습니다.").queue();
                 } else {
-                    event.getMessage().reply(failCount + "개의 파일을 제외한 " + successCount + "개의 파일을 업로드했습니다.").queue();
+                    event.getMessage().reply(failCount + "개의 파일을 제외한 " + successCount + "개의 파일을 업로드했습니다.\n" + errors).queue();
                 }
+
 
                 PluginService pluginService = DatabaseManager.getPluginService();
                 pluginService.pluginRepository().put(plugin);
