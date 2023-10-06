@@ -73,9 +73,9 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
             OptionMapping authorIcon = event.getOption("작성자이미지");
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setColor(color == null ? null : Color.decode(color.getAsString()));
             embedBuilder.setTitle(getSafeString(title), getSafeString(titleUrl));
             embedBuilder.setDescription(description == null ? null : description.getAsString().replace("\\n", "\n"));
-            embedBuilder.setColor(color == null ? null : Color.decode(color.getAsString()));
             embedBuilder.setThumbnail(getSafeAttachmentUrl(thumbnail));
             embedBuilder.setImage(getSafeAttachmentUrl(image));
             embedBuilder.setFooter(getSafeString(footerText), getSafeAttachmentUrl(footerIcon));

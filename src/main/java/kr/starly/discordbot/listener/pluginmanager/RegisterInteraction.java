@@ -33,7 +33,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,7 +149,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setPlaceholder("담당자를 선택해 주세요.")
                         .setRequiredRange(1, 10)
                         .build();
-                event.getMessage().reply("이모지를 `" + ((UnicodeEmoji) emoji).getAsCodepoints() + "` (으)로 설정했습니다.\n아래에서 담당자를 선택해 주세요.")
+                event.getMessage().reply("이모지를 `\\" + ((UnicodeEmoji) emoji).getAsCodepoints() + "` (으)로 설정했습니다.\n아래에서 담당자를 선택해 주세요.")
                         .addActionRow(managerSelectMenu)
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
@@ -364,7 +364,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Modal modal;
                 if (isPremium) {
-                    modal = Modal.create(ID_PREFIX + "modal1-premium",
+                    modal = Modal.create(ID_PREFIX + "modal-premium",
                                     "유료 플러그인 등록 - 단계 1")
                             .addActionRow(ENName)
                             .addActionRow(KRName)
@@ -373,7 +373,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .addActionRow(price)
                             .build();
                 } else {
-                    modal = Modal.create(ID_PREFIX + "modal1-free",
+                    modal = Modal.create(ID_PREFIX + "modal-free",
                                     "무료 플러그인 등록 - 단계 1")
                             .addActionRow(ENName)
                             .addActionRow(KRName)
@@ -483,17 +483,15 @@ public class RegisterInteraction extends ListenerAdapter {
         }
 
         String buttonId = event.getComponentId();
-        switch (buttonId) {
-            case ID_PREFIX + "cancel" -> {
-                long userId = event.getUser().getIdLong();
-                sessionDataMap.remove(userId);
-                registerStatusMap.remove(userId);
+        if (buttonId.equals((ID_PREFIX + "cancel"))) {
+            long userId = event.getUser().getIdLong();
+            sessionDataMap.remove(userId);
+            registerStatusMap.remove(userId);
 
-                event.editButton(event.getButton().asDisabled()).queue();
+            event.editButton(event.getButton().asDisabled()).queue();
 
-                clearChannel();
-                event.getMessage().reply("플러그인이 등록을 취소했습니다. 채널이 청소됩니다.").queue();
-            }
+            clearChannel();
+            event.getMessage().reply("플러그인이 등록을 취소했습니다. 채널이 청소됩니다.").queue();
         }
     }
 
@@ -506,7 +504,7 @@ public class RegisterInteraction extends ListenerAdapter {
         }
 
         String modalId = event.getModalId();
-        if (modalId.equals(ID_PREFIX + "modal1-free") || modalId.equals(ID_PREFIX + "modal1-premium")) {
+        if (modalId.equals(ID_PREFIX + "modal-free") || modalId.equals(ID_PREFIX + "modal-premium")) {
             String ENName = event.getValue("name-en").getAsString();
             String KRName = event.getValue("name-kr").getAsString();
             String wikiUrl = event.getValue("wiki-url").getAsString();
