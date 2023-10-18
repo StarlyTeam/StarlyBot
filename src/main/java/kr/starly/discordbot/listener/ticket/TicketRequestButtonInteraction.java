@@ -26,7 +26,8 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        if (!event.getChannel().asTextChannel().getId().equals(TICKET_CHANNEL_ID)) return;
+        if (!(event.getChannel() instanceof TextChannel textChannel)) return;
+        if (!textChannel.getId().equals(TICKET_CHANNEL_ID)) return;
 
         long userId = event.getUser().getIdLong();
         String buttonId = event.getButton().getId();
@@ -34,8 +35,8 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         Ticket Ticket = ticketService.findByDiscordId(userId);
 
         if (Ticket != null && isExistUserTicket(event.getJDA(), Ticket.channelId())) {
-            TextChannel textChannel = event.getJDA().getTextChannelById(Ticket.channelId());
-            String message = textChannel != null ? "이미 티켓이 있습니다! " + textChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해 주세요.";
+            TextChannel ticketChannel = event.getJDA().getTextChannelById(Ticket.channelId());
+            String message = ticketChannel != null ? "이미 티켓이 있습니다! " + ticketChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해 주세요.";
             event.reply(message).setEphemeral(true).queue();
             return;
         }

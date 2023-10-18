@@ -41,10 +41,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
-        Channel channel = event.getChannel();
-        if (!(channel instanceof TextChannel)) return;
-
-        TextChannel textChannel = event.getChannel().asTextChannel();
+        if (!(event.getChannel() instanceof TextChannel textChannel)) return;
         if (!textChannel.getParentCategoryId().equals(TICKET_CATEGORY_ID)) return;
 
         Long channelId = event.getChannel().getIdLong();

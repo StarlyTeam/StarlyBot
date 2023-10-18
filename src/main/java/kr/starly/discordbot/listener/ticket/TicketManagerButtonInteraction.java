@@ -46,7 +46,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        TextChannel textChannel = event.getChannel().asTextChannel();
+        if (!(event.getChannel() instanceof TextChannel textChannel)) return;
         if (!textChannel.getParentCategory().getId().equals(TICKET_CATEGORY_ID)) return;
 
         Member member = event.getMember();

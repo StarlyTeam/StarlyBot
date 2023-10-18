@@ -37,9 +37,8 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
-        if (!event.getChannel().asTextChannel().getId().equals(TICKET_CHANNEL_ID)) return;
-
-        TextChannel textChannel;
+        if (!(event.getChannel() instanceof TextChannel textChannel)) return;
+        if (!textChannel.getId().equals(TICKET_CHANNEL_ID)) return;
 
         long discordId = event.getUser().getIdLong();
         TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(discordId);
