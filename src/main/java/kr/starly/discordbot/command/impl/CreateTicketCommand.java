@@ -3,7 +3,7 @@ package kr.starly.discordbot.command.impl;
 import kr.starly.discordbot.command.BotCommand;
 import kr.starly.discordbot.command.DiscordCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.util.PermissionUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
