@@ -7,6 +7,7 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.http.service.AuthService;
 import kr.starly.discordbot.manager.DiscordBotManager;
+import kr.starly.discordbot.service.BlacklistService;
 import kr.starly.discordbot.service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -56,9 +57,20 @@ public class AuthHandler implements HttpHandler {
         }
 
         if (member.getRoles().contains(authorizedRole)) {
-            sendErrorResponse(exchange, "The user already has that role.");
-        } else {
-            guild.addRoleToMember(member, authorizedRole).queue();
+            sendErrorResponse(exchange, "user already has that role.");
+            return;
+        }
+
+        BlacklistService blacklistService = DatabaseManager.getBlacklistService();
+        if (blacklistService.getDataByUserId(userId) != null) {
+            sendErrorResponse(exchange, "user is blacklisted.");
+            return;
+        } else if (blacklistService.getDataByIpAddress(userIp) != null) {
+            sendErrorResponse(exchange, "ip address is blacklisted.");
+            return;
+        }
+
+        guild.addRoleToMember(member, authorizedRole).queue();
 
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
