@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@SuppressWarnings("all")
 public class MongoBlacklistRepository implements BlacklistRepository {
 
     private final MongoCollection<Document> collection;
@@ -40,8 +39,21 @@ public class MongoBlacklistRepository implements BlacklistRepository {
     }
 
     @Override
+    public void deleteByIpAddress(String ipAddress) {
+        Document filter = new Document("ipAddress", ipAddress);
+        collection.deleteOne(filter);
+    }
+
+    @Override
     public Blacklist findByUserId(long userId) {
         Document filter = new Document("userId", userId);
+        Document document = collection.find(filter).first();
+        return parseBlacklist(document);
+    }
+
+    @Override
+    public Blacklist findByIpAddress(String ipAddress) {
+        Document filter = new Document("ipAddress", ipAddress);
         Document document = collection.find(filter).first();
         return parseBlacklist(document);
     }
@@ -59,10 +71,11 @@ public class MongoBlacklistRepository implements BlacklistRepository {
     private Blacklist parseBlacklist(Document document) {
         if (document == null) return null;
 
-        long userId = document.getLong("userId");
+        Long userId = document.getLong("userId");
+        String ipAddress = document.getString("ipAddress");
         long moderatorId = document.getLong("moderatorId");
         String reason = document.getString("reason");
         Date listedAt = document.getDate("listedAt");
-        return new Blacklist(userId, moderatorId, reason, listedAt);
+        return new Blacklist(userId, ipAddress, moderatorId, reason, listedAt);
     }
 }

@@ -6,22 +6,30 @@ import kr.starly.discordbot.repository.BlacklistRepository;
 import java.util.Date;
 import java.util.List;
 
-public record BlacklistService(BlacklistRepository blacklistRepository) {
+public record BlacklistService(BlacklistRepository repository) {
 
-    public void saveData(long userId, long moderatorId, String reason, Date listedAt) {
-        Blacklist blacklist = new Blacklist(userId, moderatorId, reason, listedAt);
-        blacklistRepository.put(blacklist);
+    public void saveData(Long userId, String ipAddress, long moderatorId, String reason) {
+        Blacklist blacklist = new Blacklist(userId, ipAddress, moderatorId, reason, new Date());
+        repository.put(blacklist);
     }
 
     public Blacklist getDataByUserId(long userId) {
-        return blacklistRepository.findByUserId(userId);
+        return repository.findByUserId(userId);
+    }
+
+    public Blacklist getDataByIpAddress(String ipAddress) {
+        return repository.findByIpAddress(ipAddress);
     }
 
     public List<Blacklist> getAllData() {
-        return blacklistRepository.findAll();
+        return repository.findAll();
     }
 
     public void deleteDataByUserId(long userId) {
-        blacklistRepository.deleteByUserId(userId);
+        repository.deleteByUserId(userId);
+    }
+
+    public void deleteDataByIpAddress(String ipAddress) {
+        repository.deleteByIpAddress(ipAddress);
     }
 }

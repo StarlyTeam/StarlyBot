@@ -5,11 +5,11 @@ import kr.starly.discordbot.entity.Blacklist;
 import java.util.List;
 
 public interface BlacklistRepository {
+
     void put(Blacklist blacklist);
-
-    void deleteByUserId(long userId);
-
     Blacklist findByUserId(long userId);
-
+    Blacklist findByIpAddress(String ipAddress);
     List<Blacklist> findAll();
+    void deleteByUserId(long userId);
+    void deleteByIpAddress(String ipAddress);
 }

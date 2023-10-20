@@ -6,7 +6,7 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Blacklist;
 import kr.starly.discordbot.service.BlacklistService;
-import kr.starly.discordbot.util.PermissionUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 import java.awt.*;
-import java.util.Date;
 import java.util.List;
 
 @BotSlashCommand(
@@ -75,7 +74,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                     return;
                 }
 
-                blacklistService.saveData(target.getIdLong(), event.getUser().getIdLong(), reason, new Date());
+                blacklistService.saveData(target.getIdLong(), null, event.getUser().getIdLong(), reason);
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
@@ -114,21 +113,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 BlacklistService blacklistService = DatabaseManager.getBlacklistService();
                 List<Blacklist> blacklists = blacklistService.getAllData();
 
-                EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1141623256558866482> 블랙리스트 목록 <a:loading:1141623256558866482>");
-
-                StringBuilder descriptionBuilder = new StringBuilder("> **아래는 현재 블랙리스트에 등록된 유저들의 목록입니다.**\n\n");
-                blacklists.forEach(blacklist -> descriptionBuilder
-                        .append("> **유저:** ")
-                        .append("<@")
-                        .append(blacklist.userId())
-                        .append(">\n> **사유: `")
-                        .append(blacklist.reason() + "`**")
-                        .append("\n\n"));
-
-                embedBuilder.setDescription(descriptionBuilder.toString());
-                event.replyEmbeds(embedBuilder.build()).queue();
+                // TODO : txt 파일 생성 후 업로드
             }
         }
     }
