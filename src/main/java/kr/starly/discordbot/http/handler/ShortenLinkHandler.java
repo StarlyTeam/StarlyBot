@@ -9,16 +9,16 @@ import kr.starly.discordbot.service.ShortenLinkService;
 import java.io.IOException;
 
 public class ShortenLinkHandler implements HttpHandler {
+
     @Override
     public void handle(HttpExchange exchange) {
         if (!exchange.getRequestMethod().equals("GET")) return;
 
-        String[] params = exchange.getRequestURI().toString().substring(1).split("/");
-        if (params.length != 1) return;
+        String[] params = exchange.getRequestURI().getPath().split("/");
+        if (params.length != 2) return;
+        String shortenUrl = params[1];
 
         ShortenLinkService shortenLinkService = DatabaseManager.getShortenLinkService();
-        String shortenUrl = params[0];
-
         ShortenLink shortenLink = shortenLinkService.getDataByShortenUrl(shortenUrl);
         if (shortenLink == null) return;
 
