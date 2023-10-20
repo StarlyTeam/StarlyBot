@@ -2,6 +2,7 @@ package kr.starly.discordbot.http;
 
 import com.sun.net.httpserver.HttpServer;
 import kr.starly.discordbot.http.handler.AuthHandler;
+import kr.starly.discordbot.http.handler.DownloadHandler;
 import kr.starly.discordbot.http.handler.ShortenLinkHandler;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ public class WebServer {
     public void start(int port) throws IOException {
         if (isPortAvailable(port)) {
             server = HttpServer.create(new InetSocketAddress(port), 0);
+            server.createContext("/download/", new DownloadHandler());
             server.createContext("/auth/", new AuthHandler());
             server.createContext("/", new ShortenLinkHandler());
             server.setExecutor(null);
