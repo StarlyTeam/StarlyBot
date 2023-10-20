@@ -1,4 +1,4 @@
-package kr.starly.discordbot.util;
+package kr.starly.discordbot.util.lib;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

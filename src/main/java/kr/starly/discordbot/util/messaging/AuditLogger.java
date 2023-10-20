@@ -1,4 +1,4 @@
-package kr.starly.discordbot.util;
+package kr.starly.discordbot.util.messaging;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.manager.DiscordBotManager;
