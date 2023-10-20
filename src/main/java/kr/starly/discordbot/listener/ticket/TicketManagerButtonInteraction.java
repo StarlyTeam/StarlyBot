@@ -9,7 +9,7 @@ import kr.starly.discordbot.repository.TicketFileRepository;
 import kr.starly.discordbot.repository.TicketModalFileRepository;
 import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.WarnService;
-import kr.starly.discordbot.util.PermissionUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -104,7 +104,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             ticketFileRepository.save(history.getRetrievedHistory(), ticketInfo);
 
             ticketService.recordTicket(
-                    new Ticket(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
+                    new Ticket(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
             event.reply("2초 후 채널이 삭제됩니다.").setEphemeral(true).queue();
@@ -125,7 +125,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             Ticket ticketInfo = ticketService.findByChannel(textChannel.getIdLong());
 
             ticketService.recordTicket(
-                    new Ticket(ticketUserId, 0, textChannel.getIdLong(), ticketInfo.ticketStatus(), ticketInfo.index())
+                    new Ticket(ticketUserId, 0, textChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
             ticketUser.openPrivateChannel().queue(privateChannel -> {

@@ -41,11 +41,11 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
         if (!textChannel.getId().equals(TICKET_CHANNEL_ID)) return;
 
         long discordId = event.getUser().getIdLong();
-        TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(discordId);
+        TicketType ticketType = TicketType.getUserTicketTypeMap().get(discordId);
 
         try {
             Category category = event.getGuild().getCategoryById(TICKET_CATEGORY_ID);
-            textChannel = category.createTextChannel((ticketService.getLastIndex() + 1) + "-" + event.getUser().getGlobalName() + "-" + ticketStatus.getName())
+            textChannel = category.createTextChannel((ticketService.getLastIndex() + 1) + "-" + event.getUser().getEffectiveName() + "-" + ticketType.getName())
                     .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                     .complete();
 
@@ -60,15 +60,15 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
 
             event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
         } catch (ErrorResponseException exception) {
-            event.reply("모달 처리 과정 중 오류가 발생하였습니다. 잠시만 기달려 주십시오.").setEphemeral(true).queue();
+            event.reply("모달 처리 과정 중 오류가 발생하였습니다. 잠시만 기다려 주십시오.").setEphemeral(true).queue();
             return;
         }
-        Ticket ticket = new Ticket(discordId, 0, textChannel.getIdLong(), ticketStatus, 0);
+        Ticket ticket = new Ticket(discordId, 0, textChannel.getIdLong(), ticketType, 0);
         ticketService.recordTicket(ticket);
 
         ticketUserDataRepository.registerUser(discordId, event.getUser());
         switch (event.getModalId()) {
-            case "modal-normal-ticket" -> {
+            case "modal-general-ticket" -> {
                 String title = event.getValue("text-input-normal-title").getAsString();
                 String description = event.getValue("text-input-normal-description").getAsString();
 
@@ -91,26 +91,27 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, isCall);
             }
 
-            case "modal-purchase-inquiry-ticket" -> {
-                String title = event.getValue("text-purchase-inquiry-title").getAsString();
-                String description = event.getValue("text-purchase-inquiry-description").getAsString();
-                String type = event.getValue("text-purchase-inquiry-type").getAsString();
+            case "modal-payment-ticket" -> {
+                String title = event.getValue("text-payment-title").getAsString();
+                String description = event.getValue("text-payment-description").getAsString();
+                String type = event.getValue("text-payment-type").getAsString();
 
                 ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, type);
             }
-            case "modal-use-restriction-ticket" -> {
-                String title = event.getValue("text-use-restriction-title").getAsString();
-                String description = event.getValue("text-use-restriction-title").getAsString();
+
+            case "modal-punishment-ticket" -> {
+                String title = event.getValue("text-punishment-title").getAsString();
+                String description = event.getValue("text-punishment-title").getAsString();
 
                 ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description);
             }
 
-            case "modal-bug-report-bukkit-ticket" -> {
-                String version = event.getValue("text-bug-report-bukkit-version").getAsString();
-                String log = event.getValue("text-bug-report-bukkit-log").getAsString();
-                String bukkitValue = event.getValue("text-bug-report-bukkit-type").getAsString();
+            case "modal-error-ticket" -> {
+                String version = event.getValue("text-error-version").getAsString();
+                String log = event.getValue("text-error-log").getAsString();
+                String bukkitValue = event.getValue("text-error-type").getAsString();
                 String bukkit = bukkitValue == "" ? "spigot" : bukkitValue;
-                String description = event.getValue("text-bug-report-bukkit-description").getAsString();
+                String description = event.getValue("text-error-description").getAsString();
 
                 if (!log.isEmpty()) {
                     ticketModalDataRepository.registerModalData(textChannel.getIdLong(), version, bukkit, log, description);
@@ -120,17 +121,18 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 ticketModalDataRepository.registerModalData(textChannel.getIdLong(), version, bukkit, description);
 
             }
-            case "modal-bug-report-etc-ticket" -> {
-                String title = event.getValue("text-bug-report-etc-title").getAsString();
-                String tag = event.getValue("text-bug-report-etc-tag").getAsString();
-                String description = event.getValue("text-bug-report-etc-description").getAsString();
+
+            case "modal-bug-report-other-ticket" -> {
+                String title = event.getValue("text-bug-report-other-title").getAsString();
+                String tag = event.getValue("text-bug-report-other-tag").getAsString();
+                String description = event.getValue("text-bug-report-other-description").getAsString();
 
                 ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, tag);
             }
 
-            case "modal-etc-ticket" -> {
-                String title = event.getValue("text-etc-title").getAsString();
-                String description = event.getValue("text-etc-description").getAsString();
+            case "modal-other-ticket" -> {
+                String title = event.getValue("text-other-title").getAsString();
+                String description = event.getValue("text-other-description").getAsString();
 
                 ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description);
             }

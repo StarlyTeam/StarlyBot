@@ -7,6 +7,6 @@ public record Ticket(
         @NotNull long openBy,
         @NotNull long closedBy,
         @NotNull long channelId,
-        @NotNull TicketType ticketStatus,
+        @NotNull TicketType ticketType,
         @NotNull long index
 ) {}

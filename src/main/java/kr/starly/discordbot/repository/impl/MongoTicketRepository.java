@@ -6,6 +6,7 @@ import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.repository.TicketRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
+@Getter
 public class MongoTicketRepository implements TicketRepository {
 
     private final MongoCollection<Document> collection;
@@ -24,7 +26,7 @@ public class MongoTicketRepository implements TicketRepository {
         document.put("openBy", ticketInfo.openBy());
         document.put("closedBy", ticketInfo.closedBy());
         document.put("channelId", ticketInfo.channelId());
-        document.put("type", ticketInfo.ticketStatus());
+        document.put("type", ticketInfo.ticketType());
 
         Date date = new Date();
 
@@ -55,9 +57,9 @@ public class MongoTicketRepository implements TicketRepository {
         long closedBy = lastDocument.getLong("closedBy");
         long index = lastDocument.getLong("index");
 
-        TicketType ticketStatus = TicketType.valueOf((String) lastDocument.get("type"));
+        TicketType ticketType = TicketType.valueOf((String) lastDocument.get("type"));
 
-        return lastDocument != null ? new Ticket(openBy, closedBy, channelId, ticketStatus, index) : null;
+        return lastDocument != null ? new Ticket(openBy, closedBy, channelId, ticketType, index) : null;
     }
 
     @Override
@@ -76,9 +78,9 @@ public class MongoTicketRepository implements TicketRepository {
         long channelId = lastDocument.getLong("channelId");
         long index = lastDocument.getLong("index");
 
-        TicketType ticketStatus = TicketType.valueOf((String) lastDocument.get("type"));
+        TicketType ticketType = TicketType.valueOf((String) lastDocument.get("type"));
 
-        return new Ticket(openBy, closedBy, channelId, ticketStatus, index);
+        return new Ticket(openBy, closedBy, channelId, ticketType, index);
     }
 
     @Override

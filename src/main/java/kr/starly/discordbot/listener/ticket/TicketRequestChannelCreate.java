@@ -11,7 +11,6 @@ import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -58,14 +57,14 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
             return;
         }
 
-        TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(user.getIdLong());
+        TicketType ticketType = TicketType.getUserTicketTypeMap().get(user.getIdLong());
         Ticket ticket = ticketService.findByDiscordId(user.getIdLong());
 
         Button button = Button.danger("ticket-close" + user.getIdLong(), "닫기");
         MessageEmbed messageEmbed = null;
 
-        switch (ticketStatus) {
-            case NORMAL_TICKET -> {
+        switch (ticketType) {
+            case GENERAL -> {
                 String title = data.get(0);
                 String description = data.get(1);
                 messageEmbed = new EmbedBuilder()
@@ -80,7 +79,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                                 "본문: " + description);
             }
 
-            case BUG_REPORT_ETC_TICKET -> {
+            case OTHER_ERROR -> {
                 String title = data.get(0);
                 String description = data.get(1);
                 String tag = data.get(2);
@@ -99,7 +98,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                                 "본문: " + description);
             }
 
-            case CONSULTING_TICKET -> {
+            case CONSULTING -> {
                 String title = data.get(0);
                 String description = data.get(1);
 
@@ -118,7 +117,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                                 "본문: " + description);
 
             }
-            case BUG_REPORT_BUKKIT_TICKET -> {
+            case PLUGIN_ERROR -> {
                 MessageEmbed descriptionEmbed;
 
                 if (data.size() == 3) {
@@ -174,7 +173,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
             }
 
 
-            case BUG_REPORT_TICKET -> {
+            case ERROR -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("고객센터 알림")
@@ -184,7 +183,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .build();
             }
 
-            case USE_RESTRICTION_TICKET, PURCHASE_INQUIRY_TICKET -> {
+            case PUNISHMENT, PAYMENT -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("고객센터 알림")
@@ -196,7 +195,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 ticketModalDataRepository.removeModalData(channelId);
             }
 
-            case QUESTION_TICKET -> {
+            case QUESTION -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("고객센터 알림")

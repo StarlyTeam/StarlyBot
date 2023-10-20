@@ -5,30 +5,30 @@ import kr.starly.discordbot.repository.ShortenLinkRepository;
 
 import java.util.List;
 
-public record ShortenLinkService(ShortenLinkRepository shortenLinkRepository) {
+public record ShortenLinkService(ShortenLinkRepository repository) {
 
     public void saveData(String originUrl, String shortenUrl) {
         ShortenLink shortenLink = new ShortenLink(originUrl, shortenUrl);
-        shortenLinkRepository.put(shortenLink);
+        repository.put(shortenLink);
     }
 
     public ShortenLink getDataByShortenUrl(String shortenUrl) {
-        return shortenLinkRepository.findByShortenUrl(shortenUrl);
+        return repository.findByShortenUrl(shortenUrl);
     }
 
     public ShortenLink getDataByOriginUrl(String originUrl) {
-        return shortenLinkRepository.findByOriginUrl(originUrl);
+        return repository.findByOriginUrl(originUrl);
     }
 
     public List<ShortenLink> getAllData() {
-        return shortenLinkRepository.findAll();
+        return repository.findAll();
     }
 
     public void deleteDataByOriginUrl(String originUrl) {
-        shortenLinkRepository.deleteByOriginUrl(originUrl);
+        repository.deleteByOriginUrl(originUrl);
     }
 
     public void deleteDataByShortenUrl(String shortenUrl) {
-        shortenLinkRepository.deleteByShortenUrl(shortenUrl);
+        repository.deleteByShortenUrl(shortenUrl);
     }
 }

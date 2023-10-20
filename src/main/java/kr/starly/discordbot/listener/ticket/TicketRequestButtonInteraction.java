@@ -41,29 +41,29 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
             return;
         }
 
-        TicketType ticketStatusFormat = TicketType.valueOf(buttonId.replace("button-", "").replace("-", "_").toUpperCase());
+        TicketType ticketTypeFormat = TicketType.valueOf(buttonId.replace("button-", "").replace("-", "_").toUpperCase());
 
-        addUserTicketStatus(userId, ticketStatusFormat);
+        addUserTicketStatus(userId, ticketTypeFormat);
 
-        TicketType ticketStatus = TicketType.getUserTicketStatusMap().get(userId);
+        TicketType ticketType = TicketType.getUserTicketTypeMap().get(userId);
 
-        Modal modal = generateModalForType(ticketStatus);
+        Modal modal = generateModalForType(ticketType);
         event.getInteraction().replyModal(modal).queue();
     }
 
-    private void addUserTicketStatus(long userId, TicketType ticketStatus) {
-        if (!TicketType.getUserTicketStatusMap().containsKey(userId)) {
-            TicketType.getUserTicketStatusMap().put(userId, ticketStatus);
+    private void addUserTicketStatus(long userId, TicketType ticketType) {
+        if (!TicketType.getUserTicketTypeMap().containsKey(userId)) {
+            TicketType.getUserTicketTypeMap().put(userId, ticketType);
             return;
         }
-        TicketType.getUserTicketStatusMap().replace(userId, ticketStatus);
+        TicketType.getUserTicketTypeMap().replace(userId, ticketType);
     }
 
-    private Modal generateModalForType(TicketType ticketStatus) {
+    private Modal generateModalForType(TicketType ticketType) {
         Modal modal = null;
 
-        switch (ticketStatus) {
-            case NORMAL_TICKET -> {
+        switch (ticketType) {
+            case GENERAL -> {
                 TextInput normalTitle = TextInput.create("text-input-normal-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
@@ -74,14 +74,14 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .setMaxLength(900)
                         .build();
 
-                modal = Modal.create("modal-normal-ticket", "일반 문의")
+                modal = Modal.create("modal-general-ticket", "일반 문의")
                         .addComponents(
                                 ActionRow.of(normalTitle),
                                 ActionRow.of(normalDescription)
                         ).build();
             }
 
-            case QUESTION_TICKET -> {
+            case QUESTION -> {
                 TextInput questionTitle = TextInput.create("text-question-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("질문의 제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
@@ -106,7 +106,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .build();
             }
 
-            case CONSULTING_TICKET -> {
+            case CONSULTING -> {
                 TextInput consultingTitle = TextInput.create("text-consulting-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("상담의 제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
@@ -131,23 +131,23 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         ).build();
             }
 
-            case PURCHASE_INQUIRY_TICKET -> {
-                TextInput purchaseInquiryTitle = TextInput.create("text-purchase-inquiry-title", "제목", TextInputStyle.SHORT)
+            case PAYMENT -> {
+                TextInput purchaseInquiryTitle = TextInput.create("text-payment-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
-                TextInput purchaseInquiryType = TextInput.create("text-purchase-inquiry-type", "타입", TextInputStyle.PARAGRAPH)
+                TextInput purchaseInquiryType = TextInput.create("text-payment-type", "타입", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("결제 관련 상담 사유를 입력해 주시기 바랍니다.\n(예: 결제, 환불, 청구)")
                         .setMaxLength(2)
 
                         .build();
-                TextInput purchaseInquiryDescription = TextInput.create("text-purchase-inquiry-description", "본문", TextInputStyle.PARAGRAPH)
+                TextInput purchaseInquiryDescription = TextInput.create("text-payment-description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("상황 설명을 구체적으로 적으세요.")
                         .setMaxLength(750)
                         .build();
 
-                modal = Modal.create("modal-purchase-inquiry-ticket", "결제 문의")
+                modal = Modal.create("modal-payment-ticket", "결제 문의")
                         .addComponents(
                                 ActionRow.of(purchaseInquiryTitle),
                                 ActionRow.of(purchaseInquiryType),
@@ -155,23 +155,23 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         )
                         .build();
             }
-            case USE_RESTRICTION_TICKET -> {
-                TextInput useRestrictionTitle = TextInput.create("text-use-restriction-title", "제목", TextInputStyle.SHORT)
+            case PUNISHMENT -> {
+                TextInput useRestrictionTitle = TextInput.create("text-punishment-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
-                TextInput useRestrictionType = TextInput.create("text-use-restriction-type", "타입", TextInputStyle.PARAGRAPH)
+                TextInput useRestrictionType = TextInput.create("text-punishment-type", "타입", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("사용 정지가 된 곳을 입력해 주시기 바랍니다.\n(예: 다운로드/경고)")
                         .setMaxLength(10)
                         .build();
 
-                TextInput useRestrictionDescription = TextInput.create("text-use-restriction-description", "본문", TextInputStyle.PARAGRAPH)
+                TextInput useRestrictionDescription = TextInput.create("text-punishment-description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("정확한 사건 경위를 입력해 주시기 바랍니다.")
                         .setMaxLength(890)
                         .build();
 
-                modal = Modal.create("modal-use-restriction-ticket", "이용 제한 문의")
+                modal = Modal.create("modal-punishment-ticket", "처벌 문의")
                         .addComponents(
                                 ActionRow.of(useRestrictionTitle),
                                 ActionRow.of(useRestrictionType),
@@ -180,23 +180,23 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .build();
             }
 
-            case BUG_REPORT_ETC_TICKET -> {
-                TextInput bugReportTicketTitle = TextInput.create("text-bug-report-etc-title", "제목", TextInputStyle.SHORT)
+            case OTHER_ERROR -> {
+                TextInput bugReportTicketTitle = TextInput.create("text-bug-report-other-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
 
-                TextInput bugReportTicketTag = TextInput.create("text-bug-report-etc-tag", "태그", TextInputStyle.PARAGRAPH)
+                TextInput bugReportTicketTag = TextInput.create("text-bug-report-other-tag", "태그", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("태그를 입력해 주시기 바랍니다.\n(예: 봇/시스템)")
                         .setMaxLength(10)
                         .build();
 
-                TextInput bugReportTicketDescription = TextInput.create("text-bug-report-etc-description", "본문", TextInputStyle.PARAGRAPH)
+                TextInput bugReportTicketDescription = TextInput.create("text-bug-report-other-description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("상황 설명을 구체적으로 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
 
-                modal = Modal.create("modal-bug-report-etc-ticket", "기타 버그 문의")
+                modal = Modal.create("modal-bug-report-other-ticket", "기타 버그 문의")
                         .addComponents(
                                 ActionRow.of(bugReportTicketTitle),
                                 ActionRow.of(bugReportTicketTag),
@@ -204,30 +204,30 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .build();
             }
 
-            case BUG_REPORT_BUKKIT_TICKET -> {
-                TextInput version = TextInput.create("text-bug-report-bukkit-mcVersion", "버킷 버전", TextInputStyle.SHORT)
+            case PLUGIN_ERROR -> {
+                TextInput version = TextInput.create("text-error-mcVersion", "버킷 버전", TextInputStyle.SHORT)
                         .setPlaceholder("버킷 버전을 입력해 주시기 바랍니다. (예: 1.12.2/1.19.4)")
                         .setMaxLength(6)
                         .build();
 
-                TextInput log = TextInput.create("text-bug-report-bukkit-log", "버킷 로그", TextInputStyle.PARAGRAPH)
+                TextInput log = TextInput.create("text-error-log", "버킷 로그", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("버킷 로그를 첨부해 주시기 바랍니다.")
                         .setMaxLength(4000)
                         .setRequired(false)
                         .build();
 
-                TextInput bukkit = TextInput.create("text-bug-report-bukkit-type", "버킷 종류", TextInputStyle.PARAGRAPH)
+                TextInput bukkit = TextInput.create("text-error-type", "버킷 종류", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("사용중인 버킷 이름을 입력해 주시기 바랍니다.\n(예: spigot/paper/purpur)")
                         .setMaxLength(10)
                         .setRequired(false)
                         .build();
 
-                TextInput description = TextInput.create("text-bug-report-bukkit-description", "상황", TextInputStyle.PARAGRAPH)
+                TextInput description = TextInput.create("text-error-description", "상황", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("상황 설명을 구체적으로 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
 
-                modal = Modal.create("modal-bug-report-bukkit-ticket", "플러그인 버그 문의")
+                modal = Modal.create("modal-error-ticket", "플러그인 버그 문의")
                         .addComponents(
                                 ActionRow.of(version),
                                 ActionRow.of(bukkit),
@@ -236,16 +236,16 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .build();
             }
 
-            case ETC_TICKET -> {
-                TextInput etcTitle = TextInput.create("text-etc-title", "제목", TextInputStyle.SHORT)
+            case OTHER -> {
+                TextInput etcTitle = TextInput.create("text-other-title", "제목", TextInputStyle.SHORT)
                         .setPlaceholder("제목을 입력해 주시기 바랍니다.")
                         .setMaxLength(50)
                         .build();
-                TextInput etcDescription = TextInput.create("text-etc-description", "본문", TextInputStyle.PARAGRAPH)
+                TextInput etcDescription = TextInput.create("text-other-description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("본문을 입력해 주시기 바랍니다.")
                         .setMaxLength(900)
                         .build();
-                modal = Modal.create("modal-etc-ticket", "기타 문의")
+                modal = Modal.create("modal-other-ticket", "기타 문의")
                         .addComponents(
                                 ActionRow.of(etcTitle),
                                 ActionRow.of(etcDescription)

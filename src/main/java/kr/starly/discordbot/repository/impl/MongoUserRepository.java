@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
+@Getter
 public class MongoUserRepository implements UserRepository {
 
     private final MongoCollection<Document> collection;

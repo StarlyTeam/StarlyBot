@@ -1,6 +1,9 @@
 package kr.starly.discordbot.repository;
 
+import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.Ticket;
+
+import org.bson.Document;
 
 public interface TicketRepository {
 
@@ -11,4 +14,6 @@ public interface TicketRepository {
     long getLastIndex();
     boolean isNotValidUser(long discordId);
     byte getAverageRate();
+
+    MongoCollection<Document> getCollection();
 }

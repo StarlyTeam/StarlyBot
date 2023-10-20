@@ -95,7 +95,7 @@ public class TicketFileRepository {
     }
 
     private String generatePath(Ticket ticket) {
-        String nameByType = ticket.ticketStatus().getName();
+        String nameByType = ticket.ticketType().getName();
         return "ticket/" + nameByType + "/" + ticket.index() + "-" + ticket.channelId() + "-" + nameByType;
     }
 }

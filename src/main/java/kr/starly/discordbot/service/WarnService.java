@@ -5,18 +5,18 @@ import kr.starly.discordbot.repository.WarnRepository;
 
 import java.util.List;
 
-public record WarnService(WarnRepository warnRepository) {
+public record WarnService(WarnRepository repository) {
 
     public void saveData(Warn warn) {
-        warnRepository.put(warn);
+        repository.put(warn);
     }
 
     public List<Warn> getDataByDiscordId(long discordId) {
-        return warnRepository.findByDiscordId(discordId);
+        return repository.findByDiscordId(discordId);
     }
 
     public int getTotalWarn(long discordId) {
-        return warnRepository.findByDiscordId(discordId).stream()
+        return repository.findByDiscordId(discordId).stream()
                 .mapToInt(Warn::amount)
                 .sum();
     }

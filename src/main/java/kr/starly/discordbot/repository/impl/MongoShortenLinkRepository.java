@@ -4,13 +4,14 @@ import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.ShortenLink;
 import kr.starly.discordbot.repository.ShortenLinkRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-@SuppressWarnings("all")
+@Getter
 public class MongoShortenLinkRepository implements ShortenLinkRepository {
 
     private final MongoCollection<Document> collection;
