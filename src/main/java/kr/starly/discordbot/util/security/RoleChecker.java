@@ -1,4 +1,4 @@
-package kr.starly.discordbot.util;
+package kr.starly.discordbot.util.security;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.manager.DiscordBotManager;
@@ -13,14 +13,22 @@ public class RoleChecker {
     private RoleChecker() {}
 
     private static final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private static final String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
     private static final String GUILD_ID = configProvider.getString("GUILD_ID");
+    private static final String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
+    private static final String VERIFIED_ROLE_ID = configProvider.getString("VERIFIED_ROLE_ID");
 
     public static boolean hasAdminRole(Member member) {
         Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
         Role adminRole = guild.getRoleById(ADMIN_ROLE);
 
         return hasRole(member, adminRole);
+    }
+
+    public static boolean hasVerifiedRole(Member member) {
+        Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
+        Role role = guild.getRoleById(VERIFIED_ROLE_ID);
+
+        return hasRole(member, role);
     }
 
     public static boolean hasRole(Member member, Role role) {

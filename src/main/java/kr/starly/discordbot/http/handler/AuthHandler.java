@@ -24,7 +24,7 @@ public class AuthHandler implements HttpHandler {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
-    private final String AUTH_ROLE = configProvider.getString("AUTH_ROLE");
+    private final String VERIFIED_ROLE_ID = configProvider.getString("VERIFIED_ROLE_ID");
 
     private final AuthService authService = AuthService.getInstance();
 
@@ -48,9 +48,9 @@ public class AuthHandler implements HttpHandler {
             return;
         }
 
-        Role authorizedRole = guild.getRoleById(AUTH_ROLE);
+        Role authorizedRole = guild.getRoleById(VERIFIED_ROLE_ID);
         if (authorizedRole == null) {
-            System.out.println("Role with ID " + AUTH_ROLE + " not found in server " + guild.getName());
+            System.out.println("Role with ID " + VERIFIED_ROLE_ID + " not found in server " + guild.getName());
             sendErrorResponse(exchange, "Authorized role not found in the server.");
             return;
         }
@@ -60,38 +60,37 @@ public class AuthHandler implements HttpHandler {
         } else {
             guild.addRoleToMember(member, authorizedRole).queue();
 
-            MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("<a:success:1141625729386287206> 성공 | 인증 완료 <a:success:1141625729386287206>")
-                    .setDescription("> **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**\n"
-                            + "> **커뮤니티의 모든 기능을 마음껏 즐기세요! 🥳**\n"
-                            + "> **즐거운 시간 보내세요! \uD83C\uDF88**\n\u1CBB")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                    .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                    .build();
+        MessageEmbed messageEmbed = new EmbedBuilder()
+                .setColor(EMBED_COLOR_SUCCESS)
+                .setTitle("<a:success:1141625729386287206> 성공 | 인증 완료 <a:success:1141625729386287206>")
+                .setDescription("> **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**\n"
+                        + "> **커뮤니티의 모든 기능을 마음껏 즐기세요! 🥳**\n"
+                        + "> **즐거운 시간 보내세요! \uD83C\uDF88**\n\u1CBB")
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .build();
 
-            User user = member.getUser();
-            user.openPrivateChannel()
-                    .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
-                    .queue(null, throwable ->
-                            LOGGER.warning("해당 유저에게 DM을 보낼 수 없습니다: " + throwable.getMessage()));
+        User user = member.getUser();
+        user.openPrivateChannel()
+                .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
+                .queue(null, throwable ->
+                        LOGGER.warning("해당 유저에게 DM을 보낼 수 없습니다: " + throwable.getMessage()));
 
-            if (userService.getDataByDiscordId(userId) == null) {
-                userService.saveData(userId, userIp, new Date(), 0);
-                LOGGER.info("유저 인증을 하였으므로 데이터를 추가했습니다: " + userId);
-            } else {
-                LOGGER.warning("이미 데이터베이스에 존재하는 유저입니다: " + userId);
-            }
+        if (userService.getDataByDiscordId(userId) == null) {
+            userService.saveData(userId, userIp, new Date(), 0);
+            LOGGER.info("유저 인증을 하였으므로 데이터를 추가했습니다: " + userId);
+        } else {
+            LOGGER.warning("이미 데이터베이스에 존재하는 유저입니다: " + userId);
+        }
 
-            String response = "Successfully authenticated and role assigned!";
-            exchange.sendResponseHeaders(200, response.length());
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+        String response = "Successfully authenticated and role assigned!";
+        exchange.sendResponseHeaders(200, response.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
 
-            if (authService.validateToken(userId, token)) {
-                authService.removeTokenForUser(userId);
-            }
+        if (authService.validateToken(userId, token)) {
+            authService.removeTokenForUser(userId);
         }
     }
 
