@@ -2,7 +2,7 @@ package kr.starly.discordbot.listener.verify;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.listener.BotEvent;
-import kr.starly.discordbot.util.VerifyRoleChecker;
+import kr.starly.discordbot.util.security.RoleChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -27,7 +27,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
 
         switch (buttonId) {
             case "successVerify" -> {
-                if (VerifyRoleChecker.hasVerifyRole(event.getMember())) {
+                if (RoleChecker.hasVerifiedRole(event.getMember())) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:warn:1141721287526465656> 오류 | 이미 인증된 유저입니다. <a:warn:1141721287526465656>")
