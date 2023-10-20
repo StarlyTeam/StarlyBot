@@ -1,4 +1,4 @@
-package kr.starly.discordbot.util;
+package kr.starly.discordbot.util.security;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
