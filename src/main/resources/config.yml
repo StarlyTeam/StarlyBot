@@ -81,7 +81,7 @@ PREMIUM_PLUGIN_FORUM_ID: "1147998042985865216"
 RELEASE_NOTICE_CHANNEL_ID: "1148487084626169906"
 
 # + -------------------------------------------------------------------------------- + #
-# | CF IMAGES CONFIGURATION ( 클라우드플레어 Images 설정 )
+# | CF IMAGES SETTINGS ( 클라우드플레어 Images 설정 )
 # + -------------------------------------------------------------------------------- + #
 ACCOUNT_ID: "e644175af98fbd1549cea8ffd512536d"
 API_TOKEN: "eQm1CexVtGxNf9mXueVGBhRLT4_1Mdang_JcrDj-"
