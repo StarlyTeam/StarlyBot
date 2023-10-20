@@ -2,16 +2,15 @@ package kr.starly.discordbot.service;
 
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.repository.PluginRepository;
-import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 
 import java.util.List;
 
-public record PluginService(PluginRepository pluginRepository) {
+public record PluginService(PluginRepository repository) {
 
     public void saveData(
             String ENName,
             String KRName,
-            UnicodeEmoji emoji,
+            String emoji,
             String wikiUrl,
             String iconUrl,
             String videoUrl,
@@ -38,18 +37,18 @@ public record PluginService(PluginRepository pluginRepository) {
                 version,
                 price
         );
-        pluginRepository.put(plugin);
+        repository.put(plugin);
     }
 
     public Plugin getDataByENName(String ENName) {
-        return pluginRepository.findByENName(ENName);
+        return repository.findByENName(ENName);
     }
 
     public List<Plugin> getAllData() {
-        return pluginRepository.findAll();
+        return repository.findAll();
     }
 
     public void deleteDataByENName(String ENName) {
-        pluginRepository.deleteByENName(ENName);
+        repository.deleteByENName(ENName);
     }
 }

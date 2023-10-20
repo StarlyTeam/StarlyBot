@@ -4,12 +4,14 @@ import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.repository.PluginRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
+@Getter
 public class MongoPluginRepository implements PluginRepository {
 
     private final MongoCollection<Document> collection;

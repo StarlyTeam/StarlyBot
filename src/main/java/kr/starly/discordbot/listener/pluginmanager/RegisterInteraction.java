@@ -7,7 +7,7 @@ import kr.starly.discordbot.enums.RegisterStatus;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.PluginService;
-import kr.starly.discordbot.util.PermissionUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import kr.starly.discordbot.util.PluginFileUtil;
 import kr.starly.discordbot.util.PluginForumUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,8 +50,8 @@ public class RegisterInteraction extends ListenerAdapter {
     private final String RELEASE_NOTICE_CHANNEL_ID = configProvider.getString("RELEASE_NOTICE_CHANNEL_ID");
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
-    private final Map<Long, RegisterStatus> registerStatusMap = new HashMap<>();
     private final Map<Long, Plugin> sessionDataMap = new HashMap<>();
+    private final Map<Long, RegisterStatus> registerStatusMap = new HashMap<>();
 
     private final String ID_PREFIX = "plugin-register-";
     private final Button CANCEL_BUTTON = Button.danger(ID_PREFIX + "cancel", "취소");
@@ -67,7 +68,7 @@ public class RegisterInteraction extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
 
         long userId = event.getAuthor().getIdLong();
-        if (!sessionDataMap.containsKey(userId)) {
+        if (!(sessionDataMap.containsKey(userId) && registerStatusMap.containsKey(userId))) {
             event.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
             return;
         }
@@ -81,22 +82,9 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 List<String> dependency = Stream.of(messageContent.split(",")).map(String::trim).toList();
                 Plugin plugin = sessionDataMap.get(userId);
-                Plugin newPlugin = new Plugin(
-                        plugin.getENName(),
-                        plugin.getKRName(),
-                        plugin.getEmoji(),
-                        plugin.getWikiUrl(),
-                        plugin.getIconUrl(),
-                        plugin.getVideoUrl(),
-                        plugin.getGifUrl(),
-                        dependency,
-                        plugin.getManager(),
-                        plugin.getBuyerRole(),
-                        plugin.getThreadId(),
-                        plugin.getVersion(),
-                        plugin.getPrice()
-                );
-                sessionDataMap.put(userId, newPlugin);
+                plugin.updateDependency(dependency);
+
+                sessionDataMap.put(userId, plugin);
                 registerStatusMap.put(userId, RegisterStatus.DEPENDENCY_ENTERED);
 
                 event.getMessage().reply("종속성을 `" + String.join(", ", dependency) + "` (으)로 설정했습니다.\n아래에 이모지를 입력해 주세요. (백틱 사이에 넣어주세요.)")
@@ -124,23 +112,11 @@ public class RegisterInteraction extends ListenerAdapter {
                     return;
                 }
 
+                String emojiStr = messageContent.replace("`", "");
                 Plugin plugin = sessionDataMap.get(userId);
-                Plugin newPlugin = new Plugin(
-                        plugin.getENName(),
-                        plugin.getKRName(),
-                        messageContent.replace("`", ""),
-                        plugin.getWikiUrl(),
-                        plugin.getIconUrl(),
-                        plugin.getVideoUrl(),
-                        plugin.getGifUrl(),
-                        plugin.getDependency(),
-                        plugin.getManager(),
-                        plugin.getBuyerRole(),
-                        plugin.getThreadId(),
-                        plugin.getVersion(),
-                        plugin.getPrice()
-                );
-                sessionDataMap.put(userId, newPlugin);
+                plugin.updateEmoji(emojiStr);
+
+                sessionDataMap.put(userId, plugin);
                 registerStatusMap.put(userId, RegisterStatus.EMOJI_ENTERED);
 
                 SelectMenu managerSelectMenu = EntitySelectMenu.create(ID_PREFIX + "manager", EntitySelectMenu.SelectTarget.USER)
@@ -156,25 +132,10 @@ public class RegisterInteraction extends ListenerAdapter {
             case BUYER_ROLE_SELECTED -> {
                 // 아이콘 이미지 업로드
 
-                String iconUrl = messageContent;
-
                 Plugin plugin = sessionDataMap.get(userId);
-                Plugin newPlugin = new Plugin(
-                        plugin.getENName(),
-                        plugin.getKRName(),
-                        plugin.getEmoji(),
-                        plugin.getWikiUrl(),
-                        iconUrl,
-                        plugin.getVideoUrl(),
-                        plugin.getGifUrl(),
-                        plugin.getDependency(),
-                        plugin.getManager(),
-                        plugin.getBuyerRole(),
-                        plugin.getThreadId(),
-                        plugin.getVersion(),
-                        plugin.getPrice()
-                );
-                sessionDataMap.put(userId, newPlugin);
+                plugin.updateIconUrl(messageContent);
+
+                sessionDataMap.put(userId, plugin);
                 registerStatusMap.put(userId, RegisterStatus.ICON_UPLOADED);
 
                 event.getMessage().reply("아이콘 이미지를 설정했습니다.\n아래에 GIF 이미지 URL을 입력해 주세요. (Cloudflare Images)")
@@ -185,25 +146,10 @@ public class RegisterInteraction extends ListenerAdapter {
             case ICON_UPLOADED -> {
                 // GIF 이미지 업로드
 
-                String imageUrl = messageContent;
-
                 Plugin plugin = sessionDataMap.get(userId);
-                Plugin newPlugin = new Plugin(
-                        plugin.getENName(),
-                        plugin.getKRName(),
-                        plugin.getEmoji(),
-                        plugin.getWikiUrl(),
-                        plugin.getIconUrl(),
-                        plugin.getVideoUrl(),
-                        imageUrl,
-                        plugin.getDependency(),
-                        plugin.getManager(),
-                        plugin.getBuyerRole(),
-                        plugin.getThreadId(),
-                        plugin.getVersion(),
-                        plugin.getPrice()
-                );
-                sessionDataMap.put(userId, newPlugin);
+                plugin.updateGifUrl(messageContent);
+
+                sessionDataMap.put(userId, plugin);
                 registerStatusMap.put(userId, RegisterStatus.GIF_UPLOADED);
 
                 event.getMessage().reply("""
@@ -231,19 +177,19 @@ public class RegisterInteraction extends ListenerAdapter {
                 int failCount = errors.size();
 
                 if (successCount == 0) {
-                    event.getMessage().reply("플러그인 파일을 모두 업로드하지 못했습니다. 다시 시도해 주세요.\n" + errors)
+                    event.getMessage().reply("플러그인 파일을 모두 업로드하지 못했습니다. 다시 시도해 주세요.\n\n" + String.join("\n", errors))
                             .addActionRow(CANCEL_BUTTON)
                             .queue();
                     return;
                 } else if (failCount == 0) {
                     event.getMessage().reply("플러그인 파일을 모두 업로드했습니다.").queue();
                 } else {
-                    event.getMessage().reply(failCount + "개의 파일을 제외한 " + successCount + "개의 파일을 업로드했습니다.\n" + errors).queue();
+                    event.getMessage().reply(failCount + "개의 파일을 제외한 " + successCount + "개의 파일을 업로드했습니다.\n\n" + String.join("\n", errors)).queue();
                 }
 
 
                 PluginService pluginService = DatabaseManager.getPluginService();
-                pluginService.pluginRepository().put(plugin);
+                pluginService.repository().put(plugin);
 
                 sessionDataMap.remove(userId);
                 registerStatusMap.remove(userId);
@@ -325,11 +271,11 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setMaxLength(150)
                         .setRequired(false)
                         .build();
-                TextInput price = TextInput.create("price", "가격 (선택)", TextInputStyle.SHORT)
+                TextInput price = TextInput.create("price", "가격 (필수)", TextInputStyle.SHORT)
                         .setPlaceholder("가격을 입력해 주세요.")
                         .setMinLength(0)
                         .setMaxLength(10)
-                        .setRequired(false)
+                        .setRequired(true)
                         .build();
 
                 Modal modal;
@@ -374,28 +320,15 @@ public class RegisterInteraction extends ListenerAdapter {
             case ID_PREFIX + "manager" -> {
                 long userId = event.getUser().getIdLong();
 
-                List<User> users = event.getMentions().getUsers();
+                List<User> mentionedUsers = event.getMentions().getUsers();
                 Plugin plugin = sessionDataMap.get(userId);
-                Plugin newPlugin = new Plugin(
-                        plugin.getENName(),
-                        plugin.getKRName(),
-                        plugin.getEmoji(),
-                        plugin.getWikiUrl(),
-                        plugin.getIconUrl(),
-                        plugin.getVideoUrl(),
-                        plugin.getGifUrl(),
-                        plugin.getDependency(),
-                        users.stream().map(User::getIdLong).toList(),
-                        plugin.getBuyerRole(),
-                        plugin.getThreadId(),
-                        plugin.getVersion(),
-                        plugin.getPrice()
-                );
-                sessionDataMap.put(userId, newPlugin);
+                plugin.updateManager(mentionedUsers.stream().map(User::getIdLong).toList());
+
+                sessionDataMap.put(userId, plugin);
 
                 event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
 
-                String managerMention = users.stream().map(User::getAsMention).collect(Collectors.joining(", "));
+                String managerMention = mentionedUsers.stream().map(User::getAsMention).collect(Collectors.joining(", "));
                 if (plugin.getPrice() != 0) {
                     EntitySelectMenu roleSelectMenu = EntitySelectMenu.create(ID_PREFIX + "buyerrole", EntitySelectMenu.SelectTarget.ROLE).build();
                     event.getMessage().reply("담당자를 " + managerMention + "님으로 설정했습니다.\n아래에서 구매자 역할을 선택해 주세요.")
@@ -418,22 +351,9 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 Role role = event.getMentions().getRoles().get(0);
                 Plugin plugin = sessionDataMap.get(userId);
-                Plugin newPlugin = new Plugin(
-                        plugin.getENName(),
-                        plugin.getKRName(),
-                        plugin.getEmoji(),
-                        plugin.getWikiUrl(),
-                        plugin.getIconUrl(),
-                        plugin.getVideoUrl(),
-                        plugin.getGifUrl(),
-                        plugin.getDependency(),
-                        plugin.getManager(),
-                        role.getIdLong(),
-                        plugin.getThreadId(),
-                        plugin.getVersion(),
-                        plugin.getPrice()
-                );
-                sessionDataMap.put(userId, newPlugin);
+                plugin.updateBuyerRole(role.getIdLong());
+
+                sessionDataMap.put(userId, plugin);
                 registerStatusMap.put(userId, RegisterStatus.BUYER_ROLE_SELECTED);
 
                 event.reply("구매자역할을 " + role.getAsMention() + "(으)로 설정했습니다.").queue();
@@ -454,14 +374,10 @@ public class RegisterInteraction extends ListenerAdapter {
 
         String buttonId = event.getComponentId();
         if (buttonId.equals((ID_PREFIX + "cancel"))) {
-            long userId = event.getUser().getIdLong();
-            sessionDataMap.remove(userId);
-            registerStatusMap.remove(userId);
-
             event.editButton(event.getButton().asDisabled()).queue();
-
-            clearChannel();
             event.getMessage().reply("플러그인이 등록을 취소했습니다. 채널이 청소됩니다.").queue();
+
+            cancelProcess(event.getUser().getIdLong());
         }
     }
 
@@ -476,9 +392,18 @@ public class RegisterInteraction extends ListenerAdapter {
         String modalId = event.getModalId();
         if (modalId.equals(ID_PREFIX + "modal-free") || modalId.equals(ID_PREFIX + "modal-premium")) {
             String ENName = event.getValue("name-en").getAsString();
+            if (!Pattern.compile("[a-zA-Z0-9-_]+$").matcher(ENName).matches()) {
+                event.reply("영문 이름은 영문자와 숫자, 특수문자(-, _)만 입력할 수 있습니다.\n플러그인이 등록을 취소합니다. (채널이 청소됩니다.)").queue();
+                cancelProcess(event.getUser().getIdLong());
+                return;
+            }
+
             String KRName = event.getValue("name-kr").getAsString();
+
             String wikiUrl = event.getValue("wiki-url").getAsString();
+
             String videoUrl = event.getValue("video-url").getAsString();
+
             int price;
             try {
                 String priceStr = event.getValue("price").getAsString();
@@ -532,6 +457,13 @@ public class RegisterInteraction extends ListenerAdapter {
         TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(RELEASE_NOTICE_CHANNEL_ID);
         channel.sendMessageEmbeds(noticeEmbed).queue();
         channel.sendMessage("> @everyone").queue();
+    }
+
+    private void cancelProcess(long userId) {
+        sessionDataMap.remove(userId);
+        registerStatusMap.remove(userId);
+
+        clearChannel();
     }
 
     private void clearChannel() {

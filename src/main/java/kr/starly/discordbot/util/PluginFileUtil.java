@@ -7,6 +7,7 @@ import kr.starly.discordbot.service.PluginFileService;
 import net.dv8tion.jda.api.entities.Message;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +35,17 @@ public class PluginFileUtil {
             String mcVersion = fileNameSplit[0];
             String version = fileNameSplit[1];
 
-            File pluginFile = new File("\\plugin\\%s\\%s.%s".formatted(plugin.getENName(), mcVersion + "-" + version, attachment.getFileExtension()));
+            File pluginFile = new File("plugin\\%s\\%s.%s".formatted(plugin.getENName(), mcVersion + "-" + version, attachment.getFileExtension()));
             File pluginDir = pluginFile.getParentFile();
 
             if (!pluginDir.exists()) pluginDir.mkdirs();
+            if (!pluginFile.exists()) {
+                try {
+                    pluginFile.createNewFile();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
             attachment.getProxy().downloadToFile(pluginFile);
 
             pluginFileService.saveData(pluginFile, plugin, MCVersion.valueOf(mcVersion), version);

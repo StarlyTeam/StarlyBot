@@ -2,8 +2,6 @@ package kr.starly.discordbot.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -11,82 +9,82 @@ import java.util.List;
 @Getter
 public class Plugin {
 
-        @NotNull String ENName;
-        @NotNull String KRName;
-        @NotNull String emoji;
-        @NotNull String wikiUrl;
-        @NotNull String iconUrl;
-        @Nullable String videoUrl;
-        @NotNull String gifUrl;
-        @NotNull List<String> dependency;
-        @NotNull List<Long> manager;
-        @Nullable Long buyerRole;
-        @NotNull Long threadId;
-        @NotNull String version;
-        @NotNull int price;
+        private String ENName;
+        private String KRName;
+        private String emoji;
+        private String wikiUrl;
+        private String iconUrl;
+        private String videoUrl;
+        private String gifUrl;
+        private List<String> dependency;
+        private List<Long> manager;
+        private Long buyerRole;
+        private Long threadId;
+        private String version;
+        private int price;
 
-        public void updateENName(@NotNull String ENName) {
+        public void updateENName(String ENName) {
             this.ENName = ENName;
         }
 
-        public void updateKRName(@NotNull String KRName) {
+        public void updateKRName(String KRName) {
             this.KRName = KRName;
         }
 
-        public void updateEmoji(@NotNull String emoji) {
+        public void updateEmoji(String emoji) {
             this.emoji = emoji;
         }
 
-        public void updateWikiUrl(@NotNull String wikiUrl) {
+        public void updateWikiUrl(String wikiUrl) {
             this.wikiUrl = wikiUrl;
         }
 
-        public void updateIconUrl(@NotNull String iconUrl) {
+        public void updateIconUrl(String iconUrl) {
             this.iconUrl = iconUrl;
         }
 
-        public void updateVideoUrl(@Nullable String videoUrl) {
+        public void updateVideoUrl(String videoUrl) {
             this.videoUrl = videoUrl;
         }
 
-        public void updateGifUrl(@NotNull String gifUrl) {
+        public void updateGifUrl(String gifUrl) {
             this.gifUrl = gifUrl;
         }
 
-        public void updateDependency(@NotNull List<String> dependency) {
+        public void updateDependency(List<String> dependency) {
             this.dependency = dependency;
         }
 
-        public void updateManager(@NotNull List<Long> manager) {
+        public void updateManager(List<Long> manager) {
             this.manager = manager;
         }
 
-        public void updateBuyerRole(@Nullable Long buyerRole) {
+        public void updateBuyerRole(Long buyerRole) {
             this.buyerRole = buyerRole;
         }
 
-        public void updateThreadId(@NotNull Long threadId) {
+        public void updateThreadId(Long threadId) {
             this.threadId = threadId;
         }
 
-        public void updateVersion(@NotNull String version) {
+        public void updateVersion(String version) {
             this.version = version;
         }
 
-        public void updatePrice(@NotNull int price) {
+        public void updatePrice(int price) {
             this.price = price;
         }
 
 
-        public void addManager(@NotNull Long manager) {
+        public void addManager(Long manager) {
             this.manager.add(manager);
         }
 
-        public void removeManager(@NotNull Long manager) {
+        public void removeManager(Long manager) {
             this.manager.remove(manager);
         }
 
-        public void addDependency(@NotNull String dependency) {
+        public void addDependency(String dependency) {
             this.dependency.add(dependency);
         }
 }

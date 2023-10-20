@@ -78,9 +78,9 @@ public class MongoPluginFileRepository implements PluginFileRepository {
     }
 
     @Override
-    public PluginFile findOne(String pluginNameEN, MCVersion mcVersion, String version) {
+    public PluginFile findOne(String ENName, MCVersion mcVersion, String version) {
         Document filter = new Document();
-        filter.put("ENName", pluginNameEN);
+        filter.put("ENName", ENName);
         filter.put("mcVersion", mcVersion);
         filter.put("version", version);
 
@@ -89,34 +89,34 @@ public class MongoPluginFileRepository implements PluginFileRepository {
     }
 
     @Override
-    public void deleteMany(String pluginNameEN) {
-        Document filter = new Document("ENName", pluginNameEN);
+    public void deleteMany(String ENName) {
+        Document filter = new Document("ENName", ENName);
 
         collection.deleteMany(filter);
     }
 
     @Override
-    public void deleteMany(String pluginNameEN, String version) {
+    public void deleteMany(String ENName, String version) {
         Document filter = new Document();
-        filter.put("ENName", pluginNameEN);
+        filter.put("ENName", ENName);
         filter.put("version", version);
 
         collection.deleteMany(filter);
     }
 
     @Override
-    public void deleteMany(String pluginNameEN, MCVersion mcVersion) {
+    public void deleteMany(String ENName, MCVersion mcVersion) {
         Document filter = new Document();
-        filter.put("ENName", pluginNameEN);
+        filter.put("ENName", ENName);
         filter.put("mcVersion", mcVersion);
 
         collection.deleteMany(filter);
     }
 
     @Override
-    public void deleteOne(String pluginNameEN, MCVersion mcVersion, String version) {
+    public void deleteOne(String ENName, MCVersion mcVersion, String version) {
         Document filter = new Document();
-        filter.put("ENName", pluginNameEN);
+        filter.put("ENName", ENName);
         filter.put("mcVersion", mcVersion);
         filter.put("version", version);
 
