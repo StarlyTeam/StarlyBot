@@ -2,11 +2,12 @@ package kr.starly.discordbot.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bson.Document;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class Plugin {
 
         private String ENName;
@@ -21,7 +22,8 @@ public class Plugin {
         private Long buyerRole;
         private Long threadId;
         private String version;
-        private int price;
+        private Integer price;
+        // nullable 여부 표기 불가능 (Register System 특성)
 
         public void updateENName(String ENName) {
             this.ENName = ENName;
@@ -75,7 +77,6 @@ public class Plugin {
             this.price = price;
         }
 
-
         public void addManager(Long manager) {
             this.manager.add(manager);
         }
@@ -86,5 +87,44 @@ public class Plugin {
 
         public void addDependency(String dependency) {
             this.dependency.add(dependency);
+        }
+        
+        public Document serialize() {
+            Document document = new Document();
+            document.put("ENName", ENName);
+            document.put("KRName", KRName);
+            document.put("emoji", emoji);
+            document.put("wikiUrl", wikiUrl);
+            document.put("iconUrl", iconUrl);
+            document.put("videoUrl", videoUrl);
+            document.put("gifUrl", gifUrl);
+            document.put("dependency", dependency);
+            document.put("manager", manager);
+            document.put("buyerRole", buyerRole);
+            document.put("threadId", threadId);
+            document.put("version", version);
+            document.put("price", price);
+            return document;
+        }
+
+
+        public static Plugin deserialize(Document document) {
+            if (document == null) return null;
+
+            return new Plugin(
+                    document.getString("ENName"),
+                    document.getString("KRName"),
+                    document.getString("emoji"),
+                    document.getString("wikiUrl"),
+                    document.getString("iconUrl"),
+                    document.getString("videoUrl"),
+                    document.getString("gifUrl"),
+                    document.getList("dependency", String.class),
+                    document.getList("manager", Long.class),
+                    document.getLong("buyerRole"),
+                    document.getLong("threadId"),
+                    document.getString("version"),
+                    document.getInteger("price")
+            );
         }
 }

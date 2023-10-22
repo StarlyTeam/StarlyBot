@@ -6,9 +6,9 @@ import kr.starly.discordbot.repository.BlacklistRepository;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 public class MongoBlacklistRepository implements BlacklistRepository {
@@ -60,12 +60,9 @@ public class MongoBlacklistRepository implements BlacklistRepository {
 
     @Override
     public List<Blacklist> findAll() {
-        List<Blacklist> blacklists = new ArrayList<>();
-        for (Document document : collection.find()) {
-            blacklists.add(parseBlacklist(document));
-        }
-
-        return blacklists;
+        return StreamSupport.stream(collection.find().spliterator(), false)
+                .map(this::parseBlacklist)
+                .toList();
     }
 
     private Blacklist parseBlacklist(Document document) {

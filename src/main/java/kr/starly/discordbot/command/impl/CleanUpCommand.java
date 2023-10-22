@@ -68,16 +68,18 @@ public class CleanUpCommand implements DiscordCommand {
     }
 
     private void deleteMessages(MessageChannel channel, int count) {
-        channel.getIterableHistory()
-                .takeAsync(count + 1)
-                .thenAccept(channel::purgeMessages);
+        try {
+            channel.getIterableHistory()
+                    .takeAsync(count + 1)
+                    .thenAccept(channel::purgeMessages);
+        } catch (Exception ignored) {}
+
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1141625729386287206> 성공 | 채팅청소 <a:success:1141625729386287206>")
                 .setDescription("**" + count + "개의 메시지를 청소했습니다.**")
                 .setFooter("이 메시지는 5초후에 자동으로 삭제됩니다.")
                 .build();
-
         channel.sendMessageEmbeds(messageEmbed).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
     }
 }

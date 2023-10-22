@@ -8,9 +8,13 @@ public class TokenUtil {
     private static final SecureRandom secureRandom = new SecureRandom();
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
-    public static String generateNewToken() {
+    public static byte[] generateBytes() {
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
+        return randomBytes;
+    }
+
+    public static String generateToken() {
+        return base64Encoder.encodeToString(generateBytes());
     }
 }

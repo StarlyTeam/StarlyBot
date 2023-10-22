@@ -2,8 +2,8 @@ package kr.starly.discordbot.repository;
 
 import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.ShortenLink;
-
 import org.bson.Document;
+
 import java.util.List;
 
 public interface ShortenLinkRepository {

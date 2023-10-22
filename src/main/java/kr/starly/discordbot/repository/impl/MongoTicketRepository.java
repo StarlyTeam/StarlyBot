@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class MongoTicketRepository implements TicketRepository {
 
     private final MongoCollection<Document> collection;

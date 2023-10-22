@@ -7,29 +7,38 @@ import java.nio.charset.StandardCharsets;
 
 public class AESUtil {
 
-    private AESUtil() {
+    private AESUtil() {}
+
+    public static String encode(String plainText, String key) {
+        try {
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 15).getBytes());
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, IV);
+
+            byte[] plainBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
+            return new String(plainBytes);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            return "{MAL}{ENCODING_ERROR}" + plainText;
+        }
     }
 
-    public static String encode(String plainText, String key) throws Exception {
-        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
-        IvParameterSpec IV = new IvParameterSpec(key.substring(0, 16).getBytes());
+    public static String decode(String encodedText, String key) {
+        try {
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 15).getBytes());
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, IV);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, IV);
 
-        byte[] plainBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
-        return new String(plainBytes);
-    }
-
-
-    public static String decode(String encodedText, String key) throws Exception {
-        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-        IvParameterSpec IV = new IvParameterSpec(key.substring(0, 16).getBytes());
-
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, IV);
-
-        byte[] encodedBytes = encodedText.getBytes();
-        return new String(cipher.doFinal(encodedBytes), StandardCharsets.UTF_8);
+            byte[] encodedBytes = encodedText.getBytes();
+            return new String(cipher.doFinal(encodedBytes), StandardCharsets.UTF_8);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "{MAL}{DECODING_ERROR}" + encodedText;
+        }
     }
 }

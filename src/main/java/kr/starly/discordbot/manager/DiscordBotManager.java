@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.reflections.Reflections;
 
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -31,6 +32,7 @@ public class DiscordBotManager {
     private DiscordBotManager() {}
 
     private static final Logger LOGGER = Logger.getLogger(DiscordBotManager.class.getName());
+
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String GUILD_ID = configProvider.getString("GUILD_ID");
     private final String BOT_TOKEN = configProvider.getString("BOT_TOKEN");
@@ -39,7 +41,7 @@ public class DiscordBotManager {
     private JDA jda;
     private boolean isBotFullyLoaded = false;
 
-    private SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
+    private final SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
 
     public void startBot() {
         try {
@@ -101,9 +103,7 @@ public class DiscordBotManager {
     }
 
     private void enableAllIntents(JDABuilder builder) {
-        for (GatewayIntent intent : GatewayIntent.values()) {
-            builder.enableIntents(intent);
-        }
+        builder.enableIntents(List.of(GatewayIntent.values()));
     }
 
     private void registerEventListeners() {

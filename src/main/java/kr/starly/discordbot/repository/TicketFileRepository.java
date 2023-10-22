@@ -1,7 +1,6 @@
 package kr.starly.discordbot.repository;
 
 import com.google.gson.Gson;
-
 import kr.starly.discordbot.entity.Ticket;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

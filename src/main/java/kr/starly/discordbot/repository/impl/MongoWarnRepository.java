@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class MongoWarnRepository implements WarnRepository {
 
     private final MongoCollection<Document> collection;

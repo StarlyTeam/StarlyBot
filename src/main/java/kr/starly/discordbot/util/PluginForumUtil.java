@@ -45,7 +45,7 @@ public class PluginForumUtil {
             plugin.updateThreadId(threadId);
 
             PluginService pluginService = DatabaseManager.getPluginService();
-            pluginService.repository().put(plugin);
+            pluginService.saveData(plugin);
         });
     }
 
@@ -73,21 +73,23 @@ public class PluginForumUtil {
             FileUpload iconFile = FileUpload.fromData(new URL(plugin.getIconUrl()).openStream(), "icon.png");
             messageCreateBuilder.addFiles(iconFile);
 
-            // 버튼 생성
+            // 버튼 (구매, 다운로드, 위키, 영상)
             List<Button> components = new ArrayList<>();
             if (plugin.getPrice() != 0) {
                 Button buyBtn = Button.primary("pluginaction-buy-start-" + plugin.getENName(), "구매");
                 components.add(buyBtn);
-            } if (plugin.getWikiUrl() != null) {
+            }
+
+            Button editBtn = Button.secondary("pluginaction-download-" + plugin.getENName(), "다운로드");
+            components.add(editBtn);
+
+            if (plugin.getWikiUrl() != null) {
                 Button wikiUrl = Button.link(plugin.getWikiUrl(), "위키");
                 components.add(wikiUrl);
             } if (plugin.getVideoUrl() != null) {
                 Button videoUrl = Button.link(plugin.getVideoUrl(), "영상");
                 components.add(videoUrl);
             }
-
-            Button editBtn = Button.secondary("pluginaction-download-" + plugin.getENName(), "다운로드");
-            components.add(editBtn);
 
             return messageCreateBuilder
                     .addActionRow(components)

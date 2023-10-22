@@ -18,13 +18,14 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 @BotEvent
 public class InfoInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String PLUGIN_MANAGEMENT_CHANNEL_ID = configProvider.getString("PLUGIN_MANAGEMENT_CHANNEL_ID");
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
@@ -33,6 +34,7 @@ public class InfoInteraction extends ListenerAdapter {
     // SELECT MENU
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -61,6 +63,7 @@ public class InfoInteraction extends ListenerAdapter {
     // MODAL
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;

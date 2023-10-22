@@ -2,7 +2,6 @@ package kr.starly.discordbot.repository;
 
 import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.Ticket;
-
 import org.bson.Document;
 
 public interface TicketRepository {

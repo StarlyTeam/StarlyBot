@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class PluginFile {
 
         @NotNull File file;

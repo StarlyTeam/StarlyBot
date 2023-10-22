@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.util.lib.CFImagesUtil;
+import kr.starly.discordbot.util.external.CFImagesUtil;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
 
 @BotSlashCommand(
         command = "이미지",

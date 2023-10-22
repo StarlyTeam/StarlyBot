@@ -1,4 +1,4 @@
-package kr.starly.discordbot.util.lib;
+package kr.starly.discordbot.util.external;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -9,6 +9,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class CFImagesUtil {
@@ -16,6 +17,8 @@ public class CFImagesUtil {
     private static final ConfigProvider configProvider = ConfigProvider.getInstance();
     private static final String ACCOUNT_ID = configProvider.getString("ACCOUNT_ID");
     private static final String API_TOKEN = configProvider.getString("API_TOKEN");
+
+    private static final Logger LOGGER = Logger.getLogger(CFImagesUtil.class.getName());
 
     public static String uploadImage(String imageUrl) throws IOException {
         final String boundary = "A1B2C3";
@@ -53,7 +56,7 @@ public class CFImagesUtil {
 
         JsonArray errors = jsonObject.get("errors").getAsJsonArray();
         if (!errors.isEmpty()) {
-            System.out.println(errors);
+            errors.forEach(error -> LOGGER.warning(error.toString()));
             return null;
         }
 
@@ -82,7 +85,7 @@ public class CFImagesUtil {
 
         JsonArray errors = jsonObject.get("errors").getAsJsonArray();
         if (!errors.isEmpty()) {
-            System.out.println(errors);
+            errors.forEach(error -> LOGGER.warning(error.toString()));
         }
     }
 
@@ -106,7 +109,7 @@ public class CFImagesUtil {
 
         JsonArray errors = jsonObject.get("errors").getAsJsonArray();
         if (!errors.isEmpty()) {
-            System.out.println(errors);
+            errors.forEach(error -> LOGGER.warning(error.toString()));
             return null;
         }
 

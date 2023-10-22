@@ -4,6 +4,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import kr.starly.discordbot.coupon.repistory.CouponRedeemRepository;
+import kr.starly.discordbot.coupon.repistory.CouponRepository;
+import kr.starly.discordbot.coupon.repistory.MongoCouponRedeemRepository;
+import kr.starly.discordbot.coupon.repistory.MongoCouponRepository;
+import kr.starly.discordbot.coupon.service.CouponRedeemService;
+import kr.starly.discordbot.coupon.service.CouponService;
+import kr.starly.discordbot.payment.repository.MongoPaymentRepository;
+import kr.starly.discordbot.payment.repository.PaymentRepository;
+import kr.starly.discordbot.payment.service.PaymentService;
 import kr.starly.discordbot.repository.*;
 import kr.starly.discordbot.repository.impl.*;
 import kr.starly.discordbot.service.*;
@@ -24,6 +33,9 @@ public class DatabaseManager {
     private static final String DB_COLLECTION_WARN = configProvider.getString("DB_COLLECTION_WARN");
     private static final String DB_COLLECTION_SHORTEN_LINK = configProvider.getString("DB_COLLECTION_SHORTEN_LINK");
     private static final String DB_COLLECTION_BLACKLIST = configProvider.getString("DB_COLLECTION_BLACKLIST");
+    private static final String DB_COLLECTION_COUPON = configProvider.getString("DB_COLLECTION_COUPON");
+    private static final String DB_COLLECTION_COUPON_REDEEM = configProvider.getString("DB_COLLECTION_COUPON_REDEEM");
+    private static final String DB_COLLECTION_PAYMENT = configProvider.getString("DB_COLLECTION_PAYMENT");
 
     private static final MongoClient mongoClient = MongoClients.create(DB_HOST);
     private static final MongoDatabase database = mongoClient.getDatabase(DB_DATABASE);
@@ -35,6 +47,9 @@ public class DatabaseManager {
     private static final MongoCollection<Document> warnCollection = database.getCollection(DB_COLLECTION_WARN);
     private static final MongoCollection<Document> shortenLinkCollection = database.getCollection(DB_COLLECTION_SHORTEN_LINK);
     private static final MongoCollection<Document> blacklistCollection = database.getCollection(DB_COLLECTION_BLACKLIST);
+    private static final MongoCollection<Document> couponCollection = database.getCollection(DB_COLLECTION_COUPON);
+    private static final MongoCollection<Document> couponRedeemCollection = database.getCollection(DB_COLLECTION_COUPON_REDEEM);
+    private static final MongoCollection<Document> paymentCollection = database.getCollection(DB_COLLECTION_PAYMENT);
 
 
     private static final UserRepository userRepository = new MongoUserRepository(userCollection);
@@ -44,6 +59,9 @@ public class DatabaseManager {
     private static final WarnRepository warnRepository = new MongoWarnRepository(warnCollection);
     private static final ShortenLinkRepository shortenLinkRepository = new MongoShortenLinkRepository(shortenLinkCollection);
     private static final BlacklistRepository blacklistRepository = new MongoBlacklistRepository(blacklistCollection);
+    private static final CouponRepository couponRepository = new MongoCouponRepository(couponCollection);
+    private static final CouponRedeemRepository couponRedeemRepository = new MongoCouponRedeemRepository(couponRedeemCollection);
+    private static final PaymentRepository paymentRepository = new MongoPaymentRepository(paymentCollection);
 
 
     @Getter private static final UserService userService = new UserService(userRepository);
@@ -53,4 +71,7 @@ public class DatabaseManager {
     @Getter private static final WarnService warnService = new WarnService(warnRepository);
     @Getter private static final ShortenLinkService shortenLinkService = new ShortenLinkService(shortenLinkRepository);
     @Getter private static final BlacklistService blacklistService = new BlacklistService(blacklistRepository);
+    @Getter private static final CouponService couponService = new CouponService(couponRepository);
+    @Getter private static final CouponRedeemService couponRedeemService = new CouponRedeemService(couponRedeemRepository);
+    @Getter private static final PaymentService paymentService = new PaymentService(paymentRepository);
 }

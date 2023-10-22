@@ -7,36 +7,7 @@ import java.util.List;
 
 public record PluginService(PluginRepository repository) {
 
-    public void saveData(
-            String ENName,
-            String KRName,
-            String emoji,
-            String wikiUrl,
-            String iconUrl,
-            String videoUrl,
-            String gifUrl,
-            List<String> dependency,
-            List<Long> manager,
-            long buyerRole,
-            long threadId,
-            String version,
-            int price
-    ) {
-        Plugin plugin = new Plugin(
-                ENName,
-                KRName,
-                emoji,
-                wikiUrl,
-                iconUrl,
-                videoUrl,
-                gifUrl,
-                dependency,
-                manager,
-                buyerRole,
-                threadId,
-                version,
-                price
-        );
+    public void saveData(Plugin plugin) {
         repository.put(plugin);
     }
 

@@ -7,12 +7,15 @@ import kr.starly.discordbot.enums.RegisterStatus;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.PluginService;
-import kr.starly.discordbot.util.security.PermissionUtil;
 import kr.starly.discordbot.util.PluginFileUtil;
 import kr.starly.discordbot.util.PluginForumUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
@@ -32,13 +35,12 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,7 +53,7 @@ public class RegisterInteraction extends ListenerAdapter {
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
     private final Map<Long, Plugin> sessionDataMap = new HashMap<>();
-    private final Map<Long, RegisterStatus> registerStatusMap = new HashMap<>();
+    private final Map<Long, RegisterStatus> sessionStatusMap = new HashMap<>();
 
     private final String ID_PREFIX = "plugin-register-";
     private final Button CANCEL_BUTTON = Button.danger(ID_PREFIX + "cancel", "취소");
@@ -59,25 +61,26 @@ public class RegisterInteraction extends ListenerAdapter {
     // CHAT
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (event.getAuthor().isBot()) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
         }
 
-        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (event.getAuthor().isBot()) return;
-
         long userId = event.getAuthor().getIdLong();
-        if (!(sessionDataMap.containsKey(userId) && registerStatusMap.containsKey(userId))) {
-            event.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
+        if (!(sessionDataMap.containsKey(userId) && sessionStatusMap.containsKey(userId))) {
+            try {
+                event.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
+            } catch (Exception ignored) {}
             return;
         }
 
         String messageContent = event.getMessage().getContentRaw();
         List<Message.Attachment> attachments = event.getMessage().getAttachments();
 
-        switch (registerStatusMap.get(userId)) {
-            case MODAL_SUBMITTED -> {
+        switch (sessionStatusMap.get(userId)) {
+            case SELECT_DEPENDENCY -> {
                 // 종속성 설정
 
                 List<String> dependency = Stream.of(messageContent.split(",")).map(String::trim).toList();
@@ -85,14 +88,14 @@ public class RegisterInteraction extends ListenerAdapter {
                 plugin.updateDependency(dependency);
 
                 sessionDataMap.put(userId, plugin);
-                registerStatusMap.put(userId, RegisterStatus.DEPENDENCY_ENTERED);
+                sessionStatusMap.put(userId, RegisterStatus.SUBMIT_EMOJI);
 
                 event.getMessage().reply("종속성을 `" + String.join(", ", dependency) + "` (으)로 설정했습니다.\n아래에 이모지를 입력해 주세요. (백틱 사이에 넣어주세요.)")
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
             }
 
-            case DEPENDENCY_ENTERED -> {
+            case SUBMIT_EMOJI -> {
                 // 이모지 설정
 
                 Emoji emoji;
@@ -117,7 +120,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 plugin.updateEmoji(emojiStr);
 
                 sessionDataMap.put(userId, plugin);
-                registerStatusMap.put(userId, RegisterStatus.EMOJI_ENTERED);
+                sessionStatusMap.put(userId, RegisterStatus.SELECT_MANAGER);
 
                 SelectMenu managerSelectMenu = EntitySelectMenu.create(ID_PREFIX + "manager", EntitySelectMenu.SelectTarget.USER)
                         .setPlaceholder("담당자를 선택해 주세요.")
@@ -129,28 +132,28 @@ public class RegisterInteraction extends ListenerAdapter {
                         .queue();
             }
 
-            case BUYER_ROLE_SELECTED -> {
+            case UPLOAD_ICON_IMAGE -> {
                 // 아이콘 이미지 업로드
 
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateIconUrl(messageContent);
 
                 sessionDataMap.put(userId, plugin);
-                registerStatusMap.put(userId, RegisterStatus.ICON_UPLOADED);
+                sessionStatusMap.put(userId, RegisterStatus.UPLOAD_GIF_IMAGE);
 
                 event.getMessage().reply("아이콘 이미지를 설정했습니다.\n아래에 GIF 이미지 URL을 입력해 주세요. (Cloudflare Images)")
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
             }
 
-            case ICON_UPLOADED -> {
+            case UPLOAD_GIF_IMAGE -> {
                 // GIF 이미지 업로드
 
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateGifUrl(messageContent);
 
                 sessionDataMap.put(userId, plugin);
-                registerStatusMap.put(userId, RegisterStatus.GIF_UPLOADED);
+                sessionStatusMap.put(userId, RegisterStatus.UPLOAD_PLUGIN_FILE);
 
                 event.getMessage().reply("""
                                 GIF 이미지를 설정했습니다. 아래에 플러그인 파일을 첨부해 주세요.
@@ -162,7 +165,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .queue();
             }
 
-            case GIF_UPLOADED -> {
+            case UPLOAD_PLUGIN_FILE -> {
                 // 플러그인 파일 업로드
 
                 if (attachments.isEmpty()) {
@@ -189,10 +192,10 @@ public class RegisterInteraction extends ListenerAdapter {
 
 
                 PluginService pluginService = DatabaseManager.getPluginService();
-                pluginService.repository().put(plugin);
+                pluginService.saveData(plugin);
 
                 sessionDataMap.remove(userId);
-                registerStatusMap.remove(userId);
+                sessionStatusMap.remove(userId);
 
                 clearChannel();
                 event.getMessage().reply("플러그인이 등록되었습니다. 채널이 청소됩니다.").queue();
@@ -207,6 +210,7 @@ public class RegisterInteraction extends ListenerAdapter {
     // SELECT MENU
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -301,7 +305,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 event.replyModal(modal).queue();
 
                 long userId = event.getUser().getIdLong();
-                registerStatusMap.put(userId, RegisterStatus.STARTED);
+                sessionStatusMap.put(userId, RegisterStatus.STARTED);
 
                 event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
             }
@@ -310,6 +314,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
     @Override
     public void onEntitySelectInteraction(@NotNull EntitySelectInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -319,6 +324,7 @@ public class RegisterInteraction extends ListenerAdapter {
         switch (componentId) {
             case ID_PREFIX + "manager" -> {
                 long userId = event.getUser().getIdLong();
+                if (sessionStatusMap.get(userId) != RegisterStatus.SELECT_MANAGER) return;
 
                 List<User> mentionedUsers = event.getMentions().getUsers();
                 Plugin plugin = sessionDataMap.get(userId);
@@ -336,28 +342,34 @@ public class RegisterInteraction extends ListenerAdapter {
                             .addActionRow(CANCEL_BUTTON)
                             .queue();
 
-                    registerStatusMap.put(userId, RegisterStatus.MANAGER_SELECTED);
+                    sessionStatusMap.put(userId, RegisterStatus.SELECT_BUYER_ROLE);
                 } else {
                     event.getMessage().reply("담당자를 " + managerMention + "님으로 설정했습니다.\n아래에 아이콘 URL을 전송해 주세요. (jpg, png)")
                             .addActionRow(CANCEL_BUTTON)
                             .queue();
 
-                    registerStatusMap.put(userId, RegisterStatus.BUYER_ROLE_SELECTED);
+                    sessionStatusMap.put(userId, RegisterStatus.UPLOAD_ICON_IMAGE);
                 }
             }
 
             case ID_PREFIX + "buyerrole" -> {
                 long userId = event.getUser().getIdLong();
+                if (sessionStatusMap.get(userId) != RegisterStatus.SELECT_BUYER_ROLE) return;
 
                 Role role = event.getMentions().getRoles().get(0);
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateBuyerRole(role.getIdLong());
 
                 sessionDataMap.put(userId, plugin);
-                registerStatusMap.put(userId, RegisterStatus.BUYER_ROLE_SELECTED);
+                sessionStatusMap.put(userId, RegisterStatus.UPLOAD_ICON_IMAGE);
 
-                event.reply("구매자역할을 " + role.getAsMention() + "(으)로 설정했습니다.").queue();
-                event.getChannel().sendMessage("아래에 아이콘을 업로드하거나 URL을 전송해 주세요. (jpg, png)")
+                event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
+
+                event.getMessage()
+                        .reply("""
+                                구매자 역할을 %s(으)로 설정했습니다.
+                                아래에 아이콘 이미지 URL을 전송해 주세요. (Cloudflare Images)
+                                """.formatted(role.getAsMention()))
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
             }
@@ -367,6 +379,7 @@ public class RegisterInteraction extends ListenerAdapter {
     // BUTTON
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -384,6 +397,7 @@ public class RegisterInteraction extends ListenerAdapter {
     // MODAL
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -392,7 +406,7 @@ public class RegisterInteraction extends ListenerAdapter {
         String modalId = event.getModalId();
         if (modalId.equals(ID_PREFIX + "modal-free") || modalId.equals(ID_PREFIX + "modal-premium")) {
             String ENName = event.getValue("name-en").getAsString();
-            if (!Pattern.compile("[a-zA-Z0-9-_]+$").matcher(ENName).matches()) {
+            if (!ENName.matches("[a-zA-Z0-9-_]+$")) {
                 event.reply("영문 이름은 영문자와 숫자, 특수문자(-, _)만 입력할 수 있습니다.\n플러그인이 등록을 취소합니다. (채널이 청소됩니다.)").queue();
                 cancelProcess(event.getUser().getIdLong());
                 return;
@@ -431,7 +445,7 @@ public class RegisterInteraction extends ListenerAdapter {
                     price
             );
             sessionDataMap.put(userId, plugin);
-            registerStatusMap.put(userId, RegisterStatus.MODAL_SUBMITTED);
+            sessionStatusMap.put(userId, RegisterStatus.SELECT_DEPENDENCY);
 
             event.reply("입력하신 내용입니다 : %s, %s, %s, %s, %d\n종속성을 입력해 주세요.\n예) StarlyCore, ProtocolLib".formatted(ENName, KRName, wikiUrl, videoUrl, price))
                     .addActionRow(CANCEL_BUTTON)
@@ -461,7 +475,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
     private void cancelProcess(long userId) {
         sessionDataMap.remove(userId);
-        registerStatusMap.remove(userId);
+        sessionStatusMap.remove(userId);
 
         clearChannel();
     }

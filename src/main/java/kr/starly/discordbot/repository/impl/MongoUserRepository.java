@@ -2,17 +2,19 @@ package kr.starly.discordbot.repository.impl;
 
 import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.User;
+import kr.starly.discordbot.rank.entity.Rank;
+import kr.starly.discordbot.rank.repository.RankRepository;
 import kr.starly.discordbot.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class MongoUserRepository implements UserRepository {
 
     private final MongoCollection<Document> collection;
@@ -26,6 +28,12 @@ public class MongoUserRepository implements UserRepository {
         document.put("ip", user.ip());
         document.put("verifiedAt", user.verifiedAt());
         document.put("point", user.point());
+        document.put(
+                "rank",
+                user.rank().stream()
+                        .map(Rank::getName)
+                        .toList()
+        );
 
         if (collection.find(filter).first() != null) {
             collection.updateOne(filter, new Document("$set", document));
@@ -43,12 +51,9 @@ public class MongoUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        List<User> users = new ArrayList<>();
-        for (Document document : collection.find()) {
-            users.add(parseUser(document));
-        }
-
-        return users;
+        return StreamSupport.stream(collection.find().spliterator(), false)
+                .map(this::parseUser)
+                .toList();
     }
 
     private User parseUser(Document document) {
@@ -58,7 +63,10 @@ public class MongoUserRepository implements UserRepository {
         String ip = document.getString("ip");
         Date verifiedAt = document.getDate("verifiedAt");
         int point = document.getInteger("point");
+        List<Rank> rank = document.getList("rank", int.class).stream()
+                .map(RankRepository.getInstance()::getRank)
+                .toList();
 
-        return new User(discordId, ip, verifiedAt, point);
+        return new User(discordId, ip, verifiedAt, point, rank);
     }
 }

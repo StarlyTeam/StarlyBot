@@ -28,7 +28,7 @@ public class MongoPluginFileRepository implements PluginFileRepository {
         filter.put("version", pluginFile.getVersion());
 
         Document document = new Document(filter);
-        document.put("filePath", pluginFile.getFile().getCanonicalPath());
+        document.put("filePath", pluginFile.getFile().getPath());
 
         if (collection.find(filter).first() != null) {
             collection.updateOne(filter, new Document("$set", document));

@@ -3,10 +3,12 @@ package kr.starly.discordbot;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.http.WebServer;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.util.DiscordBotUtil;
+import kr.starly.discordbot.rank.repository.RankRepository;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.logging.Logger;
 
 public class Main {
 
@@ -15,15 +17,28 @@ public class Main {
 
     private static final WebServer webServer = new WebServer();
 
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+
         startDiscordBot();
         startHttpServer();
+        RankRepository.$initialize();
+
         handleCommands();
     }
 
     private static void startDiscordBot() {
         botManager.startBot();
-        DiscordBotUtil.waitForBotToLoad(botManager);
+
+        while(!botManager.isBotFullyLoaded()) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     private static void startHttpServer() {
@@ -31,9 +46,10 @@ public class Main {
 
         try {
             webServer.start(WEB_PORT);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Could not start HTTP Server due to: " + e.getMessage());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+            LOGGER.severe("HTTP 서버를 실행하지 못했습니다. (" + ex.getMessage() + ")");
         }
     }
 
@@ -44,28 +60,22 @@ public class Main {
             System.out.flush();
             String command = scanner.nextLine();
 
-            if ("stop".equals(command.toLowerCase())) {
+            if ("stop".equalsIgnoreCase(command)) {
                 stopServices(scanner);
                 break;
-            }
-
-            if ("reload".equals(command.toLowerCase()) || "restart".equals(command.toLowerCase())) {
-                restartBot();
+            } else if ("help".equalsIgnoreCase(command)) {
+                System.out.println("사용가능한 명령어 목록: stop, help");
+            } else if (!command.isEmpty()) {
+                System.out.println("알 수 없는 명령어입니다. 도움말을 확인하려면 'help' 명령어를 입력해보세요.");
             }
         }
     }
 
     private static void stopServices(Scanner scanner) {
-        System.out.println("Stopping the bot...");
         botManager.stopBot();
         webServer.stop();
         scanner.close();
-        System.exit(0);
-    }
 
-    private static void restartBot() {
-        System.out.println("Restarting the bot...");
-        botManager.stopBot();
-        DiscordBotUtil.reloadBotAfterDelay(botManager, 5000);
+        System.exit(0);
     }
 }

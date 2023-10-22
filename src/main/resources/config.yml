@@ -4,13 +4,13 @@
 # 봇 토큰
 BOT_TOKEN: "MTAzMzU4MDI1NjMxOTI1NDU1OQ.GsxNar.rg8zb61auGEasp9au4S0ueI9RwF8EdUCu3C_y4"
 # 감사로그 채널 ID
-AUDIT_LOG_CHANNEL_ID: '1157604707372646410'
+AUDIT_LOG_CHANNEL_ID: "1157604707372646410"
 
 # + -------------------------------------------------------------------------------- + #
 # | ACTIVITY SETTINGS ( 활동 설정 )
 # + -------------------------------------------------------------------------------- + #
 # 봇 상태 메시지
-ACTIVITY_NAME: "https://starly.kr"
+ACTIVITY_NAME: "starly.kr"
 # 봇 활동 타입
 ACTIVITY_TYPE: "playing"
 # 봇 상태
@@ -46,20 +46,22 @@ DB_COLLECTION_TICKET: "ticket"
 DB_COLLECTION_WARN: "warn"
 DB_COLLECTION_SHORTEN_LINK: "shortenLink"
 DB_COLLECTION_BLACKLIST: "blacklist"
+DB_COLLECTION_COUPON: "coupon"
+DB_COLLECTION_COUPON_REDEEM: "couponRedeem"
+DB_COLLECTION_PAYMENT: "payment"
 
 # + -------------------------------------------------------------------------------- + #
 # | WEB SERVER CONFIGURATION ( 웹 서버 설정 )
 # + -------------------------------------------------------------------------------- + #
 # 공통된 웹 주소
-WEB_ADDRESS: "59.4.140.144"
+WEB_ADDRESS: "http://59.4.140.144:8080/"
 # 공통된 웹 포트
 WEB_PORT: 8080
 
 # + -------------------------------------------------------------------------------- + #
 # | AUTH SETTINGS ( 인증 설정 )
 # + -------------------------------------------------------------------------------- + #
-# 인증 후, 지급되는 역할
-VERIFIED_ROLE_ID: "1112485200933425272"
+VERIFIED_ROLE_ID: "1112485200933425272" # 유성
 
 # + -------------------------------------------------------------------------------- + #
 # | WARN SETTINGS ( 경고 설정 )
@@ -79,9 +81,24 @@ PLUGIN_MANAGEMENT_CHANNEL_ID: "1148012770520989836"
 FREE_PLUGIN_FORUM_ID: "1147998082336825515"
 PREMIUM_PLUGIN_FORUM_ID: "1147998042985865216"
 RELEASE_NOTICE_CHANNEL_ID: "1148487084626169906"
+RELEASE_ANNOUNCEMENT_CHANNEL_ID: "1159884080733761586"
 
 # + -------------------------------------------------------------------------------- + #
 # | CF IMAGES SETTINGS ( 클라우드플레어 Images 설정 )
 # + -------------------------------------------------------------------------------- + #
 ACCOUNT_ID: "e644175af98fbd1549cea8ffd512536d"
 API_TOKEN: "eQm1CexVtGxNf9mXueVGBhRLT4_1Mdang_JcrDj-"
+
+# + -------------------------------------------------------------------------------- + #
+# | PAYMENTS SETTINGS ( 결제 설정 )
+# + -------------------------------------------------------------------------------- + #
+TOSSPAYMENTS_SECRET_KEY: "live_sk_d26DlbXAaV0KaNZ45qb3qY50Q9RB"
+PAYMENT_LOG_CHANNEL_ID: "1165311677756084355"
+BUYER_ROLE_ID: "1165680448597401724" # 위성
+
+# + -------------------------------------------------------------------------------- + #
+# | RANK SETTINGS ( 랭크 설정 )
+# + -------------------------------------------------------------------------------- + #
+RANK3_ROLE_ID: "1165680543233491164" # 행성
+RANK4_ROLE_ID: "1165680571016552508" # 은하
+RANK5_ROLE_ID: "1165680650444079124" # 우주

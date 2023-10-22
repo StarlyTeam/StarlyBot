@@ -24,7 +24,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -51,7 +51,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
         Member member = event.getMember();
 
-        if (event.getComponentId().contains("ticket-close")) {
+        if (event.getComponentId().startsWith("ticket-close")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
                 event.reply("관리자만 사용이 가능합니다.").setEphemeral(true).queue();
                 return;

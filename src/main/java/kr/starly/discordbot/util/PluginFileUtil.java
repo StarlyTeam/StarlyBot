@@ -35,7 +35,7 @@ public class PluginFileUtil {
             String mcVersion = fileNameSplit[0];
             String version = fileNameSplit[1];
 
-            File pluginFile = new File("plugin\\%s\\%s.%s".formatted(plugin.getENName(), mcVersion + "-" + version, attachment.getFileExtension()));
+            File pluginFile = new File(".\\plugin\\%s\\%s.%s".formatted(plugin.getENName(), mcVersion + "-" + version, attachment.getFileExtension()));
             File pluginDir = pluginFile.getParentFile();
 
             if (!pluginDir.exists()) pluginDir.mkdirs();

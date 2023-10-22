@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class MongoShortenLinkRepository implements ShortenLinkRepository {
 
     private final MongoCollection<Document> collection;
@@ -47,12 +47,9 @@ public class MongoShortenLinkRepository implements ShortenLinkRepository {
 
     @Override
     public List<ShortenLink> findAll() {
-        List<ShortenLink> shortenLinks = new ArrayList<>();
-        for (Document document : collection.find()) {
-            shortenLinks.add(parseShortenLink(document));
-        }
-
-        return shortenLinks;
+        return StreamSupport.stream(collection.find().spliterator(), false)
+                .map(this::parseShortenLink)
+                .toList();
     }
 
     @Override

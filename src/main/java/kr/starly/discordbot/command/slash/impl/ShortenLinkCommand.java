@@ -4,6 +4,7 @@ import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.ShortenLink;
 import kr.starly.discordbot.service.ShortenLinkService;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 import java.awt.*;
+import java.util.List;
 
 @BotSlashCommand(
         command = "단축링크",
@@ -130,25 +132,9 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
 
             case "목록" -> {
                 ShortenLinkService shortenLinkService = DatabaseManager.getShortenLinkService();
-                String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
-                String WEB_PORT = configProvider.getString("WEB_PORT");
+                List<ShortenLink> shortenLinks = shortenLinkService.getAllData();
 
-                EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1141623256558866482> 단축링크 목록 <a:loading:1141623256558866482>");
-
-                StringBuilder descriptionBuilder = new StringBuilder("> **아래는 현재 등록된 단축 링크들의 목록입니다.**\n\n");
-                shortenLinkService.getAllData().forEach(shortenLink -> descriptionBuilder
-                        .append("> **단축 URL:** ")
-                        .append("`")
-                        .append(WEB_ADDRESS + ":" + WEB_PORT + "/" + shortenLink.shortenUrl())
-                        .append("`")
-                        .append("\n> **원본 URL: `")
-                        .append(shortenLink.originUrl() + "`**")
-                        .append("\n\n"));
-
-                embedBuilder.setDescription(descriptionBuilder.toString());
-                event.replyEmbeds(embedBuilder.build()).queue();
+                // TODO : txt 파일 생성 후 업로드
             }
         }
     }

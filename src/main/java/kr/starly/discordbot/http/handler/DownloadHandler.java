@@ -6,7 +6,10 @@ import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.entity.PluginFile;
 import kr.starly.discordbot.repository.DownloadTokenRepository;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class DownloadHandler implements HttpHandler {
 
@@ -22,8 +25,11 @@ public class DownloadHandler implements HttpHandler {
         PluginFile pluginFile = tokenRepository.remove(token);
         if (pluginFile == null) {
             try {
-                exchange.sendResponseHeaders(404, 0);
-                exchange.getResponseBody().close();
+                String response = "존재하지 않거나, 만료된 토큰입니다.";
+                exchange.sendResponseHeaders(404, response.length());
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

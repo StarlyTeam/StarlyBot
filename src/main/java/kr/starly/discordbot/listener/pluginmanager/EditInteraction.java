@@ -10,9 +10,9 @@ import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.PluginFileService;
 import kr.starly.discordbot.service.PluginService;
-import kr.starly.discordbot.util.security.PermissionUtil;
 import kr.starly.discordbot.util.PluginFileUtil;
 import kr.starly.discordbot.util.PluginForumUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -35,12 +35,13 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @BotEvent
@@ -48,7 +49,7 @@ public class EditInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String PLUGIN_MANAGEMENT_CHANNEL_ID = configProvider.getString("PLUGIN_MANAGEMENT_CHANNEL_ID");
-    private final String UPDATE_NOTICE_CHANNEL_ID = configProvider.getString("UPDATE_NOTICE_CHANNEL_ID");
+    private final String RELEASE_ANNOUNCEMENT_CHANNEL_ID = configProvider.getString("RELEASE_ANNOUNCEMENT_CHANNEL_ID");
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
@@ -61,17 +62,18 @@ public class EditInteraction extends ListenerAdapter {
     // CHAT
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (event.getAuthor().isBot()) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
         }
 
-        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (event.getAuthor().isBot()) return;
-
         long userId = event.getAuthor().getIdLong();
         if (!(sessionMap.containsKey(userId) && uploadSession.contains(userId))) {
-            event.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
+            try {
+                event.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
+            } catch (Exception ignored) {}
             return;
         }
 
@@ -124,6 +126,7 @@ public class EditInteraction extends ListenerAdapter {
     // SELECT MENU
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -324,8 +327,8 @@ public class EditInteraction extends ListenerAdapter {
                     textInputs.add(dependency);
                 }
                 if (selectedValues.contains("manager")) {
-                    TextInput manager = TextInput.create("manager", "매니저", TextInputStyle.SHORT)
-                            .setPlaceholder("수정할 플러그인의 매니저를 입력해주세요.")
+                    TextInput manager = TextInput.create("manager", "담당자", TextInputStyle.SHORT)
+                            .setPlaceholder("수정할 플러그인의 담당자를 입력해주세요.")
                             .setRequired(true)
                             .build();
                     textInputs.add(manager);
@@ -365,6 +368,7 @@ public class EditInteraction extends ListenerAdapter {
     // MODAL
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -431,7 +435,9 @@ public class EditInteraction extends ListenerAdapter {
                             .setTitle("오류")
                             .setDescription("마인크래프트 버전이 올바르지 않습니다. 채널을 청소합니다.")
                             .build();
-                    event.replyEmbeds(embed).queue();
+                    event.replyEmbeds(embed)
+                            .setEphemeral(true)
+                            .queue();
 
                     sessionMap.remove(userId);
                     clearChannel();
@@ -514,12 +520,12 @@ public class EditInteraction extends ListenerAdapter {
                             plugin.updateENName(mappingValue);
                             description.append("> 플러그인 이름 (영어) | [" + mappingValue + "]\n");
                         }
-                        
+
                         case "name-kr" -> {
                             plugin.updateKRName(mappingValue);
                             description.append("> 플러그인 이름 (한국어) | [" + mappingValue + "]\n");
                         }
-                        
+
                         case "emoji" -> {
                             Emoji emoji;
                             try {
@@ -537,17 +543,17 @@ public class EditInteraction extends ListenerAdapter {
                             plugin.updateEmoji(mappingValue);
                             description.append("> 이모지 | [" + mappingValue + "]\n");
                         }
-                        
+
                         case "wiki-url" -> {
                             plugin.updateWikiUrl(mappingValue);
                             description.append("> 위키 URL | [" + mappingValue + "]\n");
                         }
-                        
+
                         case "icon-url" -> {
                             plugin.updateIconUrl(mappingValue);
                             description.append("> 아이콘 URL | [" + mappingValue + "]\n");
                         }
-                        
+
                         case "video-url" -> {
                             plugin.updateVideoUrl(mappingValue);
                             description.append("> 영상 URL | [" + mappingValue + "]\n");
@@ -566,7 +572,9 @@ public class EditInteraction extends ListenerAdapter {
                                         .setTitle("오류")
                                         .setDescription("종속성이 올바르지 않습니다. 채널을 청소합니다.")
                                         .build();
-                                event.replyEmbeds(embed).queue();
+                                event.replyEmbeds(embed)
+                                        .setEphemeral(true)
+                                        .queue();
 
                                 clearChannel();
                                 continue;
@@ -577,13 +585,15 @@ public class EditInteraction extends ListenerAdapter {
                         }
 
                         case "manager" -> {
-                            if (!mappingValue.matches("([1-9]+,?( +)?)+")) {
+                            if (!mappingValue.matches("([0-9]+,?( +)?)+$")) {
                                 MessageEmbed embed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR_ERROR)
                                         .setTitle("오류")
-                                        .setDescription("매니저가 올바르지 않습니다. 채널을 청소합니다.")
+                                        .setDescription("담당자가 올바르지 않습니다. 채널을 청소합니다.")
                                         .build();
-                                event.replyEmbeds(embed).queue();
+                                event.replyEmbeds(embed)
+                                        .setEphemeral(true)
+                                        .queue();
 
                                 clearChannel();
                                 continue;
@@ -595,7 +605,10 @@ public class EditInteraction extends ListenerAdapter {
                                     .toList();
 
                             plugin.updateManager(manager);
-                            description.append("> 매니저 | [" + mappingValue + "]\n");
+                            description.append("> 담당자 | [" + manager.stream()
+                                    .map(id -> "<@" + id + ">")
+                                    .collect(Collectors.joining(", "))
+                                    + "]\n");
                         }
 
                         case "buyer-role" -> {
@@ -608,14 +621,16 @@ public class EditInteraction extends ListenerAdapter {
                                         .setTitle("오류")
                                         .setDescription("역할이 올바르지 않습니다. 채널을 청소합니다.")
                                         .build();
-                                event.replyEmbeds(embed).queue();
+                                event.replyEmbeds(embed)
+                                        .setEphemeral(true)
+                                        .queue();
 
                                 clearChannel();
                                 continue;
                             }
 
                             plugin.updateBuyerRole(roleId);
-                            description.append("> 구매자 역할 | [" + mappingValue + "]\n");
+                            description.append("> 구매자 역할 | [<@&" + mappingValue + ">]\n");
                         }
 
                         case "version" -> {
@@ -633,7 +648,9 @@ public class EditInteraction extends ListenerAdapter {
                                         .setTitle("오류")
                                         .setDescription("가격이 올바르지 않습니다. 채널을 청소합니다.")
                                         .build();
-                                event.replyEmbeds(embed).queue();
+                                event.replyEmbeds(embed)
+                                        .setEphemeral(true)
+                                        .queue();
 
                                 clearChannel();
                                 continue;
@@ -649,21 +666,22 @@ public class EditInteraction extends ListenerAdapter {
                         pluginService.deleteDataByENName(originENName);
                     }
 
-                    pluginService.repository().put(plugin);
+                    pluginService.saveData(plugin);
                     sendUpdateAnnouncement(plugin);
                     PluginForumUtil.updatePluginChannel(plugin);
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
                             .setTitle("제목")
-                            .setDescription(description + "\n\n설정 완료 !!! 이제 채널이 청소됩니다.")
+                            .setDescription(description + "\n\n설정 완료 !!!")
                             .setThumbnail(plugin.getIconUrl())
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.replyEmbeds(embed).queue();
+                    event.replyEmbeds(embed)
+                            .setEphemeral(true)
+                            .queue();
 
                     sessionMap.remove(userId);
-                    clearChannel();
                 }
             }
         }
@@ -673,6 +691,7 @@ public class EditInteraction extends ListenerAdapter {
     // BUTTON
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -718,8 +737,8 @@ public class EditInteraction extends ListenerAdapter {
                         .addOption("영상 URL", "video-url", "영상 URL을 수정합니다.")
                         .addOption("GIF URL", "gif-url", "GIF URL을 수정합니다.")
                         .addOption("종속성", "dependency", "종속성을 수정합니다.")
-                        .addOption("매니저", "manager", "매니저를 수정합니다.")
-                        .addOption("구매자 역할", "buyer-role", "구매자 역할을 수정합니다.")
+                        .addOption("담당자", "manager", "담당자를 수정합니다. (콤마로 구분, 사용자 ID 입력)")
+                        .addOption("구매자 역할", "buyer-role", "구매자 역할을 수정합니다. (역할 ID 입력)")
                         .addOption("버전", "version", "버전을 수정합니다.")
                         .addOption("가격", "price", "가격을 수정합니다.")
                         .setRequiredRange(1, 5)
@@ -746,7 +765,7 @@ public class EditInteraction extends ListenerAdapter {
                 .setThumbnail(plugin.getIconUrl())
                 .build();
 
-        TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(UPDATE_NOTICE_CHANNEL_ID);
+        TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(RELEASE_ANNOUNCEMENT_CHANNEL_ID);
         channel.sendMessageEmbeds(noticeEmbed).queue();
     }
 

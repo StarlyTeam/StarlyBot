@@ -10,7 +10,10 @@ import kr.starly.discordbot.repository.TicketModalFileRepository;
 import kr.starly.discordbot.repository.TicketUserDataRepository;
 import kr.starly.discordbot.service.TicketService;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -19,7 +22,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
@@ -34,9 +37,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
     private final TicketModalFileRepository ticketModalFileRepository = TicketModalFileRepository.getInstance();
-
     private final TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
-
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {

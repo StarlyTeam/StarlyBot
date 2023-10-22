@@ -14,18 +14,20 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 @BotEvent
 public class ListInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final String PLUGIN_MANAGEMENT_CHANNEL_ID = configProvider.getString("PLUGIN_MANAGEMENT_CHANNEL_ID");
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     // SELECT MENU
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
+        if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
