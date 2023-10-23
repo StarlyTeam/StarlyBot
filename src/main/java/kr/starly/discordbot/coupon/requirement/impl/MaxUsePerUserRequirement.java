@@ -55,6 +55,8 @@ public class MaxUsePerUserRequirement extends CouponRequirement {
     }
 
     public static MaxUsePerUserRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.MAX_USE_PER_USER.name())) {
             throw new IllegalArgumentException("document is not MaxUsePerUserRequirement");
         }

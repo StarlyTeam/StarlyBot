@@ -36,6 +36,8 @@ public class CouponPerk extends RankPerk {
     }
 
     public static CouponPerk deserialize(Document document) {
+        if (document == null) return null;
+
         CouponService couponService = DatabaseManager.getCouponService();
         List<String> coupons = document.getList("coupons", String.class);
         List<Coupon> coupon = coupons.stream()

@@ -1,12 +1,12 @@
 package kr.starly.discordbot.payment.repository;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Sorts;
 import kr.starly.discordbot.payment.entity.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
@@ -38,14 +38,9 @@ public class MongoPaymentRepository implements PaymentRepository {
     @Override
     public List<Payment> findByUserId(long userId) {
         Document filter = new Document("requestedBy", userId);
-        return StreamSupport.stream(
-                        collection.find(filter)
-                                .sort(Sorts.descending("approvedAt"))
-                                .spliterator(),
-                        false
-                )
+        return collection.find(filter)
                 .map(Payment::deserialize)
-                .toList();
+                .into(new ArrayList<>());
     }
 
     @Override

@@ -36,6 +36,8 @@ public class DayAfterRequirement extends CouponRequirement {
     }
 
     public static DayAfterRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.DAY_AFTER.name())) {
             throw new IllegalArgumentException("document is not DaySinceRequirement");
         }

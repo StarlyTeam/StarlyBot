@@ -35,6 +35,8 @@ public class TransactionTypeRequirement extends CouponRequirement {
     }
 
     public static TransactionTypeRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.TRANSACTION_TYPE.name())) {
             throw new IllegalArgumentException("document is not TransactionTypeRequirement");
         }

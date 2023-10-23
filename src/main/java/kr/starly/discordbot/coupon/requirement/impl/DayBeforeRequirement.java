@@ -36,6 +36,8 @@ public class DayBeforeRequirement extends CouponRequirement {
     }
 
     public static DayBeforeRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.DAY_BEFORE.name())) {
             throw new IllegalArgumentException("document is not DayUntilRequirement");
         }

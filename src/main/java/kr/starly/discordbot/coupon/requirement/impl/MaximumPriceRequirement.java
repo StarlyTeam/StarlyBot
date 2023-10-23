@@ -16,7 +16,7 @@ public class MaximumPriceRequirement extends CouponRequirement {
 
     @Override
     public CouponRequirementType getType() {
-        return CouponRequirementType.MINIMUM_PRICE;
+        return CouponRequirementType.MAXIMUM_PRICE;
     }
 
     @Override
@@ -34,6 +34,8 @@ public class MaximumPriceRequirement extends CouponRequirement {
     }
 
     public static MaximumPriceRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.MAXIMUM_PRICE.name())) {
             throw new IllegalArgumentException("document is not MaximumPriceRequirement");
         }

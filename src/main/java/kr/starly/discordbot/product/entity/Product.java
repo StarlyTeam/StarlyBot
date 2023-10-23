@@ -41,6 +41,8 @@ public abstract class Product {
     }
 
     public static Product deserialize(Document document) {
+        if (document == null) return null;
+
         int price = document.getInteger("price");
         String note = document.getString("note");
 

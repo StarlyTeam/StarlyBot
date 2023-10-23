@@ -22,11 +22,11 @@ public class RoleRequirement extends CouponRequirement {
     private final String GUILD_ID = configProvider.getString("GUILD_ID");
 
     private final long roleId;
-    private final boolean required;
+    private final boolean expect;
 
     @Override
     public CouponRequirementType getType() {
-        return CouponRequirementType.MINIMUM_PRICE;
+        return CouponRequirementType.ROLE;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class RoleRequirement extends CouponRequirement {
 
         Role role = guild.getRoleById(roleId);
         boolean hasRole = member.getRoles().contains(role);
-        return required ? hasRole : !hasRole;
+        return expect == hasRole;
     }
 
     @Override
@@ -45,17 +45,19 @@ public class RoleRequirement extends CouponRequirement {
         Document document = new Document();
         document.put("type", getType().name());
         document.put("roleId", roleId);
-        document.put("required", required);
+        document.put("required", expect);
 
         return document;
     }
 
     public static RoleRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.ROLE.name())) {
             throw new IllegalArgumentException("document is not RoleRequirement");
         }
 
-        int roleId = document.getInteger("roleId");
+        long roleId = document.getLong("roleId");
         boolean required = document.getBoolean("required");
         return new RoleRequirement(roleId, required);
     }

@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class CulturelandPayment extends Payment {
@@ -42,6 +43,8 @@ public class CulturelandPayment extends Payment {
     }
 
     public static CulturelandPayment deserialize(Document document) {
+        if (document == null) return null;
+
         UUID paymentId = UUID.fromString(document.getString("paymentId"));
         Product product = Product.deserialize(document.get("product", Document.class));
         Long requestedBy = document.getLong("requestedBy");
@@ -49,6 +52,14 @@ public class CulturelandPayment extends Payment {
         CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
 
         String pinNumber = document.getString("pinNumber");
-        return new CulturelandPayment(paymentId, product, requestedBy, pinNumber, usedPoint, usedCoupon);
+
+        CulturelandPayment payment = new CulturelandPayment(paymentId, product, requestedBy, pinNumber, usedPoint, usedCoupon);
+
+        boolean accepted = document.getBoolean("accepted");
+        Date approvedAt = document.getDate("approvedAt");
+        payment.updateAccepted(accepted);
+        payment.updateApprovedAt(approvedAt);
+
+        return payment;
     }
 }

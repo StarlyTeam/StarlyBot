@@ -42,6 +42,8 @@ public class MaxUsePerCouponRequirement extends CouponRequirement {
     }
 
     public static MaxUsePerCouponRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.MAX_USE_PER_COUPON.name())) {
             throw new IllegalArgumentException("document is not MaxUsePerCouponRequirement");
         }

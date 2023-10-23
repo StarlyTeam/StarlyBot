@@ -49,6 +49,7 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -165,12 +166,13 @@ public class BuyListener extends ListenerAdapter {
                 case CREDIT_CARD -> {
                     PaymentService paymentService = DatabaseManager.getPaymentService();
                     List<Payment> recentPayments = paymentService.getDataByUserId(userId).stream()
+                            .filter(Payment::isAccepted)
                             .filter(payment -> payment.getMethod() == PaymentMethod.CREDIT_CARD)
-                            .toList(); // TODO : 불러와지지 않음. 수정 필요.
+                            .toList();
 
-                    CreditCardPayment recentPayment = recentPayments.isEmpty() ? null : recentPayments.get(0).asCreditCard();
+                    CreditCardPayment recentPayment = recentPayments.isEmpty() ? null : recentPayments.get(recentPayments.size() - 1).asCreditCard();
 
-                    TextInput cardNumber = TextInput.create("card-number", recentPayment == null ? "카드번호" : "카드번호 (자동 입력)", TextInputStyle.SHORT)
+                    TextInput cardNumber = TextInput.create("card-number", "카드번호", TextInputStyle.SHORT)
                             .setMinLength(10)
                             .setMaxLength(20)
                             .setPlaceholder("카드번호를 입력해주세요.")
@@ -205,7 +207,7 @@ public class BuyListener extends ListenerAdapter {
                             .setValue(recentPayment == null ? null : recentPayment.getCustomerEmail())
                             .setRequired(false)
                             .build();
-                    Modal modal = Modal.create(ID_PREFIX + "credit-card", "카드 결제")
+                    Modal modal = Modal.create(ID_PREFIX + "credit-card", "카드 결제" + (recentPayment == null ? "" : " (자동 입력)"))
                             .addActionRow(cardNumber)
                             .addActionRow(cardExpirationMonth)
                             .addActionRow(cardExpirationYear)
@@ -341,6 +343,14 @@ public class BuyListener extends ListenerAdapter {
 
             paymentService.saveData(payment);
 
+            // 금액 계산
+            int price = payment.getProduct().getPrice();
+            if (payment.getUsedCoupon() != null) {
+                Discount discount = payment.getUsedCoupon().getDiscount();
+                price = discount.computeFinalPrice(price);
+            }
+            int finalPrice = price - payment.getUsedPoint();
+
             // 구매 로그
             PremiumPluginProduct product = payment.getProduct().asPremiumPlugin();
             Plugin plugin = product.getPlugin();
@@ -350,6 +360,7 @@ public class BuyListener extends ListenerAdapter {
                     .setTitle("결제가 완료되었습니다.")
                     .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
                             "결제금액: " + payment.getProduct().getPrice() + "원\n" +
+                            "실결제금액: " + finalPrice + "원\n" +
                             "결제수단: " + payment.getMethod().getKRName() + "\n" +
                             "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
                             "결제자: " + event.getUser().getAsMention() + "\n" +
@@ -358,6 +369,9 @@ public class BuyListener extends ListenerAdapter {
                             "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
                             "생성된 티켓: " + event.getChannel().getAsMention())
             );
+
+            // 구매 처리
+            affectPayment(payment);
 
             // 메시지 전송
             MessageEmbed embed1 = new EmbedBuilder()
@@ -387,8 +401,13 @@ public class BuyListener extends ListenerAdapter {
                                 .queue();
                     });
 
-            // 구매 처리
-            affectPayment(payment);
+            // 컴포넌트 전체 비활성화
+            event.getMessage().editMessageComponents(
+                    event.getMessage()
+                            .getComponents().stream()
+                            .map(LayoutComponent::asDisabled)
+                            .toList()
+            ).queue();
         } else if (componentId.startsWith(ID_PREFIX + "refuse-")) {
             PaymentService paymentService = DatabaseManager.getPaymentService();
             UUID paymentId = UUID.fromString(
@@ -453,6 +472,14 @@ public class BuyListener extends ListenerAdapter {
                         event.getChannel().sendMessageEmbeds(embed3)
                                 .queue();
                     });
+
+            // 컴포넌트 전체 비활성화
+            event.getMessage().editMessageComponents(
+                    event.getMessage()
+                            .getComponents().stream()
+                            .map(LayoutComponent::asDisabled)
+                            .toList()
+            ).queue();
         }
 
         switch (componentId) {
@@ -487,7 +514,7 @@ public class BuyListener extends ListenerAdapter {
                         .setRequired(true)
                         .build();
                 Modal modal = Modal.create(ID_PREFIX + "point", "포인트 할인")
-                        .addActionRow(amountInput, CANCEL_BUTTON)
+                        .addActionRow(amountInput)
                         .build();
                 event.replyModal(modal).queue();
             }
@@ -601,7 +628,7 @@ public class BuyListener extends ListenerAdapter {
                 User user = userService.getDataByDiscordId(userId);
                 int point = user.point();
 
-                Button withoutPointBtn = Button.primary(ID_PREFIX + "point-no", "포인트 없이 진행");
+                Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
 
                 if (point == 0) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -1077,16 +1104,53 @@ public class BuyListener extends ListenerAdapter {
                 }
 
                 // DB 기록
-                PaymentService paymentService = DatabaseManager.getPaymentService();
-                paymentService.saveData(payment);
+                try {
+                    PaymentService paymentService = DatabaseManager.getPaymentService();
+                    paymentService.saveData(payment);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("제목")
+                            .setDescription("결제 정보 저장 중 오류가 발생했습니다.\n\n카드사에 비용이 청구되었을 수 있으니,\n티켓을 통하여 관리자에게 문의해주세요.")
+                            .build();
+                    event.replyEmbeds(embed)
+                            .setEphemeral(true)
+                            .queue();
+
+                    PaymentLogger.error(new EmbedBuilder()
+                            .setTitle("결제 정보 저장 중 오류가 발생했습니다.")
+                            .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
+                                    "결제금액: " + payment.getProduct().getPrice() + "원\n" +
+                                    "결제수단: 신용카드\n" +
+                                    "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
+                                    "결제자: " + event.getUser().getAsMention() + "\n" +
+                                    "구매한 플러그인: " + plugin.getENName() + "\n" +
+                                    "사용된 포인트: " + usedPoint + "\n" +
+                                    "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
+                                    "생성된 티켓: 없음"));
+
+                    stopProcess(userId);
+                    return;
+                }
 
                 if (!payment.isAccepted()) return;
+
+                // 금액 계산
+                int price = payment.getProduct().getPrice();
+                if (payment.getUsedCoupon() != null) {
+                    Discount discount = payment.getUsedCoupon().getDiscount();
+                    price = discount.computeFinalPrice(price);
+                }
+                int finalPrice = price - payment.getUsedPoint();
 
                 // 결제 로그
                 PaymentLogger.info(new EmbedBuilder()
                         .setTitle("결제가 완료되었습니다.")
                         .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
                                 "결제금액: " + payment.getProduct().getPrice() + "원\n" +
+                                "실결제금액: " + finalPrice + "원\n" +
                                 "결제수단: 신용카드\n" +
                                 "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
                                 "결제자: " + event.getUser().getAsMention() + "\n" +
@@ -1398,7 +1462,7 @@ public class BuyListener extends ListenerAdapter {
 
         // 랭크 검색
         User user = userService.getDataByDiscordId(userId);
-        List<Rank> userRanks = user.rank();
+        List<Rank> userRanks = new ArrayList<>(user.rank());
 
         userRanks.sort(Comparator.comparingInt(Rank::getOrdinal));
         Rank highestRank = userRanks.get(userRanks.size() - 1);
@@ -1406,13 +1470,13 @@ public class BuyListener extends ListenerAdapter {
         // 랭크 특권
         if (highestRank.hasPerk(RankPerkType.CASHBACK)) {
             CashbackPerk cashbackPerk = (CashbackPerk) highestRank.getPerk(RankPerkType.CASHBACK);
-            int percentage = product.getPrice() / 100 * (100 - cashbackPerk.getPercentage());
-            userService.addPoint(userId, percentage);
+            int cashbackAmount = product.getPrice() / 100 * cashbackPerk.getPercentage();
+            userService.addPoint(userId, cashbackAmount);
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("제목")
-                    .setDescription(format("랭크 특권으로 %,d원을 캐시백 받았습니다.", percentage))
+                    .setDescription(format("랭크 특권으로 %,d원을 캐시백 받았습니다.", cashbackAmount))
                     .build();
             jda.getUserById(userId).openPrivateChannel().complete().sendMessageEmbeds(embed).queue();
         }
@@ -1433,15 +1497,15 @@ public class BuyListener extends ListenerAdapter {
                 })
                 .sum();
 
-        if (totalPrice >= 3000000) {
-            Rank rank5 = RankRepository.getInstance().getRank(5);
-            RankUtil.giveRank(userId, rank5);
-        } if (totalPrice >= 1000000) {
-            Rank rank4 = RankRepository.getInstance().getRank(4);
-            RankUtil.giveRank(userId, rank4);
-        } if (totalPrice >= 500000) {
+        if (totalPrice >= 500000 && !userRanks.contains(RankRepository.getInstance().getRank(3))) {
             Rank rank3 = RankRepository.getInstance().getRank(3);
             RankUtil.giveRank(userId, rank3);
+        } if (totalPrice >= 1000000 && !userRanks.contains(RankRepository.getInstance().getRank(34))) {
+            Rank rank4 = RankRepository.getInstance().getRank(4);
+            RankUtil.giveRank(userId, rank4);
+        } if (totalPrice >= 3000000 && !userRanks.contains(RankRepository.getInstance().getRank(5))) {
+            Rank rank5 = RankRepository.getInstance().getRank(5);
+            RankUtil.giveRank(userId, rank5);
         }
     }
 } // TODO : 메시지 디자인

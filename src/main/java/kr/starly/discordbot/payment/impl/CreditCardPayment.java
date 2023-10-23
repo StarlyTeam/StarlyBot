@@ -13,6 +13,7 @@ import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -114,6 +115,8 @@ public class CreditCardPayment extends Payment {
     }
 
     public static CreditCardPayment deserialize(Document document) {
+        if (document == null) return null;
+
         UUID paymentId = UUID.fromString(document.getString("paymentId"));
         Product product = Product.deserialize(document.get("product", Document.class));
         Long requestedBy = document.getLong("requestedBy");
@@ -141,6 +144,20 @@ public class CreditCardPayment extends Payment {
         String maskedCardNumber = document.getString("maskedCardNumber");
         String receiptUrl = document.getString("receiptUrl");
 
-        return new CreditCardPayment(paymentId, product, requestedBy, cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan, customerBirthdate, customerEmail, customerName, usedPoint, usedCoupon, secureSalt, responseBody, maskedCardNumber, receiptUrl);
+        CreditCardPayment payment = new CreditCardPayment(
+                paymentId, product, requestedBy,
+                cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan,
+                customerBirthdate, customerEmail, customerName,
+                usedPoint, usedCoupon,
+                secureSalt,
+                responseBody, maskedCardNumber, receiptUrl
+        );
+
+        boolean accepted = document.getBoolean("accepted");
+        Date approvedAt = document.getDate("approvedAt");
+        payment.updateAccepted(accepted);
+        payment.updateApprovedAt(approvedAt);
+
+        return payment;
     }
 }

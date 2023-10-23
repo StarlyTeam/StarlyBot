@@ -79,7 +79,7 @@ public class RankUtil {
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("제목")
-                .setDescription(format("랭크가 %s으로 상승하였습니다.", rank.getName()))
+                .setDescription(format("랭크가 %s(으)로 상승하였습니다.", rank.getName()))
                 .build();
         user1.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))

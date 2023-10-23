@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class AESUtil {
 
@@ -18,7 +19,7 @@ public class AESUtil {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, IV);
 
             byte[] plainBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
-            return new String(plainBytes);
+            return Base64.getEncoder().encodeToString(plainBytes);
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -34,7 +35,7 @@ public class AESUtil {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, IV);
 
-            byte[] encodedBytes = encodedText.getBytes();
+            byte[] encodedBytes = Base64.getDecoder().decode(encodedText);
             return new String(cipher.doFinal(encodedBytes), StandardCharsets.UTF_8);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -18,6 +18,8 @@ public abstract class CouponRequirement {
     public abstract Document serialize();
 
     public static CouponRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (deserializers.isEmpty()) {
             deserializers.put(CouponRequirementType.DAY_AFTER, DayAfterRequirement::deserialize);
             deserializers.put(CouponRequirementType.DAY_BEFORE, DayBeforeRequirement::deserialize);
@@ -25,6 +27,8 @@ public abstract class CouponRequirement {
             deserializers.put(CouponRequirementType.MAX_USE_PER_USER, MaxUsePerUserRequirement::deserialize);
             deserializers.put(CouponRequirementType.MAX_USE_PER_COUPON, MaxUsePerCouponRequirement::deserialize);
             deserializers.put(CouponRequirementType.TRANSACTION_TYPE, TransactionTypeRequirement::deserialize);
+            deserializers.put(CouponRequirementType.MINIMUM_PRICE, MinimumPriceRequirement::deserialize);
+            deserializers.put(CouponRequirementType.MAXIMUM_PRICE, MaximumPriceRequirement::deserialize);
             deserializers.put(CouponRequirementType.ROLE, RoleRequirement::deserialize);
         }
 

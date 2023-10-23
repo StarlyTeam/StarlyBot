@@ -33,6 +33,8 @@ public class RolePerk extends RankPerk {
     }
 
     public static RolePerk deserialize(Document document) {
+        if (document == null) return null;
+
         JDA jda = DiscordBotManager.getInstance().getJda();
         long roleId = document.getLong("role");
         Role role = jda.getRoleById(roleId);

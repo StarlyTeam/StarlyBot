@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -31,7 +32,7 @@ public class MongoUserRepository implements UserRepository {
         document.put(
                 "rank",
                 user.rank().stream()
-                        .map(Rank::getName)
+                        .map(Rank::getOrdinal)
                         .toList()
         );
 
@@ -63,9 +64,11 @@ public class MongoUserRepository implements UserRepository {
         String ip = document.getString("ip");
         Date verifiedAt = document.getDate("verifiedAt");
         int point = document.getInteger("point");
-        List<Rank> rank = document.getList("rank", int.class).stream()
-                .map(RankRepository.getInstance()::getRank)
-                .toList();
+        List<Rank> rank = new ArrayList<>(
+                document.getList("rank", Integer.class).stream()
+                        .map(RankRepository.getInstance()::getRank)
+                        .toList()
+        );
 
         return new User(discordId, ip, verifiedAt, point, rank);
     }

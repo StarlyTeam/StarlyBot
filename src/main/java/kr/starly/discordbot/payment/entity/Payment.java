@@ -92,10 +92,11 @@ public class Payment {
                 CouponState usedCoupon = CouponState.deserialize((Document) document.get("usedCoupon"));
                 Product product = Product.deserialize((Document) document.get("product"));
                 long requestedBy = document.getLong("requestedBy");
-                boolean accepted = document.getBoolean("accepted");
-                Date approvedAt = document.getDate("approvedAt");
 
                 Payment payment = new Payment(paymentId, requestedBy, method, usedPoint, usedCoupon, product);
+
+                boolean accepted = document.getBoolean("accepted");
+                Date approvedAt = document.getDate("approvedAt");
                 payment.updateAccepted(accepted);
                 payment.updateApprovedAt(approvedAt);
 

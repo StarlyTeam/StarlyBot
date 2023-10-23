@@ -25,6 +25,8 @@ public class CashbackPerk extends RankPerk {
     }
 
     public static CashbackPerk deserialize(Document document) {
+        if (document == null) return null;
+
         int percentage = document.getInteger("percentage");
 
         return new CashbackPerk(percentage);

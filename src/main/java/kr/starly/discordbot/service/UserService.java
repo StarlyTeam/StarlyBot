@@ -4,7 +4,6 @@ import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.rank.entity.Rank;
 import kr.starly.discordbot.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public record UserService(UserRepository repository) {
     public void setPoint(long discordId, int newPoint) {
         User user = repository.findByDiscordId(discordId);
         if (user != null) {
-            repository.put(new User(discordId, user.ip(), user.verifiedAt(), newPoint, new ArrayList<>()));
+            repository.put(new User(discordId, user.ip(), user.verifiedAt(), newPoint, user.rank()));
         }
     }
 

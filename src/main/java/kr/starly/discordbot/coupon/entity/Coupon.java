@@ -1,7 +1,6 @@
 package kr.starly.discordbot.coupon.entity;
 
 import kr.starly.discordbot.coupon.discount.Discount;
-import kr.starly.discordbot.coupon.discount.DiscountType;
 import kr.starly.discordbot.coupon.requirement.CouponRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,25 +46,27 @@ public class Coupon {
         document.put("code", getCode());
         document.put("name", getName());
         document.put("description", getDescription());
-        document.put("discount.type", discount.getType().name());
-        document.put("discount.value", discount.getValue());
+        document.put("discount", discount.serialize());
         document.put("createdAt", getCreatedAt());
         document.put("createdBy", getCreatedBy());
+
+        document.put("requirements", requirements.stream()
+                .map(CouponRequirement::serialize)
+                .toList()
+        );
 
         return document;
     }
 
     public static Coupon deserialize(Document document) {
+        if (document == null) return null;
+
         String code = document.getString("code");
         String name = document.getString("name");
         String description = document.getString("description");
+        Discount discount = Discount.deserialize(document.get("discount", Document.class));
         Date createdAt = document.getDate("createdAt");
         long createdBy = document.getLong("createdBy");
-
-        String type = document.getString("discount.type");
-        int discountValue = document.getInteger("discount.value");
-        DiscountType typeAsOriginal = DiscountType.valueOf(type);
-        Discount discount = new Discount(typeAsOriginal, discountValue);
 
         List<CouponRequirement> requirements = new ArrayList<>();
         for (Document requirement : document.getList("requirements", Document.class)) {

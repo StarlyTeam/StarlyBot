@@ -43,6 +43,8 @@ public class DayAfterVerifyRequirement extends CouponRequirement {
     }
 
     public static DayAfterVerifyRequirement deserialize(Document document) {
+        if (document == null) return null;
+
         if (!document.getString("type").equals(CouponRequirementType.DAY_AFTER_VERIFY.name())) {
             throw new IllegalArgumentException("document is not DayAfterJoinRequirement");
         }

@@ -44,6 +44,8 @@ public class Discount {
     }
 
     public static Discount deserialize(Document document) {
+        if (document == null) return null;
+
         DiscountType type = DiscountType.valueOf(document.getString("type"));
         int value = document.getInteger("value");
 

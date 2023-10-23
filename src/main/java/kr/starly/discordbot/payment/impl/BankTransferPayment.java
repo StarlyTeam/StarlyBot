@@ -10,6 +10,7 @@ import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -44,6 +45,8 @@ public class BankTransferPayment extends Payment {
     }
 
     public static BankTransferPayment deserialize(Document document) {
+        if (document == null) return null;
+
         UUID paymentId = UUID.fromString(document.getString("paymentId"));
         Product product = Product.deserialize(document.get("product", Document.class));
         Long requestedBy = document.getLong("requestedBy");
@@ -51,6 +54,14 @@ public class BankTransferPayment extends Payment {
         CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
 
         String depositor = document.getString("depositor");
-        return new BankTransferPayment(paymentId, product, requestedBy, depositor, usedPoint, usedCoupon);
+
+        BankTransferPayment payment = new BankTransferPayment(paymentId, product, requestedBy, depositor, usedPoint, usedCoupon);
+
+        boolean accepted = document.getBoolean("accepted");
+        Date approvedAt = document.getDate("approvedAt");
+        payment.updateAccepted(accepted);
+        payment.updateApprovedAt(approvedAt);
+
+        return payment;
     }
 }
