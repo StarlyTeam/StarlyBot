@@ -3,9 +3,9 @@ package kr.starly.discordbot.util.external;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import kr.starly.discordbot.configuration.ConfigProvider;
-import kr.starly.discordbot.coupon.entity.Coupon;
-import kr.starly.discordbot.payment.enums.PaymentMethod;
-import kr.starly.discordbot.payment.impl.CreditCardPayment;
+import kr.starly.discordbot.entity.coupon.Coupon;
+import kr.starly.discordbot.enums.PaymentMethod;
+import kr.starly.discordbot.entity.payment.impl.CreditCardPayment;
 
 import java.io.IOException;
 import java.net.URI;

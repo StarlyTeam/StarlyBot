@@ -2,33 +2,33 @@ package kr.starly.discordbot.listener.pluginaction;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
-import kr.starly.discordbot.coupon.discount.Discount;
-import kr.starly.discordbot.coupon.discount.DiscountType;
-import kr.starly.discordbot.coupon.entity.Coupon;
-import kr.starly.discordbot.coupon.entity.CouponState;
-import kr.starly.discordbot.coupon.service.CouponRedeemService;
-import kr.starly.discordbot.coupon.service.CouponService;
+import kr.starly.discordbot.entity.Discount;
+import kr.starly.discordbot.enums.DiscountType;
+import kr.starly.discordbot.entity.coupon.Coupon;
+import kr.starly.discordbot.entity.coupon.CouponState;
+import kr.starly.discordbot.service.CouponRedeemService;
+import kr.starly.discordbot.service.CouponService;
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.payment.entity.Payment;
-import kr.starly.discordbot.payment.enums.PaymentMethod;
-import kr.starly.discordbot.payment.impl.BankTransferPayment;
-import kr.starly.discordbot.payment.impl.CreditCardPayment;
-import kr.starly.discordbot.payment.impl.CulturelandPayment;
-import kr.starly.discordbot.payment.service.PaymentService;
-import kr.starly.discordbot.product.entity.Product;
-import kr.starly.discordbot.product.entity.impl.PremiumPluginProduct;
-import kr.starly.discordbot.rank.entity.Rank;
-import kr.starly.discordbot.rank.perk.RankPerkType;
-import kr.starly.discordbot.rank.perk.impl.CashbackPerk;
-import kr.starly.discordbot.rank.repository.RankRepository;
-import kr.starly.discordbot.rank.util.RankUtil;
-import kr.starly.discordbot.repository.TicketModalDataRepository;
-import kr.starly.discordbot.repository.TicketUserDataRepository;
+import kr.starly.discordbot.entity.payment.Payment;
+import kr.starly.discordbot.enums.PaymentMethod;
+import kr.starly.discordbot.entity.payment.impl.BankTransferPayment;
+import kr.starly.discordbot.entity.payment.impl.CreditCardPayment;
+import kr.starly.discordbot.entity.payment.impl.CulturelandPayment;
+import kr.starly.discordbot.service.PaymentService;
+import kr.starly.discordbot.entity.product.Product;
+import kr.starly.discordbot.entity.product.impl.PremiumPluginProduct;
+import kr.starly.discordbot.entity.Rank;
+import kr.starly.discordbot.enums.RankPerkType;
+import kr.starly.discordbot.entity.perk.impl.CashbackPerk;
+import kr.starly.discordbot.repository.impl.RankRepository;
+import kr.starly.discordbot.util.RankUtil;
+import kr.starly.discordbot.repository.impl.TicketModalDataRepository;
+import kr.starly.discordbot.repository.impl.TicketUserDataRepository;
 import kr.starly.discordbot.service.PluginService;
 import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.UserService;
@@ -1330,7 +1330,7 @@ public class BuyListener extends ListenerAdapter {
         }
     }
 
-    // UTILITIES
+    // UTILITY
     private void stopProcess(long userId) {
         pluginMap.remove(userId);
         pointMap.remove(userId);
@@ -1508,4 +1508,4 @@ public class BuyListener extends ListenerAdapter {
             RankUtil.giveRank(userId, rank5);
         }
     }
-} // TODO : 메시지 디자인
+} // TODO : 메시지 디자인 & 코드 청소 (디자인 후)

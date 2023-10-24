@@ -107,7 +107,7 @@ public class DiscordBotManager {
     }
 
     private void registerEventListeners() {
-        String packageName = "kr.starly.discordbot.listener";
+        String packageName = "kr.starly.discordbot";
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotEvent.class);
 

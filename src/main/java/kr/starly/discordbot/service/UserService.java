@@ -1,7 +1,7 @@
 package kr.starly.discordbot.service;
 
 import kr.starly.discordbot.entity.User;
-import kr.starly.discordbot.rank.entity.Rank;
+import kr.starly.discordbot.entity.Rank;
 import kr.starly.discordbot.repository.UserRepository;
 
 import java.util.Date;

@@ -35,7 +35,7 @@ public class HelpCommand implements DiscordCommand {
                 .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1141623256558866482> 도움말 | 물음표 명령어 <a:loading:1141623256558866482>");
 
-        String packageName = "kr.starly.discordbot.command.impl";
+        String packageName = "kr.starly.discordbot";
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotCommand.class);
 

@@ -67,7 +67,7 @@ public class SlashCommandListenerBase extends ListenerAdapter {
     }
 
     private Set<Class<? extends DiscordSlashCommand>> getCommandClasses() {
-        String packageName = "kr.starly.discordbot.command.slash.impl";
+        String packageName = "kr.starly.discordbot";
 
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotSlashCommand.class);

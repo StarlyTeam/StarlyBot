@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.entity.PluginFile;
-import kr.starly.discordbot.repository.DownloadTokenRepository;
+import kr.starly.discordbot.repository.impl.DownloadTokenRepository;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

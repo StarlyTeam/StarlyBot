@@ -30,7 +30,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         if (!textChannel.getId().equals(TICKET_CHANNEL_ID)) return;
 
         long userId = event.getUser().getIdLong();
-        String buttonId = event.getButton().getId();
+        String buttonId = event.getComponentId();
 
         Ticket Ticket = ticketService.findByDiscordId(userId);
 

@@ -3,7 +3,7 @@ package kr.starly.discordbot;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.http.WebServer;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.rank.repository.RankRepository;
+import kr.starly.discordbot.repository.impl.RankRepository;
 
 import java.io.IOException;
 import java.util.Scanner;

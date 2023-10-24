@@ -23,7 +23,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        String buttonId = event.getButton().getId();
+        String buttonId = event.getComponentId();
 
         switch (buttonId) {
             case "successVerify" -> {

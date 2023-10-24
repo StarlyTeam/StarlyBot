@@ -8,7 +8,7 @@ import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.enums.MCVersion;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.repository.DownloadTokenRepository;
+import kr.starly.discordbot.repository.impl.DownloadTokenRepository;
 import kr.starly.discordbot.service.BlacklistService;
 import kr.starly.discordbot.service.PluginFileService;
 import kr.starly.discordbot.service.PluginService;
@@ -18,6 +18,7 @@ import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -56,20 +57,16 @@ public class DownloadListener extends ListenerAdapter {
             if (plugin == null) return;
 
             // 구매여부 검증
-            if (plugin.getPrice() != 0) {
-                JDA jda = DiscordBotManager.getInstance().getJda();
-                Role buyerRole = jda.getRoleById(plugin.getBuyerRole());
-                if (!event.getMember().getRoles().contains(buyerRole)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("플러그인을 구매하셔야 다운로드 하실 수 있습니다.")
-                            .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
-                    return;
-                }
+            if (!canDownload(event.getMember(), plugin)) {
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("제목")
+                        .setDescription("플러그인을 구매하셔야 다운로드 하실 수 있습니다.")
+                        .build();
+                event.replyEmbeds(embed)
+                        .setEphemeral(true)
+                        .queue();
+                return;
             }
 
             // 플러그인 파일 검색
@@ -153,27 +150,24 @@ public class DownloadListener extends ListenerAdapter {
             Plugin plugin = pluginService.getDataByENName(ENName);
 
             // 구매여부 검증
-            if (plugin.getPrice() != 0) {
-                JDA jda = DiscordBotManager.getInstance().getJda();
-                Role buyerRole = jda.getRoleById(plugin.getBuyerRole());
-                if (!event.getMember().getRoles().contains(buyerRole)
-                    && !PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("플러그인을 구매하셔야 다운로드 하실 수 있습니다.")
-                            .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
-                    return;
-                }
+            if (!canDownload(event.getMember(), plugin)) {
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("제목")
+                        .setDescription("플러그인을 구매하셔야 다운로드 하실 수 있습니다.")
+                        .build();
+                event.replyEmbeds(embed)
+                        .setEphemeral(true)
+                        .queue();
+                return;
             }
 
+            // 플러그인 파일 검색
             PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
             List<PluginFile> pluginFiles = pluginFileService.getData(ENName, plugin.getVersion());
             pluginFiles.sort(Comparator.comparing(PluginFile::getMcVersion));
 
+            // 메시지 전송
             StringSelectMenu.Builder selectOptionBuilder = StringSelectMenu.create(ID_PREFIX + "version-" + plugin.getENName());
             pluginFiles.forEach(pluginFile -> selectOptionBuilder.addOptions(getSelectOption(pluginFile.getMcVersion())));
 
@@ -192,46 +186,26 @@ public class DownloadListener extends ListenerAdapter {
     private SelectOption getSelectOption(MCVersion mcVersion) {
         SelectOption selectOption = SelectOption.of(mcVersion.name(), mcVersion.name());
 
-        switch (mcVersion) {
-            case v1_12 -> {
-                return selectOption.withDescription("1.12 ~ 1.12.2 버전을 지원합니다.");
-            }
+        return switch (mcVersion) {
+            case v1_12 -> selectOption.withDescription("1.12 ~ 1.12.2 버전을 지원합니다.");
+            case v1_13 -> selectOption.withDescription("1.13 ~ 1.13.2 버전을 지원합니다.");
+            case v1_14 -> selectOption.withDescription("1.14 ~ 1.14.4 버전을 지원합니다.");
+            case v1_15 -> selectOption.withDescription("1.15 ~ 1.15.2 버전을 지원합니다.");
+            case v1_16 -> selectOption.withDescription("1.16 ~ 1.16.5 버전은 지원합니다.");
+            case v1_17 -> selectOption.withDescription("1.17 ~ 1.17.1 버전을 지원합니다.");
+            case v1_18 -> selectOption.withDescription("1.18 ~ 1.18.2 버전을 지원합니다.");
+            case v1_19 -> selectOption.withDescription("1.19 ~ 1.19.4 버전을 지원합니다.");
+            case v1_20 -> selectOption.withDescription("1.20 ~ 1.20.1 버전을 지원합니다.");
+        };
+    }
 
-            case v1_13 -> {
-                return selectOption.withDescription("1.13 ~ 1.13.2 버전을 지원합니다.");
-            }
+    private boolean canDownload(Member member, Plugin plugin) {
+        if (plugin.getPrice() != 0) {
+            JDA jda = DiscordBotManager.getInstance().getJda();
+            Role buyerRole = jda.getRoleById(plugin.getBuyerRole());
 
-            case v1_14 -> {
-                return selectOption.withDescription("1.14 ~ 1.14.4 버전을 지원합니다.");
-            }
-
-            case v1_15 -> {
-                return selectOption.withDescription("1.15 ~ 1.15.2 버전을 지원합니다.");
-            }
-
-            case v1_16 -> {
-                return selectOption.withDescription("1.16 ~ 1.16.5 버전은 지원합니다.");
-            }
-
-            case v1_17 -> {
-                return selectOption.withDescription("1.17 ~ 1.17.1 버전을 지원합니다.");
-            }
-
-            case v1_18 -> {
-                return selectOption.withDescription("1.18 ~ 1.18.2 버전을 지원합니다.");
-            }
-
-            case v1_19 -> {
-                return selectOption.withDescription("1.19 ~ 1.19.4 버전을 지원합니다.");
-            }
-
-            case v1_20 -> {
-                return selectOption.withDescription("1.20 ~ 1.20.1 버전을 지원합니다.");
-            }
-
-            default -> {
-                return null;
-            }
-        }
+            return !member.getRoles().contains(buyerRole)
+                    && !PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR);
+        } else return true;
     }
 } // TODO : 메시지 디자인

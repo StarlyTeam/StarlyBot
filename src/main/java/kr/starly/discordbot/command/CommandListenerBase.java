@@ -33,7 +33,7 @@ public class CommandListenerBase extends ListenerAdapter {
     }
 
     private Set<Class<? extends DiscordCommand>> getCommandClasses() {
-        String packageName = "kr.starly.discordbot.command.impl";
+        String packageName = "kr.starly.discordbot";
 
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotCommand.class);

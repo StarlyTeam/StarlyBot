@@ -1,6 +1,5 @@
 package kr.starly.discordbot.entity;
 
-import kr.starly.discordbot.rank.entity.Rank;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
