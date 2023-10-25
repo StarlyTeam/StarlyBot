@@ -21,6 +21,10 @@ public record CouponService(CouponRepository repository) {
                 new Date(),
                 createdBy
         );
+        saveData(coupon);
+    }
+
+    public void saveData(Coupon coupon) {
         repository.put(coupon);
     }
 

@@ -63,6 +63,15 @@ public class Payment {
         return (CulturelandPayment) this;
     }
 
+    public int getFinalPrice() {
+        int price = product.getPrice();
+        if (usedCoupon != null) {
+            price = usedCoupon.getDiscount().computeFinalPrice(price);
+        }
+
+        return price - usedPoint;
+    }
+
     public Document serialize() {
         Document document = new Document();
         document.put("paymentId", paymentId.toString());

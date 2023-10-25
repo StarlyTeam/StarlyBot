@@ -24,6 +24,14 @@ public record PaymentService(PaymentRepository repository) {
         return repository.findByUserId(userId);
     }
 
+    public long getTotalPaidPrice(long userId) {
+        List<Payment> payments = getDataByUserId(userId);
+        return payments.stream()
+                .filter(Payment::isAccepted)
+                .mapToLong(Payment::getFinalPrice)
+                .sum();
+    }
+
     public List<Payment> getAllData() {
         return repository.findAll();
     }

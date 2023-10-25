@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;

@@ -22,7 +22,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
@@ -42,7 +42,8 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
         if (!(event.getChannel() instanceof TextChannel textChannel)) return;
-        if (!textChannel.getParentCategoryId().equals(TICKET_CATEGORY_ID)) return;
+        if (textChannel.getParentCategory() != null
+            && !textChannel.getParentCategoryId().equals(TICKET_CATEGORY_ID)) return;
 
         Long channelId = event.getChannel().getIdLong();
         User user = getUserFromTextChannel(textChannel.getMembers());

@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.reflections.Reflections;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Set;
 
 @BotCommand(

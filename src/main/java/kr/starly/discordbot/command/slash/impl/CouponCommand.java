@@ -3,9 +3,11 @@ package kr.starly.discordbot.command.slash.impl;
 import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
+import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.enums.CouponSessionType;
 import kr.starly.discordbot.repository.RepositoryManager;
 import kr.starly.discordbot.repository.impl.CouponSessionRepository;
+import kr.starly.discordbot.service.CouponService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -15,7 +17,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 
-import java.awt.*;
+import java.awt.Color;
 
 @BotSlashCommand(
         command = "쿠폰관리",
@@ -102,12 +104,17 @@ public class CouponCommand implements DiscordSlashCommand {
             return;
         }
 
+        // 목록 핸들링
+        if (subCommand.equals("목록")) {
+            // TODO : txt 파일 생성 후 업로드
+            return;
+        }
+
         // 세션 데이터 저장
         sessionRepository.updateSessionType(userId, switch (subCommand) {
             case "생성" -> CouponSessionType.CREATE;
             case "삭제" -> CouponSessionType.DELETE;
             case "수정" -> CouponSessionType.UPDATE;
-            case "목록" -> CouponSessionType.LIST;
             default -> throw new IllegalArgumentException("Unexpected value: " + subCommand);
         });
 
@@ -121,6 +128,22 @@ public class CouponCommand implements DiscordSlashCommand {
         // 응답 전송
         switch (sessionType) {
             case CREATE -> {
+                CouponService couponService = DatabaseManager.getCouponService();
+                if (couponService.getData(couponCode) != null) {
+                    event.replyEmbeds(
+                                    new EmbedBuilder()
+                                            .setColor(EMBED_COLOR_ERROR)
+                                            .setTitle("쿠폰 코드 오류")
+                                            .setDescription("이미 존재하는 쿠폰 코드입니다.")
+                                            .build()
+                            )
+                            .setEphemeral(true)
+                            .queue();
+
+                    sessionRepository.stopSession(userId);
+                    return;
+                }
+
                 TextInput name = TextInput.create("name", "이름", TextInputStyle.SHORT)
                         .setRequired(true)
                         .setPlaceholder("쿠폰 이름을 입력해주세요.")
@@ -131,7 +154,7 @@ public class CouponCommand implements DiscordSlashCommand {
                         .build();
                 TextInput discountType = TextInput.create("discount-type", "할인 타입", TextInputStyle.SHORT)
                         .setRequired(true)
-                        .setPlaceholder("할인 타입을 입력해주세요. [비율액 - PERCENTAGE, 고정액 - FIXED]")
+                        .setPlaceholder("할인 타입을 입력해주세요. [PERCENTAGE, FIXED]")
                         .build();
                 TextInput discountValue = TextInput.create("discount-value", "할인 값", TextInputStyle.SHORT)
                         .setRequired(true)
@@ -148,7 +171,23 @@ public class CouponCommand implements DiscordSlashCommand {
             }
 
             case DELETE -> {
-                Button confirm = Button.danger(ID_PREFIX + "delete-confirm", "삭제");
+                CouponService couponService = DatabaseManager.getCouponService();
+                if (couponService.getData(couponCode) == null) {
+                    event.replyEmbeds(
+                                    new EmbedBuilder()
+                                            .setColor(EMBED_COLOR_ERROR)
+                                            .setTitle("쿠폰 코드 오류")
+                                            .setDescription("존재하지 않는 쿠폰 코드입니다.")
+                                            .build()
+                            )
+                            .setEphemeral(true)
+                            .queue();
+
+                    sessionRepository.stopSession(userId);
+                    return;
+                }
+
+                Button confirm = Button.primary(ID_PREFIX + "delete-confirm", "삭제");
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("삭제 확인")
@@ -161,8 +200,24 @@ public class CouponCommand implements DiscordSlashCommand {
             }
 
             case UPDATE -> {
+                CouponService couponService = DatabaseManager.getCouponService();
+                if (couponService.getData(couponCode) == null) {
+                    event.replyEmbeds(
+                                    new EmbedBuilder()
+                                            .setColor(EMBED_COLOR_ERROR)
+                                            .setTitle("쿠폰 코드 오류")
+                                            .setDescription("존재하지 않는 쿠폰 코드입니다.")
+                                            .build()
+                            )
+                            .setEphemeral(true)
+                            .queue();
+
+                    sessionRepository.stopSession(userId);
+                    return;
+                }
+
                 Button updateInfo = Button.primary(ID_PREFIX + "update-info", "정보 수정");
-                Button updateRequirements = Button.primary(ID_PREFIX + "update-requirements", "사용조건 수정");
+                Button updateRequirements = Button.secondary(ID_PREFIX + "update-requirements", "사용조건 수정");
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("쿠폰 수정")
@@ -171,11 +226,8 @@ public class CouponCommand implements DiscordSlashCommand {
 
                 event.replyEmbeds(embed)
                         .addActionRow(updateInfo, updateRequirements, CANCEL_BUTTON)
+                        .setEphemeral(true)
                         .queue();
-            }
-
-            case LIST -> {
-                // TODO : txt 파일 생성 후 업로드
             }
         }
     }

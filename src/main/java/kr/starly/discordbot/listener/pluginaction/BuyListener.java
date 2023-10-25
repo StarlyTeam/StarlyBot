@@ -59,7 +59,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -344,12 +344,7 @@ public class BuyListener extends ListenerAdapter {
             paymentService.saveData(payment);
 
             // 금액 계산
-            int price = payment.getProduct().getPrice();
-            if (payment.getUsedCoupon() != null) {
-                Discount discount = payment.getUsedCoupon().getDiscount();
-                price = discount.computeFinalPrice(price);
-            }
-            int finalPrice = price - payment.getUsedPoint();
+            int finalPrice = payment.getFinalPrice();
 
             // 구매 로그
             PremiumPluginProduct product = payment.getProduct().asPremiumPlugin();
@@ -1138,12 +1133,7 @@ public class BuyListener extends ListenerAdapter {
                 if (!payment.isAccepted()) return;
 
                 // 금액 계산
-                int price = payment.getProduct().getPrice();
-                if (payment.getUsedCoupon() != null) {
-                    Discount discount = payment.getUsedCoupon().getDiscount();
-                    price = discount.computeFinalPrice(price);
-                }
-                int finalPrice = price - payment.getUsedPoint();
+                int finalPrice = payment.getFinalPrice();
 
                 // 결제 로그
                 PaymentLogger.info(new EmbedBuilder()
@@ -1483,24 +1473,12 @@ public class BuyListener extends ListenerAdapter {
 
         // 랭크 지급
         PaymentService paymentService = DatabaseManager.getPaymentService();
-        List<Payment> payments = paymentService.getDataByUserId(userId);
-        long totalPrice = payments.stream()
-                .filter(Payment::isAccepted)
-                .mapToLong(payment1 -> {
-                    int price = payment1.getProduct().getPrice();
-                    CouponState usedCoupon1 = payment1.getUsedCoupon();
-                    if (usedCoupon1 != null) {
-                        price = usedCoupon1.getDiscount().computeFinalPrice(price);
-                    }
-
-                    return price - payment1.getUsedPoint();
-                })
-                .sum();
+        long totalPrice = paymentService.getTotalPaidPrice(userId);
 
         if (totalPrice >= 500000 && !userRanks.contains(RankRepository.getInstance().getRank(3))) {
             Rank rank3 = RankRepository.getInstance().getRank(3);
             RankUtil.giveRank(userId, rank3);
-        } if (totalPrice >= 1000000 && !userRanks.contains(RankRepository.getInstance().getRank(34))) {
+        } if (totalPrice >= 1000000 && !userRanks.contains(RankRepository.getInstance().getRank(4))) {
             Rank rank4 = RankRepository.getInstance().getRank(4);
             RankUtil.giveRank(userId, rank4);
         } if (totalPrice >= 3000000 && !userRanks.contains(RankRepository.getInstance().getRank(5))) {

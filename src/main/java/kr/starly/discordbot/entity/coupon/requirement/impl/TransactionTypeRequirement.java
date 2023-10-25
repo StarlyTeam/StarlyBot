@@ -17,7 +17,7 @@ public class TransactionTypeRequirement extends CouponRequirement {
 
     @Override
     public CouponRequirementType getType() {
-        return CouponRequirementType.TRANSACTION_TYPE;
+        return CouponRequirementType.PRODUCT_TYPE;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TransactionTypeRequirement extends CouponRequirement {
     public static TransactionTypeRequirement deserialize(Document document) {
         if (document == null) return null;
 
-        if (!document.getString("type").equals(CouponRequirementType.TRANSACTION_TYPE.name())) {
+        if (!document.getString("type").equals(CouponRequirementType.PRODUCT_TYPE.name())) {
             throw new IllegalArgumentException("document is not TransactionTypeRequirement");
         }
 

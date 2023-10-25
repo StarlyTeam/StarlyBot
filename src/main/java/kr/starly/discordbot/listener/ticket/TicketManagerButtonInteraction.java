@@ -24,7 +24,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +47,8 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         if (!(event.getChannel() instanceof TextChannel textChannel)) return;
-        if (!textChannel.getParentCategory().getId().equals(TICKET_CATEGORY_ID)) return;
+        if (textChannel.getParentCategory() != null
+            && !textChannel.getParentCategory().getId().equals(TICKET_CATEGORY_ID)) return;
 
         Member member = event.getMember();
 

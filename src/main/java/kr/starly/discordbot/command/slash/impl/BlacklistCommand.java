@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 @BotSlashCommand(

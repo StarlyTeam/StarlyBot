@@ -3,9 +3,11 @@ package kr.starly.discordbot.listener.coupon;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.coupon.Coupon;
+import kr.starly.discordbot.entity.coupon.requirement.impl.*;
 import kr.starly.discordbot.enums.CouponRequirementType;
 import kr.starly.discordbot.enums.CouponSessionType;
 import kr.starly.discordbot.enums.DiscountType;
+import kr.starly.discordbot.enums.ProductType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.repository.RepositoryManager;
 import kr.starly.discordbot.repository.impl.CouponSessionRepository;
@@ -18,7 +20,7 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.LayoutComponent;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
@@ -27,11 +29,11 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.Color;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @BotEvent
 public class UpdateInteraction extends ListenerAdapter {
@@ -68,6 +70,8 @@ public class UpdateInteraction extends ListenerAdapter {
 
         String componentId = event.getComponentId();
         if (componentId.equals((ID_PREFIX + "requirement"))) {
+            if (sessionType != CouponSessionType.UPDATE) return;
+
             String requirementTypeStr = event.getSelectedOptions().get(0).getValue();
             CouponRequirementType requirementType = CouponRequirementType.valueOf(requirementTypeStr);
 
@@ -75,8 +79,8 @@ public class UpdateInteraction extends ListenerAdapter {
             requirementTypeMap.put(userId, requirementType);
 
             // 메시지 전송
-            Button add = Button.success(ID_PREFIX + "requirements-add", "추가");
-            Button delete = Button.danger(ID_PREFIX + "requirements-delete", "삭제");
+            Button add = Button.success(ID_PREFIX + "add-requirements", "추가");
+            Button delete = Button.primary(ID_PREFIX + "remove-requirements", "삭제");
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
                     .setTitle("사용 조건 수정")
@@ -133,7 +137,7 @@ public class UpdateInteraction extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    sessionRepository.stopSession(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -151,7 +155,7 @@ public class UpdateInteraction extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    sessionRepository.stopSession(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -171,6 +175,253 @@ public class UpdateInteraction extends ListenerAdapter {
                                         .setColor(EMBED_COLOR_SUCCESS)
                                         .setTitle("쿠폰 수정 완료")
                                         .setDescription("쿠폰을 수정하였습니다.")
+                                        .build()
+                        )
+                        .setEphemeral(true)
+                        .queue();
+            }
+
+            case ID_PREFIX + "add-requirements" -> {
+                if (sessionType != CouponSessionType.UPDATE) return;
+
+                CouponRequirementType requirementType = requirementTypeMap.get(userId);
+                CouponService couponService = DatabaseManager.getCouponService();
+                Coupon coupon = couponService.getData(couponCode);
+
+                switch (requirementType) {
+                    case DAY_BEFORE, DAY_AFTER -> {
+                        String dayStr = event.getValue(requirementType.name()).getAsString();
+                        Date date;
+                        try {
+                            date = new SimpleDateFormat("yyyy-MM-dd").parse(dayStr);
+                        } catch (ParseException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("지정일 오류")
+                                                    .setDescription("지정일 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        if (requirementType == CouponRequirementType.DAY_BEFORE) {
+                            coupon.getRequirements().add(
+                                    new DayBeforeRequirement(date)
+                            );
+                        } else {
+                            coupon.getRequirements().add(
+                                    new DayAfterRequirement(date)
+                            );
+                        }
+                    }
+
+                    case DAY_AFTER_VERIFY -> {
+                        String dayStr = event.getValue(requirementType.name()).getAsString();
+                        int day;
+                        try {
+                            day = Integer.parseInt(dayStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("지정시간 오류")
+                                                    .setDescription("지정시간 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new DayAfterVerifyRequirement(day)
+                        );
+                    }
+
+                    case MAX_USE_PER_USER -> {
+                        String maxUsePerUserStr = event.getValue(requirementType.name()).getAsString();
+                        int maxUsePerUser;
+                        try {
+                            maxUsePerUser = Integer.parseInt(maxUsePerUserStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("최대 사용 횟수 오류")
+                                                    .setDescription("최대 사용 횟수 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new MaxUsePerUserRequirement(maxUsePerUser)
+                        );
+                    }
+
+                    case MAX_USE_PER_COUPON -> {
+                        String maxUsePerCouponStr = event.getValue(requirementType.name()).getAsString();
+                        int maxUsePerCoupon;
+                        try {
+                            maxUsePerCoupon = Integer.parseInt(maxUsePerCouponStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("최대 사용 횟수 오류")
+                                                    .setDescription("최대 사용 횟수 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new MaxUsePerCouponRequirement(maxUsePerCoupon)
+                        );
+                    }
+
+                    case PRODUCT_TYPE -> {
+                        String productTypeStr = event.getValue(requirementType.name()).getAsString();
+                        ProductType productType;
+                        try {
+                            productType = ProductType.valueOf(productTypeStr);
+                        } catch (IllegalArgumentException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("상품 유형 오류")
+                                                    .setDescription("상품 유형을 찾을 수 없습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new TransactionTypeRequirement(productType)
+                        );
+                    }
+
+                    case MINIMUM_PRICE -> {
+                        String minimumPriceStr = event.getValue(requirementType.name()).getAsString();
+                        int minimumPrice;
+                        try {
+                            minimumPrice = Integer.parseInt(minimumPriceStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("최소 금액 오류")
+                                                    .setDescription("최소 금액 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new MinimumPriceRequirement(minimumPrice)
+                        );
+                    }
+
+                    case MAXIMUM_PRICE -> {
+                        String maximumPriceStr = event.getValue(requirementType.name()).getAsString();
+                        int maximumPrice;
+                        try {
+                            maximumPrice = Integer.parseInt(maximumPriceStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("최대 금액 오류")
+                                                    .setDescription("최대 금액 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new MaximumPriceRequirement(maximumPrice)
+                        );
+                    }
+
+                    case ROLE -> {
+                        String roleIdStr = event.getValue(requirementType.name()).getAsString();
+                        long roleId;
+                        try {
+                            roleId = Long.parseLong(roleIdStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("역할 ID 오류")
+                                                    .setDescription("역할 ID 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        String roleRequiredStr = event.getValue(requirementType.name() + "-required").getAsString();
+                        boolean roleRequired;
+                        try {
+                            roleRequired = Boolean.parseBoolean(roleRequiredStr);
+                        } catch (NumberFormatException ignored) {
+                            event.replyEmbeds(
+                                            new EmbedBuilder()
+                                                    .setColor(EMBED_COLOR_ERROR)
+                                                    .setTitle("역할 요구 여부 오류")
+                                                    .setDescription("역할 요구 여부 형식이 올바르지 않습니다.")
+                                                    .build()
+                                    )
+                                    .setEphemeral(true)
+                                    .queue();
+
+                            stopSession(userId);
+                            return;
+                        }
+
+                        coupon.getRequirements().add(
+                                new RoleRequirement(roleId, roleRequired)
+                        );
+                    }
+                }
+
+                couponService.saveData(coupon);
+
+                event.replyEmbeds(
+                                new EmbedBuilder()
+                                        .setColor(EMBED_COLOR_SUCCESS)
+                                        .setTitle("사용 조건 추가 완료")
+                                        .setDescription("사용 조건을 추가하였습니다.")
                                         .build()
                         )
                         .setEphemeral(true)
@@ -196,7 +447,6 @@ public class UpdateInteraction extends ListenerAdapter {
         if (!sessionRepository.hasSession(userId)) return;
 
         String couponCode = sessionRepository.retrieveCoupon(userId);
-        CouponSessionType sessionType = sessionRepository.retrieveSessionType(userId);
 
         String componentId = event.getComponentId();
         switch (componentId) {
@@ -213,15 +463,10 @@ public class UpdateInteraction extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    sessionRepository.stopSession(userId);
+                    stopSession(userId);
                     return;
                 }
 
-                TextInput id = TextInput.create("id", "ID (변경불가)", TextInputStyle.SHORT)
-                        .setRequired(true)
-                        .setValue(couponCode)
-                        .setPlaceholder("쿠폰 ID를 입력해주세요.")
-                        .build();
                 TextInput name = TextInput.create("name", "이름", TextInputStyle.SHORT)
                         .setRequired(true)
                         .setPlaceholder("쿠폰 이름을 입력해주세요.")
@@ -232,14 +477,13 @@ public class UpdateInteraction extends ListenerAdapter {
                         .build();
                 TextInput discountType = TextInput.create("discount-type", "할인 타입", TextInputStyle.SHORT)
                         .setRequired(true)
-                        .setPlaceholder("할인 타입을 입력해주세요. [비율액 - PERCENTAGE, 고정액 - FIXED]")
+                        .setPlaceholder("할인 타입을 입력해주세요. [PERCENTAGE, FIXED]")
                         .build();
                 TextInput discountValue = TextInput.create("discount-value", "할인 값", TextInputStyle.SHORT)
                         .setRequired(true)
                         .setPlaceholder("할인 값을 입력해주세요. [xxx% 할인, xxx원 할인 등]")
                         .build();
                 Modal modal = Modal.create(ID_PREFIX + "update", "쿠폰 수정")
-                        .addActionRow(id)
                         .addActionRow(name)
                         .addActionRow(description)
                         .addActionRow(discountType)
@@ -275,28 +519,110 @@ public class UpdateInteraction extends ListenerAdapter {
                         .queue();
             }
 
-            case ID_PREFIX + "requirements-add" -> {
-                List<LayoutComponent> components = new ArrayList<>();
+            case ID_PREFIX + "add-requirements" -> {
+                List<TextInput> textInputs = new ArrayList<>();
 
                 CouponRequirementType requirementType = requirementTypeMap.get(userId);
                 switch (requirementType) {
-                    // TODO : type별 핸들링
+                    case DAY_BEFORE -> {
+                        TextInput dayBefore = TextInput.create(requirementType.name(), "지정일 (년-월-일 형식)", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("~까지 사용 가능")
+                                .build();
+                        textInputs.add(dayBefore);
+                    }
+
+                    case DAY_AFTER -> {
+                        TextInput dayAfter = TextInput.create(requirementType.name(), "지정일 (년-월-일 형식)", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("~부터 사용 가능")
+                                .build();
+                        textInputs.add(dayAfter);
+                    }
+
+                    case DAY_AFTER_VERIFY -> {
+                        TextInput dayAfterVerify = TextInput.create(requirementType.name(), "지정시간", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("인증을 완료한 후, ~분이 지난 후부터 사용 가능")
+                                .build();
+                        textInputs.add(dayAfterVerify);
+                    }
+
+                    case MAX_USE_PER_USER -> {
+                        TextInput maxUsePerUser = TextInput.create(requirementType.name(), "최대 사용 횟수", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("유저당 최대 ~회까지 사용 가능")
+                                .build();
+                        textInputs.add(maxUsePerUser);
+                    }
+
+                    case MAX_USE_PER_COUPON -> {
+                        TextInput maxUsePerCoupon = TextInput.create(requirementType.name(), "최대 사용 횟수", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("쿠폰당 최대 ~회까지 사용 가능")
+                                .build();
+                        textInputs.add(maxUsePerCoupon);
+                    }
+
+                    case PRODUCT_TYPE -> {
+                        TextInput transactionType = TextInput.create(requirementType.name(), "상품 유형", TextInputStyle.PARAGRAPH)
+                                .setRequired(true)
+                                .setPlaceholder("~ 상품에만 사용 가능 [PREMIUM_RESOURCE, OUTSOURCING, CUSTOM_PRICE]")
+                                .build();
+                        textInputs.add(transactionType);
+                    }
+
+                    case MINIMUM_PRICE -> {
+                        TextInput minimumPrice = TextInput.create(requirementType.name(), "최소 금액", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("~원 이상 구매해야 사용 가능")
+                                .build();
+                        textInputs.add(minimumPrice);
+                    }
+
+                    case MAXIMUM_PRICE -> {
+                        TextInput maximumPrice = TextInput.create(requirementType.name(), "최대 금액", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("~원 이하 구매해야 사용 가능")
+                                .build();
+                        textInputs.add(maximumPrice);
+                    }
+
+                    case ROLE -> {
+                        TextInput role = TextInput.create(requirementType.name(), "역할", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("지정된 역할을 보유/미보유 해야 사용 가능")
+                                .build();
+                        TextInput required = TextInput.create(requirementType.name() + "-required", "보유 여부", TextInputStyle.SHORT)
+                                .setRequired(true)
+                                .setPlaceholder("보유 여부를 입력해주세요. [true, false]")
+                                .build();
+                        textInputs.add(role);
+                        textInputs.add(required);
+                    }
                 }
+
+                Modal modal = Modal.create(ID_PREFIX + "add-requirements", "사용 조건 추가")
+                        .addComponents(
+                                textInputs.stream()
+                                        .map(ActionRow::of)
+                                        .toList()
+                        )
+                        .build();
+                event.replyModal(modal).queue();
             }
 
-            case ID_PREFIX + "requirements-delete" -> {
-                // Coupon 찾기
+            case ID_PREFIX + "remove-requirements" -> {
                 CouponService couponService = DatabaseManager.getCouponService();
                 Coupon coupon = couponService.getData(couponCode);
 
-                // Requirement 삭제
                 CouponRequirementType requirementType = requirementTypeMap.get(userId);
                 coupon.getRequirements().removeIf(requirement -> requirement.getType() == requirementType);
 
-                // DB 저장
                 couponService.repository().put(coupon);
 
-                // 메시지 전송
+                stopSession(userId);
+
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("사용 조건 삭제 완료")
@@ -317,10 +643,17 @@ public class UpdateInteraction extends ListenerAdapter {
                 .addOption("DAY_AFTER_VERIFY", "DAY_AFTER_VERIFY", "인증을 완료 후, 지정한 시각만큼 지나야 사용 가능")
                 .addOption("MAX_USE_PER_USER", "MAX_USE_PER_USER", "유저당 최대 사용 횟수")
                 .addOption("MAX_USE_PER_COUPON", "MAX_USE_PER_COUPON", "쿠폰당 최대 사용 횟수")
-                .addOption("TRANSACTION_TYPE", "TRANSACTION_TYPE", "거래 유형이 일치해야 사용 가능")
+                .addOption("TRANSACTION_TYPE", "TRANSACTION_TYPE", "상품 유형이 일치해야 사용 가능")
                 .addOption("MINIMUM_PRICE", "MINIMUM_PRICE", "최소 금액 미만일 시 사용 불가")
                 .addOption("MAXIMUM_PRICE", "MAXIMUM_PRICE", "최대 금액 초과시 사용 불가")
                 .addOption("ROLE", "ROLE", "지정된 역할을 보유/미보유 하여야 사용 가능")
                 .build();
+    }
+
+    private void stopSession(long userId) {
+        CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
+        sessionRepository.stopSession(userId);;
+        
+        requirementTypeMap.remove(userId);
     }
 }

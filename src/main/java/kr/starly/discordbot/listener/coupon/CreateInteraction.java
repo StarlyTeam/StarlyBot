@@ -11,11 +11,12 @@ import kr.starly.discordbot.service.CouponService;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 
 @BotEvent
@@ -103,6 +104,17 @@ public class CreateInteraction extends ListenerAdapter {
                     discountValue,
                     userId
             );
+
+            sessionRepository.stopSession(userId);
+
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_SUCCESS)
+                    .setTitle("쿠폰 생성 성공")
+                    .setDescription("쿠폰을 생성하였습니다.")
+                    .build();
+            event.replyEmbeds(embed)
+                    .setEphemeral(true)
+                    .queue();
         }
     }
 }
