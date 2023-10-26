@@ -76,7 +76,7 @@ public class PluginForumUtil {
             // 버튼 (구매, 다운로드, 위키, 영상)
             List<Button> components = new ArrayList<>();
             if (plugin.getPrice() != 0) {
-                Button buyBtn = Button.primary("pluginaction-buy-start-" + plugin.getENName(), "구매");
+                Button buyBtn = Button.primary("payment-start-" + plugin.getENName(), "구매");
                 components.add(buyBtn);
             }
 

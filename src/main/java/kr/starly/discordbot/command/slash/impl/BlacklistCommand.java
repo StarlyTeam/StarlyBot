@@ -6,6 +6,7 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Blacklist;
 import kr.starly.discordbot.service.BlacklistService;
+import kr.starly.discordbot.util.FileUploadUtil;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -14,7 +15,9 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
-import java.awt.Color;
+import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @BotSlashCommand(
@@ -49,6 +52,8 @@ public class BlacklistCommand implements DiscordSlashCommand {
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("H:mm:ss a (yyyy-MM-dd)");
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -110,10 +115,15 @@ public class BlacklistCommand implements DiscordSlashCommand {
             }
 
             case "목록" -> {
-                BlacklistService blacklistService = DatabaseManager.getBlacklistService();
-                List<Blacklist> blacklists = blacklistService.getAllData();
+                StringBuilder sb = new StringBuilder();
+                List<Blacklist> blacklists = DatabaseManager.getBlacklistService().getAllData();
+                blacklists.forEach(blacklist -> {
+                    sb
+                            .append("디스코드: %s | IP: %s [%s, %s]".formatted(blacklist.userId(), blacklist.ipAddress(), blacklist.reason(), DATE_FORMAT.format(blacklist.listedAt())))
+                            .append("\n");
+                });
 
-                // TODO : txt 파일 생성 후 업로드
+                event.replyFiles(FileUploadUtil.createFileUpload(sb.toString())).queue();
             }
         }
     }

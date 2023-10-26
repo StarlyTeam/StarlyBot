@@ -6,6 +6,7 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.ShortenLink;
 import kr.starly.discordbot.service.ShortenLinkService;
+import kr.starly.discordbot.util.FileUploadUtil;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -14,7 +15,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 @BotSlashCommand(
@@ -49,6 +50,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -131,10 +133,15 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
             }
 
             case "목록" -> {
-                ShortenLinkService shortenLinkService = DatabaseManager.getShortenLinkService();
-                List<ShortenLink> shortenLinks = shortenLinkService.getAllData();
+                StringBuilder sb = new StringBuilder();
+                List<ShortenLink> shortenLinks = DatabaseManager.getShortenLinkService().getAllData();
+                shortenLinks.forEach(shortenLink -> {
+                    sb
+                            .append("%s%s [%s]".formatted(WEB_ADDRESS, shortenLink.shortenUrl(), shortenLink.originUrl()))
+                            .append("\n");
+                });
 
-                // TODO : txt 파일 생성 후 업로드
+                event.replyFiles(FileUploadUtil.createFileUpload(sb.toString())).queue();
             }
         }
     }

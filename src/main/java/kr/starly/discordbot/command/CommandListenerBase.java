@@ -48,7 +48,7 @@ public class CommandListenerBase extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
 
-        String message = event.getMessage().getContentDisplay();
+        String message = event.getMessage().getContentRaw();
         if (!message.startsWith("?")) return;
 
         String[] args = message.substring(1).split(" ", 2);

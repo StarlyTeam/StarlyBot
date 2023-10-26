@@ -59,7 +59,7 @@ public class TicketFileRepository {
                 List<Message.Attachment> attachments = message.getAttachments();
 
                 if (attachments.isEmpty())
-                    contentMap.put("contentDisplay", message.getContentDisplay());
+                    contentMap.put("contentDisplay", message.getContentRaw());
 
                 folderIndex.getAndIncrement();
 

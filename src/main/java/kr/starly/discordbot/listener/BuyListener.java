@@ -1,9 +1,11 @@
-package kr.starly.discordbot.listener.pluginaction;
+package kr.starly.discordbot.listener;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Discount;
-import kr.starly.discordbot.enums.DiscountType;
+import kr.starly.discordbot.entity.product.impl.CustomPriceProduct;
+import kr.starly.discordbot.entity.product.impl.OutSourcingProduct;
+import kr.starly.discordbot.enums.*;
 import kr.starly.discordbot.entity.coupon.Coupon;
 import kr.starly.discordbot.entity.coupon.CouponState;
 import kr.starly.discordbot.service.CouponRedeemService;
@@ -11,11 +13,8 @@ import kr.starly.discordbot.service.CouponService;
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.entity.User;
-import kr.starly.discordbot.enums.TicketType;
-import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.entity.payment.Payment;
-import kr.starly.discordbot.enums.PaymentMethod;
 import kr.starly.discordbot.entity.payment.impl.BankTransferPayment;
 import kr.starly.discordbot.entity.payment.impl.CreditCardPayment;
 import kr.starly.discordbot.entity.payment.impl.CulturelandPayment;
@@ -23,7 +22,6 @@ import kr.starly.discordbot.service.PaymentService;
 import kr.starly.discordbot.entity.product.Product;
 import kr.starly.discordbot.entity.product.impl.PremiumPluginProduct;
 import kr.starly.discordbot.entity.Rank;
-import kr.starly.discordbot.enums.RankPerkType;
 import kr.starly.discordbot.entity.perk.impl.CashbackPerk;
 import kr.starly.discordbot.repository.impl.RankRepository;
 import kr.starly.discordbot.util.RankUtil;
@@ -78,12 +76,12 @@ public class BuyListener extends ListenerAdapter {
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
 
-    private final Map<Long, Plugin> pluginMap = new HashMap<>();
+    private final Map<Long, Product> productMap = new HashMap<>();
     private final Map<Long, Coupon> couponMap = new HashMap<>();
     private final Map<Long, Integer> pointMap = new HashMap<>();
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("H:mm:ss a (yyyy-MM-dd)");
-    private final String ID_PREFIX = "pluginaction-buy-";
+    private final String ID_PREFIX = "payment-";
     private final int POINT_USE_MINIMUM = 1000;
     private final int POINT_USE_UNIT = 100;
 
@@ -101,16 +99,16 @@ public class BuyListener extends ListenerAdapter {
             boolean isPure = true;
 
             // 무결성 검증1
-            Plugin plugin = pluginMap.get(userId);
-            if (plugin == null) isPure = false;
-            else if (plugin.getPrice() == 0) isPure = false;
+            Product product = productMap.get(userId);
+            if (product == null) isPure = false;
+            else if (product.getPrice() == 0) isPure = false;
 
             if (!isPure) {
                 event.reply("데이터가 변조되었습니다. {MAL1}\n거래를 취소합니다.")
                         .setEphemeral(true)
                         .queue();
 
-                stopProcess(userId);
+                stopSession(userId);
                 return;
             }
 
@@ -119,10 +117,9 @@ public class BuyListener extends ListenerAdapter {
             if (coupon != null) {
                 Discount discount = coupon.getDiscount();
                 if (discount.getType() == DiscountType.FIXED
-                        && discount.getValue() > plugin.getPrice()) {
+                        && discount.getValue() > product.getPrice()) {
                     isPure = false;
                 } else {
-                    Product product = new PremiumPluginProduct(plugin, event.getUser().getEffectiveName() + " | " + plugin.getKRName());
                     if (!coupon.getRequirements().stream()
                             .allMatch(requirement -> requirement.isSatisfied(userId, coupon, product))) isPure = false;
                 }
@@ -133,12 +130,12 @@ public class BuyListener extends ListenerAdapter {
                         .setEphemeral(true)
                         .queue();
 
-                stopProcess(userId);
+                stopSession(userId);
                 return;
             }
 
             // 무결성 검증3
-            int price = plugin.getPrice();
+            int price = product.getPrice();
             if (coupon != null) price = coupon.getDiscount().computeFinalPrice(price);
 
             int point = pointMap.get(userId);
@@ -154,7 +151,7 @@ public class BuyListener extends ListenerAdapter {
                         .setEphemeral(true)
                         .queue();
 
-                stopProcess(userId);
+                stopSession(userId);
                 return;
             }
 
@@ -271,25 +268,48 @@ public class BuyListener extends ListenerAdapter {
                 return;
             }
 
-            PluginService pluginService = DatabaseManager.getPluginService();
-            String ENName = componentId.substring((ID_PREFIX + "start-").length());
-            Plugin plugin = pluginService.getDataByENName(ENName);
-            if (plugin.getPrice() == 0) return;
+            String productData = componentId.substring((ID_PREFIX + "start-").length());
+            String[] productArgs = productData.split("§");
 
-            // 보유 여부 확인
-            JDA jda = DiscordBotManager.getInstance().getJda();
-            Role buyerRole = jda.getRoleById(plugin.getBuyerRole());
-            if (event.getMember().getRoles().contains(buyerRole)) {
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("해당 플러그인을 이미 구매하셨습니다.")
-                        .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
-                return;
+            Product product;
+            if (productArgs[0].equals("CUSTOM!!!!PRICE")) {
+                String orderName = productArgs[1];
+                int productPrice = Integer.parseInt(productArgs[2]);
+
+                String note = productData + " (기타)";
+                product = new CustomPriceProduct(orderName, productPrice, note);
+            } else if (productArgs[0].equals("OUT!!!!SOURCING")) {
+                String productName = productArgs[1];
+                int productPrice = Integer.parseInt(productArgs[2]);
+
+                String note = productData + " (외주)";
+                product = new OutSourcingProduct(productName, productPrice, note);
+            } else {
+                PluginService pluginService = DatabaseManager.getPluginService();
+                Plugin plugin = pluginService.getDataByENName(productData);
+                if (plugin.getPrice() == 0) return;
+
+                JDA jda = DiscordBotManager.getInstance().getJda();
+                Role buyerRole = jda.getRoleById(plugin.getBuyerRole());
+                if (event.getMember().getRoles().contains(buyerRole)) {
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("제목")
+                            .setDescription("해당 플러그인을 이미 구매하셨습니다.")
+                            .build();
+                    event.replyEmbeds(embed)
+                            .setEphemeral(true)
+                            .queue();
+                    return;
+                }
+
+                String note = plugin.getKRName() + " (유료)";
+                product = new PremiumPluginProduct(plugin, note);
             }
+
+            productMap.put(userId, product);
+            couponMap.remove(userId);
+            pointMap.remove(userId);
 
             Button withCouponBtn = Button.primary(ID_PREFIX + "coupon-yes", "예");
             Button withoutCouponBtn = Button.secondary(ID_PREFIX + "coupon-no", "아니오");
@@ -302,10 +322,6 @@ public class BuyListener extends ListenerAdapter {
                     .addActionRow(withCouponBtn, withoutCouponBtn, CANCEL_BUTTON)
                     .setEphemeral(true)
                     .queue();
-
-            pluginMap.put(userId, plugin);
-            couponMap.remove(userId);
-            pointMap.remove(userId);
         } else if (componentId.startsWith(ID_PREFIX + "accept-")) {
             PaymentService paymentService = DatabaseManager.getPaymentService();
             UUID paymentId = UUID.fromString(
@@ -359,7 +375,7 @@ public class BuyListener extends ListenerAdapter {
                             "결제수단: " + payment.getMethod().getKRName() + "\n" +
                             "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
                             "결제자: " + event.getUser().getAsMention() + "\n" +
-                            "구매한 플러그인: " + plugin.getENName() + "\n" +
+                            "구매 정보: " + product.getNote() + "\n" +
                             "사용된 포인트: " + usedPoint + "\n" +
                             "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
                             "생성된 티켓: " + event.getChannel().getAsMention())
@@ -479,9 +495,9 @@ public class BuyListener extends ListenerAdapter {
 
         switch (componentId) {
             case ID_PREFIX + "cancel" -> {
-                if (!pluginMap.containsKey(userId) && !couponMap.containsKey(userId) && !pointMap.containsKey(userId)) return;
+                if (!productMap.containsKey(userId) && !couponMap.containsKey(userId) && !pointMap.containsKey(userId)) return;
 
-                stopProcess(userId);
+                stopSession(userId);
 
                 event.reply("결제를 취소했습니다.")
                         .setEphemeral(true)
@@ -489,7 +505,7 @@ public class BuyListener extends ListenerAdapter {
             }
 
             case ID_PREFIX + "point-yes" -> {
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -499,7 +515,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (pointMap.containsKey(userId)) return;
 
@@ -515,7 +531,7 @@ public class BuyListener extends ListenerAdapter {
             }
 
             case ID_PREFIX + "point-no" -> {
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -525,7 +541,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -537,7 +553,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -549,14 +565,16 @@ public class BuyListener extends ListenerAdapter {
                         .setDescription("포인트를 사용하지 않고 결제를 진행합니다.\n결제수단을 선택해주세요.")
                         .build();
                 event.replyEmbeds(embed)
-                        .addActionRow(createPaymentMethodSelectMenu())
+                        .addActionRow(createPaymentMethodSelectMenu(
+                                productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE
+                        ))
                         .addActionRow(CANCEL_BUTTON)
                         .setEphemeral(true)
                         .queue();
             }
 
             case ID_PREFIX + "coupon-yes" -> {
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -566,7 +584,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -578,7 +596,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -593,7 +611,7 @@ public class BuyListener extends ListenerAdapter {
             }
 
             case ID_PREFIX + "coupon-no" -> {
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -603,7 +621,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -615,7 +633,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -667,11 +685,9 @@ public class BuyListener extends ListenerAdapter {
         String modalId = event.getModalId();
         switch (modalId) {
             case ID_PREFIX + "coupon" -> {
-                // 변수 선언
                 long userId = event.getUser().getIdLong();
 
-                // 진행도 검증
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -681,7 +697,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -693,16 +709,14 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
-                // 입력값 추출
-                String code = event.getValue("code").getAsString();
 
-                // 값 검증
                 CouponService couponService = DatabaseManager.getCouponService();
-                Coupon coupon = couponService.getData(code);
+                String couponCode = event.getValue("code").getAsString();
+                Coupon coupon = couponService.getData(couponCode);
                 if (coupon == null) {
                     Button retryBtn = Button.primary(ID_PREFIX + "coupon-yes", "다시 입력하기");
                     MessageEmbed embed = new EmbedBuilder()
@@ -717,8 +731,7 @@ public class BuyListener extends ListenerAdapter {
                     return;
                 }
 
-                Plugin plugin = pluginMap.get(userId);
-                Product product = new PremiumPluginProduct(plugin, event.getUser().getEffectiveName() + "님, " + plugin.getKRName() + " 구매");
+                Product product = productMap.get(userId);
                 if (!coupon.getRequirements().stream()
                         .allMatch(requirement -> requirement.isSatisfied(userId, coupon, product))) {
                     Button retryBtn = Button.primary(ID_PREFIX + "coupon-yes", "다시 입력하기");
@@ -754,23 +767,20 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
                 } else if (finalPrice == 0) {
-                    // Payment 객체 생성
                     int usedPoint = pointMap.get(userId);
                     Coupon usedCoupon = couponMap.get(userId);
+
+                    PaymentService paymentService = DatabaseManager.getPaymentService();
                     Payment payment = new Payment(
                             UUID.randomUUID(), userId, PaymentMethod.NONE,
                             usedPoint, usedCoupon,
                             product
                     );
-
-                    PaymentService paymentService = DatabaseManager.getPaymentService();
                     paymentService.saveData(payment);
 
-                    // 티켓 생성
                     TextChannel ticketChannel = createTicketChannel(payment);
 
                     String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
-
                     Button approveBtn = Button.primary(ID_PREFIX + "accept-" + paymentIdForId, "수락");
                     Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
                     MessageEmbed embed1 = new EmbedBuilder()
@@ -817,8 +827,11 @@ public class BuyListener extends ListenerAdapter {
                 // 변수 선언
                 long userId = event.getUser().getIdLong();
 
+                Product product = productMap.get(userId);
+                Coupon usedCoupon = couponMap.get(userId);
+
                 // 진행도 검증
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -828,7 +841,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -840,7 +853,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -894,9 +907,7 @@ public class BuyListener extends ListenerAdapter {
                 }
 
                 // 값 검증2
-                int price = pluginMap.get(userId).getPrice();
-
-                Coupon usedCoupon = couponMap.get(userId);
+                int price = product.getPrice();
                 if (usedCoupon != null) {
                     price = usedCoupon.getDiscount().computeFinalPrice(amount);
                 }
@@ -919,29 +930,17 @@ public class BuyListener extends ListenerAdapter {
                 // 값 검증3
                 int finalPrice = price - amount;
                 if (finalPrice == 0) {
-                    // Payment 객체 생성
-                    Plugin plugin = pluginMap.get(userId);
-                    String note = event.getUser().getEffectiveName() + " | 신용카드 [" + plugin.getKRName() + "]";
-                    Product product = new PremiumPluginProduct(
-                            plugin,
-                            note
-                    );
-
-                    int usedPoint = pointMap.get(userId);
+                    PaymentService paymentService = DatabaseManager.getPaymentService();
                     Payment payment = new Payment(
                             UUID.randomUUID(), userId, PaymentMethod.NONE,
-                            usedPoint, usedCoupon,
+                            amount, usedCoupon,
                             product
                     );
-
-                    PaymentService paymentService = DatabaseManager.getPaymentService();
                     paymentService.saveData(payment);
 
-                    // 티켓 생성
                     TextChannel ticketChannel = createTicketChannel(payment);
 
                     String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
-
                     Button approveBtn = Button.primary(ID_PREFIX + "accept-" + paymentIdForId, "수락");
                     Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
                     MessageEmbed embed1 = new EmbedBuilder()
@@ -969,19 +968,21 @@ public class BuyListener extends ListenerAdapter {
                     event.replyEmbeds(embed2, embed3)
                             .setEphemeral(true)
                             .queue();
+
+                    return;
                 }
 
-                // 데이터 저장
                 pointMap.put(userId, amount);
 
-                // 메시지 전송
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("제목")
                         .setDescription("포인트(" + amount + "원)를 적용하였습니다.\n결제수단을 선택해주세요.")
                         .build();
                 event.replyEmbeds(embed)
-                        .addActionRow(createPaymentMethodSelectMenu())
+                        .addActionRow(createPaymentMethodSelectMenu(
+                                productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE
+                        ))
                         .addActionRow(CANCEL_BUTTON)
                         .setEphemeral(true)
                         .queue();
@@ -992,7 +993,7 @@ public class BuyListener extends ListenerAdapter {
                 long userId = event.getUser().getIdLong();
 
                 // 진행도 검증
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -1002,7 +1003,7 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (!pointMap.containsKey(userId)) return;
 
@@ -1028,16 +1029,10 @@ public class BuyListener extends ListenerAdapter {
                             && new String(key.getBytes(), 0, 15).getBytes().length == 16;
                 } while (!isKeyUsable);
 
-                // Payment 객체 생성
-                Plugin plugin = pluginMap.get(userId);
-                String note = event.getUser().getEffectiveName() + " | 신용카드 [" + plugin.getKRName() + "]";
-                Product product = new PremiumPluginProduct(
-                        plugin,
-                        note
-                );
-
+                Product product = productMap.get(userId);
                 int usedPoint = pointMap.get(userId);
                 Coupon usedCoupon = couponMap.get(userId);
+
                 CreditCardPayment payment;
                 try {
                     payment = new CreditCardPayment(
@@ -1061,9 +1056,9 @@ public class BuyListener extends ListenerAdapter {
 
                     PaymentLogger.warning(new EmbedBuilder()
                             .setTitle("결제 정보 생성중 오류가 발생했습니다.")
-                            .setDescription(ex.getMessage()));
+                            .setDescription("결제자: " + event.getUser().getAsMention()));
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
@@ -1085,16 +1080,9 @@ public class BuyListener extends ListenerAdapter {
                     PaymentLogger.warning(new EmbedBuilder()
                             .setTitle("결제 요청 중 오류가 발생했습니다.")
                             .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                                    "결제금액: " + payment.getProduct().getPrice() + "원\n" +
-                                    "결제수단: 신용카드\n" +
-                                    "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
-                                    "결제자: " + event.getUser().getAsMention() + "\n" +
-                                    "구매한 플러그인: " + plugin.getENName() + "\n" +
-                                    "사용된 포인트: " + usedPoint + "\n" +
-                                    "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
-                                    "생성된 티켓: 없음"));
+                                    "결제자: " + event.getUser().getAsMention() + "\n"));
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     payment.updateAccepted(false);
                 }
 
@@ -1117,25 +1105,38 @@ public class BuyListener extends ListenerAdapter {
                     PaymentLogger.error(new EmbedBuilder()
                             .setTitle("결제 정보 저장 중 오류가 발생했습니다.")
                             .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                                    "결제금액: " + payment.getProduct().getPrice() + "원\n" +
-                                    "결제수단: 신용카드\n" +
-                                    "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
-                                    "결제자: " + event.getUser().getAsMention() + "\n" +
-                                    "구매한 플러그인: " + plugin.getENName() + "\n" +
-                                    "사용된 포인트: " + usedPoint + "\n" +
-                                    "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
-                                    "생성된 티켓: 없음"));
+                                    "결제자: " + event.getUser().getAsMention()));
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 }
 
                 if (!payment.isAccepted()) return;
 
-                // 금액 계산
-                int finalPrice = payment.getFinalPrice();
+                try {
+                    affectPayment(payment);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
 
-                // 결제 로그
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("제목")
+                            .setDescription("상품 지급 중 오류가 발생했습니다.\n\n카드사에 비용이 청구되었을 수 있으니,\n티켓을 통하여 관리자에게 문의해주세요.")
+                            .build();
+                    event.replyEmbeds(embed)
+                            .setEphemeral(true)
+                            .queue();
+
+                    PaymentLogger.error(new EmbedBuilder()
+                            .setTitle("상품 지급 중 오류가 발생했습니다.")
+                            .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
+                                    "결제자: " + event.getUser().getAsMention()));
+
+                    stopSession(userId);
+                    return;
+                }
+
+                int finalPrice = payment.getFinalPrice();
                 PaymentLogger.info(new EmbedBuilder()
                         .setTitle("결제가 완료되었습니다.")
                         .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
@@ -1144,30 +1145,24 @@ public class BuyListener extends ListenerAdapter {
                                 "결제수단: 신용카드\n" +
                                 "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
                                 "결제자: " + event.getUser().getAsMention() + "\n" +
-                                "구매한 플러그인: " + plugin.getENName() + "\n" +
+                                "구매 정보: " + product.getNote() + "\n" +
                                 "사용된 포인트: " + usedPoint + "\n" +
                                 "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
                                 "생성된 티켓: 없음")
                 );
 
-                affectPayment(payment);
-
-                // 다운로드 안내 전송
-                String threadMention = "<#" + plugin.getThreadId() + ">";
-
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1141625729386287206> 결제가 완료되었습니다! <a:success:1141625729386287206>")
                         .setDescription("> **🥳 축하드려요! 결제가 성공적으로 완료되었습니다!**\n" +
-                                "> **또한, [여기를 클릭](" + payment.getReceiptUrl() + ")하여 영수증을 확인하실 수 있어요. 🧾**\n" +
-                                "> **" + threadMention + " 에서 다운로드 받으실 수 있습니다. 감사합니다! 🙏**\n\u1CBB")
+                                "> **또한, [여기를 클릭](" + payment.getReceiptUrl() + ")하면 영수증을 확인하실 수 있어요.**\n" +
+                                "> **정말 감사합니다! 🙏**\n\u1CBB")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
                         .queue();
 
-                // 세션 데이터 삭제
-                stopProcess(userId);
+                stopSession(userId);
             }
 
             case ID_PREFIX + "bank-transfer" -> {
@@ -1175,7 +1170,7 @@ public class BuyListener extends ListenerAdapter {
                 long userId = event.getUser().getIdLong();
 
                 // 진행도 검증
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -1185,23 +1180,17 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (!pointMap.containsKey(userId)) return;
 
                 // 입력값 추출
                 String depositor = event.getValue("depositor").getAsString();
 
-                // Payment 객체 생성
-                Plugin plugin = pluginMap.get(userId);
-                String note = event.getUser().getEffectiveName() + " | 계좌이체 [" + plugin.getKRName() + "]";
-                Product product = new PremiumPluginProduct(
-                        plugin,
-                        note
-                );
-
+                Product product = productMap.get(userId);
                 int usedPoint = pointMap.get(userId);
                 Coupon usedCoupon = couponMap.get(userId);
+
                 BankTransferPayment payment = new BankTransferPayment(
                         product, userId,
                         depositor,
@@ -1241,7 +1230,7 @@ public class BuyListener extends ListenerAdapter {
                         .queue();
 
                 // 세션 데이터 삭제
-                stopProcess(userId);
+                stopSession(userId);
             }
 
             case ID_PREFIX + "cultureland" -> {
@@ -1249,7 +1238,7 @@ public class BuyListener extends ListenerAdapter {
                 long userId = event.getUser().getIdLong();
 
                 // 진행도 검증
-                if (!pluginMap.containsKey(userId)) {
+                if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("제목")
@@ -1259,23 +1248,17 @@ public class BuyListener extends ListenerAdapter {
                             .setEphemeral(true)
                             .queue();
 
-                    stopProcess(userId);
+                    stopSession(userId);
                     return;
                 } else if (!pointMap.containsKey(userId)) return;
 
                 // 입력값 추출
                 String pinNumber = event.getValue("pin-number").getAsString();
 
-                // Payment 객체 생성
-                Plugin plugin = pluginMap.get(userId);
-                String note = event.getUser().getEffectiveName() + " | 문화상품권 [" + plugin.getKRName() + "]";
-                Product product = new PremiumPluginProduct(
-                        plugin,
-                        note
-                );
-
+                Product product = productMap.get(userId);
                 int usedPoint = pointMap.get(userId);
                 Coupon usedCoupon = couponMap.get(userId);
+
                 CulturelandPayment payment = new CulturelandPayment(
                         product, userId,
                         pinNumber,
@@ -1315,25 +1298,30 @@ public class BuyListener extends ListenerAdapter {
                         .queue();
 
                 // 세션 데이터 삭제
-                stopProcess(userId);
+                stopSession(userId);
             }
         }
     }
 
     // UTILITY
-    private void stopProcess(long userId) {
-        pluginMap.remove(userId);
+    private void stopSession(long userId) {
+        productMap.remove(userId);
         pointMap.remove(userId);
         couponMap.remove(userId);
     }
 
-    private SelectMenu createPaymentMethodSelectMenu() {
-        return StringSelectMenu.create(ID_PREFIX + "payment-method")
-                .setPlaceholder("결제수단을 선택해주세요.")
-                .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
-                .addOption("계좌이체", "bank_transfer", "계좌이체로 결제합니다.", Emoji.fromUnicode("💰"))
-                .addOption("문화상품권", "cultureland", "문화상품권로 결제합니다.", Emoji.fromUnicode("🪙"))
-                .build();
+    private SelectMenu createPaymentMethodSelectMenu(boolean onlyCreditCard) {
+        return onlyCreditCard ?
+                StringSelectMenu.create(ID_PREFIX + "payment-method")
+                        .setPlaceholder("결제수단을 선택해주세요.")
+                        .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
+                        .build() :
+                StringSelectMenu.create(ID_PREFIX + "payment-method")
+                        .setPlaceholder("결제수단을 선택해주세요.")
+                        .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
+                        .addOption("계좌이체", "bank_transfer", "계좌이체로 결제합니다.", Emoji.fromUnicode("💰"))
+                        .addOption("문화상품권", "cultureland", "문화상품권로 결제합니다.", Emoji.fromUnicode("🪙"))
+                        .build();
     }
 
     private TextChannel createTicketChannel(Payment payment) {
@@ -1425,8 +1413,7 @@ public class BuyListener extends ListenerAdapter {
         long userId = payment.getRequestedBy();
         int usedPoint = payment.getUsedPoint();
         CouponState usedCoupon = payment.getUsedCoupon();
-        PremiumPluginProduct product = payment.getProduct().asPremiumPlugin();
-        Plugin plugin = product.getPlugin();
+        Product product = payment.getProduct();
 
         // DB 기록 (포인트 차감 및 쿠폰 사용 처리)
         UserService userService = DatabaseManager.getUserService();
@@ -1442,13 +1429,17 @@ public class BuyListener extends ListenerAdapter {
         }
 
         // 역할 지급
-        JDA jda = DiscordBotManager.getInstance().getJda();
-        Guild guild = jda.getGuildById(configProvider.getString("GUILD_ID"));
-        Role buyerRole = guild.getRoleById(configProvider.getString("BUYER_ROLE_ID"));
-        Role pluginBuyerRole = guild.getRoleById(plugin.getBuyerRole());
+        if (product.getType() == ProductType.PREMIUM_RESOURCE) {
+            JDA jda = DiscordBotManager.getInstance().getJda();
+            Guild guild = jda.getGuildById(configProvider.getString("GUILD_ID"));
+            Role buyerRole = guild.getRoleById(configProvider.getString("BUYER_ROLE_ID"));
 
-        guild.addRoleToMember(UserSnowflake.fromId(userId), buyerRole).queue();
-        guild.addRoleToMember(UserSnowflake.fromId(userId), pluginBuyerRole).queue();
+            Plugin plugin = product.asPremiumPlugin().getPlugin();
+            Role pluginBuyerRole = guild.getRoleById(plugin.getBuyerRole());
+
+            guild.addRoleToMember(UserSnowflake.fromId(userId), buyerRole).queue();
+            guild.addRoleToMember(UserSnowflake.fromId(userId), pluginBuyerRole).queue();
+        }
 
         // 랭크 검색
         User user = userService.getDataByDiscordId(userId);
@@ -1460,7 +1451,7 @@ public class BuyListener extends ListenerAdapter {
         // 랭크 특권
         if (highestRank.hasPerk(RankPerkType.CASHBACK)) {
             CashbackPerk cashbackPerk = (CashbackPerk) highestRank.getPerk(RankPerkType.CASHBACK);
-            int cashbackAmount = product.getPrice() / 100 * cashbackPerk.getPercentage();
+            int cashbackAmount = payment.getFinalPrice() / 100 * cashbackPerk.getPercentage();
             userService.addPoint(userId, cashbackAmount);
 
             MessageEmbed embed = new EmbedBuilder()
@@ -1468,21 +1459,25 @@ public class BuyListener extends ListenerAdapter {
                     .setTitle("제목")
                     .setDescription(format("랭크 특권으로 %,d원을 캐시백 받았습니다.", cashbackAmount))
                     .build();
-            jda.getUserById(userId).openPrivateChannel().complete().sendMessageEmbeds(embed).queue();
+
+            JDA jda = DiscordBotManager.getInstance().getJda();
+            jda.getUserById(userId)
+                    .openPrivateChannel().complete()
+                    .sendMessageEmbeds(embed).queue();
         }
 
         // 랭크 지급
         PaymentService paymentService = DatabaseManager.getPaymentService();
-        long totalPrice = paymentService.getTotalPaidPrice(userId);
+        Rank rank3 = RankRepository.getInstance().getRank(3);
+        Rank rank4 = RankRepository.getInstance().getRank(4);
+        Rank rank5 = RankRepository.getInstance().getRank(5);
 
-        if (totalPrice >= 500000 && !userRanks.contains(RankRepository.getInstance().getRank(3))) {
-            Rank rank3 = RankRepository.getInstance().getRank(3);
+        long totalPrice = paymentService.getTotalPaidPrice(userId);
+        if (totalPrice >= 500000 && !userRanks.contains(rank3)) {
             RankUtil.giveRank(userId, rank3);
-        } if (totalPrice >= 1000000 && !userRanks.contains(RankRepository.getInstance().getRank(4))) {
-            Rank rank4 = RankRepository.getInstance().getRank(4);
+        } if (totalPrice >= 1000000 && !userRanks.contains(rank4)) {
             RankUtil.giveRank(userId, rank4);
-        } if (totalPrice >= 3000000 && !userRanks.contains(RankRepository.getInstance().getRank(5))) {
-            Rank rank5 = RankRepository.getInstance().getRank(5);
+        } if (totalPrice >= 3000000 && !userRanks.contains(rank5)) {
             RankUtil.giveRank(userId, rank5);
         }
     }

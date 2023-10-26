@@ -4,10 +4,12 @@ import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.coupon.Coupon;
 import kr.starly.discordbot.enums.CouponSessionType;
 import kr.starly.discordbot.repository.RepositoryManager;
 import kr.starly.discordbot.repository.impl.CouponSessionRepository;
 import kr.starly.discordbot.service.CouponService;
+import kr.starly.discordbot.util.FileUploadUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,7 +19,8 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 
-import java.awt.Color;
+import java.awt.*;
+import java.util.List;
 
 @BotSlashCommand(
         command = "쿠폰관리",
@@ -106,7 +109,15 @@ public class CouponCommand implements DiscordSlashCommand {
 
         // 목록 핸들링
         if (subCommand.equals("목록")) {
-            // TODO : txt 파일 생성 후 업로드
+            StringBuilder sb = new StringBuilder();
+            List<Coupon> coupons = DatabaseManager.getCouponService().getAllData();
+            coupons.forEach(coupon -> {
+                sb
+                        .append("%s [%s | %s]".formatted(coupon.getCode(), coupon.getName(), coupon.getDescription()))
+                        .append("\n");
+            });
+
+            event.replyFiles(FileUploadUtil.createFileUpload(sb.toString())).queue();
             return;
         }
 

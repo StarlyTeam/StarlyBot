@@ -1,4 +1,4 @@
-package kr.starly.discordbot.listener.pluginaction;
+package kr.starly.discordbot.listener;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
@@ -6,7 +6,6 @@ import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.entity.PluginFile;
 import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.enums.MCVersion;
-import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.repository.impl.DownloadTokenRepository;
 import kr.starly.discordbot.service.BlacklistService;
@@ -29,7 +28,7 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
 

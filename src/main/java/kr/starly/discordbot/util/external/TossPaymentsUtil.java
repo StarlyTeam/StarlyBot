@@ -87,7 +87,8 @@ public class TossPaymentsUtil {
 
         // Payment 객체: update
         String approvedAtStr = responseBody.get("approvedAt").getAsString();
-        Date approvedAt = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssX").parse(approvedAtStr);
+        Date approvedAt = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssX")
+                .parse(approvedAtStr);
 
         payment.updateAccepted(true);
         payment.updateApprovedAt(approvedAt);
