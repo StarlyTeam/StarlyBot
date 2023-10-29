@@ -20,8 +20,6 @@ import java.awt.Color;
 public class DeleteInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
-    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     private final String ID_PREFIX = "coupon-manager-";
@@ -29,12 +27,6 @@ public class DeleteInteraction extends ListenerAdapter {
     // BUTTON
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        // 퍼미션 검증
-        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
-            return;
-        }
-
         // Repository 변수 선언
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
 
@@ -47,6 +39,11 @@ public class DeleteInteraction extends ListenerAdapter {
 
         String componentId = event.getComponentId();
         if (componentId.equals((ID_PREFIX + "delete-confirm"))) {
+            if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                PermissionUtil.sendPermissionError(event.getChannel());
+                return;
+            }
+
             if (sessionType != CouponSessionType.DELETE) return;
 
             CouponService couponService = DatabaseManager.getCouponService();
