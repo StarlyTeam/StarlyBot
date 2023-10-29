@@ -35,8 +35,8 @@ public class CleanUpCommand implements DiscordCommand {
         if (args.length < 2) {
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
-                    .setDescription("**청소할 메시지의 개수를 입력해 주세요. 예) ?청소 10**")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
+                    .setDescription("> **청소할 메시지의 개수를 입력해 주세요. 예) ?청소 10**")
                     .build();
 
             event.getChannel().sendMessageEmbeds(messageEmbed).queue();
@@ -48,7 +48,7 @@ public class CleanUpCommand implements DiscordCommand {
             if (count < 1 || count > 99) {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
                         .setDescription("**메시지는 1개에서 99개까지만 삭제할 수 있습니다.**")
                         .build();
 
@@ -59,8 +59,8 @@ public class CleanUpCommand implements DiscordCommand {
         } catch (NumberFormatException e) {
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
-                    .setDescription("**유효한 숫자를 입력해 주세요. 예) ?청소 10**")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
+                    .setDescription("> **유효한 숫자를 입력해 주세요. 예) ?청소 10**")
                     .build();
 
             event.getChannel().sendMessageEmbeds(messageEmbed).queue();
@@ -76,9 +76,13 @@ public class CleanUpCommand implements DiscordCommand {
 
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("<a:success:1141625729386287206> 성공 | 채팅청소 <a:success:1141625729386287206>")
-                .setDescription("**" + count + "개의 메시지를 청소했습니다.**")
-                .setFooter("이 메시지는 5초후에 자동으로 삭제됩니다.")
+                .setTitle("<a:success:1168266537262657626> 성공 | 채팅청소 <a:success:1168266537262657626>")
+                .setDescription(
+                        "> **" + count + "개의 메시지를 청소했습니다.**\n" +
+                        "> **이 메시지는 5초후에 자동으로 삭제됩니다.**"
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .build();
         channel.sendMessageEmbeds(messageEmbed).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
     }

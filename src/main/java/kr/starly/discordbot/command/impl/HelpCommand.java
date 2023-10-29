@@ -33,7 +33,7 @@ public class HelpCommand implements DiscordCommand {
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<a:loading:1141623256558866482> 도움말 | 물음표 명령어 <a:loading:1141623256558866482>");
+                .setTitle("<a:loading:1168266572847128709> 도움말 | 물음표 명령어 <a:loading:1168266572847128709>");
 
         String packageName = "kr.starly.discordbot";
         Reflections reflections = new Reflections(packageName);

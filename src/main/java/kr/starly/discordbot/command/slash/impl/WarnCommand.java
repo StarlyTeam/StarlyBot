@@ -97,7 +97,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + userForAdd.getAsMention() + " 님에게 " + warnToAdd + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + reason)
                         .setThumbnail(userAvatarForAdd)
@@ -124,7 +124,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:success:1141625729386287206> 제거 완료 | 경고 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 제거 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + removeAmount + "만큼 제거하였습니다.** \n" +
                                 "사유 > `" + reason + "`")
                         .setThumbnail(userAvatarForRemove)
@@ -151,7 +151,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("<a:success:1141625729386287206> 설정 완료 | 경고 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 설정 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 " + warnToSet + "로 설정 되었습니다.** \n" +
                                 "사유 > " + reason)
                         .setThumbnail(userAvatarForSet)
@@ -171,7 +171,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 초기화 완료 | 경고 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 초기화 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 초기화 하였습니다.**")
                         .setThumbnail(userAvatarReset)
                         .build();
@@ -207,7 +207,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<a:loading:1141623256558866482> 확인 | 경고 <a:loading:1141623256558866482>")
+                .setTitle("<a:loading:1168266572847128709> 확인 | 경고 <a:loading:1168266572847128709>")
                 .setDescription("> **<@" + targetId + ">님의 현재 경고: " + warnService.getTotalWarn(targetId) + "**")
                 .setThumbnail(userAvatarCheck)
                 .build();

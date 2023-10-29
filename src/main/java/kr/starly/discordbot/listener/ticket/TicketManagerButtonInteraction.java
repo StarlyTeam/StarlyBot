@@ -135,7 +135,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                 
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:success:1141625729386287206> 추가 완료 | 경고 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + ticketUser.getAsMention() + " 님에게 " + warnInfo.amount() + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + warnInfo.reason())
                         .setThumbnail(ticketUser.getAvatarUrl())

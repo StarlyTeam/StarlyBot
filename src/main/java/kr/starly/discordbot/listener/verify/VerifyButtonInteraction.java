@@ -30,7 +30,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                 if (RoleChecker.hasVerifiedRole(event.getMember())) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:warn:1141721287526465656> 오류 | 이미 인증된 유저입니다. <a:warn:1141721287526465656>")
+                            .setTitle("<a:warn:1168266548541145298> 오류 | 이미 인증된 유저입니다. <a:warn:1168266548541145298>")
                             .setDescription("> **당신은 이미 인증된 유저예요! \uD83C\uDF89**\n"
                                     + "> **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**\n\u1CBB")
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
@@ -57,7 +57,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
             case "helpVerify" -> {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<:notice:1141720944935719002> 유저인증 | 인증이 안되시나요? <:notice:1141720944935719002>")
+                        .setTitle("<:notice:1168265600301277284> 유저인증 | 인증이 안되시나요? <:notice:1168265600301277284>")
                         .setDescription("> **인증이 안 될 경우 아래 항목을 확인해보세요.\n" +
                                 "> **문제가 계속되면 관리자에게 DM으로 문의해 주세요.\n" +
                                 "\n" +
@@ -80,7 +80,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
             case "termsOfService" -> {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1141623256558866482> 유저인증 | 이용약관 <a:loading:1141623256558866482>")
+                        .setTitle("<a:loading:1168266572847128709> 유저인증 | 이용약관 <a:loading:1168266572847128709>")
                         .setDescription("> **이용약관은 <#1141984482619035698> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
@@ -91,7 +91,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
             case "serverRule" -> {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1141623256558866482> 유저인증 | 서버규칙 <a:loading:1141623256558866482>")
+                        .setTitle("<a:loading:1168266572847128709> 유저인증 | 서버규칙 <a:loading:1168266572847128709>")
                         .setDescription("> **서버규칙은 <#1141982220219846686> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")

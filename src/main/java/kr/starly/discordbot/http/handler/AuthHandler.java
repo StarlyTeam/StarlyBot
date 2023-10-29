@@ -91,7 +91,7 @@ public class AuthHandler implements HttpHandler {
 
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("<a:success:1141625729386287206> 성공 | 인증 완료 <a:success:1141625729386287206>")
+                .setTitle("<a:success:1168266537262657626> 성공 | 인증 완료 <a:success:1168266537262657626>")
                 .setDescription("""
                         > **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**
                         > **이제 커뮤니티의 모든 기능을 마음껏 즐기실 수 있습니다! 🥳**

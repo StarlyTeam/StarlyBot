@@ -64,7 +64,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 if (!image.isImage()) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 잘못된 입력 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
                             .setDescription("**이미지 파일만 업로드할 수 있습니다. (jpg, jpeg, webp, png, gif)**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -78,7 +78,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 내부 프로세스 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 내부 프로세스 <a:loading:1168266572847128709>")
                             .setDescription("**이미지를 업로드하지 못했습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -88,7 +88,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 if (imageUrl == null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 요청 실패 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 요청 실패 <a:loading:1168266572847128709>")
                             .setDescription("**이미지를 업로드하지 못했습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -97,7 +97,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 업로드 완료 | 이미지 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 업로드 완료 | 이미지 <a:success:1168266537262657626>")
                         .setDescription("**성공적으로 이미지를 업로드했습니다.**\n\n```" + imageUrl + "```")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();
@@ -111,7 +111,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("<a:success:1141625729386287206> 삭제 완료 | 이미지 <a:success:1141625729386287206>")
+                            .setTitle("<a:success:1168266537262657626> 삭제 완료 | 이미지 <a:success:1168266537262657626>")
                             .setDescription("**성공적으로 이미지를 삭제했습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -120,7 +120,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 내부 프로세스 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 내부 프로세스 <a:loading:1168266572847128709>")
                             .setDescription("**이미지를 삭제하지 못 했습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -136,7 +136,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 내부 프로세스 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 내부 프로세스 <a:loading:1168266572847128709>")
                             .setDescription("**이미지 목록을 불러오지 못 했습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -146,7 +146,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 if (images == null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 내부 프로세스 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 내부 프로세스 <a:loading:1168266572847128709>")
                             .setDescription("**이미지 목록을 불러오지 못 했습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -164,7 +164,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1141623256558866482> 목록 | 이미지 <a:loading:1141623256558866482>")
+                        .setTitle("<a:loading:1168266572847128709> 목록 | 이미지 <a:loading:1168266572847128709>")
                         .setDescription("```" + sb + "```")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();

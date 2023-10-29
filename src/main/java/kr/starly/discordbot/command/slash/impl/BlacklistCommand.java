@@ -72,7 +72,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 if (blacklistService.getDataByUserId(target.getIdLong()) != null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 등록된 유저 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 등록된 유저 <a:loading:1168266572847128709>")
                             .setDescription("> **" + target.getAsMention() + "님은 이미 블랙리스트에 등록되어 있습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -83,7 +83,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 성공 | 블랙리스트 등록 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 등록 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에 등록하였습니다.**")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();
@@ -97,7 +97,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
 
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1141623256558866482> 오류 | 미등록 유저 <a:loading:1141623256558866482>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 미등록 유저 <a:loading:1168266572847128709>")
                             .setDescription("> **" + target.getAsMention() + "님은 블랙리스트에 등록되어 있지 않습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -108,7 +108,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
 
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 성공 | 블랙리스트 해제 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 해제 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에서 해제하였습니다.**")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();

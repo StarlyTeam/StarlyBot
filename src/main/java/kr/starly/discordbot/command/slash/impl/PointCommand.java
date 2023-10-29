@@ -97,7 +97,7 @@ public class PointCommand implements DiscordSlashCommand {
                 DatabaseManager.getUserService().addPoint(target.getIdLong(), pointToAdd);
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 지급 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 지급 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님에게 " + pointToAdd + "포인트를 지급하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
@@ -110,7 +110,7 @@ public class PointCommand implements DiscordSlashCommand {
                 DatabaseManager.getUserService().removePoint(target.getIdLong(), pointToRemove);
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:success:1141625729386287206> 제거 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 제거 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 " + pointToRemove + "포인트를 제거하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
@@ -123,7 +123,7 @@ public class PointCommand implements DiscordSlashCommand {
                 DatabaseManager.getUserService().setPoint(target.getIdLong(), pointToSet);
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("<a:success:1141625729386287206> 설정 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 설정 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 포인트를 " + pointToSet + "로 설정되었습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
@@ -135,7 +135,7 @@ public class PointCommand implements DiscordSlashCommand {
                 DatabaseManager.getUserService().setPoint(target.getIdLong(), 0);
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1141625729386287206> 초기화 완료 | 포인트 <a:success:1141625729386287206>")
+                        .setTitle("<a:success:1168266537262657626> 초기화 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 포인트를 초기화하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
@@ -162,7 +162,7 @@ public class PointCommand implements DiscordSlashCommand {
                             if (processedUsers.get() == topUsers.size()) {
                                 MessageEmbed topEmbed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR)
-                                        .setTitle("<a:loading:1141623256558866482> 순위 | 포인트 <a:loading:1141623256558866482>")
+                                        .setTitle("<a:loading:1168266572847128709> 순위 | 포인트 <a:loading:1168266572847128709>")
                                         .setDescription(rankMessage)
                                         .build();
                                 event.replyEmbeds(topEmbed).queue();
@@ -175,7 +175,7 @@ public class PointCommand implements DiscordSlashCommand {
             default -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:loading:1141623256558866482> 오류 | 포인트 <a:loading:1141623256558866482>")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 포인트 <a:loading:1168266572847128709>")
                         .setDescription("> **알 수 없는 명령입니다.**")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();
@@ -201,7 +201,7 @@ public class PointCommand implements DiscordSlashCommand {
         int currentPoint = DatabaseManager.getUserService().getPoint(targetId);
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<a:loading:1141623256558866482> 확인 | 포인트 <a:loading:1141623256558866482>")
+                .setTitle("<a:loading:1168266572847128709> 확인 | 포인트 <a:loading:1168266572847128709>")
                 .setDescription("> **<@" + targetId + ">님의 현재 포인트: " + currentPoint + "**")
                 .setThumbnail(userAvatarCheck)
                 .build();

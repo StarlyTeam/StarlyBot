@@ -81,8 +81,14 @@ public class DeleteInteraction extends ListenerAdapter {
             if (plugin == null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("플러그인 삭제")
-                        .setDescription("존재하지 않는 플러그인입니다.")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 미존재 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **존재하지 않는 플러그인입니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -111,8 +117,14 @@ public class DeleteInteraction extends ListenerAdapter {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("플러그인 삭제")
-                    .setDescription("플러그인을 삭제했습니다.")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 삭제 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **플러그인을 성공적으로 삭제하였습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
             event.replyEmbeds(embed)
                     .setEphemeral(true)

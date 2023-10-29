@@ -48,7 +48,6 @@ import java.awt.Color;
 public class GenerateEmbedCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
@@ -86,7 +85,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("<a:success:1141625729386287206> 성공 | 임베드생성 완료 <a:success:1141625729386287206>")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 임베드생성 완료 <a:success:1168266537262657626>")
                     .setDescription("**성공적으로 임베드를 생성했습니다.**")
                     .build();
             event.replyEmbeds(embed).queue();
@@ -95,8 +94,8 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:success:1141625729386287206> 오류 | 임베드생성 실패 <a:success:1141625729386287206>")
-                    .setDescription("**임베드를 생성하지 못 했습니다.**")
+                    .setTitle("<a:success:1168266537262657626> 오류 | 임베드생성 실패 <a:success:1168266537262657626>")
+                    .setDescription("**임베드를 생성하지 못했습니다.**")
                     .build();
             event.replyEmbeds(embed).queue();
         }

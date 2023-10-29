@@ -32,7 +32,7 @@ public class CreatePluginManagementCommand implements DiscordCommand {
 
         MessageEmbed verifyEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<a:loading:1141623256558866482> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1141623256558866482>")
+                .setTitle("<a:loading:1168266572847128709> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1168266572847128709>")
                 .setDescription("""
                         > **플러그인 관리 메뉴입니다.**\s
                         > **아래 선택 메뉴에서 원하는 작업을 선택하세요.**\s
