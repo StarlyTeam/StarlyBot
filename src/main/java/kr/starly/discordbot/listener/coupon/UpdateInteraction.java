@@ -433,12 +433,6 @@ public class UpdateInteraction extends ListenerAdapter {
     // BUTTON
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        // 퍼미션 검증
-        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
-            return;
-        }
-
         // Repository 변수 선언
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
 
@@ -451,6 +445,10 @@ public class UpdateInteraction extends ListenerAdapter {
         String componentId = event.getComponentId();
         switch (componentId) {
             case ID_PREFIX + "update-info" -> {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
                 CouponService couponService = DatabaseManager.getCouponService();
                 if (couponService.getData(couponCode) == null) {
                     event.replyEmbeds(
@@ -494,6 +492,11 @@ public class UpdateInteraction extends ListenerAdapter {
             }
 
             case ID_PREFIX + "update-requirements" -> {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
+
                 CouponService couponService = DatabaseManager.getCouponService();
                 if (couponService.getData(couponCode) == null) {
                     event.replyEmbeds(
@@ -520,6 +523,11 @@ public class UpdateInteraction extends ListenerAdapter {
             }
 
             case ID_PREFIX + "add-requirements" -> {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
+
                 List<TextInput> textInputs = new ArrayList<>();
 
                 CouponRequirementType requirementType = requirementTypeMap.get(userId);
@@ -613,6 +621,11 @@ public class UpdateInteraction extends ListenerAdapter {
             }
 
             case ID_PREFIX + "remove-requirements" -> {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
+
                 CouponService couponService = DatabaseManager.getCouponService();
                 Coupon coupon = couponService.getData(couponCode);
 
