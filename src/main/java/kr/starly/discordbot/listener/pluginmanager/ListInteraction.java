@@ -28,16 +28,17 @@ public class ListInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
-            return;
-        }
-
-        List<SelectOption> selectedOptions = event.getSelectedOptions();
 
         String componentId = event.getComponentId();
         if (componentId.equals("plugin-management-action")) {
-            if (selectedOptions.get(0).getValue().equals("plugin-list")) {
+            String selectedOption = event.getValues().get(0);
+
+            if (selectedOption.equals("plugin-list")) {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
+
                 PluginService pluginService = DatabaseManager.getPluginService();
                 List<Plugin> plugins = pluginService.getAllData();
 
@@ -62,4 +63,4 @@ public class ListInteraction extends ListenerAdapter {
             }
         }
     }
-} // TODO : 테스트 & 메시지 디자인   + 디스코드의 글자 수 제한은 어떻게 할 것인가?
+} // TODO : 테스트 & 메시지 디자인

@@ -35,16 +35,17 @@ public class InfoInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
-            return;
-        }
-
-        List<SelectOption> selectedOptions = event.getSelectedOptions();
 
         String componentId = event.getComponentId();
         if (componentId.equals("plugin-management-action")) {
-            if (selectedOptions.get(0).getValue().equals("plugin-info")) {
+            String selectedOption = event.getValues().get(0);
+
+            if (selectedOption.equals("plugin-info")) {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
+
                 TextInput name = TextInput.create("name-en", "플러그인 이름 (영어)", TextInputStyle.SHORT)
                         .setPlaceholder("조회할 플러그인의 영어 이름을 입력해주세요.")
                         .setRequired(true)
@@ -64,6 +65,7 @@ public class InfoInteraction extends ListenerAdapter {
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getModalId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;

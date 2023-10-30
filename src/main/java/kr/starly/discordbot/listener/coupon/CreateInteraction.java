@@ -31,16 +31,13 @@ public class CreateInteraction extends ListenerAdapter {
     // MODAL
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
-        // 퍼미션 검증
+        if (!event.getModalId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
         }
 
-        // Repository 변수 선언
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
-
-        // 변수 선언
         long userId = event.getUser().getIdLong();
         if (!sessionRepository.hasSession(userId)) return;
 

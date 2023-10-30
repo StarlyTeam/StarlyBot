@@ -52,16 +52,13 @@ public class UpdateInteraction extends ListenerAdapter {
     // SELECT MENU
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
-        // 퍼미션 검증
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
         }
 
-        // Repository 변수 선언
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
-
-        // 변수 선언
         long userId = event.getUser().getIdLong();
         if (!sessionRepository.hasSession(userId)) return;
 
@@ -74,8 +71,6 @@ public class UpdateInteraction extends ListenerAdapter {
 
             String requirementTypeStr = event.getSelectedOptions().get(0).getValue();
             CouponRequirementType requirementType = CouponRequirementType.valueOf(requirementTypeStr);
-
-            // 세션 데이터 저장
             requirementTypeMap.put(userId, requirementType);
 
             // 메시지 전송
@@ -96,16 +91,7 @@ public class UpdateInteraction extends ListenerAdapter {
     // MODAL
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
-        // 퍼미션 검증
-        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
-            return;
-        }
-
-        // Repository 변수 선언
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
-
-        // 변수 선언
         long userId = event.getUser().getIdLong();
         if (!sessionRepository.hasSession(userId)) return;
 
@@ -115,6 +101,10 @@ public class UpdateInteraction extends ListenerAdapter {
         String modalId = event.getModalId();
         switch (modalId) {
             case ID_PREFIX + "update" -> {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
                 if (sessionType != CouponSessionType.UPDATE) return;
 
                 String name = event.getValue("name").getAsString();
@@ -182,6 +172,11 @@ public class UpdateInteraction extends ListenerAdapter {
             }
 
             case ID_PREFIX + "add-requirements" -> {
+                if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                    PermissionUtil.sendPermissionError(event.getChannel());
+                    return;
+                }
+
                 if (sessionType != CouponSessionType.UPDATE) return;
 
                 CouponRequirementType requirementType = requirementTypeMap.get(userId);
