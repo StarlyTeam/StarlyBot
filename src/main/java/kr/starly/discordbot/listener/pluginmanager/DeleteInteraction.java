@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
@@ -38,7 +37,6 @@ public class DeleteInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -96,6 +94,8 @@ public class DeleteInteraction extends ListenerAdapter {
                         .setEphemeral(true)
                         .queue();
                 return;
+            } else {
+                event.deferReply(true).queue();
             }
 
             pluginService.deleteDataByENName(ENName);
@@ -128,9 +128,10 @@ public class DeleteInteraction extends ListenerAdapter {
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
-            event.replyEmbeds(embed)
-                    .setEphemeral(true)
+            event.deferEdit()
+                    .complete()
+                    .editOriginalEmbeds(embed)
                     .queue();
         }
     }
-} // TODO : 테스트 & 메시지 디자인
+}

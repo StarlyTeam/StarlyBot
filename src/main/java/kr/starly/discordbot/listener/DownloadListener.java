@@ -35,6 +35,7 @@ import java.util.List;
 public class DownloadListener extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
@@ -58,8 +59,14 @@ public class DownloadListener extends ListenerAdapter {
             if (!canDownload(event.getMember(), plugin)) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("플러그인을 구매하셔야 다운로드 하실 수 있습니다.")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **플러그인 구매 후에 다운로드가 가능합니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.\"", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -76,8 +83,14 @@ public class DownloadListener extends ListenerAdapter {
             if (pluginFile == null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("지원되지 않는 버전입니다.")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **지원되지 않는 마인크래프트 버전입니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.\"", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -95,14 +108,23 @@ public class DownloadListener extends ListenerAdapter {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("제목")
-                    .setDescription("다운로드 링크를 생성했습니다.")
+                    .setTitle("<a:loading:1168266572847128709> 다운로드 | 플러그인 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **다운로드 링크가 생성되었습니다.**
+                            > **아래의 다운로드 버튼을 클릭하여 파일을 받으세요.**
+                            
+                            ─────────────────────────────────────────────────"""
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("라이선스 조항을 잘 지켜주시면 감사하겠습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
             Button button = Button.link(url, "다운로드");
             event.replyEmbeds(embed)
                     .addActionRow(button)
                     .setEphemeral(true)
                     .queue();
+
+            event.editSelectMenu(event.getSelectMenu()).queue();
         }
     }
 
@@ -117,9 +139,14 @@ public class DownloadListener extends ListenerAdapter {
             if (user == null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("인증을 마치지 않았습니다.")
-                        .setDescription("상품을 구매하기 위해서는 인증을 하셔야 합니다.\n" +
-                                "인증을 마치신 후 다시 시도해주세요.")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **상품 구매를 위해 인증 절차가 필요합니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.\"", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -133,8 +160,14 @@ public class DownloadListener extends ListenerAdapter {
             if (blacklistService.getDataByUserId(event.getUser().getIdLong()) != null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("블랙리스트에 등록되어 있으셔서 다운로드 불가합니다. ㅋㅎㅋㅎ")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **블랙리스트에 등록된 상태로 다운로드를 진행할 수 없습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.\"", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -151,8 +184,14 @@ public class DownloadListener extends ListenerAdapter {
             if (!canDownload(event.getMember(), plugin)) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("플러그인을 구매하셔야 다운로드 하실 수 있습니다.")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **플러그인을 구매하신 후에 다운로드가 가능합니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.\"", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -170,8 +209,15 @@ public class DownloadListener extends ListenerAdapter {
             });
 
             MessageEmbed embed = new EmbedBuilder()
-                    .setTitle("제목")
-                    .setDescription("버전을 선택해주세요")
+                    .setColor(EMBED_COLOR)
+                    .setTitle("<a:loading:1168266572847128709> 다운로드 | 플러그인 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **다운로드할 마인크래프트 버전을 선택해주세요.**
+                            
+                            ─────────────────────────────────────────────────"""
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("라이선스 조항을 잘 지켜주시면 감사하겠습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
             event.replyEmbeds(embed)
                     .addActionRow(selectOptionBuilder.build())
@@ -206,4 +252,4 @@ public class DownloadListener extends ListenerAdapter {
                     && !PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR);
         } else return true;
     }
-} // TODO : 메시지 디자인
+}

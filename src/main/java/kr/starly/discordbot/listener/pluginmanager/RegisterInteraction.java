@@ -280,7 +280,6 @@ public class RegisterInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -289,36 +288,37 @@ public class RegisterInteraction extends ListenerAdapter {
         List<SelectOption> selectedOptions = event.getSelectedOptions();
 
         String componentId = event.getComponentId();
-        switch (componentId) {
-            case "plugin-management-action" -> {
-                if (selectedOptions.get(0).getValue().equals("plugin-register")) {
-                    MessageEmbed registerEmbed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR)
-                            .setTitle("<a:loading:1168266572847128709> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1168266572847128709>")
-                            .setDescription("""
+        if (componentId.equals("plugin-management-action")) {
+            if (selectedOptions.get(0).getValue().equals("plugin-register")) {
+                MessageEmbed registerEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("<a:loading:1168266572847128709> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1168266572847128709>")
+                        .setDescription("""
                                     > **플러그인의 유형을 선택해 주세요.**\s
                                     > **무료 또는 유료 중 원하는 타입을 선택하세요.**\s
 
                                     ─────────────────────────────────────────────────"""
-                            )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .build();
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .build();
 
-                    StringSelectMenu registerSelectMenu = StringSelectMenu.create(ID_PREFIX + "type")
-                            .setPlaceholder("플러그인의 유형을 선택해 주세요.")
-                            .addOption("무료", "free", "무료로 사용할 수 있는 플러그인입니다.", Emoji.fromUnicode("🆓"))
-                            .addOption("유료", "premium", "구매가 필요한 유료 플러그인입니다.", Emoji.fromUnicode("💰"))
-                            .build();
-                    event.replyEmbeds(registerEmbed)
-                            .addActionRow(registerSelectMenu)
-                            .addActionRow(CANCEL_BUTTON)
-                            .queue();
+                StringSelectMenu registerSelectMenu = StringSelectMenu.create(ID_PREFIX + "type")
+                        .setPlaceholder("플러그인의 유형을 선택해 주세요.")
+                        .addOption("무료", "free", "무료로 사용할 수 있는 플러그인입니다.", Emoji.fromUnicode("🆓"))
+                        .addOption("유료", "premium", "구매가 필요한 유료 플러그인입니다.", Emoji.fromUnicode("💰"))
+                        .build();
+                event.replyEmbeds(registerEmbed)
+                        .addActionRow(registerSelectMenu)
+                        .addActionRow(CANCEL_BUTTON)
+                        .queue();
 
-                    event.editSelectMenu(event.getSelectMenu()).queue();
-                }
+                event.editSelectMenu(event.getSelectMenu()).queue();
             }
+        }
 
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
+        switch (componentId) {
             case ID_PREFIX + "type" -> {
                 boolean isPremium = selectedOptions.get(0).getValue().equals("premium");
                 TextInput ENName = TextInput.create("name-en", "플러그인 이름 (영문)", TextInputStyle.SHORT)

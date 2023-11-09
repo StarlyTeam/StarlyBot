@@ -108,9 +108,16 @@ public class AuthHandler implements HttpHandler {
                             LOGGER.warning("해당 유저 (" + userId + ")에게 DM을 전송할 수 없습니다: " + throwable.getMessage());
 
                             AuditLogger.warning(new EmbedBuilder()
-                                    .setTitle("인증을 마쳤으나, 해당 유저에게 DM을 전송하지 못했습니다.")
-                                    .setDescription("유저: " + member.getAsMention() + " (" + member.getEffectiveName() + ")\n"
-                                            + "IP 주소: " + userIp)
+                                    .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
+                                    .setDescription("""
+                                            > **인증은 완료되었으나, DM을 전송하지 못했습니다.**
+                                                                        
+                                            > **유저: %s**
+                                            > **아이피: %s**
+                                                                        
+                                            ─────────────────────────────────────────────────"""
+                                            .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
+                                    )
                             );
                         }
                 );
@@ -122,14 +129,20 @@ public class AuthHandler implements HttpHandler {
             userService.saveData(userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1)));
             LOGGER.info("유저 인증을 하였으므로 데이터를 추가했습니다: " + userId);
 
-            AuditLogger.info(new EmbedBuilder()
-                    .setTitle("유저가 인증을 마쳤습니다.")
-                    .setDescription("유저: " + member.getAsMention() + " (" + member.getEffectiveName() + ")\n"
-                            + "IP 주소: " + userIp)
-            );
         } else {
             LOGGER.warning("이미 데이터베이스에 존재하는 유저입니다: " + userId);
         }
+
+        AuditLogger.info(new EmbedBuilder()
+                .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
+                .setDescription("""
+                        > **유저: %s**
+                        > **아이피: %s**
+                                                    
+                        ─────────────────────────────────────────────────"""
+                        .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
+                )
+        );
 
         String response = "성공적으로 인증을 마쳤습니다.";
         exchange.sendResponseHeaders(200, response.length());

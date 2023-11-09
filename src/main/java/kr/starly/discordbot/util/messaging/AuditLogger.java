@@ -26,7 +26,7 @@ public class AuditLogger {
     public static void info(EmbedBuilder embedBuilder) {
         MessageEmbed embed = new EmbedBuilder(embedBuilder)
                 .setFooter("일반 | " + DATE_FORMAT.format(new Date()))
-                .setColor(EMBED_COLOR_SUCCESS)
+                .setColor(EMBED_COLOR)
                 .build();
 
         sendToAuditLogChannel(embed);

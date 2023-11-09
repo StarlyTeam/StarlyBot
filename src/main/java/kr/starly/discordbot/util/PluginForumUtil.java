@@ -3,6 +3,7 @@ package kr.starly.discordbot.util;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Plugin;
+import kr.starly.discordbot.enums.MCVersion;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.PluginService;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -17,8 +18,12 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PluginForumUtil {
 
@@ -64,11 +69,17 @@ public class PluginForumUtil {
                     MessageCreateData.fromEmbeds(
                             new EmbedBuilder()
                                     .setColor(EMBED_COLOR)
-                                    .setTitle("제목")
-                                    .setDescription("내용")
+                                    .setTitle("%s %s(%s) %s".formatted(plugin.getEmoji(), plugin.getKRName(), plugin.getENName(), plugin.getEmoji()))
+                                    .setThumbnail(plugin.getIconUrl())
+                                    .setImage(plugin.getGifUrl())
+                                    .addField("지원 버전", plugin.getSupportedVersionsRange(), true)
+                                    .addField("의존성", String.join(", ", plugin.getDependency()), true)
+                                    .addField("가격", NumberFormat.getCurrencyInstance(Locale.KOREA).format(plugin.getPrice()), true)
+                                    .addField("담당자",  plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")), true)
                                     .build()
                     )
             );
+            // TODO 위에꺼 해야함
 
             FileUpload iconFile = FileUpload.fromData(new URL(plugin.getIconUrl()).openStream(), "icon.png");
             messageCreateBuilder.addFiles(iconFile);

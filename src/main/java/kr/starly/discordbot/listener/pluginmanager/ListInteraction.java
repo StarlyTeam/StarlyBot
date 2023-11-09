@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
@@ -22,7 +21,7 @@ public class ListInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String PLUGIN_MANAGEMENT_CHANNEL_ID = configProvider.getString("PLUGIN_MANAGEMENT_CHANNEL_ID");
-    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
 
     // SELECT MENU
     @Override
@@ -45,15 +44,22 @@ public class ListInteraction extends ListenerAdapter {
                 StringBuilder description = new StringBuilder();
                 for (Plugin plugin : plugins) {
                     description
+                            .append("> **")
                             .append(plugin.getENName())
                             .append(" (" + plugin.getKRName() + ")")
-                            .append("\n");
+                            .append("**\n");
                 }
 
                 MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("플러그인 목록")
-                        .setDescription(description.toString())
+                        .setColor(EMBED_COLOR)
+                        .setTitle("<a:loading:1168266572847128709> 목록 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            %s
+                            ─────────────────────────────────────────────────"""
+                                .formatted(description.toString())
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)

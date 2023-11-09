@@ -127,7 +127,6 @@ public class EditInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
-        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -136,23 +135,24 @@ public class EditInteraction extends ListenerAdapter {
         String selectedOption = event.getValues().get(0);
 
         String componentId = event.getComponentId();
-        switch (componentId) {
-            case "plugin-management-action" -> {
-                if (selectedOption.equals("plugin-edit")) {
-                    TextInput name = TextInput.create("name-en", "플러그인 이름 (영어)", TextInputStyle.SHORT)
-                            .setPlaceholder("수정할 플러그인의 영어 이름을 입력해주세요.")
-                            .setRequired(true)
-                            .build();
+        if (componentId.equals("plugin-management-action")) {
+            if (selectedOption.equals("plugin-edit")) {
+                TextInput name = TextInput.create("name-en", "플러그인 이름 (영어)", TextInputStyle.SHORT)
+                        .setPlaceholder("수정할 플러그인의 영어 이름을 입력해주세요.")
+                        .setRequired(true)
+                        .build();
 
-                    Modal modal = Modal.create(ID_PREFIX + "modal", "플러그인 수정")
-                            .addActionRow(name)
-                            .build();
-                    event.replyModal(modal).queue();
+                Modal modal = Modal.create(ID_PREFIX + "modal", "플러그인 수정")
+                        .addActionRow(name)
+                        .build();
+                event.replyModal(modal).queue();
 
-                    event.editSelectMenu(event.getSelectMenu()).queue();
-                }
+                event.editSelectMenu(event.getSelectMenu()).queue();
             }
+        }
 
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
+        switch (componentId) {
             case ID_PREFIX + "file" -> {
                 switch (selectedOption) {
                     case "list" -> {
