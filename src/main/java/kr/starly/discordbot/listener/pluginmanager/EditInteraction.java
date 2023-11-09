@@ -127,17 +127,18 @@ public class EditInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
         }
 
-        List<SelectOption> selectedOptions = event.getSelectedOptions();
+        String selectedOption = event.getValues().get(0);
 
         String componentId = event.getComponentId();
         switch (componentId) {
             case "plugin-management-action" -> {
-                if (selectedOptions.get(0).getValue().equals("plugin-edit")) {
+                if (selectedOption.equals("plugin-edit")) {
                     TextInput name = TextInput.create("name-en", "플러그인 이름 (영어)", TextInputStyle.SHORT)
                             .setPlaceholder("수정할 플러그인의 영어 이름을 입력해주세요.")
                             .setRequired(true)
@@ -153,8 +154,7 @@ public class EditInteraction extends ListenerAdapter {
             }
 
             case ID_PREFIX + "file" -> {
-                SelectOption selectedOption = selectedOptions.get(0);
-                switch (selectedOption.getValue()) {
+                switch (selectedOption) {
                     case "list" -> {
                         long userId = event.getUser().getIdLong();
                         if (!sessionMap.containsKey(userId)) {
@@ -369,6 +369,7 @@ public class EditInteraction extends ListenerAdapter {
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getModalId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -692,6 +693,7 @@ public class EditInteraction extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;

@@ -73,8 +73,7 @@ public class RegisterInteraction extends ListenerAdapter {
         if (!(sessionDataMap.containsKey(userId) && sessionStatusMap.containsKey(userId))) {
             try {
                 event.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
             return;
         }
 
@@ -83,8 +82,6 @@ public class RegisterInteraction extends ListenerAdapter {
 
         switch (sessionStatusMap.get(userId)) {
             case SELECT_DEPENDENCY -> {
-                // 종속성 설정
-
                 List<String> dependency = Stream.of(messageContent.split(",")).map(String::trim).toList();
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateDependency(dependency);
@@ -110,8 +107,6 @@ public class RegisterInteraction extends ListenerAdapter {
             }
 
             case SUBMIT_EMOJI -> {
-                // 이모지 설정
-
                 Emoji emoji;
                 try {
                     emoji = Emoji.fromFormatted(messageContent.replace("`", ""));
@@ -161,8 +156,6 @@ public class RegisterInteraction extends ListenerAdapter {
             }
 
             case UPLOAD_ICON_IMAGE -> {
-                // 아이콘 이미지 업로드
-
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateIconUrl(messageContent);
 
@@ -187,8 +180,6 @@ public class RegisterInteraction extends ListenerAdapter {
             }
 
             case UPLOAD_GIF_IMAGE -> {
-                // GIF 이미지 업로드
-
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateGifUrl(messageContent);
 
@@ -214,8 +205,6 @@ public class RegisterInteraction extends ListenerAdapter {
             }
 
             case UPLOAD_PLUGIN_FILE -> {
-                // 플러그인 파일 업로드
-
                 if (attachments.isEmpty()) {
                     event.getMessage().reply("플러그인 파일을 첨부해 주세요.").queue();
                     return;
@@ -291,6 +280,7 @@ public class RegisterInteraction extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -395,6 +385,7 @@ public class RegisterInteraction extends ListenerAdapter {
     @Override
     public void onEntitySelectInteraction(@NotNull EntitySelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -495,6 +486,7 @@ public class RegisterInteraction extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;
@@ -526,6 +518,7 @@ public class RegisterInteraction extends ListenerAdapter {
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
+        if (!event.getModalId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             PermissionUtil.sendPermissionError(event.getChannel());
             return;

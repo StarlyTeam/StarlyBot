@@ -49,7 +49,6 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         User user = getUserFromTextChannel(textChannel.getMembers());
 
         List<String> data = ticketModalDataRepository.retrieveModalData(channelId);
-
         if (data.isEmpty()) {
             user.openPrivateChannel().queue(
                     privateChannel -> {
@@ -119,31 +118,8 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                                 "본문: " + description);
 
             }
+
             case PLUGIN_ERROR -> {
-                MessageEmbed descriptionEmbed;
-
-                if (data.size() == 3) {
-                    String version = data.get(0);
-                    String bukkit = data.get(1);
-                    String description = data.get(2);
-
-                    descriptionEmbed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR)
-                            .setTitle("고객센터 알림")
-                            .addField("버전", "`" + version + "`", false)
-                            .addField("버킷", "`" + bukkit + "`", false)
-                            .addField("설명", "```" + description + "```", false)
-                            .build();
-
-                    ticketModalFileRepository.save(ticket,
-                            "version: " + version + "\n" +
-                                    "본문: " + description);
-
-                    textChannel.sendMessageEmbeds(descriptionEmbed).addComponents(ActionRow.of(button)).queue();
-                    ticketModalDataRepository.removeModalData(channelId);
-                    return;
-                }
-
                 String version = data.get(0);
                 String bukkit = data.get(1);
                 String description = data.get(2);
@@ -156,7 +132,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
                 File file = ticketModalFileRepository.getFile(ticket);
 
-                descriptionEmbed = new EmbedBuilder()
+                MessageEmbed descriptionEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("고객센터 알림")
                         .addField("버전", "`" + version + "`", true)
@@ -174,24 +150,24 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 return;
             }
 
-
-            case ERROR -> {
-                messageEmbed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
-                        .addField("버전", "`" + data.get(0) + "`", false)
-                        .addField("버킷", "`" + data.get(1) + "`", false)
-                        .addField("설명", "```" + data.get(2) + "```", false)
-                        .build();
-            }
-
-            case PUNISHMENT, PAYMENT -> {
+            case PUNISHMENT -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("고객센터 알림")
                         .addField("제목", "```" + data.get(0) + "```", true)
-                        .addField("사유", "```" + data.get(1) + "```", false)
-                        .addField("설명", "```" + data.get(2) + "```", false)
+                        .addField("설명", "```" + data.get(1) + "```", false)
+                        .build();
+
+                ticketModalDataRepository.removeModalData(channelId);
+            }
+
+            case PAYMENT -> {
+                messageEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("고객센터 알림")
+                        .addField("제목", "```" + data.get(0) + "```", true)
+                        .addField("설명", "```" + data.get(1) + "```", false)
+                        .addField("종류", "```" + data.get(2) + "```", false)
                         .build();
 
                 ticketModalDataRepository.removeModalData(channelId);
@@ -205,6 +181,17 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                         .addField("사유", "`" + data.get(2) + "`", true)
                         .addField("내용", "```" + data.get(1) + "```", false)
                         .build();
+            }
+
+            case OTHER -> {
+                messageEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("고객센터 알림")
+                        .addField("제목", "```" + data.get(0) + "```", true)
+                        .addField("설명", "```" + data.get(1) + "```", false)
+                        .build();
+
+                ticketModalDataRepository.removeModalData(channelId);
             }
         }
 

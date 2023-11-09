@@ -27,10 +27,13 @@ public class DeleteInteraction extends ListenerAdapter {
     // BUTTON
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        // Repository 변수 선언
-        CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
+        if (!event.getComponentId().startsWith(ID_PREFIX)) return;
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+            return;
+        }
 
-        // 변수 선언
+        CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
         long userId = event.getUser().getIdLong();
         if (!sessionRepository.hasSession(userId)) return;
 
@@ -39,11 +42,6 @@ public class DeleteInteraction extends ListenerAdapter {
 
         String componentId = event.getComponentId();
         if (componentId.equals((ID_PREFIX + "delete-confirm"))) {
-            if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                PermissionUtil.sendPermissionError(event.getChannel());
-                return;
-            }
-
             if (sessionType != CouponSessionType.DELETE) return;
 
             CouponService couponService = DatabaseManager.getCouponService();

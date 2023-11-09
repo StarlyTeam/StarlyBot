@@ -45,21 +45,19 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
 
                 String message = textChannel != null ? "관리자가 수동으로 티켓을 닫았습니다. 관리자에게 문의하여 주세요." : "이미 티켓이 열려 있습니다!" + textChannel.getAsMention();
                 event.reply(message).setEphemeral(true).queue();
-                return;
+            } else {
+                setTicketStatus(discordId, ticketType);
+
+                MessageEmbed messageEmbed = generateEmbedForType(ticketType);
+                List<Button> button = generateButtonsForType(ticketType);
+
+                event.replyEmbeds(messageEmbed).addActionRow(button).setEphemeral(true).queue();
             }
 
-            setTicketStatus(discordId, ticketType);
-
-            MessageEmbed messageEmbed = generateEmbedForType(ticketType);
-            List<Button> button = generateButtonsForType(ticketType);
-
-            event.replyEmbeds(messageEmbed).addActionRow(button).setEphemeral(true).queue();
             event.editSelectMenu(event.getSelectMenu()).queue();
-
-            return;
         }
 
-        if (event.getComponentId().contains("ticket-rate-select-menu-")) {
+        else if (event.getComponentId().contains("ticket-rate-select-menu-")) {
             long channelId = Long.valueOf(event.getComponentId().replace("ticket-rate-select-menu-", ""));
             byte value = Byte.valueOf(event.getValues().get(0).replace("ticket-rate-", ""));
 
@@ -98,34 +96,34 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
 
         switch (ticketType) {
             case GENERAL -> {
-                Button normalButton = Button.primary("button-normal-ticket", "일반 문의하기");
+                Button normalButton = Button.primary("button-general", "일반 문의하기");
                 buttons.add(normalButton);
             }
             case QUESTION -> {
-                Button questionButton = Button.primary("button-question-ticket", "질문하기");
+                Button questionButton = Button.primary("button-question", "질문하기");
                 buttons.add(questionButton);
             }
             case CONSULTING -> {
-                Button consultingButton = Button.primary("button-consulting-ticket", "상담하기");
+                Button consultingButton = Button.primary("button-consulting", "상담하기");
                 buttons.add(consultingButton);
             }
             case PAYMENT -> {
-                Button purchaseInquiryButton = Button.primary("button-purchase-inquiry-ticket", "결제 문의하기");
+                Button purchaseInquiryButton = Button.primary("button-payment", "결제 문의하기");
                 buttons.add(purchaseInquiryButton);
             }
             case PUNISHMENT -> {
-                Button restrictionButton = Button.primary("button-use-restriction-ticket", "문의하기");
+                Button restrictionButton = Button.primary("button-punishment", "문의하기");
                 buttons.add(restrictionButton);
             }
             case ERROR -> {
-                Button bukkitBugButton = Button.primary("button-bug-report-bukkit-ticket", "플러그인 버그");
-                Button systemBugButton = Button.primary("button-bug-report-etc-ticket", "기타 버그");
+                Button bukkitBugButton = Button.primary("button-plugin-error", "플러그인 버그");
+                Button systemBugButton = Button.primary("button-other-error", "기타 버그");
 
                 buttons.add(bukkitBugButton);
                 buttons.add(systemBugButton);
             }
             case OTHER -> {
-                Button restrictionButton = Button.primary("button-etc-ticket", "기타 문의하기");
+                Button restrictionButton = Button.primary("button-other", "기타 문의하기");
                 buttons.add(restrictionButton);
             }
         }

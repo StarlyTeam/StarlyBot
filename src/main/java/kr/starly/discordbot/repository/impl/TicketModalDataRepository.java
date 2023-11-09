@@ -24,13 +24,7 @@ public class TicketModalDataRepository {
     }
 
     public List<String> retrieveModalData(Long channelId) {
-        List<String> data = new ArrayList<>();
-
-        if (modalListHashMap.containsKey(channelId)) {
-            data.addAll(modalListHashMap.get(channelId));
-        }
-
-        return data;
+        return new ArrayList<>(modalListHashMap.get(channelId));
     }
 
     public boolean removeModalData(Long channelId) {
