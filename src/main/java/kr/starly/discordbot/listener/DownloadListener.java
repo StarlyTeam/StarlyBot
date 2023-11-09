@@ -29,7 +29,6 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.Comparator;
 import java.util.List;
 
 @BotEvent
@@ -162,13 +161,13 @@ public class DownloadListener extends ListenerAdapter {
             }
 
             // 플러그인 파일 검색
-            PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
-            List<PluginFile> pluginFiles = pluginFileService.getData(ENName, plugin.getVersion());
-            pluginFiles.sort(Comparator.comparing(PluginFile::getMcVersion));
+            List<MCVersion> availableVersions = plugin.getAvailableVersions();
 
             // 메시지 전송
             StringSelectMenu.Builder selectOptionBuilder = StringSelectMenu.create(ID_PREFIX + "version-" + plugin.getENName());
-            pluginFiles.forEach(pluginFile -> selectOptionBuilder.addOptions(getSelectOption(pluginFile.getMcVersion())));
+            availableVersions.forEach(availableVersion -> {
+                selectOptionBuilder.addOptions(getSelectOption(availableVersion));
+            });
 
             MessageEmbed embed = new EmbedBuilder()
                     .setTitle("제목")

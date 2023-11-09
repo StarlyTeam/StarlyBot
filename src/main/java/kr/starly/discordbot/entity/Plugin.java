@@ -1,9 +1,13 @@
 package kr.starly.discordbot.entity;
 
+import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.enums.MCVersion;
+import kr.starly.discordbot.service.PluginFileService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -88,7 +92,23 @@ public class Plugin {
         public void addDependency(String dependency) {
             this.dependency.add(dependency);
         }
-        
+
+        public List<PluginFile> getFiles() {
+            PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
+            return pluginFileService.getData(ENName);
+        }
+
+        public List<MCVersion> getAvailableVersions() {
+            PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
+            List<PluginFile> pluginFiles = pluginFileService.getData(ENName, version);
+
+            pluginFiles.sort(Comparator.comparing(PluginFile::getMcVersion));
+            return pluginFiles.stream()
+                    .map(PluginFile::getMcVersion)
+                    .toList();
+        }
+
+
         public Document serialize() {
             Document document = new Document();
             document.put("ENName", ENName);
