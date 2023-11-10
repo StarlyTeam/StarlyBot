@@ -91,12 +91,16 @@ public class RegisterInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 이모지 | 플러그인 등록 <a:success:1168266537262657626>")
-                        .setDescription(
-                                "> **[ 등록 정보 ]**\n" +
-                                "> **의존성 플러그인: " + String.join(", ", dependency) + "**\n\n" +
-                                "> **아래에 이모지를 입력해주세요. (백틱 사이에 넣어주세요)**\n" +
-                                "> **예) `\uD83C\uDF20`**\n\n" +
-                                "─────────────────────────────────────────────────"
+                        .setDescription("""
+                                > **[ 등록 정보 ]**
+                                > **의존성 플러그인: %s**
+                                                                
+                                > **아래에 이모지를 입력해주세요. (백틱 사이에 넣어주세요)**
+                                > **예) `\uD83C\uDF20`**
+                                
+                                ─────────────────────────────────────────────────
+                                """
+                                .formatted(String.join(", ", dependency))
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -115,12 +119,12 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **올바른 이모지를 입력해 주세요.**
+                                    
                                     ─────────────────────────────────────────────────
                                     """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-
                     event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
                     return;
                 }
@@ -132,6 +136,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setDescription("""
                                     > **유니코드 이모지로만 설정하실 수 있습니다.**
                                     > **다시 시도해 주세요.**
+                                    
                                     ─────────────────────────────────────────────────
                                     """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -156,16 +161,18 @@ public class RegisterInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 담당자 | 플러그인 등록 <a:success:1168266537262657626>")
-                        .setDescription(
-                                "> **[ 등록 정보 ]**\n" +
-                                "> **이모지: `\\" + ((UnicodeEmoji) emoji).getAsCodepoints() + "`**\n\n" +
-                                "> **아래에 플러그인 담당자를 선택해 주세요.**\n\n" +
-                                "─────────────────────────────────────────────────"
+                        .setDescription("""
+                                > **[ 등록 정보 ]**
+                                > **이모지: %s**
+                                > **아래에 플러그인 담당자를 선택해 주세요.**
+                                
+                                ─────────────────────────────────────────────────
+                                """
+                                .formatted("`\\" + ((UnicodeEmoji) emoji).getAsCodepoints() + "`")
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-
                 event.getMessage().replyEmbeds(messageEmbed)
                         .addActionRow(managerSelectMenu)
                         .addActionRow(CANCEL_BUTTON)
@@ -182,18 +189,17 @@ public class RegisterInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> gif | 플러그인 등록 <a:success:1168266537262657626>")
-                        .setDescription(
-                                "> **아이콘 이미지 설정을 완료하였습니다.**\n\n" +
-                                "> **아래에 .gif 이미지 URL을 입력해 주세요. (Cloudflare Images)**\n\n" +
-                                "─────────────────────────────────────────────────"
+                        .setDescription("""
+                                > **아이콘 이미지 설정을 완료하였습니다.**
+                                > **아래에 .gif 이미지 URL을 입력해 주세요. (Cloudflare Images)**
+                                
+                                ─────────────────────────────────────────────────
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-
-                event.getMessage().replyEmbeds(messageEmbed)
-                        .addActionRow(CANCEL_BUTTON)
-                        .queue();
+                event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
             }
 
             case UPLOAD_GIF_IMAGE -> {
@@ -206,19 +212,17 @@ public class RegisterInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 파일 | 플러그인 등록 <a:success:1168266537262657626>")
-                        .setDescription(
-                                "> **.gif 이미지를 설정을 완료하였습니다.**\n\n" +
-                                "> **아래에 플러그인 파일을 첨부해 주세요.**\n" +
-                                "> **예) `v1_12-1.0.jar`, `v1_17-1.1.zip`**\n\n" +
-                                "─────────────────────────────────────────────────"
-                        )
+                        .setDescription("""
+                                > **.gif 이미지를 설정을 완료하였습니다.**
+                                > **아래에 플러그인 파일을 첨부해 주세요.**
+                                > **예) `v1_12-1.0.jar`, `v1_17-1.1.zip`**
+                                
+                                ─────────────────────────────────────────────────
+                                """)
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-
-                event.getMessage().replyEmbeds(messageEmbed)
-                        .addActionRow(CANCEL_BUTTON)
-                        .queue();
+                event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
             }
 
             case UPLOAD_PLUGIN_FILE -> {
@@ -244,31 +248,52 @@ public class RegisterInteraction extends ListenerAdapter {
                 int failCount = errors.size();
 
                 if (successCount == 0) {
-                    event.getMessage().reply("플러그인 파일을 모두 업로드하지 못했습니다. 다시 시도해 주세요.\n\n" + String.join("\n", errors))
-                            .addActionRow(CANCEL_BUTTON)
-                            .queue();
-                    return;
-                } else if (failCount == 0) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("<a:success:1168266537262657626> 파일 | 플러그인 등록 <a:success:1168266537262657626>")
-                            .setDescription(
-                                    "> **플러그인 파일을 모두 업로드했습니다.**\n\n" +
-                                    "─────────────────────────────────────────────────"
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **플러그인 파일을 모두 업로드하지 못했습니다. (다시 시도해 주세요.)**
+                                    > **%s**
+                                    
+                                    ─────────────────────────────────────────────────
+                                    """
+                                    .formatted(String.join("\n", errors))
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
+                    event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                    return;
+                } else if (failCount == 0) {
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_SUCCESS)
+                            .setTitle("<a:success:1168266537262657626> 파일 | 플러그인 등록 <a:success:1168266537262657626>")
+                            .setDescription("""
+                                    > **플러그인 파일을 모두 업로드했습니다.**
+                                    
+                                    ─────────────────────────────────────────────────
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .build();
                     event.getMessage().replyEmbeds(messageEmbed).queue();
                 } else {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 업로드 | 플러그인 등록 <a:success:1168266537262657626>")
-                            .setDescription(
-                                    "> **" + failCount + "개의 파일을 제외한 " + successCount + "개의 파일을 업로드했습니다.**\n\n" +
-                                    String.join("\n", errors) +
+                            .setDescription("""
+                                    > **%d개의 파일을 제외한 %d개의 파일을 업로드하였습니다.**
+                                    > **%s**
+                                    
                                     "─────────────────────────────────────────────────"
+                                    """
+                                    .formatted(
+                                            failCount,
+                                            successCount,
+                                            String.join("\n", errors)
+                                    )
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

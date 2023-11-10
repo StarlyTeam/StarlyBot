@@ -75,7 +75,8 @@ public class RankRepository {
                     DiscountType.PERCENTAGE, 10,
                     0L
             );
-        } if (couponService.getData(RANK4_COUPON_ID) == null) {
+        }
+        if (couponService.getData(RANK4_COUPON_ID) == null) {
             couponService.saveData(
                     RANK4_COUPON_ID,
                     "3000원 할인 쿠폰 [은하 랭크]",
@@ -88,7 +89,8 @@ public class RankRepository {
                     DiscountType.FIXED, 3000,
                     0L
             );
-        } if (couponService.getData(RANK5_COUPON_ID) == null) {
+        }
+        if (couponService.getData(RANK5_COUPON_ID) == null) {
             couponService.saveData(
                     RANK5_COUPON_ID,
                     "5000원 할인 쿠폰 [우주 랭크]",
@@ -133,5 +135,5 @@ public class RankRepository {
         rank5.addPerk(new CouponPerk(List.of(rank5Coupon), false));
         rank5.addPerk(new PreReleasePerk());
         rankRepository.addRank(rank5);
-    } // TODO : 코드 청소 (디자인 후)
-} // TODO : 메시지 디자인
+    }
+}

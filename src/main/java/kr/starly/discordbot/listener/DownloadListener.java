@@ -191,7 +191,7 @@ public class DownloadListener extends ListenerAdapter {
                             ─────────────────────────────────────────────────"""
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.\"", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
