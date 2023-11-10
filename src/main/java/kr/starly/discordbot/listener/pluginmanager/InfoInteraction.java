@@ -125,4 +125,4 @@ public class InfoInteraction extends ListenerAdapter {
                     .queue();
         }
     }
-} // TODO : 테스트 & 메시지 디자인
+}

@@ -72,14 +72,14 @@ public class PluginForumUtil {
                                     .setTitle("%s %s(%s) %s".formatted(plugin.getEmoji(), plugin.getKRName(), plugin.getENName(), plugin.getEmoji()))
                                     .setThumbnail(plugin.getIconUrl())
                                     .setImage(plugin.getGifUrl())
-                                    .addField("지원 버전", plugin.getSupportedVersionsRange(), true)
-                                    .addField("의존성", String.join(", ", plugin.getDependency()), true)
-                                    .addField("가격", NumberFormat.getCurrencyInstance(Locale.KOREA).format(plugin.getPrice()), true)
-                                    .addField("담당자",  plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")), true)
+                                    .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionsRange() + "**", true)
+                                    .addField("> **의존성**", "> **" + String.join(", ", plugin.getDependency() + "**"), true)
+                                    .addField("> **가격**", "> **" + NumberFormat.getCurrencyInstance(Locale.KOREA).format(plugin.getPrice() + "**"), true)
+                                    .addField("> **담당자**",  "> **" + plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")) + "**", true)
                                     .build()
                     )
+                    // TODO 테스트해야하는 코드
             );
-            // TODO 위에꺼 해야함
 
             FileUpload iconFile = FileUpload.fromData(new URL(plugin.getIconUrl()).openStream(), "icon.png");
             messageCreateBuilder.addFiles(iconFile);

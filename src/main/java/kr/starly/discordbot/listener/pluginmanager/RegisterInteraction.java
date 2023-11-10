@@ -36,10 +36,8 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,6 +49,7 @@ public class RegisterInteraction extends ListenerAdapter {
     private final String PLUGIN_MANAGEMENT_CHANNEL_ID = configProvider.getString("PLUGIN_MANAGEMENT_CHANNEL_ID");
     private final String RELEASE_NOTICE_CHANNEL_ID = configProvider.getString("RELEASE_NOTICE_CHANNEL_ID");
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     private final Map<Long, Plugin> sessionDataMap = new HashMap<>();
@@ -111,16 +110,34 @@ public class RegisterInteraction extends ListenerAdapter {
                 try {
                     emoji = Emoji.fromFormatted(messageContent.replace("`", ""));
                 } catch (IllegalArgumentException ignored) {
-                    event.getMessage().reply("올바른 이모지를 입력해 주세요.")
-                            .addActionRow(CANCEL_BUTTON)
-                            .queue();
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **올바른 이모지를 입력해 주세요.**
+                                    ─────────────────────────────────────────────────
+                                    """)
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .build();
+
+                    event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
                     return;
                 }
 
                 if (emoji.getType() != Emoji.Type.UNICODE) {
-                    event.getMessage().reply("유니코드 이모지로만 설정하실 수 있습니다. 다시 시도해 주세요.")
-                            .addActionRow(CANCEL_BUTTON)
-                            .queue();
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **유니코드 이모지로만 설정하실 수 있습니다.**
+                                    > **다시 시도해 주세요.**
+                                    ─────────────────────────────────────────────────
+                                    """)
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .build();
+                    event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
                     return;
                 }
 
@@ -206,7 +223,17 @@ public class RegisterInteraction extends ListenerAdapter {
 
             case UPLOAD_PLUGIN_FILE -> {
                 if (attachments.isEmpty()) {
-                    event.getMessage().reply("플러그인 파일을 첨부해 주세요.").queue();
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **플러그인 파일을 첨부해 주세요.**
+                                    ─────────────────────────────────────────────────
+                                    """)
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .build();
+                    event.getMessage().replyEmbeds(messageEmbed).queue();
                     return;
                 }
 
@@ -528,15 +555,25 @@ public class RegisterInteraction extends ListenerAdapter {
         if (modalId.equals(ID_PREFIX + "modal-free") || modalId.equals(ID_PREFIX + "modal-premium")) {
             String ENName = event.getValue("name-en").getAsString();
             if (!ENName.matches("[a-zA-Z0-9-_]+$")) {
-                event.reply("영문 이름은 영문자와 숫자, 특수문자(-, _)만 입력할 수 있습니다.\n플러그인이 등록을 취소합니다. (채널이 청소됩니다.)").queue();
+                MessageEmbed messageEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                    > **영문 이름은 영문자와 숫자, 특수문자(-, _)만 입력할 수 있습니다.**
+                                    > **플러그인 등록을 취소합니다. (채널이 5초뒤 청소됩니다.)**
+                                    ─────────────────────────────────────────────────
+                                    """)
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .build();
+
+                event.replyEmbeds(messageEmbed).queue();
                 cancelProcess(event.getUser().getIdLong());
                 return;
             }
 
             String KRName = event.getValue("name-kr").getAsString();
-
             String wikiUrl = event.getValue("wiki-url").getAsString();
-
             String videoUrl = event.getValue("video-url").getAsString();
 
             int price;
@@ -571,16 +608,26 @@ public class RegisterInteraction extends ListenerAdapter {
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 1단계 | 플러그인 등록 <a:success:1168266537262657626>")
-                    .setDescription(
-                            "> **[ 등록 정보 ]**\n" +
-                            "> **플러그인 이름(영문): " + ENName + "**\n" +
-                            "> **플러그인 이름(한글): " + KRName + "**\n" +
-                            "> **위키 링크: " + wikiUrl + "**\n" +
-                            "> **영상 링크: " + videoUrl + "**\n" +
-                            "> **가격: " + price + "**\n\n" +
-                            "> **아래에 의존성 플러그인을 입력해주세요.**\n" +
-                            "> **예) StarlyCore, Vault**\n\n" +
-                            "─────────────────────────────────────────────────"
+                    .setDescription("""
+                            > **[ 등록 정보 ]**
+                            > **플러그인 이름(영문): %s**
+                            > **플러그인 이름(한글): %s**
+                            > **위키 링크: %s**
+                            > **영상 링크: %s**
+                            > **가격: %s**
+                            
+                            > **아래에 의존성 플러그인을 입력해 주세요.**
+                            > **예) StarlyCore, Vault**
+                            
+                            ─────────────────────────────────────────────────
+                            """
+                            .formatted(
+                                    ENName,
+                                    KRName,
+                                    wikiUrl,
+                                    videoUrl,
+                                    NumberFormat.getCurrencyInstance(Locale.KOREA).format(price)
+                            )
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -626,4 +673,3 @@ public class RegisterInteraction extends ListenerAdapter {
             channel.purgeMessages(messages);
         });
     }
-} // TODO : 메시지 디자인
