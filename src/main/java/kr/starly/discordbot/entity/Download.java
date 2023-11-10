@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Getter
 @AllArgsConstructor
-public class PluginDownload {
+public class Download {
 
     @NotNull private String token;
     @NotNull private PluginFile file;
@@ -56,7 +56,7 @@ public class PluginDownload {
     }
 
 
-    public static PluginDownload deserialize(Document document) {
+    public static Download deserialize(Document document) {
         String token = document.getString("token");
         PluginFile file = PluginFile.deserialize((Document) document.get("file"));
         Long userId = document.getLong("userId");
@@ -67,6 +67,6 @@ public class PluginDownload {
         Date createdAt = document.getDate("createdAt");
         Date usedAt = document.getDate("usedAt");
         Date expireAt = document.getDate("expireAt");
-        return new PluginDownload(token, file, userId, userIp, isUsed, isSuccess, isExpired, createdAt, usedAt, expireAt);
+        return new Download(token, file, userId, userIp, isUsed, isSuccess, isExpired, createdAt, usedAt, expireAt);
     }
 }
