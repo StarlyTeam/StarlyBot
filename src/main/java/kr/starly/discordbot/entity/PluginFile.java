@@ -3,6 +3,7 @@ package kr.starly.discordbot.entity;
 import kr.starly.discordbot.enums.MCVersion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -30,5 +31,24 @@ public class PluginFile {
 
         public void updateVersion(@NotNull String version) {
             this.version = version;
+        }
+
+        public Document serialize() {
+            Document document = new Document();
+            document.append("file", file.getAbsolutePath());
+            document.append("plugin", plugin.serialize());
+            document.append("mcVersion", mcVersion.toString());
+            document.append("version", version);
+            return document;
+        }
+
+        public static PluginFile deserialize(Document document) {
+            if (document == null) return null;
+
+            File file = new File(document.getString("file"));
+            Plugin plugin = Plugin.deserialize(document.get("plugin", Document.class));
+            MCVersion mcVersion = MCVersion.valueOf(document.getString("mcVersion"));
+            String version = document.getString("version");
+            return new PluginFile(file, plugin, mcVersion, version);
         }
 }
