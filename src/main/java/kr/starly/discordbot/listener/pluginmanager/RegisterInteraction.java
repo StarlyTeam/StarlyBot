@@ -673,3 +673,4 @@ public class RegisterInteraction extends ListenerAdapter {
             channel.purgeMessages(messages);
         });
     }
+}
