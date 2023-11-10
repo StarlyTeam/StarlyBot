@@ -27,7 +27,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
@@ -84,9 +83,16 @@ public class EditInteraction extends ListenerAdapter {
         if (attachments.isEmpty()) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("오류")
-                    .setDescription("플러그인 파일을 첨부해주세요.")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **플러그인 파일을 첨부해 주세요.**
+                            
+                            ─────────────────────────────────────────────────"""
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
+
             event.getChannel().sendMessageEmbeds(embed).queue();
             return;
         }
@@ -98,16 +104,30 @@ public class EditInteraction extends ListenerAdapter {
         if (successCount == 0) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("오류")
-                    .setDescription("플러그인 파일을 모두 업로드하지 못했습니다. 다시 시도해 주세요.\n\n" + String.join("\n", errors))
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **플러그인 파일을 모두 업로드하지 못했습니다.**
+                            > **다시 시도해 주세요.**
+                            
+                            ─────────────────────────────────────────────────"""
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
+
             event.getMessage().replyEmbeds(embed).queue();
             return;
         } else if (failCount == 0) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("성공")
-                    .setDescription("플러그인 파일을 모두 업로드했습니다. 채널을 청소합니다.")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 관리 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **플러그인 파일을 모두 업로드하였습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
             event.getMessage().replyEmbeds(embed).queue();
         } else {
@@ -160,8 +180,14 @@ public class EditInteraction extends ListenerAdapter {
                         if (!sessionMap.containsKey(userId)) {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
-                                    .setTitle("오류")
-                                    .setDescription("요청이 거부되었습니다.")
+                                    .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                    .setDescription("""
+                            > **요청이 거부되었습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -196,8 +222,14 @@ public class EditInteraction extends ListenerAdapter {
                         if (!sessionMap.containsKey(userId)) {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
-                                    .setTitle("오류")
-                                    .setDescription("요청이 거부되었습니다.")
+                                    .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                    .setDescription("""
+                            > **요청이 거부되었습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -206,8 +238,14 @@ public class EditInteraction extends ListenerAdapter {
                         } else if (uploadSession.contains(userId)) {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
-                                    .setTitle("오류")
-                                    .setDescription("이미 파일 업로드가 진행중입니다.")
+                                    .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                    .setDescription("""
+                            > **이미 파일 업로드가 진행중입니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -237,8 +275,14 @@ public class EditInteraction extends ListenerAdapter {
                         if (!sessionMap.containsKey(userId)) {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
-                                    .setTitle("오류")
-                                    .setDescription("요청이 거부되었습니다.")
+                                    .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                    .setDescription("""
+                            > **요청이 거부되었습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -385,8 +429,14 @@ public class EditInteraction extends ListenerAdapter {
                 if (pluginService.getDataByENName(ENName) == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("오류")
-                            .setDescription("해당 플러그인이 존재하지 않습니다. 채널을 청소합니다.")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                            > **해당 플러그인이 존재하지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.replyEmbeds(embed).queue();
 
@@ -417,8 +467,14 @@ public class EditInteraction extends ListenerAdapter {
                 if (!sessionMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("오류")
-                            .setDescription("요청이 거부되었습니다.")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                            > **요청이 거부되었습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -433,8 +489,14 @@ public class EditInteraction extends ListenerAdapter {
                 } catch (IllegalArgumentException ignored) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("오류")
-                            .setDescription("마인크래프트 버전이 올바르지 않습니다. 채널을 청소합니다.")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                            > **마인크래프트 버전이 올바르지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -453,8 +515,14 @@ public class EditInteraction extends ListenerAdapter {
                 if (pluginFile == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("오류")
-                            .setDescription("해당 플러그인 파일이 존재하지 않습니다. 채널을 청소합니다.")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                            > **해당 플러그인 파일이 존재하지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -486,8 +554,14 @@ public class EditInteraction extends ListenerAdapter {
                 if (!sessionMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("오류")
-                            .setDescription("요청이 거부되었습니다.")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                            > **요청이 거부되었습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -509,8 +583,14 @@ public class EditInteraction extends ListenerAdapter {
                             if (pluginService.getDataByENName(mappingValue) != null) {
                                 MessageEmbed embed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("오류")
-                                        .setDescription("이미 존재하는 플러그인 이름입니다. 채널을 청소합니다.")
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **이미 존재하는 플러그인 이름입니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .build();
                                 event.replyEmbeds(embed).queue();
 
@@ -532,12 +612,34 @@ public class EditInteraction extends ListenerAdapter {
                             try {
                                 emoji = Emoji.fromFormatted(mappingValue);
                             } catch (IllegalArgumentException ignored) {
-                                event.getMessage().reply("올바른 이모지를 입력해 주세요.").queue();
+                                MessageEmbed embed = new EmbedBuilder()
+                                        .setColor(EMBED_COLOR_ERROR)
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **올바른 이미지를 입력해 주세요.**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .build();
+                                event.getMessage().replyEmbeds(embed).queue();
                                 continue;
                             }
 
                             if (emoji.getType() != Emoji.Type.UNICODE) {
-                                event.getMessage().reply("유니코드 이모지로만 설정하실 수 있습니다. 다시 시도해 주세요.").queue();
+                                MessageEmbed embed = new EmbedBuilder()
+                                        .setColor(EMBED_COLOR_ERROR)
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **유니코드 이모지로만 설정하실 수 있습니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .build();
+                                event.getMessage().replyEmbeds(embed).queue();
                                 continue;
                             }
 
@@ -570,8 +672,14 @@ public class EditInteraction extends ListenerAdapter {
                             if (dependency.isEmpty()) {
                                 MessageEmbed embed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("오류")
-                                        .setDescription("종속성이 올바르지 않습니다. 채널을 청소합니다.")
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **종속성이 올바르지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
@@ -589,8 +697,14 @@ public class EditInteraction extends ListenerAdapter {
                             if (!mappingValue.matches("([0-9]+,?( +)?)+$")) {
                                 MessageEmbed embed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("오류")
-                                        .setDescription("담당자가 올바르지 않습니다. 채널을 청소합니다.")
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **담당자가 올바르지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
@@ -619,8 +733,14 @@ public class EditInteraction extends ListenerAdapter {
                             } catch (NumberFormatException ignored) {
                                 MessageEmbed embed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("오류")
-                                        .setDescription("역할이 올바르지 않습니다. 채널을 청소합니다.")
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **역할이 올바르지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
@@ -646,8 +766,14 @@ public class EditInteraction extends ListenerAdapter {
                             } catch (NumberFormatException ignored) {
                                 MessageEmbed embed = new EmbedBuilder()
                                         .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("오류")
-                                        .setDescription("가격이 올바르지 않습니다. 채널을 청소합니다.")
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
+                                        .setDescription("""
+                            > **가격이 올바르지 않습니다. (채널이 5초뒤 청소됩니다.)**
+                            
+                            ─────────────────────────────────────────────────"""
+                                        )
+                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
