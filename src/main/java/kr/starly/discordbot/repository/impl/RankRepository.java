@@ -8,10 +8,10 @@ import kr.starly.discordbot.entity.coupon.requirement.impl.DayAfterVerifyRequire
 import kr.starly.discordbot.entity.coupon.requirement.impl.RoleRequirement;
 import kr.starly.discordbot.service.CouponService;
 import kr.starly.discordbot.entity.Rank;
-import kr.starly.discordbot.entity.perk.impl.CashbackPerk;
-import kr.starly.discordbot.entity.perk.impl.CouponPerk;
-import kr.starly.discordbot.entity.perk.impl.PreReleasePerk;
-import kr.starly.discordbot.entity.perk.impl.RolePerk;
+import kr.starly.discordbot.entity.rank.perk.impl.CashbackPerk;
+import kr.starly.discordbot.entity.rank.perk.impl.CouponPerk;
+import kr.starly.discordbot.entity.rank.perk.impl.PreReleasePerk;
+import kr.starly.discordbot.entity.rank.perk.impl.RolePerk;
 import lombok.Getter;
 
 import java.util.HashMap;

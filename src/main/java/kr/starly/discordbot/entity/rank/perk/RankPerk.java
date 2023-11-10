@@ -1,4 +1,4 @@
-package kr.starly.discordbot.entity.perk;
+package kr.starly.discordbot.entity.rank.perk;
 
 
 import kr.starly.discordbot.enums.RankPerkType;

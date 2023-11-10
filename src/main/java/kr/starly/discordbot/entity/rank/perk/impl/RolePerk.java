@@ -1,7 +1,7 @@
-package kr.starly.discordbot.entity.perk.impl;
+package kr.starly.discordbot.entity.rank.perk.impl;
 
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.entity.perk.RankPerk;
+import kr.starly.discordbot.entity.rank.perk.RankPerk;
 import kr.starly.discordbot.enums.RankPerkType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

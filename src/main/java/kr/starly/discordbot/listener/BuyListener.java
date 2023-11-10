@@ -22,7 +22,7 @@ import kr.starly.discordbot.service.PaymentService;
 import kr.starly.discordbot.entity.product.Product;
 import kr.starly.discordbot.entity.product.impl.PremiumPluginProduct;
 import kr.starly.discordbot.entity.Rank;
-import kr.starly.discordbot.entity.perk.impl.CashbackPerk;
+import kr.starly.discordbot.entity.rank.perk.impl.CashbackPerk;
 import kr.starly.discordbot.repository.impl.RankRepository;
 import kr.starly.discordbot.util.RankUtil;
 import kr.starly.discordbot.repository.impl.TicketModalDataRepository;
