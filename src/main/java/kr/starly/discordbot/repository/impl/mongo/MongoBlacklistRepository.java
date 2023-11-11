@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import kr.starly.discordbot.entity.Blacklist;
 import kr.starly.discordbot.repository.BlacklistRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bson.Document;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
+@Getter
 public class MongoBlacklistRepository implements BlacklistRepository {
 
     private final MongoCollection<Document> collection;
