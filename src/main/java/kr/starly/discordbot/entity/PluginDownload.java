@@ -58,7 +58,7 @@ public class PluginDownload {
 
     public static PluginDownload deserialize(Document document) {
         String token = document.getString("token");
-        PluginFile file = PluginFile.deserialize((Document) document.get("file"));
+        PluginFile file = PluginFile.deserialize(document.get("pluginFile", Document.class));
         Long userId = document.getLong("userId");
         String userIp = document.getString("userIp");
         Boolean isUsed = document.getBoolean("isUsed");

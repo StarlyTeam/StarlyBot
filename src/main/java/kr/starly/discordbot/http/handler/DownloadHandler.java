@@ -34,7 +34,7 @@ public class DownloadHandler implements HttpHandler {
             return;
         }
 
-        PluginFile pluginFile = download.getFile();
+        PluginFile pluginFile = download.getPluginFile();
         Plugin plugin = pluginFile.getPlugin();
 
         String originalFileName = pluginFile.getFile().getName();

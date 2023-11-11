@@ -12,7 +12,7 @@ import java.util.Date;
 public class Download {
 
     @Getter @NotNull private String token;
-    @Getter @NotNull private PluginFile file;
+    @Getter @NotNull private PluginFile pluginFile;
     @Getter @NotNull private Long userId;
     @Getter @Nullable private String userIp;
 
@@ -52,7 +52,7 @@ public class Download {
     public Document serialize() {
         Document document = new Document();
         document.put("token", token);
-        document.put("file", file.serialize());
+        document.put("pluginFile", pluginFile.serialize());
         document.put("userId", userId);
         document.put("userIp", userIp);
         document.put("isUsed", isUsed);
@@ -67,7 +67,7 @@ public class Download {
 
     public static Download deserialize(Document document) {
         String token = document.getString("token");
-        PluginFile file = PluginFile.deserialize((Document) document.get("file"));
+        PluginFile file = PluginFile.deserialize(document.get("pluginFile", Document.class));
         Long userId = document.getLong("userId");
         String userIp = document.getString("userIp");
         Boolean isUsed = document.getBoolean("isUsed");

@@ -98,8 +98,8 @@ public class Payment {
             case NONE -> {
                 UUID paymentId = UUID.fromString(document.getString("paymentId"));
                 int usedPoint = document.getInteger("usedPoint");
-                CouponState usedCoupon = CouponState.deserialize((Document) document.get("usedCoupon"));
-                Product product = Product.deserialize((Document) document.get("product"));
+                CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
+                Product product = Product.deserialize(document.get("product", Document.class));
                 long requestedBy = document.getLong("requestedBy");
 
                 Payment payment = new Payment(paymentId, requestedBy, method, usedPoint, usedCoupon, product);
