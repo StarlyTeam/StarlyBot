@@ -665,3 +665,4 @@ public class UpdateInteraction extends ListenerAdapter {
         requirementTypeMap.remove(userId);
     }
 }
+// TODO 디자인

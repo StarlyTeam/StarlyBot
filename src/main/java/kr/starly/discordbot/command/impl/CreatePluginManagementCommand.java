@@ -52,8 +52,6 @@ public class CreatePluginManagementCommand implements DiscordCommand {
                 .addOption("플러그인 정보", "plugin-info", "특정 플러그인의 정보를 확인합니다.", Emoji.fromUnicode("🔍"))
                 .build();
 
-        event.getChannel().sendMessageEmbeds(verifyEmbed)
-                .addActionRow(pluginSelectionMenu)
-                .queue();
+        event.getChannel().sendMessageEmbeds(verifyEmbed).addActionRow(pluginSelectionMenu).queue();
     }
 }

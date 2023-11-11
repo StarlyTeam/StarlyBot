@@ -8,6 +8,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public enum TicketType {
+
     GENERAL("일반"),
     QUESTION("질문"),
     CONSULTING("상담"),

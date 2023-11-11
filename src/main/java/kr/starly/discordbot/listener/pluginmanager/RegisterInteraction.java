@@ -679,7 +679,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
         TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(RELEASE_NOTICE_CHANNEL_ID);
         channel.sendMessageEmbeds(noticeEmbed).queue();
-        channel.sendMessage("> @everyone").queue();
+//        channel.sendMessage("> @everyone").queue();
     }
 
     private void cancelProcess(long userId) {

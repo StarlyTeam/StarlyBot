@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum MCVersion {
+
     v1_12(List.of("1.12", "1.12.1", "1.12.2")),
     v1_13(List.of("1.13", "1.13.1", "1.13.2")),
     v1_14(List.of("1.14", "1.14.1", "1.14.2", "1.14.3", "1.14.4")),

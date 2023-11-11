@@ -77,9 +77,10 @@ public class CleanUpCommand implements DiscordCommand {
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 채팅청소 <a:success:1168266537262657626>")
-                .setDescription(
-                        "> **" + count + "개의 메시지를 청소했습니다.**\n" +
-                        "> **이 메시지는 5초후에 자동으로 삭제됩니다.**"
+                .setDescription("""
+                        > **%d개의 메시지를 청소하였습니다.**
+                        > **이 메시지는 5초 후에 자동으로 삭제됩니다.
+                        """
                 )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

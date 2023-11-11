@@ -14,7 +14,7 @@ import java.util.Set;
 
 @BotCommand(
         command = "도움말",
-        description = "물음표 명령어 사용법을 출력합니다.",
+        description = "물음표 명령어 사용 방법을 출력합니다.",
         usage = "?도움말"
 )
 public class HelpCommand implements DiscordCommand {

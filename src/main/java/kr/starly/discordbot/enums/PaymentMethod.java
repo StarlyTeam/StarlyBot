@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PaymentMethod {
+
     CREDIT_CARD("신용카드"),
     BANK_TRANSFER("계좌이체"),
     CULTURELAND("문화상품권"),

@@ -50,7 +50,6 @@ public class PluginFileUtil {
 
             pluginFileService.saveData(pluginFile, plugin, MCVersion.valueOf(mcVersion), version);
         }
-
         return errors;
     }
 }

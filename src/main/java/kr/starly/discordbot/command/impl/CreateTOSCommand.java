@@ -35,9 +35,13 @@ public class CreateTOSCommand implements DiscordCommand {
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
                 .setTitle("<:tos:1168335473152892948> 이용약관 | 스탈리 <:ticket:1168335473152892948>")
-                .setDescription("> **스탈리 스토어에 오신걸 환영합니다.** \n" +
-                        "> **아래에 다운로드 버튼을 클릭하여 .pdf 파일을 다운로드 후 필독하시길 바랍니다.** \n\n" +
-                        "─────────────────────────────────────────────────\n")
+                .setDescription("""
+                        > **스탈리 스토어에 오신걸 환영합니다.**
+                        > **아래에 다운로드 버튼을 클릭하여 .pdf 파일을 다운로드 후 필독하시길 바랍니다.**
+                        
+                        ─────────────────────────────────────────────────
+                        """
+                )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .setFooter("이용약관을 수칙하지 않을 경우 처벌대상이 될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();

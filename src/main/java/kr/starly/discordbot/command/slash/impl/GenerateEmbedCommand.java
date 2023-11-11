@@ -109,3 +109,4 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
         return optionMapping == null ? null : optionMapping.getAsAttachment().getUrl();
     }
 }
+// TODO 디자인

@@ -1,6 +1,5 @@
 package kr.starly.discordbot.listener.pluginmanager;
 
-
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Plugin;
@@ -48,7 +47,7 @@ public class EditInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String PLUGIN_MANAGEMENT_CHANNEL_ID = configProvider.getString("PLUGIN_MANAGEMENT_CHANNEL_ID");
-    private final String RELEASE_ANNOUNCEMENT_CHANNEL_ID = configProvider.getString("RELEASE_ANNOUNCEMENT_CHANNEL_ID");
+    private final String UPDATE_ANNOUNCEMENT_CHANNEL_ID = configProvider.getString("UPDATE_ANNOUNCEMENT_CHANNEL_ID");
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
@@ -947,7 +946,7 @@ public class EditInteraction extends ListenerAdapter {
                 .setThumbnail(plugin.getIconUrl())
                 .build();
 
-        TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(RELEASE_ANNOUNCEMENT_CHANNEL_ID);
+        TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(UPDATE_ANNOUNCEMENT_CHANNEL_ID);
         channel.sendMessageEmbeds(noticeEmbed).queue();
     }
 

@@ -25,7 +25,7 @@ public class PermissionUtil {
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setColor(Color.decode(configProvider.getString("EMBED_COLOR_ERROR")))
                 .setTitle("<a:loading:1168266572847128709> 오류 | 권한 없음 <a:loading:1168266572847128709>")
-                .setDescription("**이 명령어를 사용할 권한이 없습니다.**")
+                .setDescription("> **이 명령어를 사용할 권한이 없습니다.**")
                 .build();
 
         channel.sendMessageEmbeds(messageEmbed).queue();

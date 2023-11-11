@@ -1,6 +1,7 @@
 package kr.starly.discordbot.enums;
 
 public enum CouponRequirementType {
+
     DAY_BEFORE,
     DAY_AFTER,
     DAY_AFTER_VERIFY,

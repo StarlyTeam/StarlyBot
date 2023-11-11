@@ -31,8 +31,11 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:warn:1168266548541145298> 오류 | 이미 인증된 유저입니다. <a:warn:1168266548541145298>")
-                            .setDescription("> **당신은 이미 인증된 유저예요! \uD83C\uDF89**\n"
-                                    + "> **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**\n\u1CBB")
+                            .setDescription("""
+                                    > **당신은 이미 인증된 유저예요! \uD83C\uDF89**
+                                    > **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**
+                                    
+                                    """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                             .setFooter("이미 인증이 완료된 계정입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                             .build();
@@ -58,19 +61,21 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<:notice:1168265600301277284> 유저인증 | 인증이 안되시나요? <:notice:1168265600301277284>")
-                        .setDescription("> **인증이 안 될 경우 아래 항목을 확인해보세요.\n" +
-                                "> **문제가 계속되면 관리자에게 DM으로 문의해 주세요.\n" +
-                                "\n" +
-                                "───────────────────────────────────────────────── \n" +
-                                "> **`1️⃣` 계정 상태 (인증된 계정, 차단된 계정 등)를 확인하세요.**\n" +
-                                "> **`2️⃣` 인터넷 연결이 원활한지 확인하세요.**\n" +
-                                "> **`3️⃣` 웹 브라우저의 캐시와 쿠키를 지우고 다시 시도해보세요.**\n" +
-                                "> **`4️⃣` 사용 중인 브라우저 혹은 앱이 최신 버전인지 확인하세요.**\n" +
-                                "> **`5️⃣` 방화벽이나 보안 프로그램이 인증을 차단하고 있지 않은지 확인하세요.**\n" +
-                                "> **`6️⃣` 자신의 디스코드 계정에 전화번호가 추가되어있는지 확인하세요.**\n" +
-                                "> **`7️⃣` 30일 이내에 생성된 계정인지 확인하세요.**\n" +
-                                "> **`8️⃣` 디스코드 DM(Direct Message) 수신을 차단하였는지 확인하세요.**\n" +
-                                "> **`9️⃣` 블랙리스트 유저일 경우 인증이 되지 않을 수 있습니다.**\n\u1CBB")
+                        .setDescription("""
+                                > **인증이 안 될 경우 아래 항목을 확인해보세요.**
+                                > **문제가 계속되면 관리자에게 DM으로 문의해 주세요.**
+                                
+                                ─────────────────────────────────────────────────
+                                > **`1️⃣` 계정 상태 (인증된 계정, 차단된 계정 등)를 확인하세요.**
+                                > **`2️⃣` 인터넷 연결이 원활한지 확인하세요.**
+                                > **`3️⃣` 웹 브라우저의 캐시와 쿠키를 지우고 다시 시도해보세요.**
+                                > **`4️⃣` 사용 중인 브라우저 혹은 앱이 최신 버전인지 확인하세요.**
+                                > **`5️⃣` 방화벽이나 보안 프로그램이 인증을 차단하고 있지 않은지 확인하세요.**
+                                > **`6️⃣` 자신의 디스코드 계정에 전화번호가 추가되어있는지 확인하세요.**
+                                > **`7️⃣` 30일 이내에 생성된 계정인지 확인하세요.**
+                                > **`8️⃣` 디스코드 DM(Direct Message) 수신을 차단하였는지 확인하세요.**
+                                > **`9️⃣` 블랙리스트 유저일 경우 인증이 되지 않을 수 있습니다.**
+                                """)
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("도움이 필요하시면 언제든지 관리자에게 문의하세요.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();

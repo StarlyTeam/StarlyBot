@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum RankPerkType {
+
     COUPON("무료 쿠폰", "매달 무료로 쿠폰을 지급받습니다."),
     ROLE("디스코드 역할 지급", "디스코드 역할을 지급받습니다."),
     CASHBACK("캐시백", "구매 금액의 일부를 돌려 받습니다."),

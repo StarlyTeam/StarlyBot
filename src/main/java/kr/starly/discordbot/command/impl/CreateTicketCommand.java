@@ -66,13 +66,16 @@ public class CreateTicketCommand implements DiscordCommand {
 
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<:ticket:1039499247172718602> 고객센터 문의 | 스탈리 <:ticket:1039499247172718602>")
-                .setDescription("> **스탈리 고객센터에 오신 것을 환영합니다.** \n" +
-                        "> **여기에서는 귀하의 문의사항이나 건의사항을 기다리고 있습니다.** \n\n" +
-                        "─────────────────────────────────────────────────\n" +
-                        "> **`\uD83D\uDC5F` 모든 문의는 신속하고 친절하게 처리될 것입니다.** \n" +
-                        "> **`\uD83E\uDDE8` 직원에게 폭언이나 성희롱을 할 경우 법적 처벌을 받을 수 있습니다.** \n" +
-                        "> **`\uD83D\uDC9D` 스탈리에서 행복한 시간을 보내시길 바랍니다.** \n\u1CBB\n")
+                .setTitle("""
+                        > **스탈리 고객센터에 오신 것을 환영합니다.**
+                        > **여기에서는 귀하의 문의사항이나 건의사항을 기다리고 있습니다.**
+                        
+                        ─────────────────────────────────────────────────
+                        > **`\uD83D\uDC5F` 모든 문의는 신속하고 친절하게 처리될 것입니다.**
+                        > **`\uD83E\uDDE8` 직원에게 폭언이나 성희롱을 할 경우 법적 처벌을 받을 수 있습니다.**
+                        > **`\uD83D\uDC9D` 스탈리에서 행복한 시간을 보내시길 바랍니다.**
+                        """
+                )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                 .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                 .build();

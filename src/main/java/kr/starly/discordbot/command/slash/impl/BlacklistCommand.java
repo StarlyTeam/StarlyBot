@@ -49,7 +49,6 @@ import java.util.List;
 public class BlacklistCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
@@ -117,11 +116,9 @@ public class BlacklistCommand implements DiscordSlashCommand {
             case "목록" -> {
                 StringBuilder sb = new StringBuilder();
                 List<Blacklist> blacklists = DatabaseManager.getBlacklistService().getAllData();
-                blacklists.forEach(blacklist -> {
-                    sb
-                            .append("디스코드: %s | IP: %s [%s, %s]".formatted(blacklist.userId(), blacklist.ipAddress(), blacklist.reason(), DATE_FORMAT.format(blacklist.listedAt())))
-                            .append("\n");
-                });
+                blacklists.forEach(blacklist -> sb
+                        .append("디스코드: %s | IP: %s [%s, %s]".formatted(blacklist.userId(), blacklist.ipAddress(), blacklist.reason(), DATE_FORMAT.format(blacklist.listedAt())))
+                        .append("\n"));
 
                 event.replyFiles(FileUploadUtil.createFileUpload(sb.toString())).queue();
             }

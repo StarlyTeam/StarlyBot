@@ -49,12 +49,14 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                     .addRolePermissionOverride(Long.parseLong(configProvider.getString("VERIFIED_ROLE_ID")), null, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND))
                     .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                     .complete();
+
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
-                    .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
-                            "> **" + textChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setDescription("""
+                            > **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!**
+                            > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏
+                            """)
                     .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
             event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
@@ -134,3 +136,4 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
         }
     }
 }
+// TODO 디자인

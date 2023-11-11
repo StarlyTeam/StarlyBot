@@ -88,3 +88,4 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
                 .queue();
     }
 }
+// TODO 디자인
