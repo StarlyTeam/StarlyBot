@@ -20,7 +20,7 @@ import java.util.List;
 public class APIv1Handler implements HttpHandler {
 
     @Override
-    public void handle(HttpExchange exchange) {
+    public void handle(HttpExchange exchange) throws IOException {
         if (!exchange.getRequestMethod().equals("GET")) return;
 
         String[] pathSegments = exchange.getRequestURI().getPath().split("/");
@@ -44,14 +44,10 @@ public class APIv1Handler implements HttpHandler {
                 responseBody.addProperty("error", ex.getMessage());
             }
 
-            try {
-                if (responseBody.get("status").getAsString().equals("DONE")) {
-                    sendResponse(exchange, 200, responseBody);
-                } else {
-                    sendResponse(exchange, 500, responseBody);
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (responseBody.get("status").getAsString().equals("DONE")) {
+                sendResponse(exchange, 200, responseBody);
+            } else {
+                sendResponse(exchange, 500, responseBody);
             }
         } else if (apiPath.startsWith("plugins/")) {
             String pluginENName = apiPath.split("/")[1];
@@ -76,14 +72,10 @@ public class APIv1Handler implements HttpHandler {
                 responseBody.addProperty("error", ex.getMessage());
             }
 
-            try {
-                if (responseBody.get("status").getAsString().equals("DONE")) {
-                    sendResponse(exchange, 200, responseBody);
-                } else {
-                    sendResponse(exchange, 500, responseBody);
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (responseBody.get("status").getAsString().equals("DONE")) {
+                sendResponse(exchange, 200, responseBody);
+            } else {
+                sendResponse(exchange, 500, responseBody);
             }
         } else {
             JsonObject responseBody = new JsonObject();
