@@ -161,5 +161,7 @@ public class AuthHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(rBody.getBytes());
         }
+
+        exchange.close();
     }
 }
