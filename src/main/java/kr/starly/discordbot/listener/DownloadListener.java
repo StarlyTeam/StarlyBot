@@ -2,16 +2,13 @@ package kr.starly.discordbot.listener;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Download;
 import kr.starly.discordbot.entity.Plugin;
 import kr.starly.discordbot.entity.PluginFile;
 import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.enums.MCVersion;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.repository.impl.DownloadTokenRepository;
-import kr.starly.discordbot.service.BlacklistService;
-import kr.starly.discordbot.service.PluginFileService;
-import kr.starly.discordbot.service.PluginService;
-import kr.starly.discordbot.service.UserService;
+import kr.starly.discordbot.service.*;
 import kr.starly.discordbot.util.TokenUtil;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -29,6 +26,7 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.Date;
 import java.util.List;
 
 @BotEvent
@@ -99,9 +97,22 @@ public class DownloadListener extends ListenerAdapter {
             }
 
             // 토큰 생성 및 등록
-            DownloadTokenRepository tokenRepository = DownloadTokenRepository.getInstance();
             String token = TokenUtil.generateToken();
-            tokenRepository.put(token, pluginFile);
+            Download download = new Download(
+                    token,
+                    pluginFile,
+                    event.getUser().getIdLong(),
+                    null,
+                    false,
+                    null,
+                    false,
+                    new Date(),
+                    null,
+                    new Date(new Date().getTime() + 1000 * 60 * 30)
+            );
+
+            DownloadService downloadService = DatabaseManager.getDownloadService();
+            downloadService.saveData(download);
 
             // 메시지 전송
             String url = WEB_ADDRESS + "download/" + token;
@@ -212,12 +223,12 @@ public class DownloadListener extends ListenerAdapter {
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 다운로드 | 플러그인 <a:loading:1168266572847128709>")
                     .setDescription("""
-                            > **다운로드할 마인크래프트 버전을 선택해주세요.**
+                            > **사용하실 마인크래프트 버전을 선택해 주세요.**
                             
                             ─────────────────────────────────────────────────"""
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("라이선스 조항을 잘 지켜주시면 감사하겠습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("항상 라이선스를 준수해 주셔서 감사합니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
             event.replyEmbeds(embed)
                     .addActionRow(selectOptionBuilder.build())

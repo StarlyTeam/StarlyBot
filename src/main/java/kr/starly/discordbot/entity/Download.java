@@ -8,21 +8,30 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-@Getter
 @AllArgsConstructor
 public class Download {
 
-    @NotNull private String token;
-    @NotNull private PluginFile file;
-    @NotNull private Long userId;
-    @Nullable private String userIp;
+    @Getter @NotNull private String token;
+    @Getter @NotNull private PluginFile file;
+    @Getter @NotNull private Long userId;
+    @Getter @Nullable private String userIp;
 
     @NotNull private Boolean isUsed;
     @Nullable private Boolean isSuccess;
     @NotNull private Boolean isExpired;
-    @NotNull  private Date createdAt;
-    @Nullable private Date usedAt;
-    @NotNull private Date expireAt;
+    @Getter @NotNull  private Date createdAt;
+    @Getter @Nullable private Date usedAt;
+    @Getter @NotNull private Date expireAt;
+
+    public Boolean isUsed() {
+        return isUsed;
+    }
+    public Boolean isSuccess() {
+        return isSuccess;
+    }
+    public Boolean isExpired() {
+        return new Date().after(expireAt);
+    }
 
     public void updateIsUsed(Boolean isUsed) {
         this.isUsed = isUsed;

@@ -49,6 +49,7 @@ DB_COLLECTION_BLACKLIST: "blacklist"
 DB_COLLECTION_COUPON: "coupon"
 DB_COLLECTION_COUPON_REDEEM: "couponRedeem"
 DB_COLLECTION_PAYMENT: "payment"
+DB_COLLECTION_DOWNLOAD: "download"
 
 # + -------------------------------------------------------------------------------- + #
 # | WEB SERVER CONFIGURATION ( 웹 서버 설정 )
