@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 public class AuthHandler implements HttpHandler {
 
     private final UserService userService = DatabaseManager.getUserService();
-    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
@@ -104,8 +103,6 @@ public class AuthHandler implements HttpHandler {
         user.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
                 .queue(null, throwable -> {
-                            LOGGER.warning("해당 유저 (" + userId + ")에게 DM을 전송할 수 없습니다: " + throwable.getMessage());
-
                             AuditLogger.warning(new EmbedBuilder()
                                     .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
                                     .setDescription("""
@@ -126,10 +123,31 @@ public class AuthHandler implements HttpHandler {
             Rank rank1 = rankRepository.getRank(1);
 
             userService.saveData(userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1)));
-            LOGGER.info("유저 인증을 하였으므로 데이터를 추가했습니다: " + userId);
-
+            AuditLogger.info(
+                    new EmbedBuilder()
+                            .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
+                            .setDescription("""
+                                    > **유저: %s**
+                                    > **아이피: %s**
+                                                                            
+                                    ─────────────────────────────────────────────────"""
+                                    .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
+                            )
+            ); // TODO: 메시지 작업
         } else {
-            LOGGER.warning("이미 데이터베이스에 존재하는 유저입니다: " + userId);
+            AuditLogger.warning(
+                    new EmbedBuilder()
+                            .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
+                            .setDescription("""
+                                    > **데이터가 존재하는 유저가 인증을 시도했습니다.**
+                                                                            
+                                    > **유저: %s**
+                                    > **아이피: %s**
+                                                                            
+                                    ─────────────────────────────────────────────────"""
+                                    .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
+                            )
+            ); // TODO: 메시지 작업
         }
 
         AuditLogger.info(new EmbedBuilder()
