@@ -81,13 +81,15 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
             }
         }
 
-        event.replyEmbeds(new EmbedBuilder()
-                .setTitle("다운로드 내역")
-                .setDescription("""
-                            ```
-                            %s```
-                            """.formatted(list.toString()))
-                .setColor(EMBED_COLOR_ERROR)
-                .build()).queue();
+        event.replyEmbeds(
+                new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("다운로드 내역")
+                        .setDescription("""
+                                ```
+                                %s```
+                                """.formatted(list.toString()))
+                        .build()
+        ).queue();
     }
 } // TODO: 메시지 작업, 테스트
