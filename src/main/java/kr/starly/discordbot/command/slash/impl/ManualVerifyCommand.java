@@ -89,4 +89,4 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
                         .build()
         ).queue();
     }
-}
+} // TODO: 메시지 작업
