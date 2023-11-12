@@ -55,7 +55,7 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
         } else {
             downloads = downloadService.getAllData();
         }
-        downloads.subList(0, 49);
+        downloads.subList(Math.max(0, downloads.size() - 50), downloads.size());
 
         StringBuilder list = new StringBuilder();
         if (downloads.isEmpty()) {
