@@ -6,7 +6,9 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Verify;
 import kr.starly.discordbot.service.VerifyService;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -35,6 +37,11 @@ public class VerifyHistoryCommand implements DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+            return;
+        }
+
         User target = event.getOption("유저").getAsUser();
 
         VerifyService verifyService = DatabaseManager.getVerifyService();

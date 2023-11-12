@@ -10,7 +10,9 @@ import kr.starly.discordbot.repository.RepositoryManager;
 import kr.starly.discordbot.repository.impl.CouponSessionRepository;
 import kr.starly.discordbot.service.CouponService;
 import kr.starly.discordbot.util.FileUploadUtil;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -85,14 +87,15 @@ public class CouponCommand implements DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        // 변수 선언
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event.getChannel());
+            return;
+        }
+
         long userId = event.getUser().getIdLong();
         String subCommand = event.getSubcommandName();
 
-        // Repository 변수 선언
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
-
-        // 세션 검증
         if (sessionRepository.hasSession(userId)) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
@@ -111,7 +114,6 @@ public class CouponCommand implements DiscordSlashCommand {
             return;
         }
 
-        // 목록 핸들링
         if (subCommand.equals("목록")) {
             StringBuilder sb = new StringBuilder();
             List<Coupon> coupons = DatabaseManager.getCouponService().getAllData();
@@ -123,7 +125,6 @@ public class CouponCommand implements DiscordSlashCommand {
             return;
         }
 
-        // 세션 데이터 저장
         sessionRepository.updateSessionType(userId, switch (subCommand) {
             case "생성" -> CouponSessionType.CREATE;
             case "삭제" -> CouponSessionType.DELETE;
@@ -131,14 +132,12 @@ public class CouponCommand implements DiscordSlashCommand {
             default -> throw new IllegalArgumentException("Unexpected value: " + subCommand);
         });
 
-        // DB 저장
         String couponCode = event.getOption("코드").getAsString();
-        CouponSessionType sessionType = sessionRepository.retrieveSessionType(userId);
-
         sessionRepository.updateCoupon(userId, couponCode);
+
+        CouponSessionType sessionType = sessionRepository.retrieveSessionType(userId);
         sessionRepository.updateSessionType(userId, sessionType);
 
-        // 응답 전송
         switch (sessionType) {
             case CREATE -> {
                 CouponService couponService = DatabaseManager.getCouponService();
