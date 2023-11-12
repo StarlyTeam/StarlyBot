@@ -32,8 +32,8 @@ public class CouponState extends Coupon {
         if (document == null) return null;
 
         Coupon coupon = Coupon.deserialize(document);
-
         Date statedAt = document.getDate("statedAt");
+
         return new CouponState(coupon, statedAt);
     }
 }
