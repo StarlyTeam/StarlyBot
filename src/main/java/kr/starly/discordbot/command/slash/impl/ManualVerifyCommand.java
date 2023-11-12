@@ -52,7 +52,7 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
         }
 
         UserService userService = DatabaseManager.getUserService();
-        if (userService.getDataByDiscordId(target.getIdLong()) == null) {
+        if (userService.getDataByDiscordId(target.getIdLong()) != null) {
             event.replyEmbeds(
                     new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
@@ -89,4 +89,4 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
                         .build()
         ).queue();
     }
-} // TODO: 메시지 작업
+} // TODO: 메시지 작업, 테스트
