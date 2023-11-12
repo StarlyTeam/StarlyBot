@@ -11,9 +11,10 @@ import java.util.UUID;
 public interface CouponRedeemRepository {
 
     void put(CouponRedeem redeem);
-    CouponRedeem findByRedeemId(UUID redeemId);
-    List<CouponRedeem> findByCoupon(Coupon coupon);
-    List<CouponRedeem> findByUser(long userId);
+    CouponRedeem findOne(UUID redeemId);
+    List<CouponRedeem> findMany(Coupon coupon);
+    List<CouponRedeem> findMany(long userId);
+    List<CouponRedeem> findMany(long userId, Coupon coupon);
     List<CouponRedeem> findAll();
     void deleteOne(UUID redeemId);
 

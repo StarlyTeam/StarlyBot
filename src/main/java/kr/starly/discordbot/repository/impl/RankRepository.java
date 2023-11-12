@@ -2,6 +2,7 @@ package kr.starly.discordbot.repository.impl;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.coupon.requirement.impl.MaxUsePerMonthRequirement;
 import kr.starly.discordbot.enums.DiscountType;
 import kr.starly.discordbot.entity.coupon.Coupon;
 import kr.starly.discordbot.entity.coupon.requirement.impl.DayAfterVerifyRequirement;
@@ -66,11 +67,14 @@ public class RankRepository {
             couponService.saveData(
                     RANK1_COUPON_ID,
                     "10% 할인 쿠폰 [유성 랭크]",
-                    "상품 구매가의 10%를 할인해주는 쿠폰입니다. 매달 자동으로 지급됩니다.",
+                    "상품 구매가의 10%를 할인해주는 쿠폰입니다.",
                     List.of(
                             new DayAfterVerifyRequirement(0),
                             new RoleRequirement(RANK1_ROLE_ID, true),
-                            new RoleRequirement(RANK2_ROLE_ID, false)
+                            new RoleRequirement(RANK2_ROLE_ID, false),
+                            new RoleRequirement(RANK3_ROLE_ID, false),
+                            new RoleRequirement(RANK4_ROLE_ID, false),
+                            new RoleRequirement(RANK5_ROLE_ID, false)
                     ),
                     DiscountType.PERCENTAGE, 10,
                     0L
@@ -80,11 +84,15 @@ public class RankRepository {
             couponService.saveData(
                     RANK4_COUPON_ID,
                     "3000원 할인 쿠폰 [은하 랭크]",
-                    "상품 구매가에서 3000원을 할인해주는 쿠폰입니다. 매달 자동으로 지급됩니다.",
+                    "상품 구매가에서 3000원을 할인해주는 쿠폰입니다. 매달 1회 사용 가능합니다.",
                     List.of(
                             new DayAfterVerifyRequirement(0),
+                            new RoleRequirement(RANK1_ROLE_ID, true),
+                            new RoleRequirement(RANK2_ROLE_ID, true),
+                            new RoleRequirement(RANK3_ROLE_ID, true),
                             new RoleRequirement(RANK4_ROLE_ID, true),
-                            new RoleRequirement(RANK5_ROLE_ID, true)
+                            new RoleRequirement(RANK5_ROLE_ID, false),
+                            new MaxUsePerMonthRequirement(1)
                     ),
                     DiscountType.FIXED, 3000,
                     0L
@@ -94,10 +102,15 @@ public class RankRepository {
             couponService.saveData(
                     RANK5_COUPON_ID,
                     "5000원 할인 쿠폰 [우주 랭크]",
-                    "상품 구매가에서 5000원을 할인해주는 쿠폰입니다. 매달 자동으로 지급됩니다.",
+                    "상품 구매가에서 5000원을 할인해주는 쿠폰입니다. 매달 1회 사용 가능합니다.",
                     List.of(
                             new DayAfterVerifyRequirement(0),
-                            new RoleRequirement(RANK5_ROLE_ID, true)
+                            new RoleRequirement(RANK1_ROLE_ID, true),
+                            new RoleRequirement(RANK2_ROLE_ID, true),
+                            new RoleRequirement(RANK3_ROLE_ID, true),
+                            new RoleRequirement(RANK4_ROLE_ID, true),
+                            new RoleRequirement(RANK5_ROLE_ID, true),
+                            new MaxUsePerMonthRequirement(1)
                     ),
                     DiscountType.FIXED, 5000,
                     0L

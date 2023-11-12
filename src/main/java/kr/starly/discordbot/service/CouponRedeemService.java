@@ -23,15 +23,19 @@ public record CouponRedeemService(CouponRedeemRepository repository) {
     }
 
     public CouponRedeem getData(UUID redeemId) {
-        return repository.findByRedeemId(redeemId);
+        return repository.findOne(redeemId);
     }
 
     public List<CouponRedeem> getData(Coupon coupon) {
-        return repository.findByCoupon(coupon);
+        return repository.findMany(coupon);
     }
 
     public List<CouponRedeem> getData(long userId) {
-        return repository.findByUser(userId);
+        return repository.findMany(userId);
+    }
+
+    public List<CouponRedeem> getData(long userId, Coupon coupon) {
+        return repository.findMany(userId, coupon);
     }
 
     public void deleteData(UUID redeemId) {

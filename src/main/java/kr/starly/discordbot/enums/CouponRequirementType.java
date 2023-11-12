@@ -8,6 +8,7 @@ public enum CouponRequirementType {
 
     MAX_USE_PER_USER,
     MAX_USE_PER_COUPON,
+    MAX_USE_PER_MONTH,
 
     PRODUCT_TYPE,
 
