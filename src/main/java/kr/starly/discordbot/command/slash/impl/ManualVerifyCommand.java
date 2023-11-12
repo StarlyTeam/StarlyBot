@@ -5,13 +5,10 @@ import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Verify;
-import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.UserService;
 import kr.starly.discordbot.service.VerifyService;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
@@ -36,11 +33,8 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        Guild guild = DiscordBotManager.getInstance().getGuild();
-
-        User target = event.getOption("유저").getAsUser();
-        Member member = guild.getMember(target);
-        if (member == null) {
+        Member target = event.getOption("유저").getAsMember();
+        if (target == null) {
             event.replyEmbeds(
                     new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
