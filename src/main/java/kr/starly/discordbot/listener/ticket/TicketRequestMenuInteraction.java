@@ -6,6 +6,7 @@ import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.service.TicketService;
+import kr.starly.discordbot.util.messaging.AuditLogger;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -13,11 +14,10 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -95,6 +95,19 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             event.editSelectMenu(null).queue();
 
             ticketService.updateRate(channelId, value);
+
+            AuditLogger.info(
+                    new EmbedBuilder()
+                            .setTitle("티켓 평가")
+                            .setDescription("""
+                                    티켓 평가가 완료되었습니다.
+                                    
+                                    > 티켓: <#%d>
+                                    > 평가자: <@%d>
+                                    > 평가: %d/5
+                                    """.formatted(channelId, event.getUser().getIdLong(), value)
+                            )
+            );
         }
     }
 
