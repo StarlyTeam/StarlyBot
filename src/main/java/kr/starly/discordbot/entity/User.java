@@ -9,6 +9,6 @@ public record User(
         @NotNull Long discordId,
         @NotNull String ip,
         @NotNull Date verifiedAt,
-        @NotNull int point,
+        @NotNull Integer point,
         @NotNull List<Rank> rank
 ) {}
