@@ -120,8 +120,7 @@ public class BuyListener extends ListenerAdapter {
                         && discount.getValue() > product.getPrice()) {
                     isPure = false;
                 } else {
-                    if (!coupon.getRequirements().stream()
-                            .allMatch(requirement -> requirement.isSatisfied(userId, coupon, product))) isPure = false;
+                    if (!coupon.isUsable(userId, product)) isPure = false;
                 }
             }
 
@@ -732,8 +731,7 @@ public class BuyListener extends ListenerAdapter {
                 }
 
                 Product product = productMap.get(userId);
-                if (!coupon.getRequirements().stream()
-                        .allMatch(requirement -> requirement.isSatisfied(userId, coupon, product))) {
+                if (!coupon.isUsable(userId, product)) {
                     Button retryBtn = Button.primary(ID_PREFIX + "coupon-yes", "다시 입력하기");
                     Button withoutCouponBtn = Button.secondary(ID_PREFIX + "coupon-no", "쿠폰 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()

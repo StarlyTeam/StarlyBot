@@ -2,6 +2,7 @@ package kr.starly.discordbot.entity.coupon;
 
 import kr.starly.discordbot.entity.Discount;
 import kr.starly.discordbot.entity.coupon.requirement.CouponRequirement;
+import kr.starly.discordbot.entity.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
@@ -37,6 +38,11 @@ public class Coupon {
         this.discount = discount;
     }
 
+    public boolean isUsable(long userId, Product item) {
+        return requirements.stream()
+                .allMatch(requirement -> requirement.isSatisfied(userId, this, item));
+    }
+
     public CouponState capture() {
         return new CouponState(this);
     }
@@ -64,9 +70,10 @@ public class Coupon {
         String code = document.getString("code");
         String name = document.getString("name");
         String description = document.getString("description");
-        Discount discount = Discount.deserialize(document.get("discount", Document.class));
         Date createdAt = document.getDate("createdAt");
         long createdBy = document.getLong("createdBy");
+
+        Discount discount = Discount.deserialize(document.get("discount", Document.class));
 
         List<CouponRequirement> requirements = new ArrayList<>();
         for (Document requirement : document.getList("requirements", Document.class)) {
