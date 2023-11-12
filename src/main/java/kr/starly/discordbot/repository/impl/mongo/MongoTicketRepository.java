@@ -84,6 +84,18 @@ public class MongoTicketRepository implements TicketRepository {
     }
 
     @Override
+    public void deleteOne(long channelId) {
+        Document filter = new Document("channelId", channelId);
+        collection.deleteOne(filter);
+    }
+
+    @Override
+    public void deleteMany(long discordId) {
+        Document filter = new Document("openBy", discordId);
+        collection.deleteMany(filter);
+    }
+
+    @Override
     public void updateRate(long channelId, byte rate) {
         Document searchDocument = new Document("channelId", channelId);
         Document document = new Document();

@@ -14,6 +14,7 @@ public interface PaymentRepository {
     List<Payment> findByUserId(long userId);
     List<Payment> findAll();
     void deleteOne(UUID paymentId);
+    void deleteMany(long userId);
 
     MongoCollection<Document> getCollection();
 }

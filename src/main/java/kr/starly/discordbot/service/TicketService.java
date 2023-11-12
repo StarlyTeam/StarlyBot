@@ -21,6 +21,14 @@ public record TicketService(TicketRepository repository) {
         return repository.findByDiscordId(discordId);
     }
 
+    public void deleteDataByChannelId(long channelId) {
+        repository.deleteOne(channelId);
+    }
+
+    public void deleteDataByDiscordId(long discordId) {
+        repository.deleteMany(discordId);
+    }
+
     public long getLastIndex() {
         return repository().getLastIndex();
     }

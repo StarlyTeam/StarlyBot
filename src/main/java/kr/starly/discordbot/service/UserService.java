@@ -18,6 +18,10 @@ public record UserService(UserRepository repository) {
         return repository.findByDiscordId(discordId);
     }
 
+    public void deleteDataByDiscordId(long discordId) {
+        repository.deleteByDiscordId(discordId);
+    }
+
     public void addPoint(long discordId, int amount) {
         setPoint(discordId, getPoint(discordId) + amount);
     }

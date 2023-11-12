@@ -10,6 +10,8 @@ public interface TicketRepository {
     void updateRate(long channelId, byte rate);
     Ticket findByChannel(long channelId);
     Ticket findByDiscordId(long discordId);
+    void deleteOne(long channelId);
+    void deleteMany(long discordId);
     long getLastIndex();
     boolean isNotValidUser(long discordId);
     byte getAverageRate();

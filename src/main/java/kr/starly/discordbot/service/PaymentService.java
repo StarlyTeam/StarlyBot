@@ -36,11 +36,11 @@ public record PaymentService(PaymentRepository repository) {
         return repository.findAll();
     }
 
-    public void deleteDataByPaymentId(String paymentId) {
-        deleteDataByPaymentId(UUID.fromString(paymentId));
+    public void deleteData(UUID paymentId) {
+        repository.deleteOne(paymentId);
     }
 
-    public void deleteDataByPaymentId(UUID paymentId) {
-        repository.deleteOne(paymentId);
+    public void deleteData(long userId) {
+        repository.deleteMany(userId);
     }
 }

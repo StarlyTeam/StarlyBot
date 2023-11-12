@@ -11,6 +11,7 @@ public interface UserRepository {
     void put(User user);
     User findByDiscordId(long discordId);
     List<User> findAll();
+    void deleteByDiscordId(long discordId);
 
     MongoCollection<Document> getCollection();
 }

@@ -1,8 +1,8 @@
 package kr.starly.discordbot.repository.impl.mongo;
 
 import com.mongodb.client.MongoCollection;
-import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.entity.Rank;
+import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.repository.UserRepository;
 import kr.starly.discordbot.repository.impl.RankRepository;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 @Getter
 @AllArgsConstructor
@@ -52,9 +51,15 @@ public class MongoUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return StreamSupport.stream(collection.find().spliterator(), false)
+        return collection.find()
                 .map(this::parseUser)
-                .toList();
+                .into(new ArrayList<>());
+    }
+
+    @Override
+    public void deleteByDiscordId(long discordId) {
+        Document filter = new Document("discordId", discordId);
+        collection.deleteOne(filter);
     }
 
     private User parseUser(Document document) {

@@ -56,4 +56,10 @@ public class MongoPaymentRepository implements PaymentRepository {
         Document filter = new Document("paymentId", paymentId.toString());
         collection.deleteOne(filter);
     }
+
+    @Override
+    public void deleteMany(long userId) {
+        Document filter = new Document("requestedBy", userId);
+        collection.deleteMany(filter);
+    }
 }

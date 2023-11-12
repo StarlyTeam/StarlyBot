@@ -27,11 +27,11 @@ public record DownloadService(DownloadRepository repository) {
         return repository.findAll();
     }
 
-    public void deleteDataByToken(String token) {
+    public void deleteData(String token) {
         repository.deleteOne(token);
     }
 
-    public void deleteDataByUserId(long userId) {
+    public void deleteData(long userId) {
         repository.deleteMany(userId);
     }
 }

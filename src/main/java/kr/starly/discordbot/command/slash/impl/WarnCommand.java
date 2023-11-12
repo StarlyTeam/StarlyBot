@@ -106,7 +106,7 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 long manager = event.getUser().getIdLong();
 
-                Warn warn = new Warn(userForAdd.getIdLong(), manager, reason, warnToAdd, new Date(System.currentTimeMillis()));
+                Warn warn = new Warn(userForAdd.getIdLong(), manager, reason, warnToAdd, new Date());
                 warnService.saveData(warn);
 
                 try {
@@ -130,7 +130,7 @@ public class WarnCommand implements DiscordSlashCommand {
                         .setThumbnail(userAvatarForRemove)
                         .build();
 
-                Warn warn = new Warn(userForRemove.getIdLong(), event.getUser().getIdLong(), reason, removeAmount * -1, new Date(System.currentTimeMillis()));
+                Warn warn = new Warn(userForRemove.getIdLong(), event.getUser().getIdLong(), reason, removeAmount * -1, new Date());
                 warnService.saveData(warn);
 
                 event.replyEmbeds(messageEmbed).queue();
