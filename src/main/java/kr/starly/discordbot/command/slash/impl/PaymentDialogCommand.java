@@ -52,7 +52,6 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
-    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -66,26 +65,31 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
         int price = event.getOption("결제금액").getAsInt();
 
         Button button = Button.primary("payment-start-" + (productType.equals("커스텀") ? "CUSTOM!!!!PRICE" : "OUT!!!!SOURCING") + "§" + orderName + "§" + price, "결제하기");
+
         MessageEmbed embed1 = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("결제창")
+                .setTitle("<a:loading:1168266572847128709> 대기 | 카드 결제 <a:loading:1168266572847128709>")
                 .setDescription("""
-                       [ 결제창 (카드 전용) ]
-                       > 결제금액: %,d원
-                        """.formatted(price))
+                        > **상품명: %s**
+                        > **결제 금액: %d**
+                        
+                        ─────────────────────────────────────────────────
+                        > **아래 `결제하기`버튼을 눌러 결제를 완료해 주세요.**
+                        """
+                        .formatted(orderName, price)
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("결제시 위 내용에 동의한 것으로 간주됩니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
-        event.getChannel().sendMessageEmbeds(embed1)
-                .addActionRow(button)
-                .queue();
+        event.getChannel().sendMessageEmbeds(embed1).addActionRow(button).queue();
 
         MessageEmbed embed2 = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("결제창")
-                .setDescription("결제창을 생성했습니다.")
+                .setTitle("<a:success:1168266537262657626> 성공 | 카드 결제 <a:success:1168266537262657626>")
+                .setDescription("> **결제창을 생성하였습니다.**")
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
-        event.replyEmbeds(embed2)
-                .setEphemeral(true)
-                .queue();
+        event.replyEmbeds(embed2).setEphemeral(true).queue();
     }
 }
-// TODO 디자인

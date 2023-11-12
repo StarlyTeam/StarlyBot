@@ -79,7 +79,6 @@ public class CouponCommand implements DiscordSlashCommand {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
-    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     private final String ID_PREFIX = "coupon-manager-";
     private final Button CANCEL_BUTTON = Button.danger(ID_PREFIX + "cancel", "취소");
@@ -95,15 +94,20 @@ public class CouponCommand implements DiscordSlashCommand {
 
         // 세션 검증
         if (sessionRepository.hasSession(userId)) {
-            event.replyEmbeds(
-                            new EmbedBuilder()
-                                    .setColor(EMBED_COLOR_ERROR)
-                                    .setTitle("세션 존재")
-                                    .setDescription("이미 진행중인 세션이 존재합니다.")
-                                    .build()
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:loading:1168266572847128709> 세션 존재 | 쿠폰 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **이미 진행 중인 세션이 존재합니다.**
+                                                        
+                            ─────────────────────────────────────────────────
+                            """
                     )
-                    .setEphemeral(true)
-                    .queue();
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .build();
+
+            event.replyEmbeds(embed).setEphemeral(true).queue();
             return;
         }
 
@@ -111,11 +115,9 @@ public class CouponCommand implements DiscordSlashCommand {
         if (subCommand.equals("목록")) {
             StringBuilder sb = new StringBuilder();
             List<Coupon> coupons = DatabaseManager.getCouponService().getAllData();
-            coupons.forEach(coupon -> {
-                sb
-                        .append("%s [%s | %s]".formatted(coupon.getCode(), coupon.getName(), coupon.getDescription()))
-                        .append("\n");
-            });
+            coupons.forEach(coupon -> sb
+                    .append("%s [%s | %s]".formatted(coupon.getCode(), coupon.getName(), coupon.getDescription()))
+                    .append("\n"));
 
             event.replyFiles(FileUploadUtil.createFileUpload(sb.toString())).queue();
             return;
@@ -141,15 +143,20 @@ public class CouponCommand implements DiscordSlashCommand {
             case CREATE -> {
                 CouponService couponService = DatabaseManager.getCouponService();
                 if (couponService.getData(couponCode) != null) {
-                    event.replyEmbeds(
-                                    new EmbedBuilder()
-                                            .setColor(EMBED_COLOR_ERROR)
-                                            .setTitle("쿠폰 코드 오류")
-                                            .setDescription("이미 존재하는 쿠폰 코드입니다.")
-                                            .build()
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 코드 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **이미 존재하는 쿠폰 코드입니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
-                            .setEphemeral(true)
-                            .queue();
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .build();
+
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     sessionRepository.stopSession(userId);
                     return;
@@ -184,15 +191,19 @@ public class CouponCommand implements DiscordSlashCommand {
             case DELETE -> {
                 CouponService couponService = DatabaseManager.getCouponService();
                 if (couponService.getData(couponCode) == null) {
-                    event.replyEmbeds(
-                                    new EmbedBuilder()
-                                            .setColor(EMBED_COLOR_ERROR)
-                                            .setTitle("쿠폰 코드 오류")
-                                            .setDescription("존재하지 않는 쿠폰 코드입니다.")
-                                            .build()
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 코드 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **존재하지 않는 쿠폰 코드입니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
-                            .setEphemeral(true)
-                            .queue();
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .build();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     sessionRepository.stopSession(userId);
                     return;
@@ -200,28 +211,36 @@ public class CouponCommand implements DiscordSlashCommand {
 
                 Button confirm = Button.primary(ID_PREFIX + "delete-confirm", "삭제");
                 MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("삭제 확인")
-                        .setDescription("정말로 쿠폰을 삭제하시겠습니까?")
+                        .setColor(EMBED_COLOR)
+                        .setTitle("<a:loading:1168266572847128709> 삭제 확인 | 쿠폰 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                    > **정말로 쿠폰을 삭제하시겠습니까?**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-
-                event.replyEmbeds(embed)
-                        .addActionRow(confirm, CANCEL_BUTTON)
-                        .queue();
+                event.replyEmbeds(embed).addActionRow(confirm, CANCEL_BUTTON).queue();
             }
 
             case UPDATE -> {
                 CouponService couponService = DatabaseManager.getCouponService();
                 if (couponService.getData(couponCode) == null) {
-                    event.replyEmbeds(
-                                    new EmbedBuilder()
-                                            .setColor(EMBED_COLOR_ERROR)
-                                            .setTitle("쿠폰 코드 오류")
-                                            .setDescription("존재하지 않는 쿠폰 코드입니다.")
-                                            .build()
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 코드 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **존재하지 않는 쿠폰 코드입니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
-                            .setEphemeral(true)
-                            .queue();
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .build();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     sessionRepository.stopSession(userId);
                     return;
@@ -229,18 +248,21 @@ public class CouponCommand implements DiscordSlashCommand {
 
                 Button updateInfo = Button.primary(ID_PREFIX + "update-info", "정보 수정");
                 Button updateRequirements = Button.secondary(ID_PREFIX + "update-requirements", "사용조건 수정");
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("쿠폰 수정")
-                        .setDescription("수정할 정보를 선택해주세요.")
-                        .build();
 
-                event.replyEmbeds(embed)
-                        .addActionRow(updateInfo, updateRequirements, CANCEL_BUTTON)
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 수정 | 쿠폰 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                    > **수정할 정보를 선택해 주세요..**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).addActionRow(updateInfo, updateRequirements, CANCEL_BUTTON).setEphemeral(true).queue();
             }
         }
     }
 }
-// TODO 디자인

@@ -55,8 +55,10 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                     .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                     .setDescription("""
                             > **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!**
-                            > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏
-                            """)
+                            > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏**
+                            """
+                            .formatted(textChannel.getAsMention())
+                    )
                     .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
             event.replyEmbeds(messageEmbed).setEphemeral(true).queue();

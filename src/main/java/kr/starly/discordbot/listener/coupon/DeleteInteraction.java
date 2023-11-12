@@ -10,6 +10,7 @@ import kr.starly.discordbot.service.CouponService;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -47,18 +48,16 @@ public class DeleteInteraction extends ListenerAdapter {
             CouponService couponService = DatabaseManager.getCouponService();
             couponService.deleteData(couponCode);
 
-            event.replyEmbeds(
-                            new EmbedBuilder()
-                                    .setColor(EMBED_COLOR_SUCCESS)
-                                    .setTitle("쿠폰 삭제 완료")
-                                    .setDescription("쿠폰을 삭제하였습니다.")
-                                    .build()
-                    )
-                    .setEphemeral(true)
-                    .queue();
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_SUCCESS)
+                    .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 <a:success:1168266537262657626>")
+                    .setDescription("> **쿠폰을 삭제하였습니다.**")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .build();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
 
             sessionRepository.stopSession(userId);
         }
     }
 }
-// TODO 디자인

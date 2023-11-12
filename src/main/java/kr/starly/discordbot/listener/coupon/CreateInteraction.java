@@ -58,15 +58,14 @@ public class CreateInteraction extends ListenerAdapter {
             try {
                 discountType = DiscountType.valueOf(discountTypeStr);
             } catch (IllegalArgumentException ignored) {
-                event.replyEmbeds(
-                                new EmbedBuilder()
-                                        .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("할인 타입 오류")
-                                        .setDescription("할인 타입을 찾을 수 없습니다.")
-                                        .build()
-                        )
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                        .setDescription("> **할인 타입을 찾을 수 없습니다.**")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
 
                 sessionRepository.stopSession(userId);
                 return;
@@ -76,15 +75,14 @@ public class CreateInteraction extends ListenerAdapter {
             try {
                 discountValue = Integer.parseInt(discountValueStr);
             } catch (NumberFormatException ignored) {
-                event.replyEmbeds(
-                                new EmbedBuilder()
-                                        .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("할인 값 오류")
-                                        .setDescription("할인 값이 올바르지 않습니다.")
-                                        .build()
-                        )
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                        .setDescription("> **할인 값이 올바르지 않습니다.**")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
 
                 sessionRepository.stopSession(userId);
                 return;
@@ -105,13 +103,12 @@ public class CreateInteraction extends ListenerAdapter {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("쿠폰 생성 성공")
-                    .setDescription("쿠폰을 생성하였습니다.")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 <a:success:1168266537262657626>")
+                    .setDescription("> **쿠폰을 생성하였습니다.**")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
-            event.replyEmbeds(embed)
-                    .setEphemeral(true)
-                    .queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
         }
     }
 }
-// TODO 디자인

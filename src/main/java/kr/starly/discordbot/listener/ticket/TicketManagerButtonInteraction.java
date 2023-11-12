@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -32,8 +33,8 @@ import java.util.concurrent.TimeUnit;
 public class TicketManagerButtonInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
-    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final String WARN_CHANNEL_ID = configProvider.getString("WARN_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
@@ -54,7 +55,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
         if (event.getComponentId().startsWith("ticket-close")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
-                event.reply("관리자만 사용이 가능합니다.").setEphemeral(true).queue();
+                PermissionUtil.sendPermissionError(event.getChannel());
                 return;
             }
 
@@ -70,7 +71,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
         if (event.getComponentId().contains("ticket-check-twice-close")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
-                event.reply("관리자만 사용이 가능합니다.").setEphemeral(true).queue();
+                PermissionUtil.sendPermissionError(event.getChannel());
                 return;
             }
 
@@ -78,19 +79,26 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             User ticketUser = textChannel.getJDA().getUserById(ticketUserId);
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("고객센터 도우미")
-                    .setDescription("상담이 도움 되셨나요? 아래 별점을 통해 평가해 주세요!")
+                    .setColor(EMBED_COLOR)
+                    .setTitle(" <a:loading:1168266572847128709> 평가하기 | 고객센터 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **상담이 도움 되셨나요? 아래 별점을 통해 평가해 주세요.**
+                            
+                            ─────────────────────────────────────────────────
+                            """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
 
             StringSelectMenu rateSelectMenu = StringSelectMenu
                     .create("ticket-rate-select-menu-" + textChannel.getId())
-                    .setPlaceholder("평가")
-                    .addOption("매우 만족", "ticket-rate-5")
-                    .addOption("만족", "ticket-rate-4")
-                    .addOption("보통", "ticket-rate-3")
-                    .addOption("불만족", "ticket-rate-2")
-                    .addOption("매우 불만족", "ticket-rate-1")
+                    .setPlaceholder("상담 평가하기")
+                    .addOption("매우 만족", "ticket-rate-5", "", Emoji.fromUnicode("\uD83D\uDE0D"))
+                    .addOption("만족", "ticket-rate-4", "", Emoji.fromUnicode("\uD83E\uDD70"))
+                    .addOption("보통", "ticket-rate-3", "", Emoji.fromUnicode("\uD83D\uDE42"))
+                    .addOption("불만족", "ticket-rate-2", "", Emoji.fromUnicode("\uD83E\uDD72"))
+                    .addOption("매우 불만족", "ticket-rate-1", "", Emoji.fromUnicode("\uD83D\uDE21"))
                     .build();
 
             try {
@@ -108,15 +116,24 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     new Ticket(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
-            event.reply("2초 후 채널이 삭제됩니다.").setEphemeral(true).queue();
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_SUCCESS)
+                    .setTitle("<a:success:1168266537262657626> 성공 | 티켓 <a:success:1168266537262657626>")
+                    .setDescription("""
+                                > **5초 후 채널이 삭제됩니다.**
+                                
+                                """
+                    )
+                    .build();
+            event.replyEmbeds(embed).setEphemeral(true).complete();
 
-            event.getChannel().delete().queueAfter(2, TimeUnit.SECONDS);
+            event.getChannel().delete().queueAfter(5, TimeUnit.SECONDS);
             return;
         }
 
         if (event.getComponentId().contains("ticket-check-joke-")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
-                event.reply("관리자만 사용이 가능합니다.").setEphemeral(true).queue();
+                PermissionUtil.sendPermissionError(event.getChannel());
                 return;
             }
 
@@ -132,15 +149,19 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             ticketUser.openPrivateChannel().queue(privateChannel -> {
                 Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
                 warnService.saveData(warnInfo);
-                
+
                 MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_ERROR)
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + ticketUser.getAsMention() + " 님에게 " + warnInfo.amount() + "경고를 추가 하였습니다.** \n" +
-                                "> 사유 : " + warnInfo.reason())
+                        .setDescription("""
+                                > **%s님에게 %d경고를 추가하였습니다.**
+                                > **사유: %s**
+                                
+                                """
+                                .formatted(ticketUser.getAsMention(), warnInfo.amount(), warnInfo.reason())
+                        )
                         .setThumbnail(ticketUser.getAvatarUrl())
                         .build();
-                
                 event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(messageEmbed).queue();
 
                 try {
@@ -154,4 +175,3 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
         }
     }
 }
-// TODO 디자인

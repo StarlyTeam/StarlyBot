@@ -125,7 +125,7 @@ public class WarnCommand implements DiscordSlashCommand {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:success:1168266537262657626> 제거 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + removeAmount + "만큼 제거하였습니다.** \n" +
+                        .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + removeAmount + " 제거하였습니다.** \n" +
                                 "사유 > `" + reason + "`")
                         .setThumbnail(userAvatarForRemove)
                         .build();

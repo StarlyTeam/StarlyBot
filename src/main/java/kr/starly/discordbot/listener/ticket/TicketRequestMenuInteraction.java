@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +27,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
@@ -62,21 +64,35 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             byte value = Byte.valueOf(event.getValues().get(0).replace("ticket-rate-", ""));
 
             MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("평점을 해주셔서 감사합니다!")
-                    .setDescription("좋은평점을 주셔서 감사합니다!")
+                    .setColor(EMBED_COLOR_SUCCESS)
+                    .setTitle("<a:success:1168266537262657626> 성공 | 고객센터 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **평가를 남겨 주셔서 감사합니다 🥳**
+                            > **앞으로도 좋은 서비스를 제공할 수 있도록 노력하겠습니다!**
+                            
+                            """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
 
             if (value <= 2) {
                 messageEmbed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("평점을 해주셔서 감사합니다!")
-                        .setDescription("다음에는 더욱 노력하여 성실히 답변에 임하겠습니다 :)")
+                        .setColor(EMBED_COLOR_SUCCESS)
+                        .setTitle("<a:success:1168266537262657626> 성공 | 고객센터 <a:success:1168266537262657626>")
+                        .setDescription("""
+                            > **평가를 남겨 주셔서 감사합니다 🥳**
+                            > **다음에는 더욱 좋은 서비스를 경험하실 수 있도록 노력하는 스탈리가 되겠습니다.**
+                            
+                            """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .build();
             }
 
-            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
-            event.getMessage().delete().queue();
+            event.replyEmbeds(messageEmbed).queue();
+            event.editSelectMenu(null).queue();
 
             ticketService.updateRate(channelId, value);
         }
