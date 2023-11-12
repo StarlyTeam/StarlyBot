@@ -66,6 +66,8 @@ public class Download {
 
 
     public static Download deserialize(Document document) {
+        if (document == null) return null;
+
         String token = document.getString("token");
         PluginFile file = PluginFile.deserialize(document.get("pluginFile", Document.class));
         Long userId = document.getLong("userId");

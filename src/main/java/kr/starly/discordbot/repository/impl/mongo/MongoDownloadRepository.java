@@ -30,8 +30,7 @@ public class MongoDownloadRepository implements kr.starly.discordbot.repository.
     @Override
     public Download findOne(String token) {
         Document filter = new Document("token", token);
-        Document document = collection.find(filter).first();
-        return Download.deserialize(document);
+        return Download.deserialize(collection.find(filter).first());
     }
 
     @Override
