@@ -37,6 +37,7 @@ public class DatabaseManager {
     private static final String DB_COLLECTION_COUPON_REDEEM = configProvider.getString("DB_COLLECTION_COUPON_REDEEM");
     private static final String DB_COLLECTION_PAYMENT = configProvider.getString("DB_COLLECTION_PAYMENT");
     private static final String DB_COLLECTION_DOWNLOAD = configProvider.getString("DB_COLLECTION_DOWNLOAD");
+    private static final String DB_COLLECTION_VERIFY = configProvider.getString("DB_COLLECTION_VERIFY");
 
     private static final MongoClient mongoClient = MongoClients.create(DB_HOST);
     private static final MongoDatabase database = mongoClient.getDatabase(DB_DATABASE);
@@ -52,6 +53,7 @@ public class DatabaseManager {
     private static final MongoCollection<Document> couponRedeemCollection = database.getCollection(DB_COLLECTION_COUPON_REDEEM);
     private static final MongoCollection<Document> paymentCollection = database.getCollection(DB_COLLECTION_PAYMENT);
     private static final MongoCollection<Document> downloadCollection = database.getCollection(DB_COLLECTION_DOWNLOAD);
+    private static final MongoCollection<Document> verifyCollection = database.getCollection(DB_COLLECTION_VERIFY);
 
 
     private static final UserRepository userRepository = new MongoUserRepository(userCollection);
@@ -65,6 +67,7 @@ public class DatabaseManager {
     private static final CouponRedeemRepository couponRedeemRepository = new MongoCouponRedeemRepository(couponRedeemCollection);
     private static final PaymentRepository paymentRepository = new MongoPaymentRepository(paymentCollection);
     private static final DownloadRepository downloadRepository = new MongoDownloadRepository(downloadCollection);
+    private static final VerifyRepository verifyRepository = new MongoVerifyRepository(verifyCollection);
 
 
     @Getter private static final UserService userService = new UserService(userRepository);
@@ -78,4 +81,5 @@ public class DatabaseManager {
     @Getter private static final CouponRedeemService couponRedeemService = new CouponRedeemService(couponRedeemRepository);
     @Getter private static final PaymentService paymentService = new PaymentService(paymentRepository);
     @Getter private static final DownloadService downloadService = new DownloadService(downloadRepository);
+    @Getter private static final VerifyService verifyService = new VerifyService(verifyRepository);
 }

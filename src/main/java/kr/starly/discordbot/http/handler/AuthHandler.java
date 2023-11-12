@@ -4,24 +4,29 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Rank;
+import kr.starly.discordbot.entity.Verify;
 import kr.starly.discordbot.http.service.AuthService;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.entity.Rank;
 import kr.starly.discordbot.repository.impl.RankRepository;
 import kr.starly.discordbot.service.BlacklistService;
 import kr.starly.discordbot.service.UserService;
+import kr.starly.discordbot.service.VerifyService;
 import kr.starly.discordbot.util.messaging.AuditLogger;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AuthHandler implements HttpHandler {
 
@@ -64,6 +69,7 @@ public class AuthHandler implements HttpHandler {
             return;
         }
 
+        VerifyService verifyService = DatabaseManager.getVerifyService();
         BlacklistService blacklistService = DatabaseManager.getBlacklistService();
         if (blacklistService.getDataByUserId(userId) != null) {
             sendResponse(exchange, 403, "당신은 블랙리스트에 등록되어 있습니다.");
@@ -99,8 +105,8 @@ public class AuthHandler implements HttpHandler {
                 .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                 .build();
 
-        User user = member.getUser();
-        user.openPrivateChannel()
+        AtomicBoolean isDMSent = new AtomicBoolean(true);
+        member.getUser().openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
                 .queue(null, throwable -> {
                             AuditLogger.warning(new EmbedBuilder()
@@ -115,6 +121,8 @@ public class AuthHandler implements HttpHandler {
                                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                                     )
                             );
+
+                            isDMSent.set(false);
                         }
                 );
 
@@ -170,6 +178,9 @@ public class AuthHandler implements HttpHandler {
         if (authService.validateToken(userId, token)) {
             authService.removeTokenForUser(userId);
         }
+
+        Verify verify = new Verify(token, userId, userIp, isDMSent.get(), new Date());
+        verifyService.saveData(verify);
     }
 
     private void sendResponse(HttpExchange exchange, int rCode, String rBody) throws IOException {

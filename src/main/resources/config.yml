@@ -50,6 +50,7 @@ DB_COLLECTION_COUPON: "coupon"
 DB_COLLECTION_COUPON_REDEEM: "couponRedeem"
 DB_COLLECTION_PAYMENT: "payment"
 DB_COLLECTION_DOWNLOAD: "download"
+DB_COLLECTION_VERIFY: "verify"
 
 # + -------------------------------------------------------------------------------- + #
 # | WEB SERVER CONFIGURATION ( 웹 서버 설정 )
