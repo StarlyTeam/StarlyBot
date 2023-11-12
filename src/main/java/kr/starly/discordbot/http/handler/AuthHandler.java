@@ -70,6 +70,20 @@ public class AuthHandler implements HttpHandler {
         }
 
         VerifyService verifyService = DatabaseManager.getVerifyService();
+        List<Verify> verifies = verifyService.getDataByUserIp(userIp);
+        if (verifies.stream()
+                .anyMatch(verify ->
+                        !verify.getUserIp().equals(userIp)
+                                && guild.getMemberById(verify.getUserId()) != null
+                )
+        ) {
+            AuditLogger.warning(new EmbedBuilder()
+                    .setTitle("이미 해당 IP 주소에서 인증된 다른 유저가 있습니다.")
+                    .setDescription("유저: " + member.getAsMention() + " (" + member.getEffectiveName() + ")\n"
+                            + "IP 주소: " + userIp)
+            );
+        } // TODO: 테스트
+
         BlacklistService blacklistService = DatabaseManager.getBlacklistService();
         if (blacklistService.getDataByUserId(userId) != null) {
             sendResponse(exchange, 403, "당신은 블랙리스트에 등록되어 있습니다.");
