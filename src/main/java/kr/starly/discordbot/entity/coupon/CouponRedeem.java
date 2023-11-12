@@ -1,5 +1,6 @@
 package kr.starly.discordbot.entity.coupon;
 
+import kr.starly.discordbot.configuration.DatabaseManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
@@ -30,5 +31,18 @@ public class CouponRedeem {
         document.put("requestedAt", getRequestedAt());
         
         return document;
+    }
+
+
+    public static CouponRedeem deserialize(Document document) {
+        if (document == null) return null;
+
+        UUID redeemId = document.get("redeemId", UUID.class);
+        CouponState couponState = CouponState.deserialize(document.get("couponState", Document.class));
+        Coupon coupon = DatabaseManager.getCouponService().getData(couponState.getCode());
+        long requestedBy = document.getLong("requestedBy");
+        Date requestedAt = document.getDate("requestedAt");
+
+        return new CouponRedeem(redeemId, coupon, couponState, requestedBy, requestedAt);
     }
 }
