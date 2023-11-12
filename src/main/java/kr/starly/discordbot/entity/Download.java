@@ -78,6 +78,7 @@ public class Download {
         Date createdAt = document.getDate("createdAt");
         Date usedAt = document.getDate("usedAt");
         Date expireAt = document.getDate("expireAt");
+
         return new Download(token, file, userId, userIp, isUsed, isSuccess, isExpired, createdAt, usedAt, expireAt);
     }
 }
