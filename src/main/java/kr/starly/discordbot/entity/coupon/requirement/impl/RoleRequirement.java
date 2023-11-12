@@ -31,8 +31,7 @@ public class RoleRequirement extends CouponRequirement {
 
     @Override
     public boolean isSatisfied(long userId, Coupon coupon, Product item) {
-        JDA jda = DiscordBotManager.getInstance().getJda();
-        Guild guild = jda.getGuildById(GUILD_ID);
+        Guild guild = DiscordBotManager.getInstance().getGuild();
         Member member = guild.getMemberById(userId);
 
         Role role = guild.getRoleById(roleId);

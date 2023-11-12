@@ -18,14 +18,14 @@ public class RoleChecker {
     private static final String VERIFIED_ROLE_ID = configProvider.getString("VERIFIED_ROLE_ID");
 
     public static boolean hasAdminRole(Member member) {
-        Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
+        Guild guild = DiscordBotManager.getInstance().getGuild();
         Role adminRole = guild.getRoleById(ADMIN_ROLE);
 
         return hasRole(member, adminRole);
     }
 
     public static boolean hasVerifiedRole(Member member) {
-        Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
+        Guild guild = DiscordBotManager.getInstance().getGuild();
         Role role = guild.getRoleById(VERIFIED_ROLE_ID);
 
         return hasRole(member, role);

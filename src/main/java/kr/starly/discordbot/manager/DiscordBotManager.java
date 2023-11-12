@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -37,8 +38,9 @@ public class DiscordBotManager {
     private final String GUILD_ID = configProvider.getString("GUILD_ID");
     private final String BOT_TOKEN = configProvider.getString("BOT_TOKEN");
 
-    @Getter
-    private JDA jda;
+
+    @Getter private JDA jda;
+    @Getter private Guild guild;
     private boolean isBotFullyLoaded = false;
 
     private final SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
@@ -51,6 +53,8 @@ public class DiscordBotManager {
             CommandListenerBase commandListener = new CommandListenerBase();
             builder.addEventListeners(commandListener);
             jda = builder.build();
+            guild = jda.getGuildById(GUILD_ID);
+
             registerEventListeners();
         } catch (Exception e) {
             LOGGER.severe("봇을 실행하는 도중에 오류가 발생하였습니다." + e.getMessage());
