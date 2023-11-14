@@ -7,7 +7,9 @@ import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Verify;
 import kr.starly.discordbot.service.UserService;
 import kr.starly.discordbot.service.VerifyService;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -33,6 +35,11 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event);
+            return;
+        }
+
         Member target = event.getOption("유저").getAsMember();
         if (target == null) {
             event.replyEmbeds(
