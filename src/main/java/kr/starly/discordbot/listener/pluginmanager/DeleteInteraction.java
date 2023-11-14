@@ -38,7 +38,7 @@ public class DeleteInteraction extends ListenerAdapter {
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
+            PermissionUtil.sendPermissionError(event);
             return;
         }
 
@@ -68,7 +68,7 @@ public class DeleteInteraction extends ListenerAdapter {
         if (!event.getChannel().getId().equals(PLUGIN_MANAGEMENT_CHANNEL_ID)) return;
         if (!event.getModalId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
+            PermissionUtil.sendPermissionError(event);
             return;
         }
 

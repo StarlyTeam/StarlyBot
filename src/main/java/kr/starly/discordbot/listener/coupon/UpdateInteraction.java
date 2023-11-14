@@ -54,7 +54,7 @@ public class UpdateInteraction extends ListenerAdapter {
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (!event.getComponentId().startsWith(ID_PREFIX)) return;
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
+            PermissionUtil.sendPermissionError(event);
             return;
         }
 
@@ -102,7 +102,7 @@ public class UpdateInteraction extends ListenerAdapter {
         switch (modalId) {
             case ID_PREFIX + "update" -> {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
                 if (sessionType != CouponSessionType.UPDATE) return;
@@ -173,7 +173,7 @@ public class UpdateInteraction extends ListenerAdapter {
 
             case ID_PREFIX + "add-requirements" -> {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
 
@@ -430,7 +430,7 @@ public class UpdateInteraction extends ListenerAdapter {
         switch (componentId) {
             case ID_PREFIX + "update-info" -> {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
                 CouponService couponService = DatabaseManager.getCouponService();
@@ -476,7 +476,7 @@ public class UpdateInteraction extends ListenerAdapter {
 
             case ID_PREFIX + "update-requirements" -> {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
 
@@ -505,7 +505,7 @@ public class UpdateInteraction extends ListenerAdapter {
 
             case ID_PREFIX + "add-requirements" -> {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
 
@@ -603,7 +603,7 @@ public class UpdateInteraction extends ListenerAdapter {
 
             case ID_PREFIX + "remove-requirements" -> {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
 

@@ -56,7 +56,7 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
+            PermissionUtil.sendPermissionError(event);
             return;
         }
 

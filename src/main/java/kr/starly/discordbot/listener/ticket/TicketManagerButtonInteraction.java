@@ -55,7 +55,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
         if (event.getComponentId().startsWith("ticket-close")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
-                PermissionUtil.sendPermissionError(event.getChannel());
+                PermissionUtil.sendPermissionError(event);
                 return;
             }
 
@@ -71,7 +71,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
         if (event.getComponentId().contains("ticket-check-twice-close")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
-                PermissionUtil.sendPermissionError(event.getChannel());
+                PermissionUtil.sendPermissionError(event);
                 return;
             }
 
@@ -133,7 +133,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
         if (event.getComponentId().contains("ticket-check-joke-")) {
             if (!PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR)) {
-                PermissionUtil.sendPermissionError(event.getChannel());
+                PermissionUtil.sendPermissionError(event);
                 return;
             }
 

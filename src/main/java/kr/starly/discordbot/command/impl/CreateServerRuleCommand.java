@@ -24,7 +24,7 @@ public class CreateServerRuleCommand implements DiscordCommand {
     @Override
     public void execute(MessageReceivedEvent event) {
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
+            PermissionUtil.sendPermissionError(event.getMessage());
             return;
         }
 

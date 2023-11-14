@@ -34,7 +34,7 @@ public class ListInteraction extends ListenerAdapter {
 
             if (selectedOption.equals("plugin-list")) {
                 if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                    PermissionUtil.sendPermissionError(event.getChannel());
+                    PermissionUtil.sendPermissionError(event);
                     return;
                 }
 

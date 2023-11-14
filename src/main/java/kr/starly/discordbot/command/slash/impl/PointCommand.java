@@ -84,7 +84,7 @@ public class PointCommand implements DiscordSlashCommand {
         }
 
         if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event.getChannel());
+            PermissionUtil.sendPermissionError(event);
             return;
         }
 
@@ -188,7 +188,7 @@ public class PointCommand implements DiscordSlashCommand {
         long targetId;
         if (event.getOption("유저") != null) {
             if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-                PermissionUtil.sendPermissionError(event.getChannel());
+                PermissionUtil.sendPermissionError(event);
                 return;
             }
 
