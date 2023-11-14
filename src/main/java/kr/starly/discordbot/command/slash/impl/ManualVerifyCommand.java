@@ -11,6 +11,7 @@ import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
@@ -42,25 +43,37 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
 
         Member target = event.getOption("유저").getAsMember();
         if (target == null) {
-            event.replyEmbeds(
-                    new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("해당 유저는 서버에 존재하지 않습니다.")
-                            .build()
-            ).queue();
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 수동인증 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                                    > **해당 유저는 서버에 존재하지 않습니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .build();
+            event.replyEmbeds(embed).queue();
             return;
         }
 
         UserService userService = DatabaseManager.getUserService();
         if (userService.getDataByDiscordId(target.getIdLong()) != null) {
-            event.replyEmbeds(
-                    new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("해당 유저는 이미 인증된 유저입니다.")
-                            .build()
-            ).queue();
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 수동인증 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                                    > **해당 유저는 이미 인증된 유저입니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .build();
+            event.replyEmbeds(embed).queue();
             return;
         }
 
@@ -82,12 +95,18 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
         );
         verifyService.saveData(verify);
 
-        event.replyEmbeds(
-                new EmbedBuilder()
-                        .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("제목")
-                        .setDescription("해당 유저의 인증이 완료되었습니다.")
-                        .build()
-        ).queue();
+        MessageEmbed embed = new EmbedBuilder()
+                .setColor(EMBED_COLOR_ERROR)
+                .setTitle("<a:success:1168266537262657626> 성공 | 수동인증 <a:success:1168266537262657626>")
+                .setDescription("""
+                                    > **해당 유저의 인증이 완료되었습니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    """
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .build();
+        event.replyEmbeds(embed).queue();
     }
-} // TODO: 메시지 작업, 테스트
+}
