@@ -19,6 +19,18 @@ public abstract class Product {
     private final String note;
 
     public abstract ProductType getType();
+
+    public String getName() {
+        if (this instanceof PremiumPluginProduct this1) {
+            Plugin plugin = this1.getPlugin();
+            return plugin.getKRName() + "(" + plugin.getENName() + ")";
+        } else if (this instanceof OutSourcingProduct this1) {
+            return this1.getName();
+        } else if (this instanceof CustomPriceProduct this1) {
+            return this1.getOrderName();
+        }
+    }
+
     public PremiumPluginProduct asPremiumPlugin() {
         return (PremiumPluginProduct) this;
     }
