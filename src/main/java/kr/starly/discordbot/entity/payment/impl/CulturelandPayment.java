@@ -5,6 +5,7 @@ import kr.starly.discordbot.entity.coupon.CouponState;
 import kr.starly.discordbot.entity.payment.Payment;
 import kr.starly.discordbot.enums.PaymentMethod;
 import kr.starly.discordbot.entity.product.Product;
+import lombok.Getter;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 import java.util.UUID;
 
+@Getter
 public class CulturelandPayment extends Payment {
 
     @NotNull private final String pinNumber;
