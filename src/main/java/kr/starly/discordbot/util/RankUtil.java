@@ -42,7 +42,7 @@ public class RankUtil {
                 case ROLE -> {
                     Role role = ((RolePerk) perk).getRole();
 
-                    Guild guild = DiscordBotManager.getInstance().getGuild();
+                    Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
                     guild.addRoleToMember(UserSnowflake.fromId(userId), role).queue();
                 }
 
