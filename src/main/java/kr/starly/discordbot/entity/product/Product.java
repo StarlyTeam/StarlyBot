@@ -28,7 +28,7 @@ public abstract class Product {
             return this1.getName();
         } else if (this instanceof CustomPriceProduct this1) {
             return this1.getOrderName();
-        }
+        } else return null;
     }
 
     public PremiumPluginProduct asPremiumPlugin() {
