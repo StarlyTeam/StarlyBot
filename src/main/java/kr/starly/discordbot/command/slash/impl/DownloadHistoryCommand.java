@@ -31,8 +31,6 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
-    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
-    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -84,7 +82,7 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
         event.replyEmbeds(
                 new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("다운로드 내역")
+                        .setTitle(" <a:loading:1168266572847128709> 목록 | 다운로드 내역 <a:loading:1168266572847128709>")
                         .setDescription("""
                                 ```
                                 %s```
@@ -92,4 +90,4 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
                         .build()
         ).queue();
     }
-} // TODO: 메시지 작업, 테스트
+}

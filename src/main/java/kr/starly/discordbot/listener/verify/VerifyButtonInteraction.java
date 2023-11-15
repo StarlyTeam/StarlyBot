@@ -86,7 +86,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 유저인증 | 이용약관 <a:loading:1168266572847128709>")
-                        .setDescription("> **이용약관은 <#1141984482619035698> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
+                        .setDescription("> **이용약관은 <#1168253041812701398> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
@@ -97,7 +97,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 유저인증 | 서버규칙 <a:loading:1168266572847128709>")
-                        .setDescription("> **서버규칙은 <#1141982220219846686> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
+                        .setDescription("> **서버규칙은 <#1038741748941340732> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();

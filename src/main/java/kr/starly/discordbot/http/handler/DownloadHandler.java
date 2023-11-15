@@ -65,27 +65,31 @@ public class DownloadHandler implements HttpHandler {
         downloadService.saveData(download);
 
         AuditLogger.info(new EmbedBuilder()
-                .setTitle("다운로드 요청")
+                .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 다운로드 <a:success:1168266537262657626>")
                 .setDescription("""
-                        다운로드 요청이 처리되었습니다.
-                        > **플러그인: %s**
-                        > **버전: %s**
-                        > **파일: %s**
-                        > **유저: <@%d>**
-                        > **아이피: %s**
-                        > **성공 여부: %s**
-                        > **토큰: %s**
-                        """.formatted(
-                                plugin.getENName(),
+                                > **%s님이 %s을(를) 다운로드하였습니다.**
+                                > **성공 여부: %s**
+
+                                ─────────────────────────────────────────────────
+                                > **플러그인: %s**
+                                > **버전: %s**
+                                > **파일: %s**
+                                > **유저: %s**
+                                > **아이피: %s**
+                                > **토큰: %s**
+                                """.formatted(
+                                "<@" + download.getUserId() + ">",
+                                plugin.getENName() + "(" + plugin.getKRName() + ")",
+                                download.isSuccess() ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
+                                plugin.getENName() + "(" + plugin.getKRName() + ")",
                                 pluginFile.getMcVersion(),
                                 pluginFile.getVersion(),
-                                download.getUserId(),
-                                download.getUserIp(),
-                                download.isSuccess() ? "성공" : "실패",
+                                "<@" + download.getUserId() + ">",
+                                exchange.getRemoteAddress().getAddress().getHostAddress(),
                                 download.getToken()
                         )
                 )
-        ); // TODO: 메시지 작업
+        );
     }
 
     private void sendResponse(HttpExchange exchange, int rCode, String rBody) throws IOException {
