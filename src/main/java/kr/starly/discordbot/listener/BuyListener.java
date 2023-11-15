@@ -80,7 +80,7 @@ public class BuyListener extends ListenerAdapter {
     private final Map<Long, Coupon> couponMap = new HashMap<>();
     private final Map<Long, Integer> pointMap = new HashMap<>();
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("H:mm:ss a (yyyy-MM-dd)");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final String ID_PREFIX = "payment-";
     private final int POINT_USE_MINIMUM = 1000;
     private final int POINT_USE_UNIT = 100;
@@ -227,10 +227,10 @@ public class BuyListener extends ListenerAdapter {
                 }
 
                 case CULTURELAND -> {
-                    TextInput pinNumber = TextInput.create("pin-number", "핀번호", TextInputStyle.SHORT)
+                    TextInput pinNumber = TextInput.create("pin-number", "핀 번호", TextInputStyle.SHORT)
                             .setMinLength(14)
                             .setMaxLength(16)
-                            .setPlaceholder("상품권의 핀번호를 입력해주세요.")
+                            .setPlaceholder("상품권의 핀 번호를 입력해주세요.")
                             .setRequired(true)
                             .build();
                     Modal modal = Modal.create(ID_PREFIX + "cultureland", "문화상품권")
@@ -396,7 +396,7 @@ public class BuyListener extends ListenerAdapter {
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("결제가 수락되었습니다.")
                     .setDescription("<@" + payment.getRequestedBy() + ">님이 요청하신 결제(" + payment.getPaymentId() + ")가 수락되었습니다.")
-                    .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                     .build();
             event.getJDA().getUserById(payment.getRequestedBy())
                     .openPrivateChannel()
@@ -410,6 +410,91 @@ public class BuyListener extends ListenerAdapter {
                         event.getChannel().sendMessageEmbeds(embed3)
                                 .queue();
                     });
+
+            MessageEmbed receipt = new EmbedBuilder()
+                    .setColor(EMBED_COLOR)
+                    .setTitle("영수증")
+                    .setDescription("""
+                                주소: 경상남도 통영시 광도면 신죽**길
+                                대표: 양대영
+                                사업자 번호: 210-36-72319
+                                이메일: yangdaeyeong0808@gmail.com
+                                홈페이지: https://starly.kr/
+                                ======================================
+                                
+                                자동처리            %s
+                                주문번호: %s
+                                
+                                --------------------------------------
+                                상품명: %s
+                                정가: %,d₩
+                                --------------------------------------
+                                             판매총액:      %,d₩
+                                         -----------------------------
+                                　　　　　　　　　공급가:      %,d₩
+                                　　　　　　　　　부가세:      %,d₩
+                                --------------------------------------
+                                
+                                디스코드 ID: %d
+                                디스코드 닉네임: %s
+                                         　  사용 포인트:    %,d
+                                         　  잔여 포인트:    %,d
+                                         
+                                %s
+                                
+                                --------------------------------------
+                                
+                                좋은 하루 되세요!
+                                언제나 고객님을 위해 최선을 다하겠습니다.
+                                """.formatted(
+                                    DATE_FORMAT.format(payment.getApprovedAt()),
+                                    payment.getPaymentId(),
+                                    product.getName(),
+                                    product.getPrice(),
+                                    product.getPrice(),
+                                    payment.getFinalPrice() / 110 * 100,
+                                    payment.getFinalPrice() / 110 * 10,
+                                    payment.getRequestedBy(),
+                                    event.getUser().getEffectiveName(),
+                                    payment.getUsedPoint(),
+                                    DatabaseManager.getUserService().getPoint(userId),
+                                    payment.getMethod() == PaymentMethod.BANK_TRANSFER ? """
+                                            **************************************
+                                              **** 계좌이체 매출전표(고객용) ****
+                                            **************************************
+                                            입금자명: %s
+                                            승인일시: %s
+                                            """
+                                            .formatted(
+                                                    payment.asBankTransfer().getDepositor(),
+                                                    payment.getApprovedAt()
+                                            ) : """
+                                            **************************************
+                                              *** 문화상품권 매출전표 (고객용) ***
+                                            **************************************
+                                            핀 번호: %s
+                                            승인일시: %s
+                                            """
+                                            .formatted(
+                                                    payment.asCultureland().getPinNumber(),
+                                                    payment.getApprovedAt()
+                                            )
+                            )
+                    )
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .build();
+            event.getUser()
+                    .openPrivateChannel().complete()
+                    .sendMessageEmbeds(receipt)
+                    .queue(null, (err) -> {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("제목")
+                                .setDescription("DM으로 영수증을 전송하지 못했습니다.\n> <@" + payment.getRequestedBy() + ">")
+                                .build();
+                        event.getChannel().sendMessageEmbeds(embed)
+                                .queue();
+                    }); // TODO: 메시지 작업
 
             // 컴포넌트 전체 비활성화
             event.getMessage().editMessageComponents(
@@ -468,7 +553,7 @@ public class BuyListener extends ListenerAdapter {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("결제가 거절되었습니다.")
                     .setDescription("<@" + payment.getRequestedBy() + ">님이 요청하신 결제(" + payment.getPaymentId() + ")가 거절되었습니다.")
-                    .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                     .build();
             event.getJDA().getUserById(payment.getRequestedBy())
                     .openPrivateChannel()
@@ -1149,6 +1234,79 @@ public class BuyListener extends ListenerAdapter {
                                 "생성된 티켓: 없음")
                 );
 
+                MessageEmbed receipt = new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("영수증")
+                        .setDescription("""
+                                주소: 경상남도 통영시 광도면 신죽**길
+                                대표: 양대영
+                                사업자 번호: 210-36-72319
+                                이메일: yangdaeyeong0808@gmail.com
+                                홈페이지: https://starly.kr/
+                                ======================================
+                                
+                                자동처리            %s
+                                주문번호: %s
+                                
+                                --------------------------------------
+                                상품명: %s
+                                정가: %,d₩
+                                --------------------------------------
+                                             판매총액:      %,d₩
+                                         -----------------------------
+                                　　　　　　　　　공급가:      %,d₩
+                                　　　　　　　　　부가세:      %,d₩
+                                --------------------------------------
+                                
+                                디스코드 ID: %d
+                                디스코드 닉네임: %s
+                                         　  사용 포인트:    %,d
+                                         　  잔여 포인트:    %,d
+                                         
+                                **************************************
+                                  **** 신용카드 매출전표(고객용) ****
+                                **************************************
+                                카드번호: %s
+                                할부: %d개월
+                                
+                                --------------------------------------
+                                
+                                %s
+                                
+                                좋은 하루 되세요!
+                                언제나 고객님을 위해 최선을 다하겠습니다.
+                                """.formatted(
+                                    DATE_FORMAT.format(payment.getApprovedAt()),
+                                    payment.getPaymentId(),
+                                    product.getName(),
+                                    product.getPrice(),
+                                    product.getPrice(),
+                                    payment.getFinalPrice() / 110 * 100,
+                                    payment.getFinalPrice() / 110 * 10,
+                                    payment.getRequestedBy(),
+                                    event.getUser().getEffectiveName(),
+                                    payment.getUsedPoint(),
+                                    DatabaseManager.getUserService().getPoint(userId),
+                                    payment.getMaskedCardNumber(),
+                                    payment.getCardInstallmentPlan(),
+                                    payment.getReceiptUrl()
+                                )
+                        )
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                        .build();
+                event.getUser()
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(receipt)
+                        .queue(null, (err) -> {
+                            MessageEmbed embed = new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("제목")
+                                    .setDescription("DM으로 영수증을 전송하지 못했습니다.\n> <@" + payment.getRequestedBy() + ">")
+                                    .build();
+                            event.getChannel().sendMessageEmbeds(embed)
+                                    .queue();
+                        }); // TODO: 메시지 작업
+
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 결제가 완료되었습니다! <a:success:1168266537262657626>")
@@ -1276,7 +1434,7 @@ public class BuyListener extends ListenerAdapter {
                 MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("문화상품권 결제가 요청되었습니다.")
-                        .setDescription("핀번호: " + pinNumber + "\n\n" +
+                        .setDescription("핀 번호: " + pinNumber + "\n\n" +
                                 "승인하시겠습니까?")
                         .build();
                 ticketChannel.sendMessageEmbeds(embed1)
