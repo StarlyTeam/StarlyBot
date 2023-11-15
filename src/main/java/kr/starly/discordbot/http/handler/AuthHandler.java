@@ -137,7 +137,7 @@ public class AuthHandler implements HttpHandler {
                         > **즐거운 시간 보내세요! \uD83C\uDF88**
                         \u1CBB""")
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                .setFooter("스탈리 커뮤니티에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                 .build();
 
         AtomicBoolean isDMSent = new AtomicBoolean(true);

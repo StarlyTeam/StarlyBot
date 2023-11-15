@@ -35,7 +35,7 @@ public class CreateVerifyCommand implements DiscordCommand {
                 .setColor(EMBED_COLOR)
                 .setTitle("<a:success:1168266537262657626> 유저인증 | 스탈리 <a:success:1168266537262657626>")
                 .setDescription("""
-                        > **스탈리 커뮤니티에 오신걸 환영합니다.**
+                        > **스탈리에 오신걸 환영합니다.**
                         > **서버에 입장하기 전 아래 `인증하기` 버튼을 클릭해 주세요.**
 
                         ─────────────────────────────────────────────────
