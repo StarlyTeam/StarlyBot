@@ -21,9 +21,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.components.text.TextInput;
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
-import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -94,10 +92,9 @@ public class RefundCommand implements DiscordSlashCommand {
                         .setEphemeral(true)
                         .queue();
 
-                PaymentLogger.error(
-                        new EmbedBuilder()
-                                .setTitle("환불처리중 오류가 발생했습니다.")
-                                .setDescription("결제번호: " + payment.getPaymentId() + "\n" + ex.getMessage())
+                PaymentLogger.error(new EmbedBuilder()
+                        .setTitle("환불처리중 오류가 발생했습니다.")
+                        .setDescription("결제번호: " + payment.getPaymentId() + "\n" + ex.getMessage())
                 );
                 return;
             }
@@ -131,24 +128,17 @@ public class RefundCommand implements DiscordSlashCommand {
             event.replyEmbeds(embed).queue();
             return;
         } else {
-            TextInput holder = TextInput.create("holder", "예금주명", TextInputStyle.SHORT)
-                    .setPlaceholder("환불계좌의 예금주명을 입력해 주세요.")
-                    .setRequired(true)
+            String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
+            Button button = Button.danger("refund-start-" + paymentIdForId, "입력하기");
+
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR)
+                    .setTitle("제목")
+                    .setDescription("환불처리를 받기 위해 환불계좌를 입력 해주세요.")
                     .build();
-            TextInput number = TextInput.create("number", "계좌번호", TextInputStyle.SHORT)
-                    .setPlaceholder("환불계좌의 계좌번호를 입력해 주세요.")
-                    .setRequired(true)
-                    .build();
-            TextInput bank = TextInput.create("bank", "계좌은행", TextInputStyle.SHORT)
-                    .setPlaceholder("환불계좌의 은행을 입력해 주세요.")
-                    .setRequired(true)
-                    .build();
-            Modal modal = Modal.create("refund-" + paymentId, "환불계좌 입력")
-                    .addActionRow(holder)
-                    .addActionRow(number)
-                    .addActionRow(bank)
-                    .build();
-            event.replyModal(modal).queue();
+            event.replyEmbeds(embed)
+                    .addActionRow(button)
+                    .queue();
         }
 
         payment.updateRefundedAt(new Date());

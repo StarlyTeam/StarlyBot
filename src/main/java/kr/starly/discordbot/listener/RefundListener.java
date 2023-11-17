@@ -15,6 +15,7 @@ import kr.starly.discordbot.service.PaymentService;
 import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.UserService;
 import kr.starly.discordbot.util.RankUtil;
+import kr.starly.discordbot.util.messaging.PaymentLogger;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -25,11 +26,15 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.interactions.components.text.TextInput;
+import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
+import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.*;
 
 @BotEvent
@@ -50,20 +55,45 @@ public class RefundListener extends ListenerAdapter {
         String componentId = event.getComponentId();
         if (!componentId.startsWith(ID_PREFIX)) return;
 
+
         String paymentId;
-        boolean isAccepted;
+        Boolean isAccepted = null;
         if (componentId.startsWith(ID_PREFIX + "accept-")) {
             paymentId = componentId.substring((ID_PREFIX + "accept-").length());
             isAccepted = true;
         } else if (componentId.startsWith(ID_PREFIX + "refuse-")) {
             paymentId = componentId.substring((ID_PREFIX + "refuse-").length());
             isAccepted = false;
+        } else if (componentId.startsWith(ID_PREFIX + "start-")) {
+            paymentId = componentId.substring((ID_PREFIX + "start-").length());
         } else return;
 
         PaymentService paymentService = DatabaseManager.getPaymentService();
-        Payment payment = paymentService.getDataByPaymentId(paymentId);
+        Payment payment = paymentService.getDataByPaymentId(paymentId.replace("_", "-"));
 
-        if (isAccepted) {
+        if (isAccepted == null) {
+            TextInput holder = TextInput.create("holder", "예금주명", TextInputStyle.SHORT)
+                    .setPlaceholder("환불계좌의 예금주명을 입력해 주세요.")
+                    .setRequired(true)
+                    .build();
+            TextInput number = TextInput.create("number", "계좌번호", TextInputStyle.SHORT)
+                    .setPlaceholder("환불계좌의 계좌번호를 입력해 주세요.")
+                    .setRequired(true)
+                    .build();
+            TextInput bank = TextInput.create("bank", "계좌은행", TextInputStyle.SHORT)
+                    .setPlaceholder("환불계좌의 은행을 입력해 주세요.")
+                    .setRequired(true)
+                    .build();
+
+            String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
+            Modal modal = Modal.create(ID_PREFIX + paymentIdForId, "환불계좌 입력")
+                    .addActionRow(holder)
+                    .addActionRow(number)
+                    .addActionRow(bank)
+                    .build();
+            event.replyModal(modal).queue();
+            return;
+        } else if (isAccepted) {
             payment.updateRefundedAt(new Date());
             paymentService.saveData(payment);
 
@@ -98,6 +128,11 @@ public class RefundListener extends ListenerAdapter {
         event.replyEmbeds(embed1)
                 .queue();
 
+        PaymentLogger.info(new EmbedBuilder()
+                .setTitle("환불처리가 승인되었습니다.")
+                .setDescription("> 결제번호: " + payment.getPaymentId() + "\n\n> 승인 결과\n> " + (isAccepted ? "수락" : "거절"))
+        );
+
         MessageEmbed embed2 = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("환불요청이 승인되었습니다.")
@@ -125,7 +160,8 @@ public class RefundListener extends ListenerAdapter {
         if (!modalId.startsWith(ID_PREFIX)) return;
 
         PaymentService paymentService = DatabaseManager.getPaymentService();
-        String paymentId = modalId.substring(ID_PREFIX.length());
+        String paymentId = modalId.substring(ID_PREFIX.length())
+                .replace("_", "-");
         Payment payment = paymentService.getDataByPaymentId(paymentId);
 
         String holder = event.getValue("holder").getAsString();
@@ -205,5 +241,19 @@ public class RefundListener extends ListenerAdapter {
         ticketChannel.sendMessageEmbeds(embed)
                 .setActionRow(approveBtn, rejectBtn)
                 .queue();
+
+
+        MessageEmbed embed2 = new EmbedBuilder()
+                .setColor(EMBED_COLOR_SUCCESS)
+                .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
+                .setDescription("""
+                            > **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!**
+                            > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏**
+                            """
+                        .formatted(ticketChannel.getAsMention())
+                )
+                .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                .build();
+        event.replyEmbeds(embed2).setEphemeral(true).queue();
     }
 } // TODO: 메시지 작업, 테스트
