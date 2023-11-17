@@ -28,6 +28,7 @@ public record PaymentService(PaymentRepository repository) {
         List<Payment> payments = getDataByUserId(userId);
         return payments.stream()
                 .filter(Payment::isAccepted)
+                .filter(payment -> !payment.isRefunded())
                 .mapToLong(Payment::getFinalPrice)
                 .sum();
     }

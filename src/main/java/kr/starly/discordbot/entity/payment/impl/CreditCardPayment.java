@@ -19,22 +19,18 @@ import java.util.UUID;
 @Getter
 public class CreditCardPayment extends Payment {
 
-    // 카드 정보
     @NotNull private final String cardNumber;
     @NotNull private final String cardExpirationYear;
     @NotNull private final String cardExpirationMonth;
     @NotNull private final Integer cardInstallmentPlan;
 
-    // 결제자 정보
     @NotNull private final String customerBirthdate;
     @NotNull private final String customerEmail;
     @NotNull private final String customerName;
-
-    // 데이터 암호화를 위한 salt
     @NotNull private final String secureSalt;
 
-    // 결제 완료 후, 토스페이먼츠로부터 받은 응답
     @Nullable private JsonObject responseBody;
+    @Nullable private String paymentKey;
     @Nullable private String maskedCardNumber;
     @Nullable private String receiptUrl;
 
@@ -76,12 +72,17 @@ public class CreditCardPayment extends Payment {
 
     public void updateResponse(JsonObject responseBody) {
         this.responseBody = responseBody;
-        this.maskedCardNumber = responseBody
-                .get("card").getAsJsonObject()
-                .get("number").getAsString();
-        this.receiptUrl = responseBody
-                .get("receipt").getAsJsonObject()
-                .get("url").getAsString();
+
+        if (responseBody != null) {
+            this.paymentKey = responseBody
+                    .get("paymentKey").getAsString();
+            this.maskedCardNumber = responseBody
+                    .get("card").getAsJsonObject()
+                    .get("number").getAsString();
+            this.receiptUrl = responseBody
+                    .get("receipt").getAsJsonObject()
+                    .get("url").getAsString();
+        }
     }
 
     @Override
@@ -143,7 +144,6 @@ public class CreditCardPayment extends Payment {
         JsonObject responseBody = JsonParser.parseString(document.getString("responseBody")).getAsJsonObject();
         String maskedCardNumber = document.getString("maskedCardNumber");
         String receiptUrl = document.getString("receiptUrl");
-
         CreditCardPayment payment = new CreditCardPayment(
                 paymentId, product, requestedBy,
                 cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan,
@@ -154,9 +154,11 @@ public class CreditCardPayment extends Payment {
         );
 
         boolean accepted = document.getBoolean("accepted");
-        Date approvedAt = document.getDate("approvedAt");
         payment.updateAccepted(accepted);
+        Date approvedAt = document.getDate("approvedAt");
         payment.updateApprovedAt(approvedAt);
+        Date refundedAt = document.getDate("refundedAt");
+        payment.updateRefundedAt(refundedAt);
 
         return payment;
     }

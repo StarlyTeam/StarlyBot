@@ -54,13 +54,14 @@ public class BankTransferPayment extends Payment {
         CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
 
         String depositor = document.getString("depositor");
-
         BankTransferPayment payment = new BankTransferPayment(paymentId, product, requestedBy, depositor, usedPoint, usedCoupon);
 
         boolean accepted = document.getBoolean("accepted");
-        Date approvedAt = document.getDate("approvedAt");
         payment.updateAccepted(accepted);
+        Date approvedAt = document.getDate("approvedAt");
         payment.updateApprovedAt(approvedAt);
+        Date refundedAt = document.getDate("refundedAt");
+        payment.updateRefundedAt(refundedAt);
 
         return payment;
     }

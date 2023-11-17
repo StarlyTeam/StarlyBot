@@ -54,13 +54,14 @@ public class CulturelandPayment extends Payment {
         CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
 
         String pinNumber = document.getString("pinNumber");
-
         CulturelandPayment payment = new CulturelandPayment(paymentId, product, requestedBy, pinNumber, usedPoint, usedCoupon);
 
         boolean accepted = document.getBoolean("accepted");
-        Date approvedAt = document.getDate("approvedAt");
         payment.updateAccepted(accepted);
+        Date approvedAt = document.getDate("approvedAt");
         payment.updateApprovedAt(approvedAt);
+        Date refundedAt = document.getDate("refundedAt");
+        payment.updateRefundedAt(refundedAt);
 
         return payment;
     }

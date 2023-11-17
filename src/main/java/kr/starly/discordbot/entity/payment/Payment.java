@@ -18,16 +18,17 @@ import java.util.UUID;
 @Getter
 public class Payment {
 
-    @NotNull private final UUID paymentId; // 거래 고유번호
+    @NotNull private final UUID paymentId;
 
-    @NotNull private final PaymentMethod method; // 결제 수단
-    @NotNull private final Integer usedPoint; // 사용된 포인트
-    @Nullable private final CouponState usedCoupon; // 사용된 쿠폰
-    @NotNull private final Product product; // 구매한 상품
-    @NotNull private final Long requestedBy; // 구매자
+    @NotNull private final PaymentMethod method;
+    @NotNull private final Integer usedPoint;
+    @Nullable private final CouponState usedCoupon;
+    @NotNull private final Product product;
+    @NotNull private final Long requestedBy;
 
-    @NotNull private boolean accepted; // 구매 승인 여부
-    @Nullable private Date approvedAt; // 구매 완료 시각
+    @NotNull private boolean isAccepted;
+    @Nullable private Date approvedAt;
+    @Nullable private Date refundedAt;
 
     public Payment(
             @NotNull UUID paymentId, @NotNull long requestedBy,
@@ -39,16 +40,25 @@ public class Payment {
         this.usedCoupon = usedCoupon == null ? null : usedCoupon.capture();
         this.product = product;
         this.requestedBy = requestedBy;
-        this.accepted = false;
+        this.isAccepted = false;
         this.approvedAt = null;
+        this.refundedAt = null;
+    }
+
+    public boolean isRefunded() {
+        return refundedAt != null;
     }
 
     public void updateAccepted(boolean isAccepted) {
-        this.accepted = isAccepted;
+        this.isAccepted = isAccepted;
     }
 
     public void updateApprovedAt(Date approvedAt) {
         this.approvedAt = approvedAt;
+    }
+
+    public void updateRefundedAt(Date refundedAt) {
+        this.refundedAt = refundedAt;
     }
 
     public CreditCardPayment asCreditCard() {
@@ -80,8 +90,9 @@ public class Payment {
         document.put("usedCoupon", usedCoupon == null ? null : usedCoupon.serialize());
         document.put("product", product.serialize());
         document.put("requestedBy", requestedBy);
-        document.put("accepted", accepted);
+        document.put("accepted", isAccepted);
         document.put("approvedAt", approvedAt);
+        document.put("refundedAt", refundedAt);
 
         return document;
     }
@@ -101,13 +112,14 @@ public class Payment {
                 CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
                 Product product = Product.deserialize(document.get("product", Document.class));
                 long requestedBy = document.getLong("requestedBy");
-
                 Payment payment = new Payment(paymentId, requestedBy, method, usedPoint, usedCoupon, product);
 
                 boolean accepted = document.getBoolean("accepted");
-                Date approvedAt = document.getDate("approvedAt");
                 payment.updateAccepted(accepted);
+                Date approvedAt = document.getDate("approvedAt");
                 payment.updateApprovedAt(approvedAt);
+                Date refundedAt = document.getDate("refundedAt");
+                payment.updateRefundedAt(refundedAt);
 
                 yield payment;
             }

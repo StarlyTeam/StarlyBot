@@ -2,34 +2,25 @@ package kr.starly.discordbot.listener;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
-import kr.starly.discordbot.entity.Discount;
-import kr.starly.discordbot.entity.product.impl.CustomPriceProduct;
-import kr.starly.discordbot.entity.product.impl.OutSourcingProduct;
-import kr.starly.discordbot.enums.*;
+import kr.starly.discordbot.entity.*;
 import kr.starly.discordbot.entity.coupon.Coupon;
 import kr.starly.discordbot.entity.coupon.CouponState;
-import kr.starly.discordbot.service.CouponRedeemService;
-import kr.starly.discordbot.service.CouponService;
-import kr.starly.discordbot.entity.Plugin;
-import kr.starly.discordbot.entity.Ticket;
-import kr.starly.discordbot.entity.User;
-import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.entity.payment.Payment;
 import kr.starly.discordbot.entity.payment.impl.BankTransferPayment;
 import kr.starly.discordbot.entity.payment.impl.CreditCardPayment;
 import kr.starly.discordbot.entity.payment.impl.CulturelandPayment;
-import kr.starly.discordbot.service.PaymentService;
 import kr.starly.discordbot.entity.product.Product;
+import kr.starly.discordbot.entity.product.impl.CustomPriceProduct;
+import kr.starly.discordbot.entity.product.impl.OutSourcingProduct;
 import kr.starly.discordbot.entity.product.impl.PremiumPluginProduct;
-import kr.starly.discordbot.entity.Rank;
 import kr.starly.discordbot.entity.rank.perk.impl.CashbackPerk;
+import kr.starly.discordbot.enums.*;
+import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.repository.impl.RankRepository;
-import kr.starly.discordbot.util.RankUtil;
 import kr.starly.discordbot.repository.impl.TicketModalDataRepository;
 import kr.starly.discordbot.repository.impl.TicketUserDataRepository;
-import kr.starly.discordbot.service.PluginService;
-import kr.starly.discordbot.service.TicketService;
-import kr.starly.discordbot.service.UserService;
+import kr.starly.discordbot.service.*;
+import kr.starly.discordbot.util.RankUtil;
 import kr.starly.discordbot.util.TokenUtil;
 import kr.starly.discordbot.util.external.TossPaymentsUtil;
 import kr.starly.discordbot.util.messaging.PaymentLogger;
@@ -57,10 +48,8 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
-import java.io.IOException;
+import java.awt.*;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -80,7 +69,7 @@ public class BuyListener extends ListenerAdapter {
     private final Map<Long, Coupon> couponMap = new HashMap<>();
     private final Map<Long, Integer> pointMap = new HashMap<>();
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final String ID_PREFIX = "payment-";
     private final int POINT_USE_MINIMUM = 1000;
     private final int POINT_USE_UNIT = 100;
@@ -394,7 +383,7 @@ public class BuyListener extends ListenerAdapter {
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("결제가 수락되었습니다.")
+                    .setTitle("결제가 승인되었습니다.")
                     .setDescription("<@" + payment.getRequestedBy() + ">님이 요청하신 결제(" + payment.getPaymentId() + ")가 수락되었습니다.")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                     .build();
@@ -1148,7 +1137,7 @@ public class BuyListener extends ListenerAdapter {
                 // 결제 요청
                 try {
                     TossPaymentsUtil.request(payment);
-                } catch (IOException | IllegalStateException | InterruptedException | ParseException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
 
                     MessageEmbed embed = new EmbedBuilder()
@@ -1165,8 +1154,11 @@ public class BuyListener extends ListenerAdapter {
                             .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
                                     "결제자: " + event.getUser().getAsMention() + "\n"));
 
+                    payment.updateAccepted(true);
+                    payment.updateApprovedAt(null);
+                    payment.updateResponse(null);
+
                     stopSession(userId);
-                    payment.updateAccepted(false);
                 }
 
                 // DB 기록
@@ -1519,11 +1511,8 @@ public class BuyListener extends ListenerAdapter {
         // Modal Data 등록
         int usedPoint = payment.getUsedPoint();
         Coupon usedCoupon = payment.getUsedCoupon();
-        String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-        int price = payment.getProduct().getPrice();
-        if (usedCoupon != null) price = usedCoupon.getDiscount().computeFinalPrice(price);
-        price = price - usedPoint;
+        String dateStr = DATE_FORMAT.format(new Date());
+        int price = payment.getFinalPrice();
 
         TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
         ticketModalDataRepository.registerModalData(
