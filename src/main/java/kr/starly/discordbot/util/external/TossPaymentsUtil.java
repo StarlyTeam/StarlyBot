@@ -79,7 +79,7 @@ public class TossPaymentsUtil {
         String paymentKey = payment.getPaymentKey();
 
         JsonObject requestBody = new JsonObject();
-        requestBody.addProperty("cancelReason ", cancelReason);
+        requestBody.addProperty("cancelReason", cancelReason);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.tosspayments.com/v1/payments/" + paymentKey + "/cancel"))
