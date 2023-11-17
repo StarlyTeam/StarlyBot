@@ -24,6 +24,7 @@ import kr.starly.discordbot.util.RankUtil;
 import kr.starly.discordbot.util.TokenUtil;
 import kr.starly.discordbot.util.external.TossPaymentsUtil;
 import kr.starly.discordbot.util.messaging.PaymentLogger;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -311,6 +312,11 @@ public class BuyListener extends ListenerAdapter {
                     .setEphemeral(true)
                     .queue();
         } else if (componentId.startsWith(ID_PREFIX + "accept-")) {
+            if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                PermissionUtil.sendPermissionError(event);
+                return;
+            }
+
             PaymentService paymentService = DatabaseManager.getPaymentService();
             UUID paymentId = UUID.fromString(
                     componentId
@@ -494,6 +500,11 @@ public class BuyListener extends ListenerAdapter {
                             .toList()
             ).queue();
         } else if (componentId.startsWith(ID_PREFIX + "refuse-")) {
+            if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                PermissionUtil.sendPermissionError(event);
+                return;
+            }
+
             PaymentService paymentService = DatabaseManager.getPaymentService();
             UUID paymentId = UUID.fromString(
                     componentId

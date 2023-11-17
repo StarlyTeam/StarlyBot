@@ -16,6 +16,7 @@ import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.UserService;
 import kr.starly.discordbot.util.RankUtil;
 import kr.starly.discordbot.util.messaging.PaymentLogger;
+import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -55,23 +56,9 @@ public class RefundListener extends ListenerAdapter {
         String componentId = event.getComponentId();
         if (!componentId.startsWith(ID_PREFIX)) return;
 
+        if (componentId.startsWith(ID_PREFIX + "start-")) {
+            String paymentIdFromId = componentId.substring((ID_PREFIX + "start-").length());
 
-        String paymentId;
-        Boolean isAccepted = null;
-        if (componentId.startsWith(ID_PREFIX + "accept-")) {
-            paymentId = componentId.substring((ID_PREFIX + "accept-").length());
-            isAccepted = true;
-        } else if (componentId.startsWith(ID_PREFIX + "refuse-")) {
-            paymentId = componentId.substring((ID_PREFIX + "refuse-").length());
-            isAccepted = false;
-        } else if (componentId.startsWith(ID_PREFIX + "start-")) {
-            paymentId = componentId.substring((ID_PREFIX + "start-").length());
-        } else return;
-
-        PaymentService paymentService = DatabaseManager.getPaymentService();
-        Payment payment = paymentService.getDataByPaymentId(paymentId.replace("_", "-"));
-
-        if (isAccepted == null) {
             TextInput holder = TextInput.create("holder", "예금주명", TextInputStyle.SHORT)
                     .setPlaceholder("환불계좌의 예금주명을 입력해 주세요.")
                     .setRequired(true)
@@ -85,15 +72,34 @@ public class RefundListener extends ListenerAdapter {
                     .setRequired(true)
                     .build();
 
-            String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
-            Modal modal = Modal.create(ID_PREFIX + paymentIdForId, "환불계좌 입력")
+            Modal modal = Modal.create(ID_PREFIX + paymentIdFromId, "환불계좌 입력")
                     .addActionRow(holder)
                     .addActionRow(number)
                     .addActionRow(bank)
                     .build();
             event.replyModal(modal).queue();
             return;
-        } else if (isAccepted) {
+        }
+
+        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+            PermissionUtil.sendPermissionError(event);
+            return;
+        }
+
+        String paymentId;
+        boolean isAccepted;
+        if (componentId.startsWith(ID_PREFIX + "accept-")) {
+            paymentId = componentId.substring((ID_PREFIX + "accept-").length());
+            isAccepted = true;
+        } else if (componentId.startsWith(ID_PREFIX + "refuse-")) {
+            paymentId = componentId.substring((ID_PREFIX + "refuse-").length());
+            isAccepted = false;
+        } else return;
+
+        PaymentService paymentService = DatabaseManager.getPaymentService();
+        Payment payment = paymentService.getDataByPaymentId(paymentId.replace("_", "-"));
+
+        if (isAccepted) {
             payment.updateRefundedAt(new Date());
             paymentService.saveData(payment);
 
