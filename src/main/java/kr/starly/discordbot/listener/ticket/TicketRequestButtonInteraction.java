@@ -6,7 +6,9 @@ import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.service.TicketService;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -16,11 +18,14 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+
 @BotEvent
 public class TicketRequestButtonInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String TICKET_CHANNEL_ID = configProvider.getString("TICKET_CHANNEL_ID");
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
@@ -36,8 +41,22 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
         if (Ticket != null && isExistUserTicket(event.getJDA(), Ticket.channelId())) {
             TextChannel ticketChannel = event.getJDA().getTextChannelById(Ticket.channelId());
-            String message = ticketChannel != null ? "이미 티켓이 있습니다! " + ticketChannel.getAsMention() : "관리자가 티켓을 닫기 전, 채널을 삭제해버렸습니다. 관리자에게 문의 해 주세요.";
-            event.reply(message).setEphemeral(true).queue();
+            MessageEmbed messageEmbed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **%s**
+                            
+                            ─────────────────────────────────────────────────
+                            """.formatted(
+                            ticketChannel != null ? "이미 티켓이 존재합니다. " + ticketChannel.getAsMention() : "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)"
+                            )
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .build();
+
+            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             return;
         }
 
@@ -253,4 +272,3 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         return jda.getTextChannelById(channelId) != null;
     }
 }
-// TODO 디자인

@@ -28,6 +28,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
@@ -45,21 +46,42 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             if (ticket != null && isExistUserTicket(event.getJDA(), ticket.channelId())) {
                 TextChannel textChannel = event.getJDA().getTextChannelById(ticket.channelId());
 
-                String message = textChannel != null ? "관리자가 수동으로 티켓을 닫았습니다. 관리자에게 문의하여 주세요." : "이미 티켓이 열려 있습니다!" + textChannel.getAsMention();
-                event.reply(message).setEphemeral(true).queue();
+                MessageEmbed messageEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                        > **%s**
+                                                                    
+                                        ─────────────────────────────────────────────────
+                                        """.formatted(
+                                        textChannel != null ? "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)" : "이미 티켓이 열려있습니다." + textChannel.getAsMention()
+                                )
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .build();
+                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             } else {
                 setTicketStatus(discordId, ticketType);
 
-                MessageEmbed messageEmbed = generateEmbedForType(ticketType);
+                MessageEmbed messageEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("<a:success:1168266537262657626> 확인 | 고객센터 <a:success:1168266537262657626>")
+                        .setDescription("""
+                                > **정말로 티켓을 열겠습니까?**
+                                                            
+                                """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .setFooter("티켓을 열면 되돌릴 수 없습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .build();
                 List<Button> button = generateButtonsForType(ticketType);
 
                 event.replyEmbeds(messageEmbed).addActionRow(button).setEphemeral(true).queue();
             }
 
             event.editSelectMenu(event.getSelectMenu()).queue();
-        }
-
-        else if (event.getComponentId().contains("ticket-rate-select-menu-")) {
+        } else if (event.getComponentId().contains("ticket-rate-select-menu-")) {
             long channelId = Long.valueOf(event.getComponentId().replace("ticket-rate-select-menu-", ""));
             byte value = Byte.valueOf(event.getValues().get(0).replace("ticket-rate-", ""));
 
@@ -69,7 +91,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                     .setDescription("""
                             > **평가를 남겨 주셔서 감사합니다 🥳**
                             > **앞으로도 좋은 서비스를 제공할 수 있도록 노력하겠습니다!**
-                            
+                                                        
                             """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
@@ -81,10 +103,10 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 고객센터 <a:success:1168266537262657626>")
                         .setDescription("""
-                            > **평가를 남겨 주셔서 감사합니다 🥳**
-                            > **다음에는 더욱 좋은 서비스를 경험하실 수 있도록 노력하는 스탈리가 되겠습니다.**
-                            
-                            """
+                                > **평가를 남겨 주셔서 감사합니다 🥳**
+                                > **다음에는 더욱 좋은 서비스를 경험하실 수 있도록 노력하는 스탈리가 되겠습니다.**
+                                                            
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
@@ -96,17 +118,16 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
 
             ticketService.updateRate(channelId, value);
 
-            AuditLogger.info(
-                    new EmbedBuilder()
-                            .setTitle("티켓 평가")
-                            .setDescription("""
-                                    티켓 평가가 완료되었습니다.
-                                    
-                                    > 티켓: <#%d>
-                                    > 평가자: <@%d>
-                                    > 평가: %d/5
-                                    """.formatted(channelId, event.getUser().getIdLong(), value)
-                            )
+            AuditLogger.info(new EmbedBuilder()
+                    .setTitle("<a:success:1168266537262657626> 성공 | 고객센터 평가 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **%s님께서 서비스 품질 평가를 하셨습니다.**
+
+                            ─────────────────────────────────────────────────
+                            > **채널 ID: %d**
+                            > **평점: %d/5**
+                            """.formatted(event.getUser().getAsMention(), channelId, value)
+                    )
             );
         }
     }
@@ -159,57 +180,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
         return buttons;
     }
 
-    private MessageEmbed generateEmbedForType(TicketType ticketType) {
-        return switch (ticketType) {
-            case GENERAL -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("자주 묻는 질문")
-                    .addField("Q: 어떻게 플러그인을 적용하나요?", "A: .zip파일 을 압축 해제하여 폴더 안에 있는 .jar를 plugins 폴더에 넣으시면 됩니다.", true)
-                    .addField("Q: 라이선스 양도가 가능할까요?", "A: 아뇨, 라이선스를 양도하는건 불가능합니다.", true)
-                    .build();
-
-            case QUESTION -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("주의")
-                    .setDescription("자주 묻는 질문")
-                    .build();
-
-            case CONSULTING -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("주의")
-                    .setDescription("자주 묻는 질문")
-                    .build();
-
-            case PAYMENT -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("주의")
-                    .setDescription("자주 묻는 질문")
-                    .build();
-
-            case PUNISHMENT -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("주의")
-                    .setDescription("자주 묻는 질문")
-                    .build();
-
-            case ERROR -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("주의")
-                    .setDescription("자주 묻는 질문")
-                    .build();
-
-            case OTHER -> new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("주의")
-                    .setDescription("자주 묻는 질문")
-                    .build();
-
-            default -> null;
-        };
-    }
-
     private boolean isExistUserTicket(JDA jda, long channelId) {
         return jda.getTextChannelById(channelId) != null;
     }
 }
-// TODO 디자인
