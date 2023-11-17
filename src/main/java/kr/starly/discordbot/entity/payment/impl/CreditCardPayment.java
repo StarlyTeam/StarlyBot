@@ -41,7 +41,7 @@ public class CreditCardPayment extends Payment {
             @NotNull Integer usedPoint, @Nullable Coupon usedCoupon,
             @NotNull String secureSalt
     ) {
-        this(UUID.randomUUID(), product, requestedBy, cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan, customerBirthdate, customerEmail, customerName, usedPoint, usedCoupon, secureSalt, null, null, null);
+        this(UUID.randomUUID(), product, requestedBy, cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan, customerBirthdate, customerEmail, customerName, usedPoint, usedCoupon, secureSalt, null, null, null, null);
     }
 
     public CreditCardPayment(
@@ -50,7 +50,7 @@ public class CreditCardPayment extends Payment {
             @NotNull String customerBirthdate, @NotNull String customerEmail, @NotNull String customerName,
             @NotNull Integer usedPoint, @Nullable Coupon usedCoupon,
             @NotNull String secureSalt,
-            @Nullable JsonObject responseBody, @Nullable String maskedCardNumber, @Nullable String receiptUrl
+            @Nullable JsonObject responseBody, @Nullable String paymentKey, @Nullable String maskedCardNumber, @Nullable String receiptUrl
     ) {
         super(paymentId, requestedBy, PaymentMethod.CREDIT_CARD, usedPoint, usedCoupon, product);
 
@@ -66,6 +66,7 @@ public class CreditCardPayment extends Payment {
         this.secureSalt = secureSalt;
 
         this.responseBody = responseBody;
+        this.paymentKey = paymentKey;
         this.maskedCardNumber = maskedCardNumber;
         this.receiptUrl = receiptUrl;
     }
@@ -104,6 +105,7 @@ public class CreditCardPayment extends Payment {
             document.put("customerName", customerName);
             document.put("secureSalt", secureSalt);
             document.put("responseBody", responseBody != null ? responseBody.toString() : null);
+            document.put("paymentKey", paymentKey);
             document.put("maskedCardNumber", maskedCardNumber);
             document.put("receiptUrl", receiptUrl);
 
@@ -142,6 +144,7 @@ public class CreditCardPayment extends Payment {
         String customerName = document.getString("customerName");
 
         JsonObject responseBody = JsonParser.parseString(document.getString("responseBody")).getAsJsonObject();
+        String paymentKey = document.getString("paymentKey");
         String maskedCardNumber = document.getString("maskedCardNumber");
         String receiptUrl = document.getString("receiptUrl");
         CreditCardPayment payment = new CreditCardPayment(
@@ -150,7 +153,7 @@ public class CreditCardPayment extends Payment {
                 customerBirthdate, customerEmail, customerName,
                 usedPoint, usedCoupon,
                 secureSalt,
-                responseBody, maskedCardNumber, receiptUrl
+                responseBody, paymentKey, maskedCardNumber, receiptUrl
         );
 
         boolean accepted = document.getBoolean("accepted");
