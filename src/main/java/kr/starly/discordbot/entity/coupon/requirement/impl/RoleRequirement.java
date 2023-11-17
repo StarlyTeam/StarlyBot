@@ -3,12 +3,11 @@ package kr.starly.discordbot.entity.coupon.requirement.impl;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.entity.coupon.Coupon;
 import kr.starly.discordbot.entity.coupon.requirement.CouponRequirement;
+import kr.starly.discordbot.entity.product.Product;
 import kr.starly.discordbot.enums.CouponRequirementType;
 import kr.starly.discordbot.manager.DiscordBotManager;
-import kr.starly.discordbot.entity.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -44,7 +43,7 @@ public class RoleRequirement extends CouponRequirement {
         Document document = new Document();
         document.put("type", getType().name());
         document.put("roleId", roleId);
-        document.put("required", expect);
+        document.put("expected", expect);
 
         return document;
     }
@@ -57,7 +56,7 @@ public class RoleRequirement extends CouponRequirement {
         }
 
         long roleId = document.getLong("roleId");
-        boolean required = document.getBoolean("required");
+        boolean required = document.getBoolean("expected");
         return new RoleRequirement(roleId, required);
     }
 }
