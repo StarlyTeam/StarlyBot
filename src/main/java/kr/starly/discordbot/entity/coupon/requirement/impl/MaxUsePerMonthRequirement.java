@@ -46,4 +46,15 @@ public class MaxUsePerMonthRequirement extends CouponRequirement {
 
         return document;
     }
+
+    public static MaxUsePerMonthRequirement deserialize(Document document) {
+        if (document == null) return null;
+
+        if (!document.getString("type").equals(CouponRequirementType.MAX_USE_PER_MONTH.name())) {
+            throw new IllegalArgumentException("document is not MaxUsePerMonthRequirement");
+        }
+
+        int maxUsePerMonth = document.getInteger("maxUsePerMonth");
+        return new MaxUsePerMonthRequirement(maxUsePerMonth);
+    }
 }
