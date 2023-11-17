@@ -56,7 +56,7 @@ public class RankUtil {
                             .setDescription("""
                                     
                                     > **쿠폰이 발급되었습니다.**
-                                    > **쿠폰 코드: %s
+                                    > **쿠폰 코드: %s**
                                     """
                                     .formatted(codeStr)
                             )
