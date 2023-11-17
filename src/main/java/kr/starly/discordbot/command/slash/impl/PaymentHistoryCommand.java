@@ -20,7 +20,7 @@ import java.util.List;
 @BotSlashCommand(
         command = "거래내역",
         description = "거래내역을 확인합니다.",
-        optionName = {"유저", "거래ID"},
+        optionName = {"유저", "거래id"},
         optionType = {OptionType.USER, OptionType.STRING},
         optionDescription = {"거래내역을 확인할 유저를 선택해주세요.", "거래내역을 확인할 거래ID를 입력해주세요."},
         optionRequired = {false, false}
@@ -41,7 +41,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
         }
 
         OptionMapping user = event.getOption("유저");
-        OptionMapping paymentId = event.getOption("거래ID");
+        OptionMapping paymentId = event.getOption("거래id");
         if (user != null && paymentId != null) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
