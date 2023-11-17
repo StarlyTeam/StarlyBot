@@ -1,16 +1,13 @@
 package kr.starly.discordbot.service;
 
 import kr.starly.discordbot.entity.User;
-import kr.starly.discordbot.entity.Rank;
 import kr.starly.discordbot.repository.UserRepository;
 
-import java.util.Date;
 import java.util.List;
 
 public record UserService(UserRepository repository) {
 
-    public void saveData(long discordId, String ip, Date verifiedAt, int point, List<Rank> rank) {
-        User user = new User(discordId, ip, verifiedAt, point, rank);
+    public void saveData(User user) {
         repository.put(user);
     }
 

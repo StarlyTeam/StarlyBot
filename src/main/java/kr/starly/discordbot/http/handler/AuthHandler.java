@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Rank;
+import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.entity.Verify;
 import kr.starly.discordbot.http.service.AuthService;
 import kr.starly.discordbot.manager.DiscordBotManager;
@@ -165,7 +166,9 @@ public class AuthHandler implements HttpHandler {
             RankRepository rankRepository = RankRepository.getInstance();
             Rank rank1 = rankRepository.getRank(1);
 
-            userService.saveData(userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1)));
+            userService.saveData(new User(
+                    userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1))
+            ));
             AuditLogger.info(
                     new EmbedBuilder()
                             .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")

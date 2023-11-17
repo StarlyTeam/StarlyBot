@@ -4,6 +4,7 @@ import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.entity.Verify;
 import kr.starly.discordbot.service.UserService;
 import kr.starly.discordbot.service.VerifyService;
@@ -77,13 +78,9 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
             return;
         }
 
-        userService.saveData(
-                target.getIdLong(),
-                "-",
-                new Date(),
-                0,
-                new ArrayList<>()
-        );
+        userService.saveData(new User(
+                target.getIdLong(), "-", new Date(), 0, new ArrayList<>()
+        ));
 
         VerifyService verifyService = DatabaseManager.getVerifyService();
         Verify verify = new Verify(
