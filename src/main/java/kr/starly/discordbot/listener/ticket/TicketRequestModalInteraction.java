@@ -28,6 +28,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
     private final String TICKET_CHANNEL_ID = configProvider.getString("TICKET_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
 
@@ -65,7 +66,19 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
         } catch (Exception ex) {
             ex.printStackTrace();
 
-            event.reply("모달 처리 과정 중 오류가 발생하였습니다. 잠시만 기다려 주십시오.").setEphemeral(true).queue();
+            MessageEmbed messageEmbed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)**
+                            
+                            ─────────────────────────────────────────────────
+                            """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .build();
+            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
             return;
         }
         Ticket ticket = new Ticket(discordId, 0, textChannel.getIdLong(), ticketType, 0);
@@ -138,4 +151,3 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
         }
     }
 }
-// TODO 디자인

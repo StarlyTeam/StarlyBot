@@ -33,6 +33,8 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
+
     private final String ADMIN_ROLE = configProvider.getString("ADMIN_ROLE");
 
     private final TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
@@ -43,7 +45,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
         if (!(event.getChannel() instanceof TextChannel textChannel)) return;
         if (textChannel.getParentCategory() != null
-            && !textChannel.getParentCategoryId().equals(TICKET_CATEGORY_ID)) return;
+                && !textChannel.getParentCategoryId().equals(TICKET_CATEGORY_ID)) return;
 
         Long channelId = event.getChannel().getIdLong();
         User user = getUserFromTextChannel(textChannel.getMembers());
@@ -52,7 +54,19 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         if (data.isEmpty()) {
             user.openPrivateChannel().queue(
                     privateChannel -> {
-                        privateChannel.sendMessage("티켓을 생성하는데 오류가 발생 하였습니다.").queue();
+                        MessageEmbed messageEmbed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                        > **%s티켓을 생성하는 도중에 오류가 발생하였습니다.**
+                                                                    
+                                        ─────────────────────────────────────────────────
+                                        """
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                                .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                                .build();
+                        privateChannel.sendMessageEmbeds(messageEmbed).queue();
                     }
             );
             return;
@@ -70,7 +84,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String description = data.get(1);
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "```" + title + "```", true)
                         .addField("설명", "```" + description + "```", false)
                         .build();
@@ -87,7 +101,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "`" + title + "`", true)
                         .addField("태그", "`" + tag + "`", true)
                         .addField("설명", "```" + description + "```", false)
@@ -107,7 +121,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "`" + title + "`", true)
                         .addField("통화 여부", "`" + type + "`", true)
                         .addField("설명", "```" + description + "```", false)
@@ -134,7 +148,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
 
                 MessageEmbed descriptionEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("버전", "`" + version + "`", true)
                         .addField("버킷", "`" + bukkit + "`", true)
                         .addField("설명", "```" + description + "```", false)
@@ -153,7 +167,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
             case PUNISHMENT -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "```" + data.get(0) + "```", true)
                         .addField("설명", "```" + data.get(1) + "```", false)
                         .build();
@@ -164,7 +178,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
             case PAYMENT -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "```" + data.get(0) + "```", true)
                         .addField("설명", "```" + data.get(1) + "```", false)
                         .addField("종류", "```" + data.get(2) + "```", false)
@@ -176,7 +190,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
             case QUESTION -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "`" + data.get(0) + "`", true)
                         .addField("사유", "`" + data.get(2) + "`", true)
                         .addField("내용", "```" + data.get(1) + "```", false)
@@ -186,7 +200,7 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
             case OTHER -> {
                 messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("고객센터 알림")
+                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "```" + data.get(0) + "```", true)
                         .addField("설명", "```" + data.get(1) + "```", false)
                         .build();
@@ -216,4 +230,3 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         return null;
     }
 }
-// TODO 디자인
