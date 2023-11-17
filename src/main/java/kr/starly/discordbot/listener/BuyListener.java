@@ -400,10 +400,15 @@ public class BuyListener extends ListenerAdapter {
                                 .queue();
                     });
 
-            MessageEmbed receipt = new EmbedBuilder()
+            MessageEmbed embed3 = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("영수증")
-                    .setDescription("""
+                    .setTitle("**영수증**")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .build();
+            event.getUser()
+                    .openPrivateChannel().complete()
+                    .sendMessage("""
+                                ```
                                 주소: 경상남도 통영시 광도면 신죽**길
                                 대표: 양대영
                                 사업자 번호: 210-36-72319
@@ -435,53 +440,49 @@ public class BuyListener extends ListenerAdapter {
                                 
                                 좋은 하루 되세요!
                                 언제나 고객님을 위해 최선을 다하겠습니다.
+                                ```
                                 """.formatted(
-                                    DATE_FORMAT.format(payment.getApprovedAt()),
-                                    payment.getPaymentId(),
-                                    product.getName(),
-                                    product.getPrice(),
-                                    product.getPrice(),
-                                    payment.getFinalPrice() / 110 * 100,
-                                    payment.getFinalPrice() / 110 * 10,
-                                    payment.getRequestedBy(),
-                                    event.getUser().getEffectiveName(),
-                                    payment.getUsedPoint(),
-                                    DatabaseManager.getUserService().getPoint(userId),
-                                    payment.getMethod() == PaymentMethod.BANK_TRANSFER ? """
+                            DATE_FORMAT.format(payment.getApprovedAt()),
+                            payment.getPaymentId(),
+                            product.getName(),
+                            product.getPrice(),
+                            product.getPrice(),
+                            payment.getFinalPrice() / 110 * 100,
+                            payment.getFinalPrice() / 110 * 10,
+                            payment.getRequestedBy(),
+                            event.getUser().getEffectiveName(),
+                            payment.getUsedPoint(),
+                            DatabaseManager.getUserService().getPoint(userId),
+                            payment.getMethod() == PaymentMethod.BANK_TRANSFER ? """
                                             **************************************
                                               **** 계좌이체 매출전표(고객용) ****
                                             **************************************
                                             입금자명: %s
                                             승인일시: %s
                                             """
-                                            .formatted(
-                                                    payment.asBankTransfer().getDepositor(),
-                                                    payment.getApprovedAt()
-                                            ) : """
+                                    .formatted(
+                                            payment.asBankTransfer().getDepositor(),
+                                            payment.getApprovedAt()
+                                    ) : """
                                             **************************************
                                               *** 문화상품권 매출전표 (고객용) ***
                                             **************************************
                                             핀 번호: %s
                                             승인일시: %s
                                             """
-                                            .formatted(
-                                                    payment.asCultureland().getPinNumber(),
-                                                    payment.getApprovedAt()
-                                            )
-                            )
-                    )
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                    .build();
-            event.getUser()
-                    .openPrivateChannel().complete()
-                    .sendMessageEmbeds(receipt)
+                                    .formatted(
+                                            payment.asCultureland().getPinNumber(),
+                                            payment.getApprovedAt()
+                                    )
+                    ))
+                    .setEmbeds(embed3)
                     .queue(null, (err) -> {
-                        MessageEmbed embed = new EmbedBuilder()
+                        MessageEmbed embed4 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
                                 .setTitle("제목")
                                 .setDescription("DM으로 영수증을 전송하지 못했습니다.\n> <@" + payment.getRequestedBy() + ">")
                                 .build();
-                        event.getChannel().sendMessageEmbeds(embed)
+                        event.getChannel().sendMessageEmbeds(embed4)
                                 .queue();
                     }); // TODO: 메시지 작업
 
@@ -1228,8 +1229,13 @@ public class BuyListener extends ListenerAdapter {
 
                 MessageEmbed receipt = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("영수증")
-                        .setDescription("""
+                        .setTitle("**영수증**")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                        .build();
+                event.getUser()
+                        .openPrivateChannel().complete()
+                        .sendMessage("""
+                                ```
                                 주소: 경상남도 통영시 광도면 신죽**길
                                 대표: 양대영
                                 사업자 번호: 210-36-72319
@@ -1267,28 +1273,24 @@ public class BuyListener extends ListenerAdapter {
                                 
                                 좋은 하루 되세요!
                                 언제나 고객님을 위해 최선을 다하겠습니다.
+                                ```
                                 """.formatted(
-                                    DATE_FORMAT.format(payment.getApprovedAt()),
-                                    payment.getPaymentId(),
-                                    product.getName(),
-                                    product.getPrice(),
-                                    product.getPrice(),
-                                    payment.getFinalPrice() / 110 * 100,
-                                    payment.getFinalPrice() / 110 * 10,
-                                    payment.getRequestedBy(),
-                                    event.getUser().getEffectiveName(),
-                                    payment.getUsedPoint(),
-                                    DatabaseManager.getUserService().getPoint(userId),
-                                    payment.getMaskedCardNumber(),
-                                    payment.getCardInstallmentPlan(),
-                                    payment.getReceiptUrl()
-                                )
-                        )
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                        .build();
-                event.getUser()
-                        .openPrivateChannel().complete()
-                        .sendMessageEmbeds(receipt)
+                                DATE_FORMAT.format(payment.getApprovedAt()),
+                                payment.getPaymentId(),
+                                product.getName(),
+                                product.getPrice(),
+                                product.getPrice(),
+                                payment.getFinalPrice() / 110 * 100,
+                                payment.getFinalPrice() / 110 * 10,
+                                payment.getRequestedBy(),
+                                event.getUser().getEffectiveName(),
+                                payment.getUsedPoint(),
+                                DatabaseManager.getUserService().getPoint(userId),
+                                payment.getMaskedCardNumber(),
+                                payment.getCardInstallmentPlan(),
+                                payment.getReceiptUrl()
+                        ))
+                        .setEmbeds(receipt)
                         .queue(null, (err) -> {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)

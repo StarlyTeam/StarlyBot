@@ -94,10 +94,10 @@ public class RefundCommand implements DiscordSlashCommand {
                         .setEphemeral(true)
                         .queue();
 
-                PaymentLogger.warning(
+                PaymentLogger.error(
                         new EmbedBuilder()
                                 .setTitle("환불처리중 오류가 발생했습니다.")
-                                .setDescription("결제번호: " + payment.getPaymentId() + "\n")
+                                .setDescription("결제번호: " + payment.getPaymentId() + "\n" + ex.getMessage())
                 );
             }
 
