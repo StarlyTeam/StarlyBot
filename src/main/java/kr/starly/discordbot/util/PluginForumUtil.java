@@ -3,7 +3,6 @@ package kr.starly.discordbot.util;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Plugin;
-import kr.starly.discordbot.enums.MCVersion;
 import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.PluginService;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -18,12 +17,8 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class PluginForumUtil {
 

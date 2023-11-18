@@ -19,10 +19,10 @@ import java.util.List;
 
 @BotSlashCommand(
         command = "거래내역",
-        description = "거래내역을 확인합니다.",
+        description = "거래 내역을 확인합니다.",
         optionName = {"유저", "거래id"},
         optionType = {OptionType.USER, OptionType.STRING},
-        optionDescription = {"거래내역을 확인할 유저를 선택해주세요.", "거래내역을 확인할 거래ID를 입력해주세요."},
+        optionDescription = {"거래 내역을 확인할 유저를 선택해주세요.", "거래 내역을 확인할 거래ID를 입력해주세요."},
         optionRequired = {false, false}
 
 )
@@ -30,7 +30,6 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
-    private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     @Override

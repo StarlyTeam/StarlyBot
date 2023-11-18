@@ -55,7 +55,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
-import static java.lang.String.format;
 
 @BotEvent
 public class BuyListener extends ListenerAdapter {
@@ -94,9 +93,19 @@ public class BuyListener extends ListenerAdapter {
             else if (product.getPrice() == 0) isPure = false;
 
             if (!isPure) {
-                event.reply("데이터가 변조되었습니다. {MAL1}\n거래를 취소합니다.")
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                > **오류 코드: {MAL1}**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
 
                 stopSession(userId);
                 return;
@@ -115,9 +124,19 @@ public class BuyListener extends ListenerAdapter {
             }
 
             if (!isPure) {
-                event.reply("데이터가 변조되었습니다. {MAL2}\n거래를 취소합니다.")
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                > **오류 코드: {MAL2}**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
 
                 stopSession(userId);
                 return;
@@ -136,9 +155,19 @@ public class BuyListener extends ListenerAdapter {
             }
 
             if (!isPure) {
-                event.reply("데이터가 변조되었습니다. {MAL3}\n거래를 취소합니다.")
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                > **오류 코드: {MAL3}**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
 
                 stopSession(userId);
                 return;
@@ -246,14 +275,17 @@ public class BuyListener extends ListenerAdapter {
             if (user == null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("인증을 마치지 않았습니다.")
-                        .setDescription("상품을 구매하기 위해서는 인증을 하셔야 합니다.\n" +
-                                "인증을 마치신 후 다시 시도해주세요.")
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
+                                > **인증을 마치신 후 다시 시도해 주세요.**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
-
+                event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
             }
 
@@ -283,12 +315,16 @@ public class BuyListener extends ListenerAdapter {
                 if (event.getMember().getRoles().contains(buyerRole)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("해당 플러그인을 이미 구매하셨습니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **해당 플러그인을 이미 구매하셨습니다.**
+                                                                        
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
                     return;
                 }
 
@@ -302,15 +338,19 @@ public class BuyListener extends ListenerAdapter {
 
             Button withCouponBtn = Button.primary(ID_PREFIX + "coupon-yes", "예");
             Button withoutCouponBtn = Button.secondary(ID_PREFIX + "coupon-no", "아니오");
+
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("제목")
-                    .setDescription("쿠폰을 사용하시겠습니까?")
+                    .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **쿠폰을 사용하시겠습니까?**
+                                                                
+                                  """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
-            event.replyEmbeds(embed)
-                    .addActionRow(withCouponBtn, withoutCouponBtn, CANCEL_BUTTON)
-                    .setEphemeral(true)
-                    .queue();
+            event.replyEmbeds(embed).addActionRow(withCouponBtn, withoutCouponBtn, CANCEL_BUTTON).setEphemeral(true).queue();
         } else if (componentId.startsWith(ID_PREFIX + "accept-")) {
             if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
                 PermissionUtil.sendPermissionError(event);
@@ -328,22 +368,31 @@ public class BuyListener extends ListenerAdapter {
             if (payment == null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("데이터가 변조되었습니다.")
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **데이터가 변조되었습니다.**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
-            } if (payment.getApprovedAt() != null) {
+            }
+            if (payment.getApprovedAt() != null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("이미 승인 완료되었습니다.")
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **이미 승인이 완료되었습니다.**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
             }
 
@@ -361,18 +410,41 @@ public class BuyListener extends ListenerAdapter {
             Plugin plugin = product.getPlugin();
             int usedPoint = payment.getUsedPoint();
             CouponState usedCoupon = payment.getUsedCoupon();
-            PaymentLogger.info(new EmbedBuilder()
-                    .setTitle("결제가 완료되었습니다.")
-                    .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                            "결제금액: " + payment.getProduct().getPrice() + "원\n" +
-                            "실결제금액: " + finalPrice + "원\n" +
-                            "결제수단: " + payment.getMethod().getKRName() + "\n" +
-                            "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
-                            "결제자: " + event.getUser().getAsMention() + "\n" +
-                            "구매 정보: " + product.getNote() + "\n" +
-                            "사용된 포인트: " + usedPoint + "\n" +
-                            "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
-                            "생성된 티켓: " + event.getChannel().getAsMention())
+
+            PaymentLogger.info(
+                    new EmbedBuilder()
+                            .setColor(EMBED_COLOR_SUCCESS)
+                            .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                            .setDescription("""
+                                    > **결제가 완료되었습니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    > **결제 번호: %s**
+                                    > **결제 금액: %d**
+                                    > **실제 결제 금액: %d**
+                                    > **결제 수단: %s**
+                                    > **승인 시각: %s**
+                                    > **결제자: %s**
+                                    > **구매 정보: %s**
+                                    > **사용된 포인트: %d**
+                                    > **사용된 쿠폰: %s**
+                                    > **생성된 티켓: %s**
+                                    """
+                                    .formatted(
+                                            payment.getPaymentId().toString(),
+                                            payment.getProduct().getPrice(),
+                                            finalPrice,
+                                            payment.getMethod().getKRName(),
+                                            DATE_FORMAT.format(payment.getApprovedAt()),
+                                            event.getUser().getAsMention(),
+                                            product.getNote(),
+                                            usedPoint,
+                                            usedCoupon != null ? usedCoupon.getCode() : "없음",
+                                            event.getChannel().getAsMention()
+                                    )
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
             );
 
             // 구매 처리
@@ -381,73 +453,89 @@ public class BuyListener extends ListenerAdapter {
             // 메시지 전송
             MessageEmbed embed1 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("결제 승인이 완료되었습니다.")
-                    .setDescription("> 승인 결과\n> 수락")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                    .setDescription("> **승인 결과: <a:success:1168266537262657626>**")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
-            event.replyEmbeds(embed1)
-                    .queue();
+            event.replyEmbeds(embed1).queue();
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("결제가 승인되었습니다.")
-                    .setDescription("<@" + payment.getRequestedBy() + ">님이 요청하신 결제(" + payment.getPaymentId() + ")가 수락되었습니다.")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **승인 결과: <a:success:1168266537262657626>**
+                            > **결제자: %s**
+                                                        
+                            """.formatted("<@" + payment.getRequestedBy() + ">")
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
+
             event.getJDA().getUserById(payment.getRequestedBy())
                     .openPrivateChannel()
                     .flatMap(channel -> channel.sendMessageEmbeds(embed2))
                     .queue(null, (err) -> {
                         MessageEmbed embed3 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
-                                .setTitle("DM 안내 메시지를 전송하지 못했습니다.")
-                                .setDescription("> <@" + payment.getRequestedBy() + ">")
+                                .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                        > **DM으로 메시지를 전송하지 못했습니다.**
+                                        > **%s**
+                                                                            
+                                        """.formatted("<@" + payment.getRequestedBy() + ">")
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                 .build();
-                        event.getChannel().sendMessageEmbeds(embed3)
-                                .queue();
+
+                        event.getChannel().sendMessageEmbeds(embed3).queue();
                     });
 
             MessageEmbed embed3 = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("**영수증**")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.getUser()
                     .openPrivateChannel().complete()
                     .sendMessage("""
-                                ```
-                                주소: 경상남도 통영시 광도면 신죽**길
-                                대표: 양대영
-                                사업자 번호: 210-36-72319
-                                이메일: yangdaeyeong0808@gmail.com
-                                홈페이지: https://starly.kr/
-                                ======================================
-                                
-                                자동처리            %s
-                                주문번호: %s
-                                
-                                --------------------------------------
-                                상품명: %s
-                                정가: %,d₩
-                                --------------------------------------
-                                             판매총액:      %,d₩
-                                         -----------------------------
-                                　　　　　　　　　공급가:      %,d₩
-                                　　　　　　　　　부가세:      %,d₩
-                                --------------------------------------
-                                
-                                디스코드 ID: %d
-                                디스코드 닉네임: %s
-                                         　  사용 포인트:    %,d
-                                         　  잔여 포인트:    %,d
-                                         
-                                %s
-                                
-                                --------------------------------------
-                                
-                                좋은 하루 되세요!
-                                언제나 고객님을 위해 최선을 다하겠습니다.
-                                ```
-                                """.formatted(
+                            ```
+                            주소: 경상남도 통영시 광도면 신죽**길
+                            대표: 양대영
+                            사업자 번호: 210-36-72319
+                            이메일: yangdaeyeong0808@gmail.com
+                            홈페이지: https://starly.kr/
+                            ======================================
+                                                            
+                            자동처리            %s
+                            주문번호: %s
+                                                            
+                            --------------------------------------
+                            상품명: %s
+                            정가: %,d₩
+                            --------------------------------------
+                                         판매총액:      %,d₩
+                                     -----------------------------
+                            　　　　　　　　　공급가:      %,d₩
+                            　　　　　　　　　부가세:      %,d₩
+                            --------------------------------------
+                                                            
+                            디스코드 ID: %d
+                            디스코드 닉네임: %s
+                                     　  사용 포인트:    %,d
+                                     　  잔여 포인트:    %,d
+                                     
+                            %s
+                                                            
+                            --------------------------------------
+                                                            
+                            좋은 하루 되세요!
+                            언제나 고객님을 위해 최선을 다하겠습니다.
+                            ```
+                            """.formatted(
                             DATE_FORMAT.format(payment.getApprovedAt()),
                             payment.getPaymentId(),
                             product.getName(),
@@ -460,22 +548,22 @@ public class BuyListener extends ListenerAdapter {
                             payment.getUsedPoint(),
                             DatabaseManager.getUserService().getPoint(userId),
                             payment.getMethod() == PaymentMethod.BANK_TRANSFER ? """
-                                            **************************************
-                                              **** 계좌이체 매출전표(고객용) ****
-                                            **************************************
-                                            입금자명: %s
-                                            승인일시: %s
-                                            """
+                                    **************************************
+                                      **** 계좌이체 매출전표(고객용) ****
+                                    **************************************
+                                    입금자명: %s
+                                    승인일시: %s
+                                    """
                                     .formatted(
                                             payment.asBankTransfer().getDepositor(),
                                             DATE_FORMAT.format(payment.getApprovedAt())
                                     ) : """
-                                            **************************************
-                                              *** 문화상품권 매출전표 (고객용) ***
-                                            **************************************
-                                            핀 번호: %s
-                                            승인일시: %s
-                                            """
+                                    **************************************
+                                      *** 문화상품권 매출전표 (고객용) ***
+                                    **************************************
+                                    핀 번호: %s
+                                    승인일시: %s
+                                    """
                                     .formatted(
                                             payment.asCultureland().getPinNumber(),
                                             DATE_FORMAT.format(payment.getApprovedAt())
@@ -483,14 +571,21 @@ public class BuyListener extends ListenerAdapter {
                     ))
                     .setEmbeds(embed3)
                     .queue(null, (err) -> {
+
                         MessageEmbed embed4 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
-                                .setTitle("제목")
-                                .setDescription("DM으로 영수증을 전송하지 못했습니다.\n> <@" + payment.getRequestedBy() + ">")
+                                .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                        > **DM으로 영수증을 전송하지 못했습니다.**
+                                        > **%s**
+                                                                            
+                                        """.formatted("<@" + payment.getRequestedBy() + ">")
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                 .build();
-                        event.getChannel().sendMessageEmbeds(embed4)
-                                .queue();
-                    }); // TODO: 메시지 작업
+                        event.getChannel().sendMessageEmbeds(embed4).queue();
+                    });
 
             // 컴포넌트 전체 비활성화
             event.getMessage().editMessageComponents(
@@ -516,22 +611,31 @@ public class BuyListener extends ListenerAdapter {
             if (payment == null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("데이터가 변조되었습니다.")
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
-            } if (payment.getApprovedAt() != null) {
+            }
+            if (payment.getApprovedAt() != null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("이미 승인 완료되었습니다.")
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **이미 승인이 완료되었습니다.**
+                                                                                                           
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
             }
 
@@ -540,21 +644,28 @@ public class BuyListener extends ListenerAdapter {
             payment.updateApprovedAt(new Date());
 
             paymentService.saveData(payment);
-
             // 메시지 전송
             MessageEmbed embed1 = new EmbedBuilder()
-                    .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("결제 승인이 완료되었습니다.")
-                    .setDescription("> 승인 결과\n> 거절")
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:success:1168266537262657626> 실패 | 결제 <a:success:1168266537262657626>")
+                    .setDescription("> **승인 결과: <a:cross:1058939340505497650>**")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
-            event.replyEmbeds(embed1)
-                    .queue();
+            event.replyEmbeds(embed1).queue();
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("결제가 거절되었습니다.")
-                    .setDescription("<@" + payment.getRequestedBy() + ">님이 요청하신 결제(" + payment.getPaymentId() + ")가 거절되었습니다.")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setTitle("<a:success:1168266537262657626> 실패 | 결제 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **승인 결과: <a:cross:1058939340505497650>**
+                            > **결제자: %s**
+                            > **결제 번호: %s**
+                                                        
+                            """.formatted("<@" + payment.getRequestedBy() + ">", payment.getPaymentId().toString())
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.getJDA().getUserById(payment.getRequestedBy())
                     .openPrivateChannel()
@@ -562,8 +673,15 @@ public class BuyListener extends ListenerAdapter {
                     .queue(null, (err) -> {
                         MessageEmbed embed3 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
-                                .setTitle("DM 안내 메시지를 전송하지 못했습니다.")
-                                .setDescription("> <@" + payment.getRequestedBy() + ">")
+                                .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                        > **DM으로 메시지를 전송하지 못했습니다.**
+                                        > **%s**
+                                                                            
+                                        """.formatted("<@" + payment.getRequestedBy() + ">")
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                 .build();
                         event.getChannel().sendMessageEmbeds(embed3)
                                 .queue();
@@ -580,25 +698,40 @@ public class BuyListener extends ListenerAdapter {
 
         switch (componentId) {
             case ID_PREFIX + "cancel" -> {
-                if (!productMap.containsKey(userId) && !couponMap.containsKey(userId) && !pointMap.containsKey(userId)) return;
+                if (!productMap.containsKey(userId) && !couponMap.containsKey(userId) && !pointMap.containsKey(userId))
+                    return;
 
                 stopSession(userId);
 
-                event.reply("결제를 취소했습니다.")
-                        .setEphemeral(true)
-                        .queue();
+                MessageEmbed embed3 = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_SUCCESS)
+                        .setTitle("<a:success:1168266537262657626> 취소 | 결제 <a:success:1168266537262657626>")
+                        .setDescription("""
+                                > **결제를 취소하였습니다.**
+                                                                    
+                                """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed3).setEphemeral(true).queue();
             }
 
             case ID_PREFIX + "point-yes" -> {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -619,8 +752,15 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -631,8 +771,14 @@ public class BuyListener extends ListenerAdapter {
                 } else if (pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("데이터가 변조되었습니다.\n거래를 취소합니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -646,8 +792,15 @@ public class BuyListener extends ListenerAdapter {
 
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("제목")
-                        .setDescription("포인트를 사용하지 않고 결제를 진행합니다.\n결제수단을 선택해주세요.")
+                        .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                > **포인트를 사용하지 않고 결제를 진행합니다.**
+                                > **결제 수단을 선택해 주세요.**
+                                                                
+                                      """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.replyEmbeds(embed)
                         .addActionRow(createPaymentMethodSelectMenu(
@@ -662,24 +815,33 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                                                                  
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
                 } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("데이터가 변조되었습니다.\n거래를 취소합니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -697,26 +859,36 @@ public class BuyListener extends ListenerAdapter {
 
             case ID_PREFIX + "coupon-no" -> {
                 if (!productMap.containsKey(userId)) {
+
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                                                                  
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
                 } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("데이터가 변조되었습니다.\n거래를 취소합니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -730,14 +902,18 @@ public class BuyListener extends ListenerAdapter {
 
                 if (point == 0) {
                     MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR)
-                            .setTitle("제목")
-                            .setDescription("보유중인 포인트가 없어 쿠폰, 포인트를 모두 사용하지 않고 결제를 진행합니다.\n\n계속하시겠습니까?")
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **보유 중인 포인트가 없습니다..**
+                                    > **포인트를 사용하지 않고 결제를 진행합니다.**
+                                    > **계속하시겠습니까?**                                         
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                 } else if (point < POINT_USE_MINIMUM) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
@@ -751,14 +927,18 @@ public class BuyListener extends ListenerAdapter {
                 } else {
                     Button withPointBtn = Button.primary(ID_PREFIX + "point-yes", "예");
                     MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("제목")
-                            .setDescription("쿠폰을 사용하지 않고 결제를 진행합니다.\n포인트를 사용하시겠습니까?")
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **쿠폰을 사용하지 않고 결제를 진행합니다.**
+                                    > **포인트를 사용하시겠습니까?**
+                                                                      
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(withPointBtn, withoutPointBtn.withLabel("아니오"), CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn.withLabel("아니오"), CANCEL_BUTTON).setEphemeral(true).queue();
                 }
             }
         }
@@ -775,24 +955,33 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
                 } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("데이터가 변조되었습니다.\n거래를 취소합니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -806,13 +995,16 @@ public class BuyListener extends ListenerAdapter {
                     Button retryBtn = Button.primary(ID_PREFIX + "coupon-yes", "다시 입력하기");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("존재하지 않는 쿠폰입니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **존재하지 않는 쿠폰입니다.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
                 }
 
@@ -822,13 +1014,16 @@ public class BuyListener extends ListenerAdapter {
                     Button withoutCouponBtn = Button.secondary(ID_PREFIX + "coupon-no", "쿠폰 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("쿠폰을 사용할 수 없습니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **쿠폰을 사용할 수 없습니다.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, withoutCouponBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, withoutCouponBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
                 }
 
@@ -843,13 +1038,16 @@ public class BuyListener extends ListenerAdapter {
                     Button withoutCouponBtn = Button.secondary(ID_PREFIX + "coupon-no", "쿠폰 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("쿠폰을 사용할 수 없습니다.\n(할인 적용 금액 < 0)")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **쿠폰을 사용할 수 없습니다.**
+                                    > **(할인 적용 금액 < 0)**
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, withoutCouponBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, withoutCouponBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                 } else if (finalPrice == 0) {
                     int usedPoint = pointMap.get(userId);
                     Coupon usedCoupon = couponMap.get(userId);
@@ -867,19 +1065,32 @@ public class BuyListener extends ListenerAdapter {
                     String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
                     Button approveBtn = Button.primary(ID_PREFIX + "accept-" + paymentIdForId, "수락");
                     Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
+
                     MessageEmbed embed1 = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
-                            .setTitle("결제가 요청되었습니다.")
-                            .setDescription("승인하시겠습니까?")
+                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **결제가 요청되었습니다.**
+                                    > **승인하시겠습니까?**
+                                                                        
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    ticketChannel.sendMessageEmbeds(embed1)
-                            .setActionRow(approveBtn, rejectBtn)
-                            .queue();
+                    ticketChannel.sendMessageEmbeds(embed1).setActionRow(approveBtn, rejectBtn).queue();
 
                     MessageEmbed embed2 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("제목")
-                            .setDescription("쿠폰(" + coupon.getCode() + ")을 적용하였습니다.\n결제할 금액이 남아있지 않습니다.")
+                            .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                            .setDescription("""
+                                    > **쿠폰(%s)을 적용하였습니다.**
+                                    > **결제할 금액이 남아있지 않습니다.**
+                                                                        
+                                    """.formatted(coupon.getCode())
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
@@ -889,21 +1100,24 @@ public class BuyListener extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                             .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                             .build();
-                    event.replyEmbeds(embed2, embed3)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed2, embed3).setEphemeral(true).queue();
                 } else {
                     Button withPointBtn = Button.primary(ID_PREFIX + "point-yes", "예");
                     Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "아니오");
+
                     MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("제목")
-                            .setDescription("쿠폰(" + coupon.getCode() + ")을 적용하였습니다.\n포인트를 사용하시겠습니까?")
+                            .setColor(EMBED_COLOR)
+                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **쿠폰(%s)을 적용하였습니다.**
+                                    > **포인트를 사용하시겠습니까?**
+                                                                        
+                                    """.formatted(coupon.getCode())
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(withPointBtn, withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                 }
             }
 
@@ -918,24 +1132,33 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
                 } else if (pointMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("데이터가 변조되었습니다.\n거래를 취소합니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -951,13 +1174,16 @@ public class BuyListener extends ListenerAdapter {
                     Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("숫자만 입력할 수 있습니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **숫자만 입력할 수 있습니다.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
                 }
 
@@ -967,26 +1193,33 @@ public class BuyListener extends ListenerAdapter {
                     Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("포인트는 %d 단위로 사용할 수 있습니다.".formatted(POINT_USE_UNIT))
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **포인트는 %d 단위로 사용할 수 있습니다.**
+                                                                        
+                                    """.formatted(POINT_USE_UNIT)
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
-                } if (amount < POINT_USE_MINIMUM) {
+                }
+                if (amount < POINT_USE_MINIMUM) {
                     Button retryBtn = Button.primary(ID_PREFIX + "point-yes", "다시 입력하기");
                     Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("포인트는 %d 이상 사용할 수 있습니다.".formatted(POINT_USE_MINIMUM))
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **포인트는 %d 이상 사용할 수 있습니다.**
+                                                                        
+                                    """.formatted(POINT_USE_MINIMUM)
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
                 }
 
@@ -1001,13 +1234,16 @@ public class BuyListener extends ListenerAdapter {
                     Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("포인트는 결제 금액 이하로 사용할 수 있습니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **포인트는 결제 금액 이하로 사용할 수 있습니다.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
                 }
 
@@ -1027,10 +1263,18 @@ public class BuyListener extends ListenerAdapter {
                     String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
                     Button approveBtn = Button.primary(ID_PREFIX + "accept-" + paymentIdForId, "수락");
                     Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
+
                     MessageEmbed embed1 = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
-                            .setTitle("결제가 요청되었습니다.")
-                            .setDescription("승인하시겠습니까?")
+                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **결제가 요청되었습니다.**
+                                    > **승인하시겠습니까?**
+                                                                        
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     ticketChannel.sendMessageEmbeds(embed1)
                             .setActionRow(approveBtn, rejectBtn)
@@ -1038,8 +1282,15 @@ public class BuyListener extends ListenerAdapter {
 
                     MessageEmbed embed2 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("제목")
-                            .setDescription("포인트(\" + amount + \"원)를 적용하였습니다.\n결제할 금액이 남아있지 않습니다.")
+                            .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                            .setDescription("""
+                                    > **포인트(%s원)을 적용하였습니다.**
+                                    > **결제할 금액이 남아있지 않습니다.**
+                                                                        
+                                    """.formatted(amount)
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
@@ -1060,8 +1311,15 @@ public class BuyListener extends ListenerAdapter {
 
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("제목")
-                        .setDescription("포인트(" + amount + "원)를 적용하였습니다.\n결제수단을 선택해주세요.")
+                        .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                        .setDescription("""
+                                > **포인트(%s원)을 적용하였습니다.**
+                                > **결제 수단을 선택해 주세요.**
+                                                                    
+                                """.formatted(amount)
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.replyEmbeds(embed)
                         .addActionRow(createPaymentMethodSelectMenu(
@@ -1080,12 +1338,17 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -1131,17 +1394,30 @@ public class BuyListener extends ListenerAdapter {
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("결제 정보 생성중 오류가 발생했습니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **결제 정보 생성 도중 오류가 발생하였습니다.**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                    PaymentLogger.warning(new EmbedBuilder()
-                            .setTitle("결제 정보 생성중 오류가 발생했습니다.")
-                            .setDescription("결제자: " + event.getUser().getAsMention()));
-
+                    PaymentLogger.warning(
+                            new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                    .setDescription("""
+                                            > **결제 정보 생성 도중 오류가 발생하였습니다.**
+                                            > **결제자: %s**
+                                                                                        
+                                            """.formatted(event.getUser().getAsMention())
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    );
                     stopSession(userId);
                     return;
                 }
@@ -1154,17 +1430,32 @@ public class BuyListener extends ListenerAdapter {
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("결제 요청 중 오류가 발생했습니다.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **결제 요청 도중 오류가 발생하였습니다.**
+                                                                                                               
+                                          """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                    PaymentLogger.warning(new EmbedBuilder()
-                            .setTitle("결제 요청 중 오류가 발생했습니다.")
-                            .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                                    "결제자: " + event.getUser().getAsMention() + "\n"));
+                    PaymentLogger.warning(
+                            new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                    .setDescription("""
+                                            > **결제 요청 도중 오류가 발생하였습니다.**
+                                                                                        
+                                            > **결제 번호: %s**
+                                            > **결제자: %s**
+                                                                                        
+                                            """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention())
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    );
 
                     payment.updateAccepted(true);
                     payment.updateApprovedAt(null);
@@ -1182,17 +1473,33 @@ public class BuyListener extends ListenerAdapter {
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("결제 정보 저장 중 오류가 발생했습니다.\n\n카드사에 비용이 청구되었을 수 있으니,\n티켓을 통하여 관리자에게 문의해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **결제 정보 저장 도중 오류가 발생하였습니다.**
+                                    > **카드사에 비용이 청구되었을 수 있으니, 고객센터를 통하여 관리자에게 문의해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                    PaymentLogger.error(new EmbedBuilder()
-                            .setTitle("결제 정보 저장 중 오류가 발생했습니다.")
-                            .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                                    "결제자: " + event.getUser().getAsMention()));
+                    PaymentLogger.error(
+                            new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                    .setDescription("""
+                                            > **결제 정보 저장 도중 오류가 발생하였습니다.**
+                                            
+                                            > **결제 번호: %s**
+                                            > **결제자: %s**
+                                                                                
+                                            """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention())
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    );
 
                     stopSession(userId);
                     return;
@@ -1207,41 +1514,79 @@ public class BuyListener extends ListenerAdapter {
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("상품 지급 중 오류가 발생했습니다.\n\n카드사에 비용이 청구되었을 수 있으니,\n티켓을 통하여 관리자에게 문의해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **상품 지급 도중 오류가 발생하였습니다.**
+                                    > **카드사에 비용이 청구되었을 수 있으니, 고객센터를 통하여 관리자에게 문의해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                    PaymentLogger.error(new EmbedBuilder()
-                            .setTitle("상품 지급 중 오류가 발생했습니다.")
-                            .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                                    "결제자: " + event.getUser().getAsMention()));
+                    PaymentLogger.error(
+                            new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                    .setDescription("""
+                                            > **상품 지급 도중 오류가 발생하였습니다.**
+                                            
+                                            > **결제 번호: %s**
+                                            > **결제자: %s**
+                                                                                
+                                            """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention())
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    );
 
                     stopSession(userId);
                     return;
                 }
 
                 int finalPrice = payment.getFinalPrice();
-                PaymentLogger.info(new EmbedBuilder()
-                        .setTitle("결제가 완료되었습니다.")
-                        .setDescription("결제번호: " + payment.getPaymentId() + "\n" +
-                                "결제금액: " + payment.getProduct().getPrice() + "원\n" +
-                                "실결제금액: " + finalPrice + "원\n" +
-                                "결제수단: 신용카드\n" +
-                                "승인시각: " + DATE_FORMAT.format(payment.getApprovedAt()) + "\n" +
-                                "결제자: " + event.getUser().getAsMention() + "\n" +
-                                "구매 정보: " + product.getNote() + "\n" +
-                                "사용된 포인트: " + usedPoint + "\n" +
-                                "사용된 쿠폰: " + (usedCoupon != null ? usedCoupon.getCode() : "없음") + "\n" +
-                                "생성된 티켓: 없음")
+                PaymentLogger.info(
+                        new EmbedBuilder()
+                                .setColor(EMBED_COLOR_SUCCESS)
+                                .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
+                                .setDescription("""
+                                    > **결제가 완료되었습니다.**
+                                                                
+                                    ─────────────────────────────────────────────────
+                                    > **결제 번호: %s**
+                                    > **결제 금액: %d**
+                                    > **실제 결제 금액: %d**
+                                    > **결제 수단: %s**
+                                    > **승인 시각: %s**
+                                    > **결제자: %s**
+                                    > **구매 정보: %s**
+                                    > **사용된 포인트: %d**
+                                    > **사용된 쿠폰: %s**
+                                    > **생성된 티켓: 없음**
+                                    """
+                                        .formatted(
+                                                payment.getPaymentId().toString(),
+                                                payment.getProduct().getPrice(),
+                                                finalPrice,
+                                                payment.getMethod().getKRName(),
+                                                DATE_FORMAT.format(payment.getApprovedAt()),
+                                                event.getUser().getAsMention(),
+                                                product.getNote(),
+                                                usedPoint,
+                                                usedCoupon != null ? usedCoupon.getCode() : "없음"
+                                        )
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 );
 
                 MessageEmbed receipt = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("**영수증**")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                        .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.getUser()
                         .openPrivateChannel().complete()
@@ -1253,10 +1598,10 @@ public class BuyListener extends ListenerAdapter {
                                 이메일: yangdaeyeong0808@gmail.com
                                 홈페이지: https://starly.kr/
                                 ======================================
-                                
+                                                                
                                 자동처리            %s
                                 주문번호: %s
-                                
+                                                                
                                 --------------------------------------
                                 상품명: %s
                                 정가: %,d₩
@@ -1266,7 +1611,7 @@ public class BuyListener extends ListenerAdapter {
                                 　　　　　　　　　공급가:      %,d₩
                                 　　　　　　　　　부가세:      %,d₩
                                 --------------------------------------
-                                
+                                                                
                                 디스코드 ID: %d
                                 디스코드 닉네임: %s
                                          　  사용 포인트:    %,d
@@ -1277,11 +1622,11 @@ public class BuyListener extends ListenerAdapter {
                                 **************************************
                                 카드번호: %s
                                 할부: %d개월
-                                
+                                                                
                                 --------------------------------------
-                                
+                                                                
                                 %s
-                                
+                                                                
                                 좋은 하루 되세요!
                                 언제나 고객님을 위해 최선을 다하겠습니다.
                                 ```
@@ -1305,12 +1650,18 @@ public class BuyListener extends ListenerAdapter {
                         .queue(null, (err) -> {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
-                                    .setTitle("제목")
-                                    .setDescription("DM으로 영수증을 전송하지 못했습니다.\n> <@" + payment.getRequestedBy() + ">")
+                                    .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
+                                    .setDescription("""
+                                        > **DM으로 영수증을 전송하지 못했습니다.**
+                                        > **%s**
+                                                                            
+                                        """.formatted("<@" + payment.getRequestedBy() + ">")
+                                    )
+                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
-                            event.getChannel().sendMessageEmbeds(embed)
-                                    .queue();
-                        }); // TODO: 메시지 작업
+                            event.getChannel().sendMessageEmbeds(embed).queue();
+                        });
 
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
@@ -1334,12 +1685,17 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -1370,9 +1726,17 @@ public class BuyListener extends ListenerAdapter {
                 Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
                 MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("계좌이체 결제가 요청되었습니다.")
-                        .setDescription("입금자명: " + depositor + "\n\n" +
-                                "승인하시겠습니까?")
+                        .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                > **계좌이체 결제가 요청되었습니다.**
+                                > **승인하시겠습니까?**
+                                                                    
+                                > **입금자명: %s**
+                                                                  
+                                """.formatted(depositor)
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 ticketChannel.sendMessageEmbeds(embed1)
                         .setActionRow(approveBtn, rejectBtn)
@@ -1386,9 +1750,7 @@ public class BuyListener extends ListenerAdapter {
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .build();
-                event.replyEmbeds(embed2)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed2).setEphemeral(true).queue();
 
                 // 세션 데이터 삭제
                 stopSession(userId);
@@ -1402,12 +1764,17 @@ public class BuyListener extends ListenerAdapter {
                 if (!productMap.containsKey(userId)) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("진행중인 거래가 존재하지 않습니다.\n처음부터 다시 시도해주세요.")
+                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                            .setDescription("""
+                                    > **진행 중인 거래가 존재하지 않습니다.**
+                                    > **처음부터 다시 시도해 주세요.**
+                                                                        
+                                    """
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
 
                     stopSession(userId);
                     return;
@@ -1438,13 +1805,19 @@ public class BuyListener extends ListenerAdapter {
                 Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
                 MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
-                        .setTitle("문화상품권 결제가 요청되었습니다.")
-                        .setDescription("핀 번호: " + pinNumber + "\n\n" +
-                                "승인하시겠습니까?")
+                        .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                                > **문화상품권 결제가 요청되었습니다.**
+                                > **승인하시겠습니까?**
+                                                                    
+                                > **핀번호: %s**
+                                                                  
+                                """.formatted(pinNumber)
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                ticketChannel.sendMessageEmbeds(embed1)
-                        .setActionRow(approveBtn, rejectBtn)
-                        .queue();
+                ticketChannel.sendMessageEmbeds(embed1).setActionRow(approveBtn, rejectBtn).queue();
 
                 MessageEmbed embed2 = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
@@ -1454,9 +1827,7 @@ public class BuyListener extends ListenerAdapter {
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .build();
-                event.replyEmbeds(embed2)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed2).setEphemeral(true).queue();
 
                 // 세션 데이터 삭제
                 stopSession(userId);
@@ -1533,24 +1904,24 @@ public class BuyListener extends ListenerAdapter {
                 payment.getProduct().getNote(),
                 "자동결제 승인요청 (" + payment.getMethod().getKRName() + ")",
                 """
-                > 결제 ID
-                > %s
-                
-                > 결제수단
-                > %s
-                
-                > 결제금액
-                > 실결제액: %,d원, 쿠폰: %s, 포인트: %,d원
-                
-                > 결제자
-                > %s (%d)
-                
-                > 결제일
-                > %s
-                
-                > 승인상태
-                > %s
-                """.formatted(
+                        > 결제 ID
+                        > %s
+                                        
+                        > 결제수단
+                        > %s
+                                        
+                        > 결제금액
+                        > 실결제액: %,d원, 쿠폰: %s, 포인트: %,d원
+                                        
+                        > 결제자
+                        > %s (%d)
+                                        
+                        > 결제일
+                        > %s
+                                        
+                        > 승인상태
+                        > %s
+                        """.formatted(
                         payment.getPaymentId().toString(),
                         payment.getMethod().getKRName(),
                         price,
@@ -1613,15 +1984,19 @@ public class BuyListener extends ListenerAdapter {
             userService.addPoint(userId, cashbackAmount);
 
             MessageEmbed embed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("제목")
-                    .setDescription(format("랭크 특권으로 %,d원을 캐시백 받았습니다.", cashbackAmount))
+                    .setColor(EMBED_COLOR)
+                    .setTitle("<a:loading:1168266572847128709> 캐시백 | 결제 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                                    > **랭크 특권으로 %d원을 캐시백 받았습니다.**
+                                                                        
+                                    """.formatted(cashbackAmount)
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
 
             JDA jda = DiscordBotManager.getInstance().getJda();
-            jda.getUserById(userId)
-                    .openPrivateChannel().complete()
-                    .sendMessageEmbeds(embed).queue();
+            jda.getUserById(userId).openPrivateChannel().complete().sendMessageEmbeds(embed).queue();
         }
 
         // 랭크 지급
@@ -1633,10 +2008,12 @@ public class BuyListener extends ListenerAdapter {
         long totalPrice = paymentService.getTotalPaidPrice(userId);
         if (totalPrice >= 500000 && !userRanks.contains(rank3)) {
             RankUtil.giveRank(userId, rank3);
-        } if (totalPrice >= 1000000 && !userRanks.contains(rank4)) {
+        }
+        if (totalPrice >= 1000000 && !userRanks.contains(rank4)) {
             RankUtil.giveRank(userId, rank4);
-        } if (totalPrice >= 3000000 && !userRanks.contains(rank5)) {
+        }
+        if (totalPrice >= 3000000 && !userRanks.contains(rank5)) {
             RankUtil.giveRank(userId, rank5);
         }
     }
-} // TODO : 메시지 디자인 & 코드 청소 (디자인 후)
+}

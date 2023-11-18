@@ -33,7 +33,7 @@ import java.util.List;
         description = "결제건을 환불처리합니다.",
         optionName = {"거래id"},
         optionType = {OptionType.STRING},
-        optionDescription = {"환불처리할 거래의 ID를 입력해 주세요."},
+        optionDescription = {"환불처리를 할 거래의 ID를 입력해 주세요."},
         optionRequired = {true}
 )
 public class RefundCommand implements DiscordSlashCommand {
@@ -55,21 +55,32 @@ public class RefundCommand implements DiscordSlashCommand {
         PaymentService paymentService = DatabaseManager.getPaymentService();
         Payment payment = paymentService.getDataByPaymentId(paymentId);
         if (payment == null) {
-            event.replyEmbeds(
-                    new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("제목")
-                            .setDescription("해당하는 거래를 찾을 수 없습니다.")
-                            .build()
-            ).queue();
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
+                    .setDescription("""
+                            > **해당하는 거래를 찾을 수 없습니다.**
+                                                                                                       
+                                  """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .build();
+            event.replyEmbeds(embed).queue();
             return;
         }
 
         if (payment.isRefunded()) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("제목")
-                    .setDescription("이미 환불처리된 거래건을 다시 환불할 수 없습니다.")
+                    .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
+                    .setDescription("""
+                            > **이미 환불 처리가 완료된 거래건은 다시 환불할 수 없습니다.**
+                                                                                                 
+                            """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -85,16 +96,31 @@ public class RefundCommand implements DiscordSlashCommand {
 
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("제목")
-                        .setDescription("환불처리중 오류가 발생했습니다.")
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **환불처리 중 오류가 발생하였습니다.**
+                                                                                                     
+                                """
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.replyEmbeds(embed)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                PaymentLogger.error(new EmbedBuilder()
-                        .setTitle("환불처리중 오류가 발생했습니다.")
-                        .setDescription("결제번호: " + payment.getPaymentId() + "\n" + ex.getMessage())
+                PaymentLogger.error(
+                        new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **환불처리 중 오류가 발생하였습니다.**
+                                        > **결제 번호: %s**
+                                                                        
+                                        > **오류: **
+                                                                                                             
+                                        """.formatted(payment.getPaymentId().toString(), ex.getMessage())
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 );
                 return;
             }
@@ -112,18 +138,27 @@ public class RefundCommand implements DiscordSlashCommand {
             long totalPrice = paymentService.getTotalPaidPrice(userId);
             if (totalPrice < 3000000 && userRanks.contains(rank5)) {
                 RankUtil.takeRank(userId, rank5);
-            } if (totalPrice < 1000000 && userRanks.contains(rank4)) {
+            }
+            if (totalPrice < 1000000 && userRanks.contains(rank4)) {
                 RankUtil.takeRank(userId, rank4);
-            } if (totalPrice < 500000 && userRanks.contains(rank3)) {
+            }
+            if (totalPrice < 500000 && userRanks.contains(rank3)) {
                 RankUtil.takeRank(userId, rank3);
-            } if (totalPrice < 0 && userRanks.contains(rank2)) {
+            }
+            if (totalPrice < 0 && userRanks.contains(rank2)) {
                 RankUtil.takeRank(userId, rank2);
             }
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("제목")
-                    .setDescription("환불처리가 완료되었습니다.")
+                    .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **환불 처리가 완료되었습니다.**
+                                                                
+                            """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -133,8 +168,14 @@ public class RefundCommand implements DiscordSlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("제목")
-                    .setDescription("환불처리를 받기 위해 환불계좌를 입력 해주세요.")
+                    .setTitle("<a:loading:1168266572847128709> 입력 | 환불 <a:loading:1168266572847128709>")
+                    .setDescription("""
+                            > **환불처리를 받기 위해 환불 계좌를 입력해 주세요.**
+                                                                
+                            """
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed)
                     .addActionRow(button)
@@ -143,4 +184,4 @@ public class RefundCommand implements DiscordSlashCommand {
 
         payment.updateRefundedAt(new Date());
     }
-} // TODO: 메시지 작업, 테스트
+}

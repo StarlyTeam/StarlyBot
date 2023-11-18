@@ -33,8 +33,6 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
@@ -47,7 +45,6 @@ public class RefundListener extends ListenerAdapter {
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
 
-    private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final String ID_PREFIX = "refund-";
 
     // BUTTON
@@ -117,45 +114,84 @@ public class RefundListener extends ListenerAdapter {
             long totalPrice = paymentService.getTotalPaidPrice(userId);
             if (totalPrice < 3000000 && userRanks.contains(rank5)) {
                 RankUtil.takeRank(userId, rank5);
-            } if (totalPrice < 1000000 && userRanks.contains(rank4)) {
+            }
+            if (totalPrice < 1000000 && userRanks.contains(rank4)) {
                 RankUtil.takeRank(userId, rank4);
-            } if (totalPrice < 500000 && userRanks.contains(rank3)) {
+            }
+            if (totalPrice < 500000 && userRanks.contains(rank3)) {
                 RankUtil.takeRank(userId, rank3);
-            } if (totalPrice < 0 && userRanks.contains(rank2)) {
+            }
+            if (totalPrice < 0 && userRanks.contains(rank2)) {
                 RankUtil.takeRank(userId, rank2);
             }
         }
 
         MessageEmbed embed1 = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("환불처리 승인이 완료되었습니다.")
-                .setDescription("> 승인 결과\n> " + (isAccepted ? "수락" : "거절"))
+                .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
+                .setDescription("""
+                        > **환불처리 승인이 완료되었습니다. 🥳**
+                        > **승인 결과: %s**
+                                                    
+                        """.formatted(isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>")
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
         event.replyEmbeds(embed1)
                 .queue();
 
         PaymentLogger.info(new EmbedBuilder()
-                .setTitle("환불처리가 승인되었습니다.")
-                .setDescription("> 결제번호: " + payment.getPaymentId() + "\n\n> 승인 결과\n> " + (isAccepted ? "수락" : "거절"))
+                .setColor(EMBED_COLOR_SUCCESS)
+                .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
+                .setDescription("""
+                                > **환불처리 승인이 완료되었습니다. 🥳**
+                                > **승인 결과: %s**
+                                > **결제 번호: %s**
+                                                            
+                                """.formatted(
+                                isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
+                                payment.getPaymentId().toString()
+                        )
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
         );
 
         MessageEmbed embed2 = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("환불요청이 승인되었습니다.")
-                .setDescription("<@" + payment.getRequestedBy() + ">님이 요청하신 결제(" + payment.getPaymentId() + ")가 " + (isAccepted ? "수락" : "거절") + "되었습니다.")
-                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
+                .setDescription("""
+                        > **환불처리 승인이 완료되었습니다. 🥳**
+                        > **승인 결과: %s**
+                        > **결제 번호: %s**
+                                                    
+                        """.formatted(
+                        isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
+                        payment.getPaymentId().toString())
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
+
         event.getJDA().getUserById(payment.getRequestedBy())
                 .openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed2))
                 .queue(null, (err) -> {
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("DM 안내 메시지를 전송하지 못했습니다.")
-                            .setDescription("> <@" + payment.getRequestedBy() + ">")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 환불 <a:loading:1168266572847128709>")
+                            .setDescription("""
+                                    > **DM으로 메시지를 전송하지 못했습니다.**
+                                    > **%s**
+                                                                        
+                                    """.formatted("<@" + payment.getRequestedBy() + ">")
+                            )
+                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
-                    event.getChannel().sendMessageEmbeds(embed3)
-                            .queue();
+
+                    event.getChannel().sendMessageEmbeds(embed3).queue();
                 });
     }
 
@@ -209,24 +245,24 @@ public class RefundListener extends ListenerAdapter {
                 payment.getProduct().getNote(),
                 "환불처리 요청",
                 """
-                > 결제 ID
-                > %s
-                
-                > 결제수단
-                > %s
-                
-                > 환불금액
-                > %,d원
-                
-                > 환불계좌 예금주명
-                > %s
-                
-                > 환불계좌 번호
-                > %s
-                
-                > 환불계좌 은행
-                > %s
-                """.formatted(
+                        > 결제 ID
+                        > %s
+                                        
+                        > 결제수단
+                        > %s
+                                        
+                        > 환불금액
+                        > %,d원
+                                        
+                        > 환불계좌 예금주명
+                        > %s
+                                        
+                        > 환불계좌 번호
+                        > %s
+                                        
+                        > 환불계좌 은행
+                        > %s
+                        """.formatted(
                         payment.getPaymentId().toString(),
                         payment.getMethod().getKRName(),
                         payment.getFinalPrice(),
@@ -239,10 +275,17 @@ public class RefundListener extends ListenerAdapter {
         String paymentIdForId = payment.getPaymentId().toString().replace("-", "_");
         Button approveBtn = Button.primary(ID_PREFIX + "accept-" + paymentIdForId, "수락");
         Button rejectBtn = Button.danger(ID_PREFIX + "refuse-" + paymentIdForId, "거절");
+
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("환불이 요청되었습니다.")
-                .setDescription("승인하시겠습니까?")
+                .setTitle("<a:loading:1168266572847128709> 대기 | 환불 <a:loading:1168266572847128709>")
+                .setDescription("""
+                        > **환불을 요청하였습니다. 승인하시겠습니까?**
+                                                            
+                        """
+                )
+                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
         ticketChannel.sendMessageEmbeds(embed)
                 .setActionRow(approveBtn, rejectBtn)
@@ -253,13 +296,13 @@ public class RefundListener extends ListenerAdapter {
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                 .setDescription("""
-                            > **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!**
-                            > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏**
-                            """
+                        > **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!**
+                        > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏**
+                        """
                         .formatted(ticketChannel.getAsMention())
                 )
                 .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                 .build();
         event.replyEmbeds(embed2).setEphemeral(true).queue();
     }
-} // TODO: 메시지 작업, 테스트
+}
