@@ -468,7 +468,7 @@ public class BuyListener extends ListenerAdapter {
                                             """
                                     .formatted(
                                             payment.asBankTransfer().getDepositor(),
-                                            payment.getApprovedAt()
+                                            DATE_FORMAT.format(payment.getApprovedAt())
                                     ) : """
                                             **************************************
                                               *** 문화상품권 매출전표 (고객용) ***
@@ -478,7 +478,7 @@ public class BuyListener extends ListenerAdapter {
                                             """
                                     .formatted(
                                             payment.asCultureland().getPinNumber(),
-                                            payment.getApprovedAt()
+                                            DATE_FORMAT.format(payment.getApprovedAt())
                                     )
                     ))
                     .setEmbeds(embed3)
