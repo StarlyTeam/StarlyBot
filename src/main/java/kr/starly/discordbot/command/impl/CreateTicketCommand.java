@@ -66,7 +66,8 @@ public class CreateTicketCommand implements DiscordCommand {
 
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("""
+                .setTitle("<:ticket:1039499247172718602> 고객센터 문의 | 스탈리 <:ticket:1039499247172718602>")
+                .setDescription("""
                         > **스탈리 고객센터에 오신 것을 환영합니다.**
                         > **여기에서는 귀하의 문의사항이나 건의사항을 기다리고 있습니다.**
                         

@@ -69,7 +69,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                         .setTitle("<a:success:1168266537262657626> 확인 | 고객센터 <a:success:1168266537262657626>")
                         .setDescription("""
                                 > **정말로 티켓을 열겠습니까?**
-                                                            
+                                
                                 """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
