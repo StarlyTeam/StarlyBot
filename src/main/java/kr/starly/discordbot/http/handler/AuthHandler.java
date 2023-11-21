@@ -200,11 +200,7 @@ public class AuthHandler implements HttpHandler {
             );
         }
 
-        String response = "성공적으로 인증을 마쳤습니다.";
-        exchange.sendResponseHeaders(200, response.length());
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        sendResponse(exchange, 200, "성공적으로 인증을 마쳤습니다.");
 
         if (authService.validateToken(userId, token)) {
             authService.removeTokenForUser(userId);
