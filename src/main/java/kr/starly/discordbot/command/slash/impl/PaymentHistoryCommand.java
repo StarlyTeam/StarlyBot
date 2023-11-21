@@ -51,8 +51,10 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
         if (user != null && paymentId != null) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("거래내역")
-                    .setDescription("조회 조건은 하나만 선택해주세요.")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
+                    .setDescription("> **조회 조건은 하나만 선택해 주세요.**")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
         } else if (user != null) {
@@ -68,8 +70,10 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("제목")
+                    .setTitle("<a:loading:1168266572847128709> 목록 | 거래내역 <a:loading:1168266572847128709>")
                     .setDescription("```\n" + list + "```")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
         } else if (paymentId != null) {
@@ -192,17 +196,21 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("제목")
+                    .setTitle("<a:loading:1168266572847128709> 목록 | 거래내역 <a:loading:1168266572847128709>")
                     .setDescription("```\n" + info + "\n```")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
         } else {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("거래내역")
-                    .setDescription("조회 조건을 설정해주세요.")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
+                    .setDescription("> **조회 조건을 설정해 주세요.**")
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
         }
     }
-} // TODO: 테스트
+}

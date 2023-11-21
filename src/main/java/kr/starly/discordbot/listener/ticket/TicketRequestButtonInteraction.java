@@ -49,7 +49,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                             
                             ─────────────────────────────────────────────────
                             """.formatted(
-                            ticketChannel != null ? "이미 티켓이 존재합니다. " + ticketChannel.getAsMention() : "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)"
+                                    ticketChannel != null ? "이미 티켓이 존재합니다. " + ticketChannel.getAsMention() : "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)"
                             )
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
