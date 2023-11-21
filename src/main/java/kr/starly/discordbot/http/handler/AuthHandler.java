@@ -46,16 +46,16 @@ public class AuthHandler implements HttpHandler {
         String token = pathSegments[3];
 
         if (!authService.validateToken(userId, token)) {
-            sendResponse(exchange, 404, "존재하지 않거나, 만료된 토큰입니다.");
+            sendResponse(exchange, 400, "존재하지 않거나, 만료된 토큰입니다.");
             return;
         }
 
-        String userIp = exchange.getRemoteAddress().getAddress().getHostAddress();
+        String userIp = exchange.getRequestHeaders().get("x-real-ip").get(0);
 
         Guild guild = DiscordBotManager.getInstance().getJda().getGuilds().get(0);
         Member member = guild.getMemberById(userId);
         if (member == null) {
-            sendResponse(exchange, 500, "유저를 찾을 수 없습니다.");
+            sendResponse(exchange, 400, "유저를 찾을 수 없습니다.");
             return;
         }
 
@@ -66,7 +66,7 @@ public class AuthHandler implements HttpHandler {
         }
 
         if (member.getRoles().contains(authorizedRole)) {
-            sendResponse(exchange, 403, "당신은 이미 인증을 마쳤습니다.");
+            sendResponse(exchange, 400, "당신은 이미 인증을 마쳤습니다.");
             return;
         }
 
@@ -83,9 +83,10 @@ public class AuthHandler implements HttpHandler {
                     .setDescription("""
                             > **이미 해당 IP 주소에서 인증된 다른 유저가 있습니다.**
                             
-                            ─────────────────────────────────────────────────
                             > **유저: %s**
                             > **아이피: %s**
+                            
+                            ─────────────────────────────────────────────────
                             """
                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                     )
@@ -101,9 +102,10 @@ public class AuthHandler implements HttpHandler {
                     .setDescription("""
                             > **블랙리스트에 등록된 유저가 인증을 시도했습니다.**
                             
-                            ─────────────────────────────────────────────────
                             > **유저: %s**
                             > **아이피: %s**
+                            
+                            ─────────────────────────────────────────────────
                             """
                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                     )
@@ -117,9 +119,10 @@ public class AuthHandler implements HttpHandler {
                     .setDescription("""
                             > **블랙리스트에 등록된 유저가 인증을 시도했습니다.**
                             
-                            ─────────────────────────────────────────────────
                             > **유저: %s**
                             > **아이피: %s**
+                            
+                            ─────────────────────────────────────────────────
                             """
                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                     )
@@ -148,13 +151,12 @@ public class AuthHandler implements HttpHandler {
                             AuditLogger.warning(new EmbedBuilder()
                                     .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
                                     .setDescription("""
-                                            > **인증은 완료되었으나, DM을 전송하지 못했습니다.**
-                                                                        
+                                            > **DM을 전송하지 못했습니다.**
                                             > **유저: %s**
-                                            > **아이피: %s**
-                                                                        
-                                            ─────────────────────────────────────────────────"""
-                                            .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
+                                            
+                                            ─────────────────────────────────────────────────
+                                            """
+                                            .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")")
                                     )
                             );
 
@@ -176,16 +178,18 @@ public class AuthHandler implements HttpHandler {
                                     > **유저: %s**
                                     > **아이피: %s**
                                                                             
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                                     .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                             )
             );
         } else {
             AuditLogger.warning(
                     new EmbedBuilder()
-                            .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
+                            .setTitle("<a:loading:1168266572847128709> 경고 | 유저 인증 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **데이터가 존재하는 유저가 인증을 시도했습니다.**
+                                    > **다만, 인증은 진행되었습니다.**
                                                                             
                                     > **유저: %s**
                                     > **아이피: %s**
@@ -195,17 +199,6 @@ public class AuthHandler implements HttpHandler {
                             )
             );
         }
-
-        AuditLogger.info(new EmbedBuilder()
-                .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
-                .setDescription("""
-                        > **유저: %s**
-                        > **아이피: %s**
-                                                    
-                        ─────────────────────────────────────────────────"""
-                        .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
-                )
-        );
 
         String response = "성공적으로 인증을 마쳤습니다.";
         exchange.sendResponseHeaders(200, response.length());
