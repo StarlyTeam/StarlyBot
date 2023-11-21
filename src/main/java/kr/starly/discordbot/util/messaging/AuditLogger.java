@@ -16,6 +16,7 @@ public class AuditLogger {
     private static final ConfigProvider configProvider = ConfigProvider.getInstance();
     private static final String AUDIT_LOG_CHANNEL_ID = configProvider.getString("AUDIT_LOG_CHANNEL_ID");
     private static final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
+    private static final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private static final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -25,7 +26,7 @@ public class AuditLogger {
     public static void info(EmbedBuilder embedBuilder) {
         MessageEmbed embed = new EmbedBuilder(embedBuilder)
                 .setFooter("일반 | " + DATE_FORMAT.format(new Date()))
-                .setColor(EMBED_COLOR)
+                .setColor(EMBED_COLOR_SUCCESS)
                 .build();
 
         sendToAuditLogChannel(embed);
