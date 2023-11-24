@@ -25,11 +25,19 @@ import java.util.List;
         description = "블랙리스트를 관리합니다.",
         subcommands = {
                 @BotSlashCommand.SubCommand(
-                        name = "등록",
+                        name = "유저등록",
                         description = "유저를 블랙리스트에 등록합니다.",
                         optionName = {"유저", "사유"},
                         optionType = {OptionType.MENTIONABLE, OptionType.STRING},
                         optionDescription = {"블랙리스트에 등록할 유저를 입력하세요.", "블랙리스트에 등록할 사유를 입력하세요."},
+                        optionRequired = {true, true}
+                ),
+                @BotSlashCommand.SubCommand(
+                        name = "아이피등록",
+                        description = "아이피를 블랙리스트에 등록합니다.",
+                        optionName = {"아이피", "사유"},
+                        optionType = {OptionType.STRING, OptionType.STRING},
+                        optionDescription = {"블랙리스트에 등록할 아이피를 입력하세요.", "블랙리스트에 등록할 사유를 입력하세요."},
                         optionRequired = {true, true}
                 ),
                 @BotSlashCommand.SubCommand(
@@ -63,7 +71,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
 
         String subCommand = event.getSubcommandName();
         switch (subCommand) {
-            case "등록" -> {
+            case "유저등록" -> {
                 User target = event.getOption("유저").getAsUser();
                 String reason = event.getOption("사유").getAsString();
 
@@ -71,7 +79,7 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 if (blacklistService.getDataByUserId(target.getIdLong()) != null) {
                     MessageEmbed messageEmbed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 오류 | 등록된 유저 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 중복 등록 <a:loading:1168266572847128709>")
                             .setDescription("> **" + target.getAsMention() + "님은 이미 블랙리스트에 등록되어 있습니다.**")
                             .build();
                     event.replyEmbeds(messageEmbed).queue();
@@ -84,6 +92,31 @@ public class BlacklistCommand implements DiscordSlashCommand {
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 등록 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에 등록하였습니다.**")
+                        .build();
+                event.replyEmbeds(messageEmbed).queue();
+            }
+
+            case "아이피등록" -> {
+                String target = event.getOption("아이피").getAsString();
+                String reason = event.getOption("사유").getAsString();
+
+                BlacklistService blacklistService = DatabaseManager.getBlacklistService();
+                if (blacklistService.getDataByIpAddress(target) != null) {
+                    MessageEmbed messageEmbed = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_ERROR)
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 중복 등록 <a:loading:1168266572847128709>")
+                            .setDescription("> **`" + target + "`은 이미 블랙리스트에 등록되어 있습니다.**")
+                            .build();
+                    event.replyEmbeds(messageEmbed).queue();
+                    return;
+                }
+
+                blacklistService.saveData(null, target, event.getUser().getIdLong(), reason);
+
+                MessageEmbed messageEmbed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_SUCCESS)
+                        .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 등록 <a:success:1168266537262657626>")
+                        .setDescription("> **`" + target + "`을 블랙리스트에 등록하였습니다.**")
                         .build();
                 event.replyEmbeds(messageEmbed).queue();
             }
