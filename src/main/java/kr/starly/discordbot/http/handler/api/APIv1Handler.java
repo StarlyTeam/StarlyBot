@@ -86,12 +86,13 @@ public class APIv1Handler implements HttpHandler {
 
     private void sendResponse(HttpExchange exchange, int rCode, JsonObject bodyObject) throws IOException {
         String bodyStr = bodyObject.toString();
+        byte[] bodyBytes = bodyStr.getBytes(StandardCharsets.UTF_8);
 
         exchange.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
-        exchange.sendResponseHeaders(rCode, bodyStr.getBytes(StandardCharsets.UTF_8).length);
+        exchange.sendResponseHeaders(rCode, bodyBytes.length);
 
         try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bodyStr.getBytes());
+            os.write(bodyBytes);
         }
     }
 
