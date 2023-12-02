@@ -14,14 +14,12 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class PluginForumUtil {
@@ -70,7 +68,7 @@ public class PluginForumUtil {
                                     .setTitle("`%s` %s(%s) `%s`".formatted(plugin.getEmoji(), plugin.getKRName(), plugin.getENName(), plugin.getEmoji()))
                                     .setThumbnail(plugin.getIconUrl())
                                     .setImage(plugin.getGifUrl())
-                                    .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionsRange() + "**", true)
+                                    .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionRange() + "**", true)
                                     .addField("> **의존성**", "> **" + String.join(", ", plugin.getDependency()) + "**", true)
                                     .addField("> **가격**", "> **" + (plugin.getPrice() == 0 ? "무료**" : new DecimalFormat("#,##0").format(plugin.getPrice()) + "원**"), true)
                                     .addField("> **담당자**",  "> **" + plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")) + "**", true)
@@ -88,16 +86,16 @@ public class PluginForumUtil {
                 components.add(buyBtn);
             }
 
-            Button editBtn = Button.secondary("pluginaction-download-" + plugin.getENName(), "다운로드");
-            components.add(editBtn);
+            Button downloadBtn = Button.secondary("pluginaction-download-" + plugin.getENName(), "다운로드");
+            components.add(downloadBtn);
 
             if (plugin.getWikiUrl() != null) {
-                Button wikiUrl = Button.link(plugin.getWikiUrl(), "위키");
-                components.add(wikiUrl);
+                Button wikiBtn = Button.link(plugin.getWikiUrl(), "위키");
+                components.add(wikiBtn);
             }
             if (plugin.getVideoUrl() != null) {
-                Button videoUrl = Button.link(plugin.getVideoUrl(), "영상");
-                components.add(videoUrl);
+                Button videoBtn = Button.link(plugin.getVideoUrl(), "영상");
+                components.add(videoBtn);
             }
 
             return messageCreateBuilder

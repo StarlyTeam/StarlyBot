@@ -98,7 +98,7 @@ public class Plugin {
         return pluginFileService.getData(ENName);
     }
 
-    public List<MCVersion> getAvailableVersions() {
+    public List<MCVersion> getSupportedVersions() {
         PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
         List<PluginFile> pluginFiles = pluginFileService.getData(ENName, version);
 
@@ -108,11 +108,12 @@ public class Plugin {
                 .toList();
     }
 
-    public String getSupportedVersionsRange() {
-        List<MCVersion> availableVersions = getAvailableVersions();
+    public String getSupportedVersionRange() {
+        List<MCVersion> availableVersions = getSupportedVersions();
         if (availableVersions.isEmpty()) {
-            return "사용 가능한 버전이 없습니다.";
+            return "없음";
         }
+
         String lowestVersion = availableVersions.get(0).getSpecificVersions().get(0);
         String highestVersion = availableVersions.get(availableVersions.size() - 1)
                 .getSpecificVersions()

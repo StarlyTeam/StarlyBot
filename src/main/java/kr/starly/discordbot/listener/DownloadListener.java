@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @BotEvent
 public class DownloadListener extends ListenerAdapter {
@@ -211,7 +212,7 @@ public class DownloadListener extends ListenerAdapter {
             }
 
             // 플러그인 파일 검색
-            List<MCVersion> availableVersions = plugin.getAvailableVersions();
+            List<MCVersion> availableVersions = plugin.getSupportedVersions();
 
             // 메시지 전송
             StringSelectMenu.Builder selectOptionBuilder = StringSelectMenu.create(ID_PREFIX + "version-" + plugin.getENName());
