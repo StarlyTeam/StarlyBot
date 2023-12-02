@@ -85,7 +85,7 @@ public class DownloadHandler implements HttpHandler {
                                 pluginFile.getMcVersion(),
                                 pluginFile.getVersion(),
                                 "<@" + download.getUserId() + ">",
-                                exchange.getRemoteAddress().getAddress().getHostAddress(),
+                                exchange.getRequestHeaders().get("x-real-ip").get(0),
                                 download.getToken()
                         )
                 )
