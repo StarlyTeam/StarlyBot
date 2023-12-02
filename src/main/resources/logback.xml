@@ -18,7 +18,11 @@
     <logger name="net.dv8tion.jda.api" level="ERROR" />
 
 
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
+    </root>
+
+    <root level="ERROR">
+        <appender-ref ref="STDERR" />
     </root>
 </configuration>
