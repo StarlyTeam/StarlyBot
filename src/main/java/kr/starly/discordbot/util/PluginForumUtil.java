@@ -44,9 +44,7 @@ public class PluginForumUtil {
         JDA jda = DiscordBotManager.getInstance().getJda();
         ForumChannel forumChannel = jda.getForumChannelById(isPremium ? PREMIUM_PLUGIN_FORUM_ID : FREE_PLUGIN_FORUM_ID);
 
-        System.out.println("A");
         forumChannel.createForumPost(postName, createMessageData(plugin)).queue(post -> {
-            System.out.println("B");
             long threadId = post.getThreadChannel().getIdLong();
             plugin.updateThreadId(threadId);
             PluginService pluginService = DatabaseManager.getPluginService();
