@@ -17,12 +17,17 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PluginForumUtil {
 
-    private PluginForumUtil() {}
+    private PluginForumUtil() {
+    }
 
     private static final ConfigProvider configProvider = ConfigProvider.getInstance();
     private static final String FREE_PLUGIN_FORUM_ID = configProvider.getString("FREE_PLUGIN_FORUM_ID");
@@ -37,9 +42,11 @@ public class PluginForumUtil {
 
         boolean isPremium = plugin.getPrice() != 0;
         JDA jda = DiscordBotManager.getInstance().getJda();
-        ForumChannel forumChannel = jda.getForumChannelById(isPremium ? PREMIUM_PLUGIN_FORUM_ID : FREE_PLUGIN_FORUM_ID);;
+        ForumChannel forumChannel = jda.getForumChannelById(isPremium ? PREMIUM_PLUGIN_FORUM_ID : FREE_PLUGIN_FORUM_ID);
 
+        System.out.println("A");
         forumChannel.createForumPost(postName, createMessageData(plugin)).queue(post -> {
+            System.out.println("B");
             long threadId = post.getThreadChannel().getIdLong();
             plugin.updateThreadId(threadId);
             PluginService pluginService = DatabaseManager.getPluginService();
@@ -62,16 +69,15 @@ public class PluginForumUtil {
                     MessageCreateData.fromEmbeds(
                             new EmbedBuilder()
                                     .setColor(EMBED_COLOR)
-                                    .setTitle("%s %s(%s) %s".formatted(plugin.getEmoji(), plugin.getKRName(), plugin.getENName(), plugin.getEmoji()))
+                                    .setTitle("`%s` %s(%s) `%s`".formatted(plugin.getEmoji(), plugin.getKRName(), plugin.getENName(), plugin.getEmoji()))
                                     .setThumbnail(plugin.getIconUrl())
                                     .setImage(plugin.getGifUrl())
-//                                    .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionsRange() + "**", true)
-//                                    .addField("> **의존성**", "> **" + String.join(", ", plugin.getDependency() + "**"), true)
-//                                    .addField("> **가격**", "> **" + NumberFormat.getCurrencyInstance(Locale.KOREA).format(plugin.getPrice() + "**"), true)
-//                                    .addField("> **담당자**",  "> **" + plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")) + "**", true)
+                                    .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionsRange() + "**", true)
+                                    .addField("> **의존성**", "> **" + String.join(", ", plugin.getDependency()) + "**", true)
+                                    .addField("> **가격**", "> **" + (plugin.getPrice() == 0 ? "무료**" : new DecimalFormat("#,##0").format(plugin.getPrice()) + "원**"), true)
+                                    .addField("> **담당자**",  "> **" + plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")) + "**", true)
                                     .build()
                     )
-                    // TODO 테스트해야하는 코드
             );
 
             FileUpload iconFile = FileUpload.fromData(new URL(plugin.getIconUrl()).openStream(), "icon.png");
@@ -90,7 +96,8 @@ public class PluginForumUtil {
             if (plugin.getWikiUrl() != null) {
                 Button wikiUrl = Button.link(plugin.getWikiUrl(), "위키");
                 components.add(wikiUrl);
-            } if (plugin.getVideoUrl() != null) {
+            }
+            if (plugin.getVideoUrl() != null) {
                 Button videoUrl = Button.link(plugin.getVideoUrl(), "영상");
                 components.add(videoUrl);
             }

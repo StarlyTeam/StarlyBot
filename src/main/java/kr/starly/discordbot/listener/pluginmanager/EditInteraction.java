@@ -479,6 +479,7 @@ public class EditInteraction extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 수정 | 플러그인 관리 <a:loading:1168266572847128709>")
                         .setDescription("""
                                 > **수정할 내용을 아래에서 선택해 주세요.**
+                                
                                 ─────────────────────────────────────────────────"""
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
