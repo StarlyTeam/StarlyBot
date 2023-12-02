@@ -128,7 +128,7 @@ public class DownloadListener extends ListenerAdapter {
                             ─────────────────────────────────────────────────"""
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("라이선스 조항을 잘 지켜주시면 감사하겠습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setFooter("항상 라이선스를 준수해 주셔서 감사합니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
             Button button = Button.link(url, "다운로드");
             event.replyEmbeds(embed)
