@@ -66,6 +66,7 @@ public class BuyListener extends ListenerAdapter {
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
+    private final String VERIFIED_ROLE_ID = configProvider.getString("VERIFIED_ROLE_ID");
 
     private final Map<Long, Product> productMap = new HashMap<>();
     private final Map<Long, Coupon> couponMap = new HashMap<>();
@@ -272,6 +273,7 @@ public class BuyListener extends ListenerAdapter {
         String componentId = event.getComponentId();
 
         if (componentId.startsWith(ID_PREFIX + "start-")) {
+            // 인증여부 검증
             UserService userService = DatabaseManager.getUserService();
             User user = userService.getDataByDiscordId(userId);
             if (user == null) {
@@ -287,6 +289,26 @@ public class BuyListener extends ListenerAdapter {
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
+
+                return;
+            }
+
+            Guild guild = DiscordBotManager.getInstance().getGuild();
+            Role verifiedRole = guild.getRoleById(VERIFIED_ROLE_ID);
+            if (!event.getMember().getRoles().contains(verifiedRole)) {
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                        .setDescription("""
+                                > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
+                                > **인증을 마치신 후 다시 시도해 주세요.**
+                                                                                                           
+                                """)
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
+
                 return;
             }
 

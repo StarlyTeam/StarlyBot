@@ -14,6 +14,7 @@ import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
@@ -37,6 +38,7 @@ public class DownloadListener extends ListenerAdapter {
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
     private final String WEB_ADDRESS = configProvider.getString("WEB_ADDRESS");
+    private final String VERIFIED_ROLE_ID = configProvider.getString("VERIFIED_ROLE_ID");
 
     private final String ID_PREFIX = "pluginaction-download-";
 
@@ -148,6 +150,27 @@ public class DownloadListener extends ListenerAdapter {
             UserService userService = DatabaseManager.getUserService();
             User user = userService.getDataByDiscordId(event.getUser().getIdLong());
             if (user == null) {
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
+                        .setDescription("""
+                            > **다운로드를 위해 인증 절차가 필요합니다.**
+                            
+                            ─────────────────────────────────────────────────"""
+                        )
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .build();
+                event.replyEmbeds(embed)
+                        .setEphemeral(true)
+                        .queue();
+
+                return;
+            }
+
+            Guild guild = DiscordBotManager.getInstance().getGuild();
+            Role verifiedRole = guild.getRoleById(VERIFIED_ROLE_ID);
+            if (!event.getMember().getRoles().contains(verifiedRole)) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
