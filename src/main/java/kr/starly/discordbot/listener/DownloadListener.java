@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @BotEvent
 public class DownloadListener extends ListenerAdapter {
@@ -260,8 +259,8 @@ public class DownloadListener extends ListenerAdapter {
             JDA jda = DiscordBotManager.getInstance().getJda();
             Role buyerRole = jda.getRoleById(plugin.getBuyerRole());
 
-            return !member.getRoles().contains(buyerRole)
-                    && !PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR);
+            return member.getRoles().contains(buyerRole)
+                    || PermissionUtil.hasPermission(member, Permission.ADMINISTRATOR);
         } else return true;
     }
 }

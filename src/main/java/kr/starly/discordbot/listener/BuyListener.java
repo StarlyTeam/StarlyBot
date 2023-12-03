@@ -424,7 +424,7 @@ public class BuyListener extends ListenerAdapter {
                                     > **실제 결제 금액: %d**
                                     > **결제 수단: %s**
                                     > **승인 시각: %s**
-                                    > **결제자: %s**
+                                    > **결제자: <@%d>**
                                     > **구매 정보: %s**
                                     > **사용된 포인트: %d**
                                     > **사용된 쿠폰: %s**
@@ -436,7 +436,7 @@ public class BuyListener extends ListenerAdapter {
                                             finalPrice,
                                             payment.getMethod().getKRName(),
                                             DATE_FORMAT.format(payment.getApprovedAt()),
-                                            event.getUser().getAsMention(),
+                                            payment.getRequestedBy(),
                                             product.getNote(),
                                             usedPoint,
                                             usedCoupon != null ? usedCoupon.getCode() : "없음",
