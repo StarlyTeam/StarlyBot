@@ -152,7 +152,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
                         .setDescription("""
-                            > **상품 구매를 위해 인증 절차가 필요합니다.**
+                            > **다운로드를 위해 인증 절차가 필요합니다.**
                             
                             ─────────────────────────────────────────────────"""
                         )

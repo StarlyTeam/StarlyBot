@@ -1,45 +1,59 @@
 package kr.starly.discordbot.util.security;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 public class AESUtil {
 
     private AESUtil() {}
 
-    public static String encode(String plainText, String key) {
+    public static SecretKey generateKey(int length) {
         try {
-            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
-            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 16).getBytes(StandardCharsets.UTF_8));
-
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, IV);
-
-            byte[] plainBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(plainBytes);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(length);
+            return keyGenerator.generateKey();
         } catch (Exception ex) {
             ex.printStackTrace();
 
-            return "{MAL}{ENCODING_ERROR}" + plainText;
+            return null;
         }
     }
 
-    public static String decode(String encodedText, String key) {
+    public static IvParameterSpec generateIv() {
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
+    }
+
+    public static String encode(String input, SecretKey key, IvParameterSpec iv) {
         try {
-            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
-            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 16).getBytes(StandardCharsets.UTF_8));
-
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, IV);
-
-            byte[] encodedBytes = Base64.getDecoder().decode(encodedText);
-            return new String(cipher.doFinal(encodedBytes), StandardCharsets.UTF_8);
+            cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+            byte[] cipherText = cipher.doFinal(input.getBytes());
+            return Base64.getEncoder()
+                    .encodeToString(cipherText);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return "{MAL}{DECODING_ERROR}" + encodedText;
+
+            return null;
+        }
+    }
+
+    public static String decode(String cipherText, SecretKey key, IvParameterSpec iv) {
+        try {
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, key, iv);
+            byte[] plainText = cipher.doFinal(Base64.getDecoder()
+                    .decode(cipherText));
+            return new String(plainText);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            return null;
         }
     }
 }

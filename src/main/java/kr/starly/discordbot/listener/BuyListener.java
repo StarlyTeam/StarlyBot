@@ -21,9 +21,9 @@ import kr.starly.discordbot.repository.impl.TicketModalDataRepository;
 import kr.starly.discordbot.repository.impl.TicketUserDataRepository;
 import kr.starly.discordbot.service.*;
 import kr.starly.discordbot.util.RankUtil;
-import kr.starly.discordbot.util.TokenUtil;
 import kr.starly.discordbot.util.external.TossPaymentsUtil;
 import kr.starly.discordbot.util.messaging.PaymentLogger;
+import kr.starly.discordbot.util.security.AESUtil;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -49,8 +49,9 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import java.awt.*;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -281,8 +282,7 @@ public class BuyListener extends ListenerAdapter {
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
                                 > **인증을 마치신 후 다시 시도해 주세요.**
                                                                                                            
-                                      """
-                        )
+                                """)
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
@@ -1362,23 +1362,9 @@ public class BuyListener extends ListenerAdapter {
                 String customerBirthdate = event.getValue("customer-birthdate").getAsString();
                 String customerEmail = event.getValue("customer-email") != null ? event.getValue("customer-email").getAsString() : null;
 
-                // SecureSalt 생성
-                String secureSalt, key;
-                boolean isKeyUsable;
-                System.out.println("A");
-                do {
-                    secureSalt = new String(TokenUtil.generateBytes());
-                    key = new String(
-                            (secureSalt + userId).getBytes(),
-                            0,
-                            32
-                    );
-
-                    isKeyUsable = key.getBytes().length == 32
-                            && new String(key.getBytes(StandardCharsets.UTF_8), 0, 16).getBytes(StandardCharsets.UTF_8).length == 16;
-                    System.out.println(key.getBytes(StandardCharsets.UTF_8).length + " : " + new String(key.getBytes(), 0, 16).getBytes(StandardCharsets.UTF_8).length);
-                } while (!isKeyUsable);
-                System.out.println("C");
+                // SecureKey, SecureIV 생성
+                SecretKey key = AESUtil.generateKey(128);
+                IvParameterSpec iv = AESUtil.generateIv();
 
                 Product product = productMap.get(userId);
                 int usedPoint = pointMap.get(userId);
@@ -1391,7 +1377,7 @@ public class BuyListener extends ListenerAdapter {
                             cardNumber, cardExpirationYear, cardExpirationMonth, 0,
                             customerBirthdate, customerEmail, event.getUser().getEffectiveName(),
                             usedPoint, usedCoupon,
-                            secureSalt
+                            key, iv
                     );
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -1430,7 +1416,7 @@ public class BuyListener extends ListenerAdapter {
                 try {
                     TossPaymentsUtil.request(payment);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+//                    ex.printStackTrace();
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
@@ -1438,24 +1424,24 @@ public class BuyListener extends ListenerAdapter {
                             .setDescription("""
                                     > **결제 요청 도중 오류가 발생하였습니다.**
                                                                                                                
-                                          """
-                            )
+                                    """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                    PaymentLogger.warning(
+                    PaymentLogger.error(
                             new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                                     .setDescription("""
                                             > **결제 요청 도중 오류가 발생하였습니다.**
-                                                                                        
+                                            
                                             > **결제 번호: %s**
                                             > **결제자: %s**
-                                                                                        
-                                            """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention())
+                                            > **오류 내용: %s**
+                                            
+                                            """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention(), ex.getMessage())
                                     )
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")

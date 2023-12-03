@@ -13,6 +13,10 @@ import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,7 +31,8 @@ public class CreditCardPayment extends Payment {
     @NotNull private final String customerBirthdate;
     @NotNull private final String customerEmail;
     @NotNull private final String customerName;
-    @NotNull private final String secureSalt;
+    @NotNull private final SecretKey key;
+    @NotNull private final IvParameterSpec iv;
 
     @Nullable private JsonObject responseBody;
     @Nullable private String paymentKey;
@@ -39,9 +44,9 @@ public class CreditCardPayment extends Payment {
             @NotNull String cardNumber, @NotNull String cardExpirationYear, @NotNull String cardExpirationMonth, @NotNull Integer cardInstallmentPlan,
             @NotNull String customerBirthdate, @NotNull String customerEmail, @NotNull String customerName,
             @NotNull Integer usedPoint, @Nullable Coupon usedCoupon,
-            @NotNull String secureSalt
+            @NotNull SecretKey key, @NotNull IvParameterSpec iv
     ) {
-        this(UUID.randomUUID(), product, requestedBy, cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan, customerBirthdate, customerEmail, customerName, usedPoint, usedCoupon, secureSalt, null, null, null, null);
+        this(UUID.randomUUID(), product, requestedBy, cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan, customerBirthdate, customerEmail, customerName, usedPoint, usedCoupon, key, iv, null, null, null, null);
     }
 
     public CreditCardPayment(
@@ -49,7 +54,7 @@ public class CreditCardPayment extends Payment {
             @NotNull String cardNumber, @NotNull String cardExpirationYear, @NotNull String cardExpirationMonth, @NotNull Integer cardInstallmentPlan,
             @NotNull String customerBirthdate, @NotNull String customerEmail, @NotNull String customerName,
             @NotNull Integer usedPoint, @Nullable Coupon usedCoupon,
-            @NotNull String secureSalt,
+            @NotNull SecretKey key, @NotNull IvParameterSpec iv,
             @Nullable JsonObject responseBody, @Nullable String paymentKey, @Nullable String maskedCardNumber, @Nullable String receiptUrl
     ) {
         super(paymentId, requestedBy, PaymentMethod.CREDIT_CARD, usedPoint, usedCoupon, product);
@@ -63,7 +68,8 @@ public class CreditCardPayment extends Payment {
         this.customerEmail = customerEmail;
         this.customerName = customerName;
 
-        this.secureSalt = secureSalt;
+        this.key = key;
+        this.iv = iv;
 
         this.responseBody = responseBody;
         this.paymentKey = paymentKey;
@@ -89,21 +95,16 @@ public class CreditCardPayment extends Payment {
     @Override
     public Document serialize() {
         try {
-            String key = new String(
-                    (secureSalt + getRequestedBy()).getBytes(),
-                    0,
-                    32
-            );
-
             Document document = super.serialize();
-            document.put("cardNumber", AESUtil.encode(cardNumber, key));
-            document.put("cardExpirationYear", AESUtil.encode(cardExpirationYear, key));
-            document.put("cardExpirationMonth", AESUtil.encode(cardExpirationMonth, key));
-            document.put("cardInstallmentPlan", AESUtil.encode(cardInstallmentPlan.toString(), key));
-            document.put("customerBirthdate", AESUtil.encode(customerBirthdate, key));
+            document.put("cardNumber", AESUtil.encode(cardNumber, key, iv));
+            document.put("cardExpirationYear", AESUtil.encode(cardExpirationYear, key, iv));
+            document.put("cardExpirationMonth", AESUtil.encode(cardExpirationMonth, key, iv));
+            document.put("cardInstallmentPlan", AESUtil.encode(cardInstallmentPlan.toString(), key, iv));
+            document.put("customerBirthdate", AESUtil.encode(customerBirthdate, key, iv));
             document.put("customerEmail", customerEmail);
             document.put("customerName", customerName);
-            document.put("secureSalt", secureSalt);
+            document.put("secureKey", key.getEncoded());
+            document.put("secureIV", iv.getIV());
             document.put("responseBody", responseBody != null ? responseBody.toString() : null);
             document.put("paymentKey", paymentKey);
             document.put("maskedCardNumber", maskedCardNumber);
@@ -126,20 +127,16 @@ public class CreditCardPayment extends Payment {
         Integer usedPoint = document.getInteger("usedPoint");
         CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
 
-        String secureSalt = document.getString("secureSalt");
-        String key = new String(
-                (secureSalt + requestedBy).getBytes(),
-                0,
-                32
-        );
+        SecretKey key = new SecretKeySpec(Base64.getDecoder().decode(document.getString("secureKey")), "PBKDF2WithHmacSHA256");
+        IvParameterSpec iv = new IvParameterSpec(Base64.getDecoder().decode(document.getString("secureIV")));
 
         String cardNumber, cardExpirationYear, cardExpirationMonth; int cardInstallmentPlan;
-        cardNumber = AESUtil.decode(document.getString("cardNumber"), key);
-        cardExpirationYear = AESUtil.decode(document.getString("cardExpirationYear"), key);
-        cardExpirationMonth = AESUtil.decode(document.getString("cardExpirationMonth"), key);
-        cardInstallmentPlan = Integer.parseInt(AESUtil.decode(document.getString("cardInstallmentPlan"), key));
+        cardNumber = AESUtil.decode(document.getString("cardNumber"), key, iv);
+        cardExpirationYear = AESUtil.decode(document.getString("cardExpirationYear"), key, iv);
+        cardExpirationMonth = AESUtil.decode(document.getString("cardExpirationMonth"), key, iv);
+        cardInstallmentPlan = Integer.parseInt(AESUtil.decode(document.getString("cardInstallmentPlan"), key, iv));
 
-        String customerBirthdate = AESUtil.decode(document.getString("customerBirthdate"), key);
+        String customerBirthdate = AESUtil.decode(document.getString("customerBirthdate"), key, iv);
         String customerEmail = document.getString("customerEmail");
         String customerName = document.getString("customerName");
 
@@ -152,7 +149,7 @@ public class CreditCardPayment extends Payment {
                 cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan,
                 customerBirthdate, customerEmail, customerName,
                 usedPoint, usedCoupon,
-                secureSalt,
+                key, iv,
                 responseBody, paymentKey, maskedCardNumber, receiptUrl
         );
 
