@@ -50,6 +50,7 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -1364,6 +1365,7 @@ public class BuyListener extends ListenerAdapter {
                 // SecureSalt 생성
                 String secureSalt, key;
                 boolean isKeyUsable;
+                System.out.println("A");
                 do {
                     secureSalt = new String(TokenUtil.generateBytes());
                     key = new String(
@@ -1373,8 +1375,10 @@ public class BuyListener extends ListenerAdapter {
                     );
 
                     isKeyUsable = key.getBytes().length == 32
-                            && new String(key.getBytes(), 0, 15).getBytes().length == 16;
+                            && new String(key.getBytes(StandardCharsets.UTF_8), 0, 16).getBytes(StandardCharsets.UTF_8).length == 16;
+                    System.out.println(key.getBytes(StandardCharsets.UTF_8).length + " : " + new String(key.getBytes(), 0, 16).getBytes(StandardCharsets.UTF_8).length);
                 } while (!isKeyUsable);
+                System.out.println("C");
 
                 Product product = productMap.get(userId);
                 int usedPoint = pointMap.get(userId);
@@ -1462,6 +1466,7 @@ public class BuyListener extends ListenerAdapter {
                     payment.updateResponse(null);
 
                     stopSession(userId);
+                    return;
                 }
 
                 // DB 기록

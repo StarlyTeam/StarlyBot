@@ -13,7 +13,7 @@ public class AESUtil {
     public static String encode(String plainText, String key) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
-            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 15).getBytes());
+            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 16).getBytes(StandardCharsets.UTF_8));
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, IV);
@@ -30,7 +30,7 @@ public class AESUtil {
     public static String decode(String encodedText, String key) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
-            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 15).getBytes());
+            IvParameterSpec IV = new IvParameterSpec(new String(key.getBytes(), 0, 16).getBytes(StandardCharsets.UTF_8));
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, IV);
