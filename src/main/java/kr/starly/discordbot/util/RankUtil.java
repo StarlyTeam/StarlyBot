@@ -24,7 +24,6 @@ public class RankUtil {
     private RankUtil() {}
 
     private static final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private static final String GUILD_ID = configProvider.getString("GUILD_ID");
     private static final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
 
     public static void giveRank(long userId, Rank rank) {
@@ -41,7 +40,7 @@ public class RankUtil {
                 case ROLE -> {
                     Role role = ((RolePerk) perk).getRole();
 
-                    Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
+                    Guild guild = DiscordBotManager.getInstance().getGuild();
                     guild.addRoleToMember(UserSnowflake.fromId(userId), role).queue();
                 }
 
@@ -135,7 +134,7 @@ public class RankUtil {
             RolePerk perk1 = (RolePerk) perk;
             Role perkRole = perk1.getRole();
 
-            Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
+            Guild guild = DiscordBotManager.getInstance().getGuild();
             guild.removeRoleFromMember(UserSnowflake.fromId(userId), perkRole);
         });
 

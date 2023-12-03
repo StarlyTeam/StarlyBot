@@ -33,7 +33,7 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -832,7 +832,7 @@ public class EditInteraction extends ListenerAdapter {
                     }
 
                     pluginService.saveData(plugin);
-                    sendUpdateAnnouncement(plugin);
+//                    sendUpdateAnnouncement(plugin);
                     PluginForumUtil.updatePluginChannel(plugin);
 
                     MessageEmbed embed = new EmbedBuilder()

@@ -1972,8 +1972,7 @@ public class BuyListener extends ListenerAdapter {
 
         // 역할 지급
         if (product.getType() == ProductType.PREMIUM_RESOURCE) {
-            JDA jda = DiscordBotManager.getInstance().getJda();
-            Guild guild = jda.getGuildById(configProvider.getString("GUILD_ID"));
+            Guild guild = DiscordBotManager.getInstance().getGuild();
             Role buyerRole = guild.getRoleById(configProvider.getString("BUYER_ROLE_ID"));
 
             Plugin plugin = product.asPremiumPlugin().getPlugin();

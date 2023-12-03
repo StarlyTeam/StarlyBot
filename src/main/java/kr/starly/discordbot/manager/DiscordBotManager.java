@@ -40,7 +40,6 @@ public class DiscordBotManager {
 
 
     @Getter private JDA jda;
-    @Getter private Guild guild;
     private boolean isBotFullyLoaded = false;
 
     private final SlashCommandListenerBase slashCommandListenerBase = new SlashCommandListenerBase();
@@ -53,7 +52,6 @@ public class DiscordBotManager {
             CommandListenerBase commandListener = new CommandListenerBase();
             builder.addEventListeners(commandListener);
             jda = builder.build();
-            guild = jda.getGuildById(GUILD_ID);
 
             registerEventListeners();
         } catch (Exception e) {
@@ -70,6 +68,11 @@ public class DiscordBotManager {
     public boolean isBotFullyLoaded() {
         return isBotFullyLoaded;
     }
+
+    public Guild getGuild() {
+        return jda.getGuildById(GUILD_ID);
+    }
+
 
     private void configureBot(JDABuilder builder) {
         ConfigProvider configProvider = ConfigProvider.getInstance();

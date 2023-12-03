@@ -1,6 +1,5 @@
 package kr.starly.discordbot.entity.coupon.requirement.impl;
 
-import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.entity.coupon.Coupon;
 import kr.starly.discordbot.entity.coupon.requirement.CouponRequirement;
 import kr.starly.discordbot.entity.product.Product;
@@ -17,9 +16,6 @@ import org.bson.Document;
 @AllArgsConstructor
 public class RoleRequirement extends CouponRequirement {
 
-    private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final String GUILD_ID = configProvider.getString("GUILD_ID");
-
     private final long roleId;
     private final boolean expect;
 
@@ -30,7 +26,7 @@ public class RoleRequirement extends CouponRequirement {
 
     @Override
     public boolean isSatisfied(long userId, Coupon coupon, Product item) {
-        Guild guild = DiscordBotManager.getInstance().getJda().getGuildById(GUILD_ID);
+        Guild guild = DiscordBotManager.getInstance().getGuild();
         Member member = guild.getMemberById(userId);
 
         Role role = guild.getRoleById(roleId);
