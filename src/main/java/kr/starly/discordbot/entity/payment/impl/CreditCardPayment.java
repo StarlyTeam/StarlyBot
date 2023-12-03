@@ -31,8 +31,8 @@ public class CreditCardPayment extends Payment {
     @NotNull private final String customerBirthdate;
     @NotNull private final String customerEmail;
     @NotNull private final String customerName;
-    @NotNull private final SecretKey key;
-    @NotNull private final IvParameterSpec iv;
+    @Nullable private final SecretKey key;
+    @Nullable private final IvParameterSpec iv;
 
     @Nullable private JsonObject responseBody;
     @Nullable private String paymentKey;
@@ -44,7 +44,7 @@ public class CreditCardPayment extends Payment {
             @NotNull String cardNumber, @NotNull String cardExpirationYear, @NotNull String cardExpirationMonth, @NotNull Integer cardInstallmentPlan,
             @NotNull String customerBirthdate, @NotNull String customerEmail, @NotNull String customerName,
             @NotNull Integer usedPoint, @Nullable Coupon usedCoupon,
-            @NotNull SecretKey key, @NotNull IvParameterSpec iv
+            @Nullable SecretKey key, @Nullable IvParameterSpec iv
     ) {
         this(UUID.randomUUID(), product, requestedBy, cardNumber, cardExpirationYear, cardExpirationMonth, cardInstallmentPlan, customerBirthdate, customerEmail, customerName, usedPoint, usedCoupon, key, iv, null, null, null, null);
     }
@@ -54,7 +54,7 @@ public class CreditCardPayment extends Payment {
             @NotNull String cardNumber, @NotNull String cardExpirationYear, @NotNull String cardExpirationMonth, @NotNull Integer cardInstallmentPlan,
             @NotNull String customerBirthdate, @NotNull String customerEmail, @NotNull String customerName,
             @NotNull Integer usedPoint, @Nullable Coupon usedCoupon,
-            @NotNull SecretKey key, @NotNull IvParameterSpec iv,
+            @Nullable SecretKey key, @Nullable IvParameterSpec iv,
             @Nullable JsonObject responseBody, @Nullable String paymentKey, @Nullable String maskedCardNumber, @Nullable String receiptUrl
     ) {
         super(paymentId, requestedBy, PaymentMethod.CREDIT_CARD, usedPoint, usedCoupon, product);
@@ -103,8 +103,8 @@ public class CreditCardPayment extends Payment {
             document.put("customerBirthdate", AESUtil.encode(customerBirthdate, key, iv));
             document.put("customerEmail", customerEmail);
             document.put("customerName", customerName);
-            document.put("secureKey", key.getEncoded());
-            document.put("secureIV", iv.getIV());
+            document.put("secureKey", key == null ? null : Base64.getEncoder().encodeToString(key.getEncoded()));
+            document.put("secureIV", iv == null ? null : Base64.getEncoder().encodeToString(iv.getIV()));
             document.put("responseBody", responseBody != null ? responseBody.toString() : null);
             document.put("paymentKey", paymentKey);
             document.put("maskedCardNumber", maskedCardNumber);
@@ -127,8 +127,11 @@ public class CreditCardPayment extends Payment {
         Integer usedPoint = document.getInteger("usedPoint");
         CouponState usedCoupon = CouponState.deserialize(document.get("usedCoupon", Document.class));
 
-        SecretKey key = new SecretKeySpec(Base64.getDecoder().decode(document.getString("secureKey")), "PBKDF2WithHmacSHA256");
-        IvParameterSpec iv = new IvParameterSpec(Base64.getDecoder().decode(document.getString("secureIV")));
+        String rowSecureKey = document.getString("secureKey");
+        String rowSecureIV = document.getString("secureIV");
+
+        SecretKey key = rowSecureKey == null ? null : new SecretKeySpec(Base64.getDecoder().decode(rowSecureKey), "AES");
+        IvParameterSpec iv = rowSecureIV == null ? null : new IvParameterSpec(Base64.getDecoder().decode(rowSecureIV));
 
         String cardNumber, cardExpirationYear, cardExpirationMonth; int cardInstallmentPlan;
         cardNumber = AESUtil.decode(document.getString("cardNumber"), key, iv);
