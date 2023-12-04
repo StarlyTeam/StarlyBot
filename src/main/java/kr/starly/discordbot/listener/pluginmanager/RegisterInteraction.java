@@ -81,7 +81,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
         switch (sessionStatusMap.get(userId)) {
             case SELECT_DEPENDENCY -> {
-                List<String> dependency = Stream.of(messageContent.split(",")).map(String::trim).toList();
+                List<String> dependency = messageContent.equals("X") ? new ArrayList<>() : Stream.of(messageContent.split(",")).map(String::trim).toList();
                 Plugin plugin = sessionDataMap.get(userId);
                 plugin.updateDependency(dependency);
 

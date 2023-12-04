@@ -69,7 +69,7 @@ public class PluginForumUtil {
                                     .setThumbnail(plugin.getIconUrl())
                                     .setImage(plugin.getGifUrl())
                                     .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionRange() + "**", true)
-                                    .addField("> **의존성**", "> **" + String.join(", ", plugin.getDependency()) + "**", true)
+                                    .addField("> **의존성**", "> **" + (plugin.getDependency().isEmpty() ? "없음" : String.join(", ", plugin.getDependency())) + "**", true)
                                     .addField("> **가격**", "> **" + (plugin.getPrice() == 0 ? "무료**" : new DecimalFormat("#,##0").format(plugin.getPrice()) + "원**"), true)
                                     .addField("> **담당자**",  "> **" + plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")) + "**", true)
                                     .build()

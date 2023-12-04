@@ -706,26 +706,7 @@ public class EditInteraction extends ListenerAdapter {
                         }
 
                         case "dependency" -> {
-                            List<String> dependency = Stream.of(mappingValue.split(",")).map(String::trim).toList();
-                            if (dependency.isEmpty()) {
-                                MessageEmbed embed = new EmbedBuilder()
-                                        .setColor(EMBED_COLOR_ERROR)
-                                        .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
-                                        .setDescription("""
-                                                > **종속성이 올바르지 않습니다. (채널이 5초뒤 청소됩니다.)**
-                                                                            
-                                                ─────────────────────────────────────────────────"""
-                                        )
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .build();
-                                event.replyEmbeds(embed)
-                                        .setEphemeral(true)
-                                        .queue();
-
-                                clearChannel();
-                                continue;
-                            }
+                            List<String> dependency = mappingValue.equals("X") ? new ArrayList<>() : Stream.of(mappingValue.split(",")).map(String::trim).toList();
 
                             plugin.updateDependency(dependency);
                             description.append("> 종속성 | [" + mappingValue + "]\n");
