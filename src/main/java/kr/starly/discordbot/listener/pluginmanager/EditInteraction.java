@@ -392,8 +392,8 @@ public class EditInteraction extends ListenerAdapter {
                     textInputs.add(gifUrl);
                 }
                 if (selectedValues.contains("dependency")) {
-                    TextInput dependency = TextInput.create("dependency", "종속성", TextInputStyle.SHORT)
-                            .setPlaceholder("수정할 플러그인의 종속성을 입력해주세요.")
+                    TextInput dependency = TextInput.create("dependency", "의존성", TextInputStyle.SHORT)
+                            .setPlaceholder("수정할 플러그인의 의존성을 입력해주세요.")
                             .setRequired(true)
                             .build();
                     textInputs.add(dependency);
@@ -703,7 +703,7 @@ public class EditInteraction extends ListenerAdapter {
                             List<String> dependency = mappingValue.equals("X") ? new ArrayList<>() : Stream.of(mappingValue.split(",")).map(String::trim).toList();
 
                             plugin.updateDependency(dependency);
-                            description.append("> 종속성 | [" + mappingValue + "]\n");
+                            description.append("> 의존성 | [" + mappingValue + "]\n");
                         }
 
                         case "manager" -> {
@@ -886,7 +886,7 @@ public class EditInteraction extends ListenerAdapter {
                         .addOption("아이콘 URL", "icon-url", "아이콘 URL을 수정합니다.")
                         .addOption("영상 URL", "video-url", "영상 URL을 수정합니다.")
                         .addOption("GIF URL", "gif-url", "GIF URL을 수정합니다.")
-                        .addOption("종속성", "dependency", "종속성을 수정합니다.")
+                        .addOption("의존성", "dependency", "의존성을 수정합니다.")
                         .addOption("담당자", "manager", "담당자를 수정합니다. (콤마로 구분, 사용자 ID 입력)")
                         .addOption("구매자 역할", "buyer-role", "구매자 역할을 수정합니다. (역할 ID 입력)")
                         .addOption("버전", "version", "버전을 수정합니다.")
