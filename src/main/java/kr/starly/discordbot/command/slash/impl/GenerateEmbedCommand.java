@@ -22,13 +22,13 @@ import java.awt.Color;
                 OptionType.STRING,
                 OptionType.STRING,
                 OptionType.STRING,
-                OptionType.ATTACHMENT,
-                OptionType.ATTACHMENT,
-                OptionType.STRING,
-                OptionType.ATTACHMENT,
                 OptionType.STRING,
                 OptionType.STRING,
-                OptionType.ATTACHMENT
+                OptionType.STRING,
+                OptionType.STRING,
+                OptionType.STRING,
+                OptionType.STRING,
+                OptionType.STRING
         },
         optionDescription = {
                 "임베드의 title을 입력하세요.",
@@ -75,10 +75,10 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
             embedBuilder.setColor(color == null ? null : Color.decode(color.getAsString()));
             embedBuilder.setTitle(getSafeString(title), getSafeString(titleUrl));
             embedBuilder.setDescription(description == null ? null : description.getAsString().replace("\\n", "\n"));
-            embedBuilder.setThumbnail(getSafeAttachmentUrl(thumbnail));
-            embedBuilder.setImage(getSafeAttachmentUrl(image));
-            embedBuilder.setFooter(getSafeString(footerText), getSafeAttachmentUrl(footerIcon));
-            embedBuilder.setAuthor(getSafeString(authorText), getSafeString(authorUrl), getSafeAttachmentUrl(authorIcon));
+            embedBuilder.setThumbnail(getSafeString(thumbnail));
+            embedBuilder.setImage(getSafeString(image));
+            embedBuilder.setFooter(getSafeString(footerText), getSafeString(footerIcon));
+            embedBuilder.setAuthor(getSafeString(authorText), getSafeString(authorUrl), getSafeString(authorIcon));
 
             event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
 
@@ -103,9 +103,5 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
 
     private String getSafeString(OptionMapping optionMapping) {
         return optionMapping == null ? null : optionMapping.getAsString();
-    }
-
-    private String getSafeAttachmentUrl(OptionMapping optionMapping) {
-        return optionMapping == null ? null : optionMapping.getAsAttachment().getUrl();
     }
 }
