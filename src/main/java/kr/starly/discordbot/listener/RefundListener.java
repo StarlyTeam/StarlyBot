@@ -242,7 +242,7 @@ public class RefundListener extends ListenerAdapter {
         TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
         ticketModalDataRepository.registerModalData(
                 ticketChannel.getIdLong(),
-                payment.getProduct().getNote(),
+                payment.getProduct().getSummary(),
                 "환불처리 요청",
                 """
                         > 결제 ID

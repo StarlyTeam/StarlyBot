@@ -10,8 +10,8 @@ public class CustomPriceProduct extends Product {
 
     private final String orderName;
 
-    public CustomPriceProduct(String orderName, int price, String note) {
-        super(price, note);
+    public CustomPriceProduct(String orderName, int price, String summary) {
+        super(price, summary);
 
         this.orderName = orderName;
     }

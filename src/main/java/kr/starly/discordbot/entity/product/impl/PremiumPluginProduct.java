@@ -11,8 +11,8 @@ public class PremiumPluginProduct extends Product {
 
     private final Plugin plugin;
 
-    public PremiumPluginProduct(Plugin plugin, String note) {
-        super(plugin.getPrice(), note);
+    public PremiumPluginProduct(Plugin plugin, String summary) {
+        super(plugin.getPrice(), summary);
 
         this.plugin = plugin;
     }

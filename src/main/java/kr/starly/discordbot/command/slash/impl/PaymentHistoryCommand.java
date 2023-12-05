@@ -110,7 +110,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                     > %s
                     """.formatted(
                         payment.getPaymentId(),
-                        payment.getProduct().getNote(),
+                        payment.getProduct().getSummary(),
                         payment.getMethod().getKRName(),
                         payment.getUsedCoupon() == null ? "없음" : payment.getUsedCoupon().getCode() + "(" + payment.getUsedCoupon().getDiscount() + ")",
                         payment.getUsedPoint(),

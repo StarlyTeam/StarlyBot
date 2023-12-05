@@ -22,8 +22,8 @@ public class TossPaymentsUtil {
 
     public static void request(CreditCardPayment payment) throws Exception {
         int price = payment.getFinalPrice();
-        String note = payment.getProduct().getNote();
-        String orderName = note != null ? note : payment.getProduct()
+        String summary = payment.getProduct().getSummary();
+        String orderName = summary != null ? summary : payment.getProduct()
                 .asPremiumPlugin()
                 .getPlugin().getENName();
 

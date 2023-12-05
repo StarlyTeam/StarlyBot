@@ -16,7 +16,7 @@ import org.bson.Document;
 public abstract class Product {
 
     private final int price;
-    private final String note;
+    private final String summary;
 
     public abstract ProductType getType();
 
@@ -47,7 +47,7 @@ public abstract class Product {
         Document document = new Document();
         document.put("type", getType().name());
         document.put("price", price);
-        document.put("note", note);
+        document.put("summary", summary);
 
         return document;
     }
@@ -56,7 +56,7 @@ public abstract class Product {
         if (document == null) return null;
 
         int price = document.getInteger("price");
-        String note = document.getString("note");
+        String summary = document.getString("summary");
 
         ProductType type = ProductType.valueOf(document.getString("type"));
         switch (type) {
@@ -66,19 +66,19 @@ public abstract class Product {
                 PluginService pluginService = DatabaseManager.getPluginService();
                 Plugin plugin = pluginService.getDataByENName(pluginENName);
 
-                return new PremiumPluginProduct(plugin, note);
+                return new PremiumPluginProduct(plugin, summary);
             }
 
             case OUTSOURCING -> {
                 String projectName = document.getString("projectName");
 
-                return new OutSourcingProduct(projectName, price, note);
+                return new OutSourcingProduct(projectName, price, summary);
             }
 
             case CUSTOM_PRICE -> {
                 String orderName = document.getString("orderName");
 
-                return new CustomPriceProduct(orderName, price, note);
+                return new CustomPriceProduct(orderName, price, summary);
             }
 
             default -> {

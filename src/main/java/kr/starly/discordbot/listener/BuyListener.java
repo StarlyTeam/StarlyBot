@@ -320,14 +320,14 @@ public class BuyListener extends ListenerAdapter {
                 String orderName = productArgs[1];
                 int productPrice = Integer.parseInt(productArgs[2]);
 
-                String note = productData + " (기타)";
-                product = new CustomPriceProduct(orderName, productPrice, note);
+                String summary = productData + " (기타)";
+                product = new CustomPriceProduct(orderName, productPrice, summary);
             } else if (productArgs[0].equals("OUT!!!!SOURCING")) {
                 String productName = productArgs[1];
                 int productPrice = Integer.parseInt(productArgs[2]);
 
-                String note = productData + " (외주)";
-                product = new OutSourcingProduct(productName, productPrice, note);
+                String summary = productData + " (외주)";
+                product = new OutSourcingProduct(productName, productPrice, summary);
             } else {
                 PluginService pluginService = DatabaseManager.getPluginService();
                 Plugin plugin = pluginService.getDataByENName(productData);
@@ -351,8 +351,8 @@ public class BuyListener extends ListenerAdapter {
                     return;
                 }
 
-                String note = plugin.getKRName() + " (유료)";
-                product = new PremiumPluginProduct(plugin, note);
+                String summary = plugin.getKRName() + " (유료)";
+                product = new PremiumPluginProduct(plugin, summary);
             }
 
             productMap.put(userId, product);
@@ -460,7 +460,7 @@ public class BuyListener extends ListenerAdapter {
                                             payment.getMethod().getKRName(),
                                             DATE_FORMAT.format(payment.getApprovedAt()),
                                             payment.getRequestedBy(),
-                                            product.getNote(),
+                                            product.getSummary(),
                                             usedPoint,
                                             usedCoupon != null ? usedCoupon.getCode() : "없음",
                                             event.getChannel().getAsMention()
@@ -1586,7 +1586,7 @@ public class BuyListener extends ListenerAdapter {
                                                 payment.getMethod().getKRName(),
                                                 DATE_FORMAT.format(payment.getApprovedAt()),
                                                 event.getUser().getAsMention(),
-                                                product.getNote(),
+                                                product.getSummary(),
                                                 usedPoint,
                                                 usedCoupon != null ? usedCoupon.getCode() : "없음"
                                         )
@@ -1914,7 +1914,7 @@ public class BuyListener extends ListenerAdapter {
         TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
         ticketModalDataRepository.registerModalData(
                 textChannel.getIdLong(),
-                payment.getProduct().getNote(),
+                payment.getProduct().getSummary(),
                 "자동결제 승인요청 (" + payment.getMethod().getKRName() + ")",
                 """
                         > 결제 ID

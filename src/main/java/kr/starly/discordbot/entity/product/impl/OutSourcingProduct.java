@@ -10,8 +10,8 @@ public class OutSourcingProduct extends Product {
 
     private final String projectName;
 
-    public OutSourcingProduct(String projectName, int price, String note) {
-        super(price, note);
+    public OutSourcingProduct(String projectName, int price, String summary) {
+        super(price, summary);
 
         this.projectName = projectName;
     }
