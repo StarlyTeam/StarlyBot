@@ -312,10 +312,11 @@ public class RegisterInteraction extends ListenerAdapter {
                 MessageEmbed messageEmbed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 등록 <a:success:1168266537262657626>")
-                        .setDescription(
-                                "> **플러그인이 등록되었습니다.**\n" +
-                                "> **채널이 5초후에 자동으로 청소됩니다.**\n\n" +
-                                "─────────────────────────────────────────────────"
+                        .setDescription("""
+                                        > **플러그인이 등록되었습니다.**
+                                        > **채널이 5초후에 자동으로 청소됩니다.**
+
+                                        ─────────────────────────────────────────────────"""
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

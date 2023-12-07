@@ -1052,7 +1052,6 @@ public class BuyListener extends ListenerAdapter {
 
                 couponMap.put(userId, coupon);
 
-
                 int finalPrice = coupon.getDiscount().computeFinalPrice(product.getPrice());
                 if (finalPrice < 0) {
                     couponMap.remove(userId);
@@ -1096,7 +1095,7 @@ public class BuyListener extends ListenerAdapter {
                                     > **결제가 요청되었습니다.**
                                     > **승인하시겠습니까?**
                                                                         
-                                          """
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -1125,22 +1124,43 @@ public class BuyListener extends ListenerAdapter {
                             .build();
                     event.replyEmbeds(embed2, embed3).setEphemeral(true).queue();
                 } else {
-                    Button withPointBtn = Button.primary(ID_PREFIX + "point-yes", "예");
-                    Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "아니오");
+                    UserService userService = DatabaseManager.getUserService();
+                    User user = userService.getDataByDiscordId(userId);
 
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR)
-                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
-                            .setDescription("""
+                    if (user.point() > 0) {
+                        Button withPointBtn = Button.primary(ID_PREFIX + "point-yes", "예");
+                        Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "아니오");
+
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR)
+                                .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
                                     > **쿠폰(%s)을 적용하였습니다.**
                                     > **포인트를 사용하시겠습니까?**
                                                                         
                                     """.formatted(coupon.getCode())
-                            )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .build();
-                    event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .build();
+                        event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
+                    } else {
+                        Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
+
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR)
+                                .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                    > **쿠폰(%s)을 적용하였습니다.**
+                                    > **적용할 포인트가 없습니다. 진행 하시겠습니까?**
+                                                                        
+                                    """.formatted(coupon.getCode())
+                                )
+                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .build();
+                        event.replyEmbeds(embed).addActionRow(withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
+                    }
                 }
             }
 

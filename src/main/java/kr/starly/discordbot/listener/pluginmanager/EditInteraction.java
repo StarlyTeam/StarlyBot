@@ -151,6 +151,8 @@ public class EditInteraction extends ListenerAdapter {
             event.getMessage().replyEmbeds(embed).queue();
         }
 
+        PluginForumUtil.updatePluginChannel(plugin);
+
         sessionMap.remove(userId);
         uploadSession.remove(userId);
     }
@@ -801,7 +803,6 @@ public class EditInteraction extends ListenerAdapter {
                     }
 
                     pluginService.saveData(plugin);
-//                    sendUpdateAnnouncement(plugin);
                     PluginForumUtil.updatePluginChannel(plugin);
 
                     MessageEmbed embed = new EmbedBuilder()
@@ -904,22 +905,6 @@ public class EditInteraction extends ListenerAdapter {
     }
 
     // UTILITY
-    private void sendUpdateAnnouncement(Plugin plugin) {
-        String formattedPluginName = plugin.getENName() + "(" + plugin.getKRName() + ")";
-
-        // TODO 마지막 작업
-        MessageEmbed noticeEmbed = new EmbedBuilder()
-                .setColor(EMBED_COLOR)
-                .setTitle("제목")
-                .setDescription("내용")
-                .setImage(plugin.getGifUrl())
-                .setThumbnail(plugin.getIconUrl())
-                .build();
-
-        TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(UPDATE_ANNOUNCEMENT_CHANNEL_ID);
-        channel.sendMessageEmbeds(noticeEmbed).queue();
-    }
-
     private void clearChannel() {
         TextChannel channel = DiscordBotManager.getInstance().getJda().getTextChannelById(PLUGIN_MANAGEMENT_CHANNEL_ID);
         channel.getHistoryFromBeginning(100).queueAfter(5, TimeUnit.SECONDS, history -> {
