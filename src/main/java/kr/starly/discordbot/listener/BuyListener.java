@@ -342,7 +342,7 @@ public class BuyListener extends ListenerAdapter {
                             .setDescription("""
                                     > **해당 플러그인을 이미 구매하셨습니다.**
                                                                         
-                                          """
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -368,7 +368,7 @@ public class BuyListener extends ListenerAdapter {
                     .setDescription("""
                             > **쿠폰을 사용하시겠습니까?**
                                                                 
-                                  """
+                            """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -395,7 +395,7 @@ public class BuyListener extends ListenerAdapter {
                         .setDescription("""
                                 > **데이터가 변조되었습니다.**
                                                                                                            
-                                      """
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -410,7 +410,7 @@ public class BuyListener extends ListenerAdapter {
                         .setDescription("""
                                 > **이미 승인이 완료되었습니다.**
                                                                                                            
-                                      """
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -430,7 +430,6 @@ public class BuyListener extends ListenerAdapter {
 
             // 구매 로그
             PremiumPluginProduct product = payment.getProduct().asPremiumPlugin();
-            Plugin plugin = product.getPlugin();
             int usedPoint = payment.getUsedPoint();
             CouponState usedCoupon = payment.getUsedCoupon();
 
@@ -576,20 +575,28 @@ public class BuyListener extends ListenerAdapter {
                                     **************************************
                                     입금자명: %s
                                     승인일시: %s
-                                    """
-                                    .formatted(
-                                            payment.asBankTransfer().getDepositor(),
-                                            DATE_FORMAT.format(payment.getApprovedAt())
-                                    ) : """
-                                    **************************************
-                                      *** 문화상품권 매출전표 (고객용) ***
-                                    **************************************
-                                    핀 번호: %s
-                                    승인일시: %s
-                                    """
-                                    .formatted(
-                                            payment.asCultureland().getPinNumber(),
-                                            DATE_FORMAT.format(payment.getApprovedAt())
+                                    """.formatted(
+                                        payment.asBankTransfer().getDepositor(),
+                                        DATE_FORMAT.format(payment.getApprovedAt())
+                                    ) : (
+                                            payment.getMethod() == PaymentMethod.NONE ? """
+                                            **************************************
+                                              *** 쿠폰,포인트 매출전표 (고객용) ***
+                                            **************************************
+                                            승인일시: %s
+                                            """.formatted(
+                                                DATE_FORMAT.format(payment.getApprovedAt())
+                                            ) : """
+                                            **************************************
+                                              *** 문화상품권 매출전표 (고객용) ***
+                                            **************************************
+                                            핀 번호: %s
+                                            승인일시: %s
+                                            """
+                                            .formatted(
+                                                payment.asCultureland().getPinNumber(),
+                                                DATE_FORMAT.format(payment.getApprovedAt())
+                                            )
                                     )
                     ))
                     .setEmbeds(embed3)
