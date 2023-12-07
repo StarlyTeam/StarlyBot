@@ -35,10 +35,10 @@ public class PluginFile {
 
         public Document serialize() {
             Document document = new Document();
-            document.append("file", file.getAbsolutePath());
-            document.append("plugin", plugin.serialize());
-            document.append("mcVersion", mcVersion.toString());
-            document.append("version", version);
+            document.put("file", file.getAbsolutePath());
+            document.put("plugin", plugin.serialize());
+            document.put("mcVersion", mcVersion.toString());
+            document.put("version", version);
             return document;
         }
 
