@@ -473,6 +473,8 @@ public class BuyListener extends ListenerAdapter {
             affectPayment(payment);
 
             // 메시지 전송
+            net.dv8tion.jda.api.entities.User requestedBy = event.getJDA().getUserById(payment.getRequestedBy());
+
             MessageEmbed embed1 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
@@ -495,7 +497,7 @@ public class BuyListener extends ListenerAdapter {
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
 
-            event.getJDA().getUserById(payment.getRequestedBy())
+            requestedBy
                     .openPrivateChannel()
                     .flatMap(channel -> channel.sendMessageEmbeds(embed2))
                     .queue(null, (err) -> {
@@ -515,13 +517,13 @@ public class BuyListener extends ListenerAdapter {
                         event.getChannel().sendMessageEmbeds(embed3).queue();
                     });
 
-            MessageEmbed embed3 = new EmbedBuilder()
+            MessageEmbed receipt = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
-            event.getUser()
+            requestedBy
                     .openPrivateChannel().complete()
                     .sendMessage("""
                             ```
@@ -529,10 +531,9 @@ public class BuyListener extends ListenerAdapter {
                             대표: 양대영
                             사업자 번호: 210-36-72319
                             이메일: yangdaeyeong0808@gmail.com
-                            홈페이지: https://starly.kr/
+                            홈페이지: https://starly.kr/discord
                             ======================================
                                                             
-                            자동처리            %s
                             주문번호: %s
                                                             
                             --------------------------------------
@@ -540,15 +541,15 @@ public class BuyListener extends ListenerAdapter {
                             정가: %,d₩
                             --------------------------------------
                                          판매총액:      %,d₩
-                                     -----------------------------
-                            　　　　　　　　　공급가:      %,d₩
-                            　　　　　　　　　부가세:      %,d₩
+                                         -------------------------
+                                         사용 포인트:    %,d
+                                         잔여 포인트:    %,d
                             --------------------------------------
-                                                            
+                                                                
                             디스코드 ID: %d
                             디스코드 닉네임: %s
-                                     　  사용 포인트:    %,d
-                                     　  잔여 포인트:    %,d
+                                
+                            --------------------------------------
                                      
                             %s
                                                             
@@ -558,17 +559,14 @@ public class BuyListener extends ListenerAdapter {
                             언제나 고객님을 위해 최선을 다하겠습니다.
                             ```
                             """.formatted(
-                            DATE_FORMAT.format(payment.getApprovedAt()),
                             payment.getPaymentId(),
                             product.getName(),
                             product.getPrice(),
                             product.getPrice(),
-                            payment.getFinalPrice() / 110 * 100,
-                            payment.getFinalPrice() / 110 * 10,
-                            payment.getRequestedBy(),
-                            event.getUser().getEffectiveName(),
                             payment.getUsedPoint(),
                             DatabaseManager.getUserService().getPoint(userId),
+                            payment.getRequestedBy(),
+                            requestedBy.getEffectiveName(),
                             payment.getMethod() == PaymentMethod.BANK_TRANSFER ? """
                                     **************************************
                                       **** 계좌이체 매출전표(고객용) ****
@@ -599,7 +597,7 @@ public class BuyListener extends ListenerAdapter {
                                             )
                                     )
                     ))
-                    .setEmbeds(embed3)
+                    .setEmbeds(receipt)
                     .queue(null, (err) -> {
 
                         MessageEmbed embed4 = new EmbedBuilder()
@@ -1625,10 +1623,11 @@ public class BuyListener extends ListenerAdapter {
                 MessageEmbed receipt = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
+                        .setDescription("[매출전표](" + payment.getReceiptUrl() + ")")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
-                event.getUser()
+                event.getJDA().getUserById(payment.getRequestedBy())
                         .openPrivateChannel().complete()
                         .sendMessage("""
                                 ```
@@ -1639,7 +1638,6 @@ public class BuyListener extends ListenerAdapter {
                                 홈페이지: https://starly.kr/
                                 ======================================
                                                                 
-                                자동처리            %s
                                 주문번호: %s
                                                                 
                                 --------------------------------------
@@ -1647,15 +1645,15 @@ public class BuyListener extends ListenerAdapter {
                                 정가: %,d₩
                                 --------------------------------------
                                              판매총액:      %,d₩
-                                         -----------------------------
-                                　　　　　　　　　공급가:      %,d₩
-                                　　　　　　　　　부가세:      %,d₩
+                                             -------------------------
+                                             사용 포인트:    %,d
+                                             잔여 포인트:    %,d
                                 --------------------------------------
                                                                 
                                 디스코드 ID: %d
                                 디스코드 닉네임: %s
-                                         　  사용 포인트:    %,d
-                                         　  잔여 포인트:    %,d
+                                
+                                --------------------------------------
                                          
                                 **************************************
                                   **** 신용카드 매출전표(고객용) ****
@@ -1665,26 +1663,20 @@ public class BuyListener extends ListenerAdapter {
                                                                 
                                 --------------------------------------
                                                                 
-                                %s
-                                                                
                                 좋은 하루 되세요!
                                 언제나 고객님을 위해 최선을 다하겠습니다.
                                 ```
                                 """.formatted(
-                                DATE_FORMAT.format(payment.getApprovedAt()),
                                 payment.getPaymentId(),
                                 product.getName(),
                                 product.getPrice(),
                                 product.getPrice(),
-                                payment.getFinalPrice() / 110 * 100,
-                                payment.getFinalPrice() / 110 * 10,
-                                payment.getRequestedBy(),
-                                event.getUser().getEffectiveName(),
                                 payment.getUsedPoint(),
                                 DatabaseManager.getUserService().getPoint(userId),
+                                payment.getRequestedBy(),
+                                event.getUser().getEffectiveName(),
                                 payment.getMaskedCardNumber(),
-                                payment.getCardInstallmentPlan(),
-                                payment.getReceiptUrl()
+                                payment.getCardInstallmentPlan()
                         ))
                         .setEmbeds(receipt)
                         .queue(null, (err) -> {
