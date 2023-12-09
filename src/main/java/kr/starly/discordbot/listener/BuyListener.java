@@ -213,7 +213,7 @@ public class BuyListener extends ListenerAdapter {
                             .build();
                     TextInput customerBirthdate = TextInput.create("customer-birthdate", "생년월일", TextInputStyle.SHORT)
                             .setMinLength(6)
-                            .setMaxLength(6)
+                            .setMaxLength(13)
                             .setPlaceholder("생년월일을 입력해주세요. (6자)")
                             .setValue(recentPayment == null ? null : recentPayment.getCustomerBirthdate())
                             .setRequired(true)

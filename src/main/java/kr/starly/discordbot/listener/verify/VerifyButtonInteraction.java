@@ -43,7 +43,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                     return;
                 }
 
-                TextInput verifyMessage = TextInput.create("verify-tos","이용약관에 동의하시면, '네'라고 입력 후 전송을 눌러주세요.", TextInputStyle.SHORT)
+                TextInput verifyMessage = TextInput.create("verify-tos", "이용약관 및 개인정보처리방침에 동의하시면, '네'라고 입력 해주세요.", TextInputStyle.SHORT)
                         .setPlaceholder("네")
                         .setMinLength(1)
                         .setMaxLength(2)
@@ -56,6 +56,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
 
                 event.replyModal(ticketModal).queue();
             }
+            // 안녕하세요, <@255311287704223745\u003e님\n\n<:termsofuse:1168335473152892948>  결제 도와드리겠습니다.\n아래 계좌로 36,900원 입금바랍니다 🙂\n\n> 계좌번호: 3333275249398\n\u003e 은행: 카카오뱅크\n\u003e 예금주명: 양대영\n\u003e \n\u003e 입금 금액: 36,900원
 
             case "helpVerify" -> {
                 MessageEmbed messageEmbed = new EmbedBuilder()
