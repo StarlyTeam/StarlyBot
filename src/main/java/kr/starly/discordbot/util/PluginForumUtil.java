@@ -45,6 +45,7 @@ public class PluginForumUtil {
         forumChannel.createForumPost(postName, createMessageData(plugin)).queue(post -> {
             long threadId = post.getThreadChannel().getIdLong();
             plugin.updateThreadId(threadId);
+
             PluginService pluginService = DatabaseManager.getPluginService();
             pluginService.saveData(plugin);
         });
@@ -67,11 +68,12 @@ public class PluginForumUtil {
                                     .setColor(EMBED_COLOR)
                                     .setTitle("`%s` %s(%s) `%s`".formatted(plugin.getEmoji(), plugin.getKRName(), plugin.getENName(), plugin.getEmoji()))
                                     .setThumbnail(plugin.getIconUrl())
-                                    .setImage(plugin.getGifUrl())
                                     .addField("> **지원 버전**", "> **" + plugin.getSupportedVersionRange() + "**", true)
                                     .addField("> **의존성**", "> **" + (plugin.getDependency().isEmpty() ? "없음" : String.join(", ", plugin.getDependency())) + "**", true)
                                     .addField("> **가격**", "> **" + (plugin.getPrice() == 0 ? "무료**" : new DecimalFormat("#,##0").format(plugin.getPrice()) + "원**"), true)
                                     .addField("> **담당자**",  "> **" + plugin.getManager().stream().map(managerId -> "<@" + managerId + ">").collect(Collectors.joining(", ")) + "**", true)
+                                    .setImage(plugin.getGifUrl())
+                                    .setFooter("본 상품은 청약철회가 불가능한 상품입니다.")
                                     .build()
                     )
             );

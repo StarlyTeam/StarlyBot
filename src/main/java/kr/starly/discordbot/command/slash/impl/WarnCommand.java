@@ -12,10 +12,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Date;
 
 @BotSlashCommand(
@@ -86,104 +85,103 @@ public class WarnCommand implements DiscordSlashCommand {
             return;
         }
 
-        MessageEmbed messageEmbed;
-
         switch (subCommand) {
             case "추가" -> {
-                User userForAdd = event.getOption("유저").getAsUser();
-                String userAvatarForAdd = event.getOption("유저").getAsUser().getAvatarUrl();
+                User target = event.getOption("유저").getAsUser();
                 String reason = event.getOption("사유").getAsString();
-                int warnToAdd = getSafeIntFromOption(event.getOption("경고"));
+                int amount = event.getOption("경고").getAsInt();
 
-                messageEmbed = new EmbedBuilder()
+                MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + userForAdd.getAsMention() + " 님에게 " + warnToAdd + "경고를 추가 하였습니다.** \n" +
+                        .setDescription("> **" + target.getAsMention() + " 님에게 " + amount + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + reason)
-                        .setThumbnail(userAvatarForAdd)
+                        .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
 
-                long manager = event.getUser().getIdLong();
-
-                Warn warn = new Warn(userForAdd.getIdLong(), manager, reason, warnToAdd, new Date());
+                Warn warn = new Warn(target.getIdLong(), event.getUser().getIdLong(), reason, amount, new Date());
                 warnService.saveData(warn);
 
-                try {
-                    userForAdd.openPrivateChannel().queue(
-                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
-                    );
-                } catch (UnsupportedOperationException ignored) {}
+                // 자동차단
+                if (warnService.getTotalWarn(target.getIdLong()) >= 3) {
+                    MessageEmbed embed2 = new EmbedBuilder()
+                            .setColor(EMBED_COLOR)
+                            .setTitle("<a:success:1168266537262657626> 차단 완료 | 경고 <a:success:1168266537262657626>")
+                            .setDescription("> **" + target.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.\n" +
+                                    "> 사유 : 경고 3회 이상 누적")
+                            .setThumbnail(target.getAvatarUrl())
+                            .build();
+
+                    event.replyEmbeds(embed1, embed2).queue();
+                    target
+                            .openPrivateChannel().complete()
+                            .sendMessageEmbeds(embed1, embed2)
+                            .queue(null, (ignored) -> {});
+                } else {
+                    event.replyEmbeds(embed1).queue();
+                    target
+                            .openPrivateChannel().complete()
+                            .sendMessageEmbeds(embed1)
+                            .queue(null, (ignored) -> {});
+                }
             }
 
             case "제거" -> {
-                User userForRemove = event.getOption("유저").getAsUser();
-                String userAvatarForRemove = event.getOption("유저").getAsUser().getAvatarUrl();
-                int removeAmount = getSafeIntFromOption(event.getOption("경고"));
+                User target = event.getOption("유저").getAsUser();
                 String reason = event.getOption("사유").getAsString();
+                int amount = event.getOption("경고").getAsInt();
 
-                messageEmbed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:success:1168266537262657626> 제거 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + userForRemove.getAsMention() + ">님의 경고를" + removeAmount + " 제거하였습니다.** \n" +
-                                "사유 > `" + reason + "`")
-                        .setThumbnail(userAvatarForRemove)
-                        .build();
-
-                Warn warn = new Warn(userForRemove.getIdLong(), event.getUser().getIdLong(), reason, removeAmount * -1, new Date());
+                Warn warn = new Warn(target.getIdLong(), event.getUser().getIdLong(), reason, amount * -1, new Date());
                 warnService.saveData(warn);
 
-                event.replyEmbeds(messageEmbed).queue();
-
-                try {
-                    userForRemove.openPrivateChannel().queue(
-                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
-                    );
-                } catch (UnsupportedOperationException ignored) {}
+                MessageEmbed embed1 = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:success:1168266537262657626> 제거 완료 | 경고 <a:success:1168266537262657626>")
+                        .setDescription("> **" + target.getAsMention() + ">님의 경고를" + amount + " 제거하였습니다.** \n" +
+                                "사유 > `" + reason + "`")
+                        .setThumbnail(target.getAvatarUrl())
+                        .build();
+                event.replyEmbeds(embed1).queue();
+                target
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(embed1)
+                        .queue(null, (ignored) -> {});
             }
 
             case "설정" -> {
-                User userForRemove = event.getOption("유저").getAsUser();
-
-                String userAvatarForSet = event.getOption("유저").getAsUser().getAvatarUrl();
-                int warnToSet = getSafeIntFromOption(event.getOption("경고"));
+                User target = event.getOption("유저").getAsUser();
                 String reason = event.getOption("사유").getAsString();
+                int amount = event.getOption("경고").getAsInt();
 
-                messageEmbed = new EmbedBuilder()
+                MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:success:1168266537262657626> 설정 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 " + warnToSet + "로 설정 되었습니다.** \n" +
+                        .setDescription("> **" + target.getAsMention() + "님의 경고를 " + amount + "로 설정 되었습니다.** \n" +
                                 "사유 > " + reason)
-                        .setThumbnail(userAvatarForSet)
+                        .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
-
-                try {
-                    userForRemove.openPrivateChannel().queue(
-                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
-                    );
-                } catch (UnsupportedOperationException ignored) {}
+                event.replyEmbeds(embed1).queue();
+                target
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(embed1)
+                        .queue(null, (ignored) -> {});
             }
 
             case "초기화" -> {
-                User userForRemove = event.getOption("유저").getAsUser();
-                String userAvatarReset = event.getOption("유저").getAsUser().getAvatarUrl();
+                User target = event.getOption("유저").getAsUser();
 
-                messageEmbed = new EmbedBuilder()
+                MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 초기화 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + userForRemove.getAsMention() + "님의 경고를 초기화 하였습니다.**")
-                        .setThumbnail(userAvatarReset)
+                        .setDescription("> **" + target.getAsMention() + "님의 경고를 초기화 하였습니다.**")
+                        .setThumbnail(target.getAvatarUrl())
                         .build();
+                event.replyEmbeds(embed1).queue();
 
-
-                event.replyEmbeds(messageEmbed).queue();
-
-                try {
-                    userForRemove.openPrivateChannel().queue(
-                            privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).queue()
-                    );
-                } catch (UnsupportedOperationException ignored) {}
+                target
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(embed1)
+                        .queue(null, (ignored) -> {});
             }
         }
     }
@@ -212,14 +210,5 @@ public class WarnCommand implements DiscordSlashCommand {
                 .setThumbnail(userAvatarCheck)
                 .build();
         event.replyEmbeds(messageEmbed).queue();
-    }
-
-    private int getSafeIntFromOption(OptionMapping option) {
-        long value = option.getAsLong();
-
-        if (value > Integer.MAX_VALUE || value < Integer.MIN_VALUE) {
-            return 0;
-        }
-        return (int) value;
     }
 }
