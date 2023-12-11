@@ -177,7 +177,7 @@ public class RefundListener extends ListenerAdapter {
         event.getJDA().getUserById(payment.getRequestedBy())
                 .openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed2))
-                .queue(null, (err) -> {
+                .queue(null, (ignored) -> {
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 환불 <a:loading:1168266572847128709>")

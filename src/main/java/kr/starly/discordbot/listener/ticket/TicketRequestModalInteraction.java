@@ -14,11 +14,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.EnumSet;
 
 @BotEvent
@@ -37,36 +36,36 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
-        if (!(event.getChannel() instanceof TextChannel textChannel)) return;
-        if (!textChannel.getId().equals(TICKET_CHANNEL_ID)) return;
+        if (!(event.getChannel() instanceof TextChannel ticketChannel)) return;
+        if (!ticketChannel.getId().equals(TICKET_CHANNEL_ID)) return;
 
         long discordId = event.getUser().getIdLong();
         TicketType ticketType = TicketType.getUserTicketTypeMap().get(discordId);
 
         try {
             Category category = event.getGuild().getCategoryById(TICKET_CATEGORY_ID);
-            textChannel = category.createTextChannel((ticketService.getLastIndex() + 1) + "-" + event.getUser().getEffectiveName() + "-" + ticketType.getName())
+            ticketChannel = category.createTextChannel((ticketService.getLastIndex() + 1) + "-" + event.getUser().getEffectiveName() + "-" + ticketType.getName())
                     .addRolePermissionOverride(event.getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND))
                     .addRolePermissionOverride(Long.parseLong(configProvider.getString("VERIFIED_ROLE_ID")), null, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND))
                     .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                     .complete();
 
-            MessageEmbed messageEmbed = new EmbedBuilder()
+            MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                     .setDescription("""
                             > **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!**
                             > **%s 곧 답변 드리겠습니다. 감사합니다! 🙏**
                             """
-                            .formatted(textChannel.getAsMention())
+                            .formatted(ticketChannel.getAsMention())
                     )
                     .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
-            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
         } catch (Exception ex) {
             ex.printStackTrace();
 
-            MessageEmbed messageEmbed = new EmbedBuilder()
+            MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
                     .setDescription("""
@@ -78,10 +77,10 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
-            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
             return;
         }
-        Ticket ticket = new Ticket(discordId, 0, textChannel.getIdLong(), ticketType, 0);
+        Ticket ticket = new Ticket(discordId, 0, ticketChannel.getIdLong(), ticketType, 0);
         ticketService.recordTicket(ticket);
 
         ticketUserDataRepository.registerUser(discordId, event.getUser());
@@ -90,7 +89,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 String title = event.getValue("title").getAsString();
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description);
             }
 
             case "modal-question" -> {
@@ -98,7 +97,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 String description = event.getValue("description").getAsString();
                 String type = event.getValue("type").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, type);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, type);
             }
 
             case "modal-consulting" -> {
@@ -106,7 +105,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 String isCall = event.getValue("call").getAsString();
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, isCall);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, isCall);
             }
 
             case "modal-payment" -> {
@@ -114,14 +113,14 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 String description = event.getValue("description").getAsString();
                 String type = event.getValue("type").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, type);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, type);
             }
 
             case "modal-punishment" -> {
                 String title = event.getValue("title").getAsString();
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description);
             }
 
             case "modal-plugin-error" -> {
@@ -131,7 +130,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 String bukkit = bukkitValue.isEmpty() ? "spigot" : bukkitValue;
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), version, bukkit, log, description);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), version, bukkit, log, description);
             }
 
             case "modal-other-error" -> {
@@ -139,14 +138,14 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                 String tag = event.getValue("tag").getAsString();
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description, tag);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, tag);
             }
 
             case "modal-other" -> {
                 String title = event.getValue("title").getAsString();
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(textChannel.getIdLong(), title, description);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description);
             }
         }
     }

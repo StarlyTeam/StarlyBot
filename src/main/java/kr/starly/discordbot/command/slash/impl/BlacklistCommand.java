@@ -77,23 +77,23 @@ public class BlacklistCommand implements DiscordSlashCommand {
 
                 BlacklistService blacklistService = DatabaseManager.getBlacklistService();
                 if (blacklistService.getDataByUserId(target.getIdLong()) != null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 중복 등록 <a:loading:1168266572847128709>")
                             .setDescription("> **" + target.getAsMention() + "님은 이미 블랙리스트에 등록되어 있습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
                 blacklistService.saveData(target.getIdLong(), null, event.getUser().getIdLong(), reason);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 등록 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에 등록하였습니다.**")
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "아이피등록" -> {
@@ -102,23 +102,23 @@ public class BlacklistCommand implements DiscordSlashCommand {
 
                 BlacklistService blacklistService = DatabaseManager.getBlacklistService();
                 if (blacklistService.getDataByIpAddress(target) != null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 중복 등록 <a:loading:1168266572847128709>")
                             .setDescription("> **`" + target + "`은 이미 블랙리스트에 등록되어 있습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
                 blacklistService.saveData(null, target, event.getUser().getIdLong(), reason);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 등록 <a:success:1168266537262657626>")
                         .setDescription("> **`" + target + "`을 블랙리스트에 등록하였습니다.**")
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "해제" -> {
@@ -127,23 +127,23 @@ public class BlacklistCommand implements DiscordSlashCommand {
                 BlacklistService blacklistService = DatabaseManager.getBlacklistService();
                 if (blacklistService.getDataByUserId(target.getIdLong()) == null) {
 
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 미등록 유저 <a:loading:1168266572847128709>")
                             .setDescription("> **" + target.getAsMention() + "님은 블랙리스트에 등록되어 있지 않습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
                 blacklistService.deleteDataByUserId(target.getIdLong());
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 블랙리스트 해제 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님을 블랙리스트에서 해제하였습니다.**")
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "목록" -> {

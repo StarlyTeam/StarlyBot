@@ -1,8 +1,9 @@
 package kr.starly.discordbot.listener.verify;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
+import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.listener.BotEvent;
-import kr.starly.discordbot.util.security.RoleChecker;
+import kr.starly.discordbot.service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -12,7 +13,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 
 @BotEvent
 public class VerifyButtonInteraction extends ListenerAdapter {
@@ -27,8 +28,9 @@ public class VerifyButtonInteraction extends ListenerAdapter {
 
         switch (buttonId) {
             case "successVerify" -> {
-                if (RoleChecker.hasVerifiedRole(event.getMember())) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                UserService userService = DatabaseManager.getUserService();
+                if (userService.getDataByDiscordId(event.getMember().getIdLong()) != null) {
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:warn:1168266548541145298> 오류 | 이미 인증된 유저입니다. <a:warn:1168266548541145298>")
                             .setDescription("""
@@ -39,7 +41,7 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                             .setFooter("이미 인증이 완료된 계정입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                             .build();
-                    event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
                     return;
                 }
 
@@ -56,10 +58,9 @@ public class VerifyButtonInteraction extends ListenerAdapter {
 
                 event.replyModal(ticketModal).queue();
             }
-            // 안녕하세요, <@255311287704223745\u003e님\n\n<:termsofuse:1168335473152892948>  결제 도와드리겠습니다.\n아래 계좌로 36,900원 입금바랍니다 🙂\n\n> 계좌번호: 3333275249398\n\u003e 은행: 카카오뱅크\n\u003e 예금주명: 양대영\n\u003e \n\u003e 입금 금액: 36,900원
 
             case "helpVerify" -> {
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<:notice:1168265600301277284> 유저인증 | 인증이 안되시나요? <:notice:1168265600301277284>")
                         .setDescription("""
@@ -80,29 +81,29 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("도움이 필요하시면 언제든지 관리자에게 문의하세요.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
-                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
             }
 
             case "termsOfService" -> {
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 유저인증 | 이용약관 <a:loading:1168266572847128709>")
                         .setDescription("> **이용약관은 <#1168253041812701398> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
-                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
             }
 
             case "serverRule" -> {
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 유저인증 | 서버규칙 <a:loading:1168266572847128709>")
                         .setDescription("> **서버규칙은 <#1038741748941340732> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                         .build();
-                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
             }
         }
     }

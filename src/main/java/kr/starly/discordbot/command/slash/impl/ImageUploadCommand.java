@@ -62,12 +62,12 @@ public class ImageUploadCommand implements DiscordSlashCommand {
             case "업로드" -> {
                 Message.Attachment image = event.getOption("이미지").getAsAttachment();
                 if (!image.isImage()) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지 파일만 업로드할 수 있습니다. (jpg, jpeg, webp, png, gif)**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                 }
 
                 String imageUrl;
@@ -76,31 +76,31 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 } catch (IOException ex) {
                     ex.printStackTrace();
 
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 이미지 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지를 업로드하지 못했습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
                 if (imageUrl == null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 이미지 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지를 업로드하지 못했습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 이미지 <a:success:1168266537262657626>")
                         .setDescription("> **성공적으로 이미지를 업로드했습니다.**\n\n```" + imageUrl + "```")
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "삭제" -> {
@@ -109,21 +109,21 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 try {
                     CFImagesUtil.deleteImage(imageId);
 
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 삭제 완료 | 이미지 <a:success:1168266537262657626>")
                             .setDescription("> **성공적으로 이미지를 삭제했습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                 } catch (IOException ex) {
                     ex.printStackTrace();
 
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 이미지 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지를 삭제하지 못했습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                 }
             }
 
@@ -134,22 +134,22 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 } catch (IOException ex) {
                     ex.printStackTrace();
 
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 이미지 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지 목록을 불러오지 못했습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
                 if (images == null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 이미지 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지 목록을 불러오지 못했습니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
@@ -166,12 +166,12 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                       .append("\n");
                 });
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 목록 | 이미지 <a:loading:1168266572847128709>")
                         .setDescription(sb)
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
         }
     }

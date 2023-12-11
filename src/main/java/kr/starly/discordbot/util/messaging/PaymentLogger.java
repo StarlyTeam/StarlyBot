@@ -51,7 +51,7 @@ public class PaymentLogger {
     }
 
     private static void sendToAuditLogChannel(MessageEmbed embed) {
-        TextChannel textChannel = DiscordBotManager.getInstance().getJda().getTextChannelById(PAYMENT_LOG_CHANNEL_ID);
-        textChannel.sendMessageEmbeds(embed).queue();
+        TextChannel paymentLogChannel = DiscordBotManager.getInstance().getJda().getTextChannelById(PAYMENT_LOG_CHANNEL_ID);
+        paymentLogChannel.sendMessageEmbeds(embed).queue();
     }
 }

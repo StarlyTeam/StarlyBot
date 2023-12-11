@@ -44,9 +44,9 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             Ticket ticket = ticketService.findByDiscordId(discordId);
 
             if (ticket != null && isExistUserTicket(event.getJDA(), ticket.channelId())) {
-                TextChannel textChannel = event.getJDA().getTextChannelById(ticket.channelId());
+                TextChannel ticketChannel = event.getJDA().getTextChannelById(ticket.channelId());
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
                         .setDescription("""
@@ -54,17 +54,17 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                                                                     
                                         ─────────────────────────────────────────────────
                                         """.formatted(
-                                        textChannel != null ? "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)" : "이미 티켓이 열려있습니다." + textChannel.getAsMention()
+                                        ticketChannel != null ? "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)" : "이미 티켓이 열려있습니다." + ticketChannel.getAsMention()
                                 )
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                         .build();
-                event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+                event.replyEmbeds(embed).setEphemeral(true).queue();
             } else {
                 setTicketStatus(discordId, ticketType);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:success:1168266537262657626> 확인 | 고객센터 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -77,7 +77,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                         .build();
                 List<Button> button = generateButtonsForType(ticketType);
 
-                event.replyEmbeds(messageEmbed).addActionRow(button).setEphemeral(true).queue();
+                event.replyEmbeds(embed).addActionRow(button).setEphemeral(true).queue();
             }
 
             event.editSelectMenu(event.getSelectMenu()).queue();
@@ -85,7 +85,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             long channelId = Long.valueOf(event.getComponentId().replace("ticket-rate-select-menu-", ""));
             byte value = Byte.valueOf(event.getValues().get(0).replace("ticket-rate-", ""));
 
-            MessageEmbed messageEmbed = new EmbedBuilder()
+            MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 고객센터 <a:success:1168266537262657626>")
                     .setDescription("""
@@ -99,7 +99,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                     .build();
 
             if (value <= 2) {
-                messageEmbed = new EmbedBuilder()
+                embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 고객센터 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -113,7 +113,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                         .build();
             }
 
-            event.replyEmbeds(messageEmbed).queue();
+            event.replyEmbeds(embed).queue();
             event.editSelectMenu(null).queue();
 
             ticketService.updateRate(channelId, value);

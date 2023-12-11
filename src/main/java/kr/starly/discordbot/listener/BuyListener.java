@@ -500,7 +500,7 @@ public class BuyListener extends ListenerAdapter {
             requestedBy
                     .openPrivateChannel()
                     .flatMap(channel -> channel.sendMessageEmbeds(embed2))
-                    .queue(null, (err) -> {
+                    .queue(null, (ignored) -> {
                         MessageEmbed embed3 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
@@ -598,8 +598,7 @@ public class BuyListener extends ListenerAdapter {
                                     )
                     ))
                     .setEmbeds(receipt)
-                    .queue(null, (err) -> {
-
+                    .queue(null, (ignored) -> {
                         MessageEmbed embed4 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
@@ -698,7 +697,7 @@ public class BuyListener extends ListenerAdapter {
             event.getJDA().getUserById(payment.getRequestedBy())
                     .openPrivateChannel()
                     .flatMap(channel -> channel.sendMessageEmbeds(embed2))
-                    .queue(null, (err) -> {
+                    .queue(null, (ignored) -> {
                         MessageEmbed embed3 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_ERROR)
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
@@ -1679,7 +1678,7 @@ public class BuyListener extends ListenerAdapter {
                                 payment.getCardInstallmentPlan()
                         ))
                         .setEmbeds(receipt)
-                        .queue(null, (err) -> {
+                        .queue(null, (ignored) -> {
                             MessageEmbed embed = new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
@@ -1901,7 +1900,7 @@ public class BuyListener extends ListenerAdapter {
         long ticketIndex = ticketService.getLastIndex() + 1;
         String userName = jda.getUserById(userId).getEffectiveName();
         TicketType ticketType = TicketType.PAYMENT;
-        TextChannel textChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
+        TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
                 .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                 .complete();
 
@@ -1909,7 +1908,7 @@ public class BuyListener extends ListenerAdapter {
         ticketService.recordTicket(new Ticket(
                 userId,
                 0,
-                textChannel.getIdLong(),
+                ticketChannel.getIdLong(),
                 ticketType,
                 ticketIndex
         ));
@@ -1932,7 +1931,7 @@ public class BuyListener extends ListenerAdapter {
 
         TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
         ticketModalDataRepository.registerModalData(
-                textChannel.getIdLong(),
+                ticketChannel.getIdLong(),
                 payment.getProduct().getSummary(),
                 "자동결제 승인요청 (" + payment.getMethod().getKRName() + ")",
                 """
@@ -1966,7 +1965,7 @@ public class BuyListener extends ListenerAdapter {
                 )
         );
 
-        return textChannel;
+        return ticketChannel;
     }
 
     private void affectPayment(Payment payment) {

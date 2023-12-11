@@ -88,7 +88,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionDataMap.put(userId, plugin);
                 sessionStatusMap.put(userId, RegisterStatus.SUBMIT_EMOJI);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 이모지 | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -106,7 +106,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
 
-                event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
             }
 
             case SUBMIT_EMOJI -> {
@@ -114,7 +114,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 try {
                     emoji = Emoji.fromFormatted(messageContent.replace("`", ""));
                 } catch (IllegalArgumentException ignored) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
@@ -125,12 +125,12 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                    event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
                 }
 
                 if (emoji.getType() != Emoji.Type.UNICODE) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
@@ -142,7 +142,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                    event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
                 }
 
@@ -158,7 +158,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setRequiredRange(1, 10)
                         .build();
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 담당자 | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -173,7 +173,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-                event.getMessage().replyEmbeds(messageEmbed)
+                event.getMessage().replyEmbeds(embed)
                         .addActionRow(managerSelectMenu)
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
@@ -186,7 +186,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionDataMap.put(userId, plugin);
                 sessionStatusMap.put(userId, RegisterStatus.UPLOAD_GIF_IMAGE);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> gif | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -199,7 +199,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-                event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
             }
 
             case UPLOAD_GIF_IMAGE -> {
@@ -209,7 +209,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionDataMap.put(userId, plugin);
                 sessionStatusMap.put(userId, RegisterStatus.UPLOAD_PLUGIN_FILE);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 파일 | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -222,12 +222,12 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-                event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
             }
 
             case UPLOAD_PLUGIN_FILE -> {
                 if (attachments.isEmpty()) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
@@ -237,7 +237,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.getMessage().replyEmbeds(messageEmbed).queue();
+                    event.getMessage().replyEmbeds(embed).queue();
                     return;
                 }
 
@@ -248,7 +248,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 int failCount = errors.size();
 
                 if (successCount == 0) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
@@ -263,10 +263,10 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
-                    event.getMessage().replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();
+                    event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
                 } else if (failCount == 0) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 파일 | 플러그인 등록 <a:success:1168266537262657626>")
                             .setDescription("""
@@ -278,9 +278,9 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.getMessage().replyEmbeds(messageEmbed).queue();
+                    event.getMessage().replyEmbeds(embed).queue();
                 } else {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 업로드 | 플러그인 등록 <a:success:1168266537262657626>")
                             .setDescription("""
@@ -298,7 +298,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.getMessage().replyEmbeds(messageEmbed).queue();
+                    event.getMessage().replyEmbeds(embed).queue();
                 }
 
 
@@ -309,19 +309,20 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionStatusMap.remove(userId);
 
                 clearChannel();
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
                                         > **플러그인이 등록되었습니다.**
                                         > **채널이 5초후에 자동으로 청소됩니다.**
 
-                                        ─────────────────────────────────────────────────"""
+                                        ─────────────────────────────────────────────────
+                                    """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
-                event.getMessage().replyEmbeds(messageEmbed).queue();
+                event.getMessage().replyEmbeds(embed).queue();
 
                 PluginForumUtil.createPluginChannel(plugin);
                 sendReleaseAnnouncement(plugin);
@@ -350,7 +351,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                     > **플러그인의 유형을 선택해 주세요.**\s
                                     > **무료 또는 유료 중 원하는 타입을 선택하세요.**\s
 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -461,7 +463,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 String managerMention = mentionedUsers.stream().map(User::getAsMention).collect(Collectors.joining(", "));
                 if (plugin.getPrice() != 0) {
                     EntitySelectMenu roleSelectMenu = EntitySelectMenu.create(ID_PREFIX + "buyerrole", EntitySelectMenu.SelectTarget.ROLE).build();
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 역할 | 플러그인 등록 <a:success:1168266537262657626>")
                             .setDescription(
@@ -474,14 +476,14 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
-                    event.getMessage().replyEmbeds(messageEmbed)
+                    event.getMessage().replyEmbeds(embed)
                             .addActionRow(roleSelectMenu)
                             .addActionRow(CANCEL_BUTTON)
                             .queue();
 
                     sessionStatusMap.put(userId, RegisterStatus.SELECT_BUYER_ROLE);
                 } else {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 아이콘 | 플러그인 등록 <a:success:1168266537262657626>")
                             .setDescription(
@@ -494,7 +496,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
-                    event.getMessage().replyEmbeds(messageEmbed)
+                    event.getMessage().replyEmbeds(embed)
                             .addActionRow(CANCEL_BUTTON)
                             .queue();
 
@@ -515,7 +517,7 @@ public class RegisterInteraction extends ListenerAdapter {
 
                 event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 아이콘 | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription(
@@ -528,7 +530,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .build();
                 event.getMessage()
-                        .replyEmbeds(messageEmbed)
+                        .replyEmbeds(embed)
                         .addActionRow(CANCEL_BUTTON)
                         .queue();
             }
@@ -549,7 +551,7 @@ public class RegisterInteraction extends ListenerAdapter {
         if (buttonId.equals((ID_PREFIX + "cancel"))) {
             event.editButton(event.getButton().asDisabled()).queue();
 
-            MessageEmbed messageEmbed = new EmbedBuilder()
+            MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 등록 취소 <a:success:1168266537262657626>")
                     .setDescription("""
@@ -561,7 +563,7 @@ public class RegisterInteraction extends ListenerAdapter {
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
-            event.getMessage().replyEmbeds(messageEmbed).queue();
+            event.getMessage().replyEmbeds(embed).queue();
 
             cancelProcess(event.getUser().getIdLong());
         }

@@ -85,7 +85,8 @@ public class DeleteInteraction extends ListenerAdapter {
                         .setDescription("""
                             > **존재하지 않는 플러그인입니다.**
                             
-                            ─────────────────────────────────────────────────"""
+                            ─────────────────────────────────────────────────
+                            """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -123,7 +124,8 @@ public class DeleteInteraction extends ListenerAdapter {
                     .setDescription("""
                             > **플러그인을 성공적으로 삭제하였습니다.**
                             
-                            ─────────────────────────────────────────────────"""
+                            ─────────────────────────────────────────────────
+                            """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

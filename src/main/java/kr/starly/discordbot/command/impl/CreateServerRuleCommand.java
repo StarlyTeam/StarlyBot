@@ -30,7 +30,7 @@ public class CreateServerRuleCommand implements DiscordCommand {
 
         event.getMessage().delete().queue();
 
-        MessageEmbed messageEmbed = new EmbedBuilder()
+        MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
                 .setTitle("<:tos:1168335473152892948> 서버규칙 | 스탈리 <:tos:1168335473152892948>")
                 .setDescription("""
@@ -57,6 +57,6 @@ public class CreateServerRuleCommand implements DiscordCommand {
                 .setFooter("서버 규칙을 준수하지 않을 경우, 규정에 따른 조치가 취해질 수 있음을 알려드립니다", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
 
-        event.getChannel().sendMessageEmbeds(messageEmbed).queue();
+        event.getChannel().sendMessageEmbeds(embed).queue();
     }
 }

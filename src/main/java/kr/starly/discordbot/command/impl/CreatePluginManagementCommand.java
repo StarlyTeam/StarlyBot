@@ -37,7 +37,8 @@ public class CreatePluginManagementCommand implements DiscordCommand {
                         > **플러그인 관리 메뉴입니다.**\s
                         > **아래 선택 메뉴에서 원하는 작업을 선택하세요.**\s
 
-                        ─────────────────────────────────────────────────"""
+                        ─────────────────────────────────────────────────
+                        """
                 )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

@@ -32,7 +32,7 @@ public class CreateTOSCommand implements DiscordCommand {
 
         event.getMessage().delete().queue();
 
-        MessageEmbed messageEmbed = new EmbedBuilder()
+        MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
                 .setTitle("<:tos:1168335473152892948> 이용약관 | 스탈리 <:ticket:1168335473152892948>")
                 .setDescription("""
@@ -48,6 +48,6 @@ public class CreateTOSCommand implements DiscordCommand {
 
         Button tosButton = Button.link("https://file.starly.kr/tos.pdf", "다운로드").withEmoji(Emoji.fromFormatted("<:download:1168339542588268624>"));
 
-        event.getChannel().sendMessageEmbeds(messageEmbed).addActionRow(tosButton).queue();
+        event.getChannel().sendMessageEmbeds(embed).addActionRow(tosButton).queue();
     }
 }

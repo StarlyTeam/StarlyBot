@@ -87,7 +87,8 @@ public class EditInteraction extends ListenerAdapter {
                     .setDescription("""
                             > **플러그인 파일을 첨부해 주세요.**
                                                         
-                            ─────────────────────────────────────────────────"""
+                            ─────────────────────────────────────────────────
+                            """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -198,7 +199,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setDescription("""
                                             > **요청이 거부되었습니다.**
                                                                         
-                                            ─────────────────────────────────────────────────"""
+                                            ─────────────────────────────────────────────────
+                                    """
                                     )
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -228,7 +230,8 @@ public class EditInteraction extends ListenerAdapter {
                                 .setDescription("""
                                         %s
                                                                     
-                                        ─────────────────────────────────────────────────"""
+                                        ─────────────────────────────────────────────────
+                                    """
                                         .formatted(description.toString())
                                 )
                                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -252,7 +255,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setDescription("""
                                             > **요청이 거부되었습니다.**
                                                                         
-                                            ─────────────────────────────────────────────────"""
+                                            ─────────────────────────────────────────────────
+                                    """
                                     )
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -268,7 +272,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setDescription("""
                                             > **이미 파일 업로드가 진행중입니다.**
                                                                         
-                                            ─────────────────────────────────────────────────"""
+                                            ─────────────────────────────────────────────────
+                                    """
                                     )
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -290,7 +295,8 @@ public class EditInteraction extends ListenerAdapter {
                                 .setDescription("""
                                         > **아래에 플러그인 파일을 첨부해 주세요.**
                                                                     
-                                        ─────────────────────────────────────────────────"""
+                                        ─────────────────────────────────────────────────
+                                    """
                                 )
                                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                 .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -309,7 +315,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setDescription("""
                                             > **요청이 거부되었습니다.**
                                                                         
-                                            ─────────────────────────────────────────────────"""
+                                            ─────────────────────────────────────────────────
+                                    """
                                     )
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -463,7 +470,8 @@ public class EditInteraction extends ListenerAdapter {
                             .setDescription("""
                                     > **해당 플러그인이 존재하지 않습니다.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -503,7 +511,8 @@ public class EditInteraction extends ListenerAdapter {
                             .setDescription("""
                                     > **요청이 거부되었습니다.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -525,7 +534,8 @@ public class EditInteraction extends ListenerAdapter {
                             .setDescription("""
                                     > **마인크래프트 버전이 올바르지 않습니다.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -550,7 +560,8 @@ public class EditInteraction extends ListenerAdapter {
                             .setDescription("""
                                     > **해당 플러그인 파일이 존재하지 않습니다.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -594,7 +605,8 @@ public class EditInteraction extends ListenerAdapter {
                             .setDescription("""
                                     > **요청이 거부되었습니다.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -623,7 +635,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setDescription("""
                                                 > **이미 존재하는 플러그인 이름입니다.**
                                                                             
-                                                ─────────────────────────────────────────────────"""
+                                                ─────────────────────────────────────────────────
+                                    """
                                         )
                                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -652,7 +665,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setDescription("""
                                                 > **올바른 이미지를 입력해 주세요.**
                                                                             
-                                                ─────────────────────────────────────────────────"""
+                                                ─────────────────────────────────────────────────
+                                    """
                                         )
                                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -668,7 +682,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setDescription("""
                                                 > **유니코드 이모지로만 설정하실 수 있습니다.**
                                                                             
-                                                ─────────────────────────────────────────────────"""
+                                                ─────────────────────────────────────────────────
+                                    """
                                         )
                                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -716,7 +731,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setDescription("""
                                                 > **담당자가 올바르지 않습니다.**
                                                                             
-                                                ─────────────────────────────────────────────────"""
+                                                ─────────────────────────────────────────────────
+                                    """
                                         )
                                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -750,7 +766,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setDescription("""
                                                 > **역할이 올바르지 않습니다.**
                                                                             
-                                                ─────────────────────────────────────────────────"""
+                                                ─────────────────────────────────────────────────
+                                    """
                                         )
                                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -781,7 +798,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setDescription("""
                                                 > **가격이 올바르지 않습니다.**
                                                                             
-                                                ─────────────────────────────────────────────────"""
+                                                ─────────────────────────────────────────────────
+                                    """
                                         )
                                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -813,7 +831,8 @@ public class EditInteraction extends ListenerAdapter {
                                     
                                     > **%s**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                                     .formatted(description)
                             )
                             .setThumbnail(plugin.getIconUrl())
@@ -849,7 +868,8 @@ public class EditInteraction extends ListenerAdapter {
                         .setDescription("""
                                     > **관리 액션을 아래에서 선택해 주세요.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -874,7 +894,8 @@ public class EditInteraction extends ListenerAdapter {
                         .setDescription("""
                                     > **수정할 항목을 아래에서 선택해 주세요.**
                                                                 
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                         .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

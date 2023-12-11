@@ -203,12 +203,12 @@ public class WarnCommand implements DiscordSlashCommand {
 
         String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getAvatarUrl();
 
-        MessageEmbed messageEmbed = new EmbedBuilder()
+        MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1168266572847128709> 확인 | 경고 <a:loading:1168266572847128709>")
                 .setDescription("> **<@" + targetId + ">님의 현재 경고: " + warnService.getTotalWarn(targetId) + "**")
                 .setThumbnail(userAvatarCheck)
                 .build();
-        event.replyEmbeds(messageEmbed).queue();
+        event.replyEmbeds(embed).queue();
     }
 }

@@ -65,11 +65,6 @@ public class AuthHandler implements HttpHandler {
             return;
         }
 
-        if (member.getRoles().contains(authorizedRole)) {
-            sendResponse(exchange, 400, "당신은 이미 인증을 마쳤습니다.");
-            return;
-        }
-
         VerifyService verifyService = DatabaseManager.getVerifyService();
         List<Verify> verifies = verifyService.getDataByUserIp(userIp);
         if (verifies.stream()
@@ -78,6 +73,8 @@ public class AuthHandler implements HttpHandler {
                                 && guild.getMemberById(verify.getUserId()) != null
                 )
         ) {
+            sendResponse(exchange, 403, "이미 해당 IP 주소에서 인증된 다른 유저가 있습니다.");
+
             AuditLogger.warning(new EmbedBuilder()
                     .setTitle("<a:cross:1058939340505497650> 실패 | 유저인증 <a:cross:1058939340505497650>")
                     .setDescription("""
@@ -91,6 +88,7 @@ public class AuthHandler implements HttpHandler {
                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                     )
             );
+            return;
         }
 
         BlacklistService blacklistService = DatabaseManager.getBlacklistService();
@@ -130,9 +128,10 @@ public class AuthHandler implements HttpHandler {
             return;
         }
 
-        guild.addRoleToMember(member, authorizedRole).queue();
+        guild.addRoleToMember(member, authorizedRole)
+                .queue(null, (ignored) -> {});
 
-        MessageEmbed messageEmbed = new EmbedBuilder()
+        MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 인증 완료 <a:success:1168266537262657626>")
                 .setDescription("""
@@ -145,8 +144,9 @@ public class AuthHandler implements HttpHandler {
                 .build();
 
         AtomicBoolean isDMSent = new AtomicBoolean(true);
-        member.getUser().openPrivateChannel()
-                .flatMap(channel -> channel.sendMessageEmbeds(messageEmbed))
+        member.getUser()
+                .openPrivateChannel().complete()
+                .sendMessageEmbeds(embed)
                 .queue(null, throwable -> {
                             AuditLogger.warning(new EmbedBuilder()
                                     .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
@@ -168,9 +168,7 @@ public class AuthHandler implements HttpHandler {
             RankRepository rankRepository = RankRepository.getInstance();
             Rank rank1 = rankRepository.getRank(1);
 
-            userService.saveData(new User(
-                    userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1))
-            ));
+            userService.saveData(new User(userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1))));
             AuditLogger.info(
                     new EmbedBuilder()
                             .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
@@ -189,12 +187,13 @@ public class AuthHandler implements HttpHandler {
                             .setTitle("<a:loading:1168266572847128709> 경고 | 유저 인증 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **데이터가 존재하는 유저가 인증을 시도했습니다.**
-                                    > **다만, 인증은 진행되었습니다.**
+                                    > **다만, 인증은 처리되었습니다.**
                                                                             
                                     > **유저: %s**
                                     > **아이피: %s**
                                                                             
-                                    ─────────────────────────────────────────────────"""
+                                    ─────────────────────────────────────────────────
+                                    """
                                     .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                             )
             );
@@ -206,8 +205,8 @@ public class AuthHandler implements HttpHandler {
             authService.removeTokenForUser(userId);
         }
 
-        Verify verify = new Verify(token, userId, userIp, isDMSent.get(), new Date());
-        verifyService.saveData(verify);
+        verifyService.saveData(new Verify(token, userId, userIp, isDMSent.get(), new Date()));
+        System.out.println(verifyService.getDataByUserId(userId).get(0).getToken());
     }
 
     private void sendResponse(HttpExchange exchange, int rCode, String rBody) throws IOException {
@@ -215,7 +214,7 @@ public class AuthHandler implements HttpHandler {
         exchange.sendResponseHeaders(rCode, rBody.getBytes(StandardCharsets.UTF_8).length);
 
         try (OutputStream os = exchange.getResponseBody()) {
-            os.write(rBody.getBytes());
+            os.write(rBody.getBytes(StandardCharsets.UTF_8));
         }
 
         exchange.close();

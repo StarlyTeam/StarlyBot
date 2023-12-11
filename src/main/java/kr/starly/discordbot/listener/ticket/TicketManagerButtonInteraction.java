@@ -47,9 +47,9 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        if (!(event.getChannel() instanceof TextChannel textChannel)) return;
-        if (textChannel.getParentCategory() != null
-            && !textChannel.getParentCategory().getId().equals(TICKET_CATEGORY_ID)) return;
+        if (!(event.getChannel() instanceof TextChannel ticketChannel)) return;
+        if (ticketChannel.getParentCategory() != null
+            && !ticketChannel.getParentCategory().getId().equals(TICKET_CATEGORY_ID)) return;
 
         Member member = event.getMember();
 
@@ -60,7 +60,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             }
 
             String userId = event.getComponentId().replace("ticket-close", "");
-            User user = textChannel.getJDA().getUserById(userId);
+            User user = ticketChannel.getJDA().getUserById(userId);
 
             Button closeButtonCheck = Button.primary("ticket-check-twice-close-" + user.getId(), "확인");
             Button closeButtonJoke = Button.danger("ticket-check-joke-" + user.getId(), "장난 티켓");
@@ -76,9 +76,9 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             }
 
             long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-twice-close-", ""));
-            User ticketUser = textChannel.getJDA().getUserById(ticketUserId);
+            User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
 
-            MessageEmbed messageEmbed = new EmbedBuilder()
+            MessageEmbed embed1 = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
                     .setTitle(" <a:loading:1168266572847128709> 평가하기 | 고객센터 <a:loading:1168266572847128709>")
                     .setDescription("""
@@ -92,7 +92,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     .build();
 
             StringSelectMenu rateSelectMenu = StringSelectMenu
-                    .create("ticket-rate-select-menu-" + textChannel.getId())
+                    .create("ticket-rate-select-menu-" + ticketChannel.getId())
                     .setPlaceholder("상담 평가하기")
                     .addOption("매우 만족", "ticket-rate-5", "", Emoji.fromUnicode("\uD83D\uDE0D"))
                     .addOption("만족", "ticket-rate-4", "", Emoji.fromUnicode("\uD83E\uDD70"))
@@ -101,19 +101,19 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     .addOption("매우 불만족", "ticket-rate-1", "", Emoji.fromUnicode("\uD83D\uDE21"))
                     .build();
 
-            try {
-                ticketUser.openPrivateChannel().queue(
-                        privateChannel -> privateChannel.sendMessageEmbeds(messageEmbed).addComponents(ActionRow.of(rateSelectMenu)).queue()
-                );
-            } catch (UnsupportedOperationException ignored) {}
+            ticketUser
+                    .openPrivateChannel().complete()
+                    .sendMessageEmbeds(embed1)
+                    .addComponents(ActionRow.of(rateSelectMenu))
+                    .queue(null, (ignored) -> {});
 
-            Ticket ticketInfo = ticketService.findByChannel(textChannel.getIdLong());
+            Ticket ticketInfo = ticketService.findByChannel(ticketChannel.getIdLong());
 
-            MessageHistory history = MessageHistory.getHistoryFromBeginning(textChannel).complete();
+            MessageHistory history = MessageHistory.getHistoryFromBeginning(ticketChannel).complete();
             ticketFileRepository.save(history.getRetrievedHistory(), ticketInfo);
 
             ticketService.recordTicket(
-                    new Ticket(ticketUserId, event.getUser().getIdLong(), textChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
+                    new Ticket(ticketUserId, event.getUser().getIdLong(), ticketChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
             MessageEmbed embed = new EmbedBuilder()
@@ -138,19 +138,19 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             }
 
             long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-joke-", ""));
-            User ticketUser = textChannel.getJDA().getUserById(ticketUserId);
+            User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
 
-            Ticket ticketInfo = ticketService.findByChannel(textChannel.getIdLong());
+            Ticket ticketInfo = ticketService.findByChannel(ticketChannel.getIdLong());
 
             ticketService.recordTicket(
-                    new Ticket(ticketUserId, 0, textChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
+                    new Ticket(ticketUserId, 0, ticketChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
             ticketUser.openPrivateChannel().queue(privateChannel -> {
                 Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
                 warnService.saveData(warnInfo);
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("""
@@ -162,10 +162,10 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                         )
                         .setThumbnail(ticketUser.getAvatarUrl())
                         .build();
-                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(messageEmbed).queue();
+                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed).queue();
 
                 try {
-                    privateChannel.sendMessageEmbeds(messageEmbed).queue();
+                    privateChannel.sendMessageEmbeds(embed).queue();
                 } catch (UnsupportedOperationException ignored) {}
             });
 

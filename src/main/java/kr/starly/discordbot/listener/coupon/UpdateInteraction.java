@@ -117,13 +117,11 @@ public class UpdateInteraction extends ListenerAdapter {
                 try {
                     discountType = DiscountType.valueOf(discountTypeStr);
                 } catch (IllegalArgumentException ignored) {
-                    event.replyEmbeds(
-                                    new EmbedBuilder()
-                                            .setColor(EMBED_COLOR_ERROR)
-                                            .setTitle("할인 타입 오류")
-                                            .setDescription("할인 타입을 찾을 수 없습니다.")
-                                            .build()
-                            )
+                    event.replyEmbeds(new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("할인 타입 오류")
+                                    .setDescription("할인 타입을 찾을 수 없습니다.")
+                                    .build())
                             .setEphemeral(true)
                             .queue();
 
@@ -135,13 +133,11 @@ public class UpdateInteraction extends ListenerAdapter {
                 try {
                     discountValue = Integer.parseInt(discountValueStr);
                 } catch (NumberFormatException ignored) {
-                    event.replyEmbeds(
-                                    new EmbedBuilder()
-                                            .setColor(EMBED_COLOR_ERROR)
-                                            .setTitle("할인 값 오류")
-                                            .setDescription("할인 값이 올바르지 않습니다.")
-                                            .build()
-                            )
+                    event.replyEmbeds(new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_ERROR)
+                                    .setTitle("할인 값 오류")
+                                    .setDescription("할인 값이 올바르지 않습니다.")
+                                    .build())
                             .setEphemeral(true)
                             .queue();
 
@@ -160,13 +156,11 @@ public class UpdateInteraction extends ListenerAdapter {
                         userId
                 );
 
-                event.replyEmbeds(
-                                new EmbedBuilder()
-                                        .setColor(EMBED_COLOR_SUCCESS)
-                                        .setTitle("쿠폰 수정 완료")
-                                        .setDescription("쿠폰을 수정하였습니다.")
-                                        .build()
-                        )
+                event.replyEmbeds(new EmbedBuilder()
+                                .setColor(EMBED_COLOR_SUCCESS)
+                                .setTitle("쿠폰 수정 완료")
+                                .setDescription("쿠폰을 수정하였습니다.")
+                                .build())
                         .setEphemeral(true)
                         .queue();
             }
@@ -647,7 +641,7 @@ public class UpdateInteraction extends ListenerAdapter {
     private void stopSession(long userId) {
         CouponSessionRepository sessionRepository = RepositoryManager.getCouponSessionRepository();
         sessionRepository.stopSession(userId);;
-        
+
         requirementTypeMap.remove(userId);
     }
 }

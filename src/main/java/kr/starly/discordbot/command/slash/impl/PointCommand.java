@@ -88,58 +88,58 @@ public class PointCommand implements DiscordSlashCommand {
             return;
         }
 
-        MessageEmbed messageEmbed;
+        MessageEmbed embed;
 
         switch (subCommand) {
             case "지급" -> {
                 net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 int pointToAdd = getSafeIntFromOption(event.getOption("포인트"));
                 DatabaseManager.getUserService().addPoint(target.getIdLong(), pointToAdd);
-                messageEmbed = new EmbedBuilder()
+                embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 지급 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님에게 " + pointToAdd + "포인트를 지급하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "제거" -> {
                 net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 int pointToRemove = getSafeIntFromOption(event.getOption("포인트"));
                 DatabaseManager.getUserService().removePoint(target.getIdLong(), pointToRemove);
-                messageEmbed = new EmbedBuilder()
+                embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:success:1168266537262657626> 제거 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 " + pointToRemove + "포인트를 제거하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "설정" -> {
                 net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 int pointToSet = getSafeIntFromOption(event.getOption("포인트"));
                 DatabaseManager.getUserService().setPoint(target.getIdLong(), pointToSet);
-                messageEmbed = new EmbedBuilder()
+                embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:success:1168266537262657626> 설정 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 포인트를 " + pointToSet + "로 설정되었습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "초기화" -> {
                 net.dv8tion.jda.api.entities.User target = event.getOption("유저").getAsUser();
                 DatabaseManager.getUserService().setPoint(target.getIdLong(), 0);
-                messageEmbed = new EmbedBuilder()
+                embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 초기화 완료 | 포인트 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 포인트를 초기화하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "순위" -> {
@@ -173,12 +173,12 @@ public class PointCommand implements DiscordSlashCommand {
             }
 
             default -> {
-                messageEmbed = new EmbedBuilder()
+                embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 포인트 <a:loading:1168266572847128709>")
                         .setDescription("> **알 수 없는 명령입니다.**")
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
         }
     }
@@ -199,13 +199,13 @@ public class PointCommand implements DiscordSlashCommand {
 
         String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getAvatarUrl();
         int currentPoint = DatabaseManager.getUserService().getPoint(targetId);
-        MessageEmbed messageEmbed = new EmbedBuilder()
+        MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1168266572847128709> 확인 | 포인트 <a:loading:1168266572847128709>")
                 .setDescription("> **<@" + targetId + ">님의 현재 포인트: " + currentPoint + "**")
                 .setThumbnail(userAvatarCheck)
                 .build();
-        event.replyEmbeds(messageEmbed).queue();
+        event.replyEmbeds(embed).queue();
     }
 
     private int getSafeIntFromOption(OptionMapping option) {

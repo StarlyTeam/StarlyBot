@@ -32,7 +32,7 @@ public class CreateBRCommand implements DiscordCommand {
 
         event.getMessage().delete().queue();
 
-        MessageEmbed messageEmbed = new EmbedBuilder()
+        MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
                 .setTitle("<:tos:1168335473152892948> 사업자 정보 안내 | 스탈리 <:ticket:1168335473152892948>")
                 .setDescription("""
@@ -41,10 +41,10 @@ public class CreateBRCommand implements DiscordCommand {
                                                 
                         ─────────────────────────────────────────────────
                         > <a:loading:1168266572847128709> **<< 사업자 정보 >>** <a:loading:1168266572847128709>
-                        > **`❇️` | 사업자 등록 번호: 210-36-72319**
-                        > **`📒` | 사업자 명: 양대영**
-                        > **`♻️` | 등록된 주소: 경상남도 통영시 광도면 신죽xx길 xxxxxx xxxxxx동 xxxxxx호 (주영 더 팰리스 xx차 아파트)**
-                        > **`📩` | 연락 가능한 이메일: yangdaeyeong0808@gmail.com**
+                        > **`❇️` | 등록 번호: 210-36-72319**
+                        > **`📒` | 대표자명: 양대영**
+                        > **`♻️` | 등록 주소지: 경상남도 통영시 광도면 신죽xx길**
+                        > **`📩` | 이메일: yangdaeyeong0808@gmail.com**
                         
                         > **추가 문의 사항이 있으시면 언제든지 연락 주시기 바랍니다.**
                         > **고객님의 신뢰를 최우선으로 생각하는 스탈리가 되겠습니다.**
@@ -56,6 +56,6 @@ public class CreateBRCommand implements DiscordCommand {
 
         Button tosButton = Button.link("https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2103672319", "사업자등록증 보기").withEmoji(Emoji.fromFormatted("<:tos:1168335473152892948>"));
 
-        event.getChannel().sendMessageEmbeds(messageEmbed).addActionRow(tosButton).queue();
+        event.getChannel().sendMessageEmbeds(embed).addActionRow(tosButton).queue();
     }
 }

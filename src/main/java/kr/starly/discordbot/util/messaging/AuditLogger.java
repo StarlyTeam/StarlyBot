@@ -51,7 +51,7 @@ public class AuditLogger {
     }
 
     private static void sendToAuditLogChannel(MessageEmbed embed) {
-        TextChannel textChannel = DiscordBotManager.getInstance().getJda().getTextChannelById(AUDIT_LOG_CHANNEL_ID);
-        textChannel.sendMessageEmbeds(embed).queue();
+        TextChannel auditLogChannel = DiscordBotManager.getInstance().getJda().getTextChannelById(AUDIT_LOG_CHANNEL_ID);
+        auditLogChannel.sendMessageEmbeds(embed).queue();
     }
 }

@@ -67,24 +67,24 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
 
                 ShortenLinkService shortenLinkService = DatabaseManager.getShortenLinkService();
                 if (shortenLinkService.getDataByShortenUrl(shortenUrl) != null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 존재하는 링크 <a:loading:1168266572847128709>")
                             .setDescription("> **해당 단축링크는 이미 존재합니다.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
                 shortenLinkService.saveData(originUrl, shortenUrl);
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 단축링크 생성 <a:success:1168266537262657626>")
                         .setDescription("> **단축링크를 생성하였습니다.**\n" +
                                 "> **`" + originUrl + "` ↔ `" + shortenUrl + "`**"
                         )
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "삭제" -> {
@@ -92,12 +92,12 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 OptionMapping shortenUrl = event.getOption("단축링크");
 
                 if (originUrl == null && shortenUrl == null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
                             .setDescription("> **원본링크, 단축링크 중 하나 이상은 입력해 주세요.**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
@@ -107,12 +107,12 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                         shortenLinkService.getDataByShortenUrl(shortenUrl.getAsString())
                         : shortenLinkService.getDataByOriginUrl(originUrl.getAsString())
                 ) == null) {
-                    MessageEmbed messageEmbed = new EmbedBuilder()
+                    MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 미존재 <a:loading:1168266572847128709>")
                             .setDescription("> **해당 단축링크는 존재하지 않습니다..**")
                             .build();
-                    event.replyEmbeds(messageEmbed).queue();
+                    event.replyEmbeds(embed).queue();
                     return;
                 }
 
@@ -122,14 +122,14 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                     shortenLinkService.deleteDataByOriginUrl(originUrl.getAsString());
                 }
 
-                MessageEmbed messageEmbed = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 성공 | 단축링크 삭제 <a:success:1168266537262657626>")
                         .setDescription("> **단축링크를 삭제하였습니다.**\n" +
                                 "> **" + originUrl + " ↔ " + shortenUrl + "**"
                         )
                         .build();
-                event.replyEmbeds(messageEmbed).queue();
+                event.replyEmbeds(embed).queue();
             }
 
             case "목록" -> {

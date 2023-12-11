@@ -47,11 +47,9 @@ public class VerifyHistoryCommand implements DiscordSlashCommand {
 
         StringBuilder list = new StringBuilder();
         if (verifies.isEmpty()) {
-            list
-                    .append("없음")
-                    .append("\n");
+            list.append("없음\n");
         } else {
-            list.append("| 유저 | 일시 | IP | 토큰 | DM |");
+            list.append("| 유저 | 일시 | IP | 토큰 | DM |\n");
 
             for (Verify verify : verifies) {
                 list
@@ -59,9 +57,8 @@ public class VerifyHistoryCommand implements DiscordSlashCommand {
                                 verify.getUserId(),
                                 DATE_FORMAT.format(verify.getVerifiedAt()),
                                 verify.getUserIp(),
-                                verify.getUserIp(),
                                 verify.getToken(),
-                                verify.isDMSent() ? "전송" : "미전송"
+                                verify.isDMSent() ? "전송 성공" : "전송 실패"
                         ))
                         .append("\n");
             }
