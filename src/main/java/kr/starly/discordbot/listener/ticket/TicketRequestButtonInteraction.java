@@ -37,35 +37,29 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         long userId = event.getUser().getIdLong();
         String buttonId = event.getComponentId();
 
-        Ticket Ticket = ticketService.findByDiscordId(userId);
-
-        if (Ticket != null && isExistUserTicket(event.getJDA(), Ticket.channelId())) {
-            TextChannel ticketChannel = event.getJDA().getTextChannelById(Ticket.channelId());
-            MessageEmbed messageEmbed = new EmbedBuilder()
+        Ticket ticket = ticketService.findByDiscordId(userId);
+        TextChannel ticketChannel = event.getJDA().getTextChannelById(ticket.channelId());
+        if (ticket != null && ticketChannel == null) {
+            MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
                     .setDescription("""
-                            > **%s**
-                            
-                            ─────────────────────────────────────────────────
-                            """.formatted(
-                                    ticketChannel != null ? "이미 티켓이 존재합니다. " + ticketChannel.getAsMention() : "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)"
-                            )
+                        > **내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)**
+                        
+                        ─────────────────────────────────────────────────
+                        """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();
-
-            event.replyEmbeds(messageEmbed).setEphemeral(true).queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
             return;
         }
 
         TicketType ticketTypeFormat = TicketType.valueOf(buttonId.replace("button-", "").replace("-", "_").toUpperCase());
-
         addUserTicketStatus(userId, ticketTypeFormat);
 
         TicketType ticketType = TicketType.getUserTicketTypeMap().get(userId);
-
         Modal modal = generateModalForType(ticketType);
         event.getInteraction().replyModal(modal).queue();
     }
@@ -75,6 +69,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
             TicketType.getUserTicketTypeMap().put(userId, ticketType);
             return;
         }
+
         TicketType.getUserTicketTypeMap().replace(userId, ticketType);
     }
 
