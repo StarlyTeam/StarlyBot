@@ -2,16 +2,13 @@ package kr.starly.discordbot.listener.ticket;
 
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
-import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.enums.TicketType;
 import kr.starly.discordbot.listener.BotEvent;
 import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.util.messaging.AuditLogger;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -28,7 +25,6 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
-    private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     private final TicketService ticketService = DatabaseManager.getTicketService();
 
@@ -37,48 +33,23 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
         if (event.getComponentId().equals("ticket-select-category")) {
             User user = event.getUser();
             long discordId = user.getIdLong();
-
             String selectedValue = event.getValues().get(0);
 
             TicketType ticketType = TicketType.valueOf(selectedValue.toUpperCase(Locale.ROOT).replace("-", "_"));
-            Ticket ticket = ticketService.findByDiscordId(discordId);
+            setTicketStatus(discordId, ticketType);
 
-            if (ticket != null && isExistUserTicket(event.getJDA(), ticket.channelId())) {
-                TextChannel ticketChannel = event.getJDA().getTextChannelById(ticket.channelId());
-
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
-                        .setDescription("""
-                                        > **%s**
-                                                                    
-                                        ─────────────────────────────────────────────────
-                                        """.formatted(
-                                        ticketChannel != null ? "내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)" : "이미 티켓이 열려있습니다." + ticketChannel.getAsMention()
-                                )
-                        )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                        .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                        .build();
-                event.replyEmbeds(embed).setEphemeral(true).queue();
-            } else {
-                setTicketStatus(discordId, ticketType);
-
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:success:1168266537262657626> 확인 | 고객센터 <a:success:1168266537262657626>")
-                        .setDescription("""
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR)
+                    .setTitle("<a:success:1168266537262657626> 확인 | 고객센터 <a:success:1168266537262657626>")
+                    .setDescription("""
                                 > **정말로 티켓을 열겠습니까?**
                                 
                                 """
-                        )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                        .setFooter("티켓을 열면 되돌릴 수 없습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                        .build();
-                List<Button> button = generateButtonsForType(ticketType);
-
-                event.replyEmbeds(embed).addActionRow(button).setEphemeral(true).queue();
-            }
+                    )
+                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .setFooter("티켓을 열면 되돌릴 수 없습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                    .build();
+            event.replyEmbeds(embed).addActionRow(generateButtonsForType(ticketType)).setEphemeral(true).queue();
 
             event.editSelectMenu(event.getSelectMenu()).queue();
         } else if (event.getComponentId().contains("ticket-rate-select-menu-")) {
@@ -178,9 +149,5 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
             }
         }
         return buttons;
-    }
-
-    private boolean isExistUserTicket(JDA jda, long channelId) {
-        return jda.getTextChannelById(channelId) != null;
     }
 }
