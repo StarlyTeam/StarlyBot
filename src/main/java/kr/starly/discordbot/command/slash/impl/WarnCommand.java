@@ -5,10 +5,12 @@ import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Warn;
+import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.service.WarnService;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -16,6 +18,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 import java.awt.*;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @BotSlashCommand(
         command = "경고",
@@ -117,16 +120,21 @@ public class WarnCommand implements DiscordSlashCommand {
                 MessageEmbed embed2 = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("> **" + target.getAsMention() + " 님에게 " + amount + "경고를 추가 하였습니다.** \n" +
+                        .setDescription("> **" + target.getAsMention() + " 님에게 " + amount + "경고를 추가 하였습니다.**\n" +
                                 "> 사유 : " + reason)
                         .setThumbnail(target.getAvatarUrl())
                         .build();
 
                 if (warnService.getTotalWarn(target.getIdLong()) >= 3) {
+                    Guild guild = DiscordBotManager.getInstance().getGuild();
+                    guild.ban(target, 5, TimeUnit.SECONDS)
+                            .reason(reason)
+                            .queue();
+
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
                             .setTitle("<a:success:1168266537262657626> 차단 완료 | 경고 <a:success:1168266537262657626>")
-                            .setDescription("> **" + target.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.\n" +
+                            .setDescription("> **" + target.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.**\n" +
                                     "> 사유 : 경고 3회 이상 누적")
                             .setThumbnail(target.getAvatarUrl())
                             .build();
@@ -162,17 +170,17 @@ public class WarnCommand implements DiscordSlashCommand {
                 Warn warn = new Warn(target.getIdLong(), event.getUser().getIdLong(), reason, amount * -1, new Date());
                 warnService.saveData(warn);
 
-                MessageEmbed embed1 = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:success:1168266537262657626> 제거 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + ">님의 경고를" + amount + " 제거하였습니다.** \n" +
                                 "사유 > `" + reason + "`")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(embed1).queue();
+                event.replyEmbeds(embed).queue();
                 target
                         .openPrivateChannel().complete()
-                        .sendMessageEmbeds(embed1)
+                        .sendMessageEmbeds(embed)
                         .queue(null, (ignored) -> {});
             }
 
@@ -181,34 +189,35 @@ public class WarnCommand implements DiscordSlashCommand {
                 String reason = event.getOption("사유").getAsString();
                 int amount = event.getOption("경고").getAsInt();
 
-                MessageEmbed embed1 = new EmbedBuilder()
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:success:1168266537262657626> 설정 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 경고를 " + amount + "로 설정 되었습니다.** \n" +
                                 "사유 > " + reason)
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(embed1).queue();
+                event.replyEmbeds(embed).queue();
                 target
                         .openPrivateChannel().complete()
-                        .sendMessageEmbeds(embed1)
+                        .sendMessageEmbeds(embed)
                         .queue(null, (ignored) -> {});
             }
 
             case "초기화" -> {
                 User target = event.getOption("유저").getAsUser();
 
-                MessageEmbed embed1 = new EmbedBuilder()
+                warnService.deleteDataByDiscordId(target.getIdLong());
+
+                MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 초기화 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + "님의 경고를 초기화 하였습니다.**")
                         .setThumbnail(target.getAvatarUrl())
                         .build();
-                event.replyEmbeds(embed1).queue();
-
+                event.replyEmbeds(embed).queue();
                 target
                         .openPrivateChannel().complete()
-                        .sendMessageEmbeds(embed1)
+                        .sendMessageEmbeds(embed)
                         .queue(null, (ignored) -> {});
             }
         }

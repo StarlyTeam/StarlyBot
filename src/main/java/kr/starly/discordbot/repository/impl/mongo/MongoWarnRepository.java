@@ -32,15 +32,26 @@ public class MongoWarnRepository implements WarnRepository {
     }
 
     @Override
-    public List<Warn> findByDiscordId(long discordId) {
+    public List<Warn> findMany(long discordId) {
         Document filter = new Document("discordId", discordId);
+        return collection.find(filter)
+                .map(this::parseWarn)
+                .into(new ArrayList<>());
+    }
 
-        List<Warn> warnList = new ArrayList<>();
-        for (Document document : collection.find(filter)) {
-            warnList.add(parseWarn(document));
-        }
+    @Override
+    public void deleteOne(long discordId, Date date) {
+        Document filter = new Document();
+        filter.put("discordId", discordId);
+        filter.put("date", date);
 
-        return warnList;
+        collection.deleteOne(filter);
+    }
+
+    @Override
+    public void deleteMany(long discordId) {
+        Document filter = new Document("discordId", discordId);
+        collection.deleteMany(filter);
     }
 
     private Warn parseWarn(Document document) {
