@@ -69,6 +69,7 @@ public class WarnCommand implements DiscordSlashCommand {
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
+    private final String WARN_CHANNEL_ID = configProvider.getString("WARN_CHANNEL_ID");
 
     private final WarnService warnService = DatabaseManager.getWarnService();
 
@@ -93,37 +94,64 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 MessageEmbed embed1 = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
+                        .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
+                        .setDescription("""
+                                        > **%s님에게 경고 %d회가 추가되었습니다.**
+                                        > **사유: %s**
+                                        
+                                        """
+                                .formatted(target.getAsMention(), amount, reason)
+                        )
+                        .setThumbnail(target.getAvatarUrl())
+                        .build();
+                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1).queue();
+                target
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(embed1)
+                        .queue(null, (ignored) -> {});
+
+                Warn warn = new Warn(target.getIdLong(), event.getUser().getIdLong(), reason, amount, new Date());
+                warnService.saveData(warn);
+
+                // 자동차단
+                MessageEmbed embed2 = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
                         .setDescription("> **" + target.getAsMention() + " 님에게 " + amount + "경고를 추가 하였습니다.** \n" +
                                 "> 사유 : " + reason)
                         .setThumbnail(target.getAvatarUrl())
                         .build();
 
-                Warn warn = new Warn(target.getIdLong(), event.getUser().getIdLong(), reason, amount, new Date());
-                warnService.saveData(warn);
-
-                // 자동차단
                 if (warnService.getTotalWarn(target.getIdLong()) >= 3) {
-                    MessageEmbed embed2 = new EmbedBuilder()
+                    MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
                             .setTitle("<a:success:1168266537262657626> 차단 완료 | 경고 <a:success:1168266537262657626>")
                             .setDescription("> **" + target.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.\n" +
                                     "> 사유 : 경고 3회 이상 누적")
                             .setThumbnail(target.getAvatarUrl())
                             .build();
-
-                    event.replyEmbeds(embed1, embed2).queue();
-                    target
-                            .openPrivateChannel().complete()
-                            .sendMessageEmbeds(embed1, embed2)
-                            .queue(null, (ignored) -> {});
+                    event.replyEmbeds(embed2, embed3).queue();
                 } else {
-                    event.replyEmbeds(embed1).queue();
-                    target
-                            .openPrivateChannel().complete()
-                            .sendMessageEmbeds(embed1)
-                            .queue(null, (ignored) -> {});
+                    event.replyEmbeds(embed2).queue();
                 }
+
+                MessageEmbed embed4 = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_SUCCESS)
+                        .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
+                        .setDescription("""
+                                        > **%s님에게 경고 %d회가 추가되었습니다.**
+                                        > **사유: %s**
+                                        
+                                        """
+                                .formatted(target.getAsMention(), amount, reason)
+                        )
+                        .setThumbnail(target.getAvatarUrl())
+                        .build();
+                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed4).queue();
+                target
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(embed4)
+                        .queue(null, (ignored) -> {});
             }
 
             case "제거" -> {

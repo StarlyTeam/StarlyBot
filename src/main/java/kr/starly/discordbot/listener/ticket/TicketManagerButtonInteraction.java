@@ -35,7 +35,6 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
-
     private final String WARN_CHANNEL_ID = configProvider.getString("WARN_CHANNEL_ID");
     private final String TICKET_CATEGORY_ID = configProvider.getString("TICKET_CATEGORY_ID");
 
@@ -146,28 +145,27 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     new Ticket(ticketUserId, 0, ticketChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
-            ticketUser.openPrivateChannel().queue(privateChannel -> {
-                Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
-                warnService.saveData(warnInfo);
+            ticketUser
+                    .openPrivateChannel()
+                    .queue(privateChannel -> {
+                        Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
+                        warnService.saveData(warnInfo);
 
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1168266537262657626> 추가 완료 | 경고 <a:success:1168266537262657626>")
-                        .setDescription("""
-                                > **%s님에게 %d경고를 추가하였습니다.**
-                                > **사유: %s**
-                                
-                                """
-                                .formatted(ticketUser.getAsMention(), warnInfo.amount(), warnInfo.reason())
-                        )
-                        .setThumbnail(ticketUser.getAvatarUrl())
-                        .build();
-                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed).queue();
-
-                try {
-                    privateChannel.sendMessageEmbeds(embed).queue();
-                } catch (UnsupportedOperationException ignored) {}
-            });
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_SUCCESS)
+                                .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
+                                .setDescription("""
+                                        > **%s님에게 경고 %d회가 추가되었습니다.**
+                                        > **사유: %s**
+                                        
+                                        """
+                                        .formatted(ticketUser.getAsMention(), warnInfo.amount(), warnInfo.reason())
+                                )
+                                .setThumbnail(ticketUser.getAvatarUrl())
+                                .build();
+                        event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed).queue();
+                        privateChannel.sendMessageEmbeds(embed).queue();
+                    });
 
             ticketModalFileRepository.delete(ticketService.findByDiscordId(ticketUser.getIdLong()));
 
