@@ -206,7 +206,6 @@ public class AuthHandler implements HttpHandler {
         }
 
         verifyService.saveData(new Verify(token, userId, userIp, isDMSent.get(), new Date()));
-        System.out.println(verifyService.getDataByUserId(userId).get(0).getToken());
     }
 
     private void sendResponse(HttpExchange exchange, int rCode, String rBody) throws IOException {
