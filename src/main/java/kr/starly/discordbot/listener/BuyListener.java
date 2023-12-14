@@ -22,6 +22,7 @@ import kr.starly.discordbot.repository.impl.TicketUserDataRepository;
 import kr.starly.discordbot.service.*;
 import kr.starly.discordbot.util.RankUtil;
 import kr.starly.discordbot.util.external.TossPaymentsUtil;
+import kr.starly.discordbot.util.messaging.AuditLogger;
 import kr.starly.discordbot.util.messaging.PaymentLogger;
 import kr.starly.discordbot.util.security.AESUtil;
 import kr.starly.discordbot.util.security.PermissionUtil;
@@ -1679,7 +1680,7 @@ public class BuyListener extends ListenerAdapter {
                         ))
                         .setEmbeds(receipt)
                         .queue(null, (ignored) -> {
-                            MessageEmbed embed = new EmbedBuilder()
+                            AuditLogger.warning(new EmbedBuilder()
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
                                     .setDescription("""
@@ -1689,9 +1690,7 @@ public class BuyListener extends ListenerAdapter {
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                     )
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .build();
-                            event.getChannel().sendMessageEmbeds(embed).queue();
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public"));
                         });
 
                 MessageEmbed embed = new EmbedBuilder()

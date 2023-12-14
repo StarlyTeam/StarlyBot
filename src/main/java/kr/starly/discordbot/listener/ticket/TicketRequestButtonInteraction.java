@@ -36,11 +36,13 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
         String buttonId = event.getComponentId();
 
         Ticket ticket = ticketService.findByDiscordId(userId);
-        TextChannel ticketChannel = event.getJDA().getTextChannelById(ticket.channelId());
-        if (ticket != null && ticketChannel == null) {
-            ticketService.recordTicket(
-                    new Ticket(ticket.openBy(), event.getUser().getIdLong(), ticket.channelId(), ticket.ticketType(), ticket.index())
-            );
+        if (ticket != null) {
+            TextChannel ticketChannel = event.getJDA().getTextChannelById(ticket.channelId());
+            if (ticketChannel == null) {
+                ticketService.recordTicket(
+                        new Ticket(ticket.openBy(), event.getUser().getIdLong(), ticket.channelId(), ticket.ticketType(), ticket.index())
+                );
+            }
         }
 
         TicketType ticketTypeFormat = TicketType.valueOf(buttonId.replace("button-", "").replace("-", "_").toUpperCase());
