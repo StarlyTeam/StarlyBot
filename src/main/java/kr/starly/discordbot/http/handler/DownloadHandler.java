@@ -9,12 +9,12 @@ import kr.starly.discordbot.entity.PluginFile;
 import kr.starly.discordbot.service.DownloadService;
 import kr.starly.discordbot.util.messaging.AuditLogger;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.lingala.zip4j.ZipFile;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 
 public class DownloadHandler implements HttpHandler {
@@ -37,15 +37,25 @@ public class DownloadHandler implements HttpHandler {
         PluginFile pluginFile = download.getPluginFile();
         Plugin plugin = pluginFile.getPlugin();
 
-        String originalFileName = pluginFile.getFile().getName();
-        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-        String fileName = "%s [%s, %s].%s".formatted(plugin.getENName(), pluginFile.getMcVersion(), pluginFile.getVersion(), fileExtension);
+        new File("download/" + token).mkdirs();
+
+        File sourceFile = Files.copy(pluginFile.getFile().toPath(), Path.of("download/" + token + "/" + plugin.getENName() + ".jar")).toFile();
+        try (ZipFile zipFile = new ZipFile(sourceFile)) {
+            zipFile.addFile(new File("download/[!!필독!!] 이용안내.txt"));
+        }
+
+        File outputFile = new File("download/" + token + "/output.zip");
+        try (ZipFile zipFile = new ZipFile(outputFile)) {
+            zipFile.addFile(sourceFile);
+            zipFile.addFile(new File("download/[!!필독!!] 이용안내.txt"));
+        }
 
         try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(pluginFile.getFile()));
-            byte[] bytes = bis.readAllBytes();
-
+            String fileName = "%s [%s, %s].zip".formatted(plugin.getENName(), pluginFile.getMcVersion(), pluginFile.getVersion());
             exchange.getResponseHeaders().add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(outputFile));
+            byte[] bytes = bis.readAllBytes();
             exchange.sendResponseHeaders(200, bytes.length);
 
             OutputStream os = exchange.getResponseBody();
