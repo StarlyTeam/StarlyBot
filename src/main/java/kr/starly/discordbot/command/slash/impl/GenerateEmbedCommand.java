@@ -48,6 +48,7 @@ import java.awt.Color;
 public class GenerateEmbedCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
+    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
@@ -72,7 +73,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
             OptionMapping authorIcon = event.getOption("작성자이미지");
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setColor(color == null ? null : Color.decode(color.getAsString()));
+            embedBuilder.setColor(color == null ? EMBED_COLOR : Color.decode(color.getAsString()));
             embedBuilder.setTitle(getSafeString(title), getSafeString(titleUrl));
             embedBuilder.setDescription(description == null ? null : description.getAsString().replace("\\n", "\n"));
             embedBuilder.setThumbnail(getSafeString(thumbnail));
