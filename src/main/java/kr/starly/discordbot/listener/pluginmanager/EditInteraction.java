@@ -240,10 +240,6 @@ public class EditInteraction extends ListenerAdapter {
                         event.replyEmbeds(embed)
                                 .setEphemeral(true)
                                 .queue();
-
-                        sessionMap.remove(userId);
-
-                        event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
                     }
 
                     case "upload" -> {
@@ -285,9 +281,6 @@ public class EditInteraction extends ListenerAdapter {
                         }
 
                         uploadSession.add(userId);
-
-                        PluginService pluginService = DatabaseManager.getPluginService();
-                        Plugin plugin = pluginService.getDataByENName(sessionMap.get(userId));
 
                         MessageEmbed embed = new EmbedBuilder()
                                 .setColor(EMBED_COLOR)
@@ -341,8 +334,6 @@ public class EditInteraction extends ListenerAdapter {
                                 .addActionRow(version)
                                 .build();
                         event.replyModal(modal).queue();
-
-                        event.editSelectMenu(event.getSelectMenu().asDisabled()).queue();
                     }
                 }
             }
@@ -476,7 +467,7 @@ public class EditInteraction extends ListenerAdapter {
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
-                    event.replyEmbeds(embed).queue();
+                    event.replyEmbeds(embed).setEphemeral(true).queue();
                     return;
                 }
 
@@ -883,8 +874,6 @@ public class EditInteraction extends ListenerAdapter {
                         .addActionRow(actionSelectMenu)
                         .setEphemeral(true)
                         .queue();
-
-                event.editButton(event.getButton().asDisabled()).queue();
             }
 
             case ID_PREFIX + "info" -> {
@@ -919,8 +908,6 @@ public class EditInteraction extends ListenerAdapter {
                         .addActionRow(infoSelectMenu)
                         .setEphemeral(true)
                         .queue();
-
-                event.editButton(event.getButton().asDisabled()).queue();
             }
         }
     }
