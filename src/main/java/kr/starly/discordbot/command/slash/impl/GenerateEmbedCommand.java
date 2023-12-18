@@ -88,7 +88,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
                     .setTitle("<a:success:1168266537262657626> 성공 | 임베드생성 완료 <a:success:1168266537262657626>")
                     .setDescription("> **성공적으로 임베드를 생성했습니다.**")
                     .build();
-            event.replyEmbeds(embed).queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -97,7 +97,7 @@ public class GenerateEmbedCommand implements DiscordSlashCommand {
                     .setTitle("<a:success:1168266537262657626> 오류 | 임베드생성 실패 <a:success:1168266537262657626>")
                     .setDescription("> **임베드를 생성하지 못했습니다.**")
                     .build();
-            event.replyEmbeds(embed).queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
         }
     }
 

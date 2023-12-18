@@ -136,7 +136,7 @@ public class EditInteraction extends ListenerAdapter {
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 관리 <a:success:1168266537262657626>")
                     .setDescription("""
-                            > **%d개의 파일을 제외한 %d개의 파일을 업로드하였습니다.**
+                            > **%d개의 파일을 제외한 %d개의 파일을 업로드하였습니다. (채널이 5초뒤 청소됩니다.)**
                             > **%s**
                                                         
                             ─────────────────────────────────────────────────"""
@@ -156,6 +156,7 @@ public class EditInteraction extends ListenerAdapter {
 
         sessionMap.remove(userId);
         uploadSession.remove(userId);
+        clearChannel();
     }
 
     // SELECT MENU
