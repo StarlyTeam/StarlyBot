@@ -2,7 +2,6 @@ package kr.starly.discordbot.util;
 
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Plugin;
-import kr.starly.discordbot.entity.PluginFile;
 import kr.starly.discordbot.enums.MCVersion;
 import kr.starly.discordbot.service.PluginFileService;
 import kr.starly.discordbot.service.PluginService;
@@ -20,6 +19,7 @@ public class PluginFileUtil {
     public static List<String> uploadPluginFile(Plugin plugin, List<Message.Attachment> attachments) {
         PluginFileService pluginFileService = DatabaseManager.getPluginFileService();
 
+        String version = null;
         List<String> uploadErrors = new ArrayList<>();
         for (Message.Attachment attachment : attachments) {
             String fileName = attachment.getFileName();
@@ -35,7 +35,7 @@ public class PluginFileUtil {
             }
 
             String mcVersion = fileNameSplit[0];
-            String version = fileNameSplit[1];
+            version = fileNameSplit[1];
 
             File pluginFile = new File(".\\plugin\\%s\\%s.%s".formatted(plugin.getENName(), mcVersion + "-" + version, attachment.getFileExtension()));
             File pluginDir = pluginFile.getParentFile();
@@ -53,17 +53,10 @@ public class PluginFileUtil {
             pluginFileService.saveData(pluginFile, plugin, MCVersion.valueOf(mcVersion), version);
         }
 
-        List<PluginFile> pluginFiles = pluginFileService.getData(plugin.getENName());
-        String highestVersion = String.valueOf(
-                pluginFiles.stream()
-                        .map(PluginFile::getVersion)
-                        .mapToDouble(Double::parseDouble)
-                        .max()
-                        .orElse(0)
-        );
+        if (version == null) return null;
 
         PluginService pluginService = DatabaseManager.getPluginService();
-        plugin.updateVersion(highestVersion);
+        plugin.updateVersion(version);
         pluginService.saveData(plugin);
 
         return uploadErrors;
