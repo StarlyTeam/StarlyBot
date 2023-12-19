@@ -281,7 +281,7 @@ public class DownloadListener extends ListenerAdapter {
             case v1_17 -> selectOption.withDescription("1.17 ~ 1.17.1 버전을 지원합니다.");
             case v1_18 -> selectOption.withDescription("1.18 ~ 1.18.2 버전을 지원합니다.");
             case v1_19 -> selectOption.withDescription("1.19 ~ 1.19.4 버전을 지원합니다.");
-            case v1_20 -> selectOption.withDescription("1.20 ~ 1.20.1 버전을 지원합니다.");
+            case v1_20 -> selectOption.withDescription("1.20 ~ 1.20.4 버전을 지원합니다.");
         };
     }
 
