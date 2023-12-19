@@ -142,24 +142,6 @@ public class WarnCommand implements DiscordSlashCommand {
                 } else {
                     event.replyEmbeds(embed2).queue();
                 }
-
-                MessageEmbed embed4 = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
-                        .setDescription("""
-                                        > **%s님에게 경고 %d회가 추가되었습니다.**
-                                        > **사유: %s**
-                                        
-                                        """
-                                .formatted(target.getAsMention(), amount, reason)
-                        )
-                        .setThumbnail(target.getAvatarUrl())
-                        .build();
-                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed4).queue();
-                target
-                        .openPrivateChannel().complete()
-                        .sendMessageEmbeds(embed4)
-                        .queue(null, (ignored) -> {});
             }
 
             case "제거" -> {
