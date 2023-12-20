@@ -12,8 +12,15 @@ public record PaymentService(PaymentRepository repository) {
         repository.put(payment);
     }
 
-    public Payment getDataByPaymentId(String paymentId) {
-        return getDataByPaymentId(UUID.fromString(paymentId));
+    public Payment getDataByPaymentId(String rawPaymentId) {
+        UUID paymentId;
+        try {
+            paymentId = UUID.fromString(rawPaymentId);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+
+        return getDataByPaymentId(paymentId);
     }
 
     public Payment getDataByPaymentId(UUID paymentId) {

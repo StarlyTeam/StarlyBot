@@ -67,18 +67,17 @@ public class MongoTicketRepository implements TicketRepository {
         Document query = new Document("openBy", discordId);
         FindIterable<Document> iterable = collection.find(query).sort(new Document("_id", -1)).limit(1);
 
-        Document lastDocument = iterable.first();
-
-        if (lastDocument == null) {
+        Document lastestDocument = iterable.first();
+        if (lastestDocument == null) {
             return null;
         }
 
-        long openBy = lastDocument.getLong("openBy");
-        long closedBy = lastDocument.getLong("closedBy");
-        long channelId = lastDocument.getLong("channelId");
-        long index = lastDocument.getLong("index");
+        long openBy = lastestDocument.getLong("openBy");
+        long closedBy = lastestDocument.getLong("closedBy");
+        long channelId = lastestDocument.getLong("channelId");
+        long index = lastestDocument.getLong("index");
 
-        TicketType ticketType = TicketType.valueOf((String) lastDocument.get("type"));
+        TicketType ticketType = TicketType.valueOf((String) lastestDocument.get("type"));
 
         return new Ticket(openBy, closedBy, channelId, ticketType, index);
     }

@@ -319,15 +319,15 @@ public class BuyListener extends ListenerAdapter {
             Product product;
             if (productArgs[0].equals("CUSTOM!!!!PRICE")) {
                 String orderName = productArgs[1];
-                int productPrice = Integer.parseInt(productArgs[2]);
+                int orderPrice = Integer.parseInt(productArgs[2]);
 
-                String summary = productData + " (기타)";
-                product = new CustomPriceProduct(orderName, productPrice, summary);
+                String summary = "%s (기타ㅡ%,d원)".formatted(orderName, orderPrice);
+                product = new CustomPriceProduct(orderName, orderPrice, summary);
             } else if (productArgs[0].equals("OUT!!!!SOURCING")) {
                 String productName = productArgs[1];
                 int productPrice = Integer.parseInt(productArgs[2]);
 
-                String summary = productData + " (외주)";
+                String summary = "%s (외주ㅡ%,d원)".formatted(productName, productPrice);
                 product = new OutSourcingProduct(productName, productPrice, summary);
             } else {
                 PluginService pluginService = DatabaseManager.getPluginService();
@@ -832,7 +832,7 @@ public class BuyListener extends ListenerAdapter {
                         .build();
                 event.replyEmbeds(embed)
                         .addActionRow(createPaymentMethodSelectMenu(
-                                productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE
+                                false /* productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE */
                         ))
                         .addActionRow(CANCEL_BUTTON)
                         .setEphemeral(true)
@@ -1371,7 +1371,7 @@ public class BuyListener extends ListenerAdapter {
                         .build();
                 event.replyEmbeds(embed)
                         .addActionRow(createPaymentMethodSelectMenu(
-                                productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE
+                                false /* productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE */
                         ))
                         .addActionRow(CANCEL_BUTTON)
                         .setEphemeral(true)
@@ -1435,7 +1435,7 @@ public class BuyListener extends ListenerAdapter {
                             .setDescription("""
                                     > **결제 정보 생성 도중 오류가 발생하였습니다.**
                                                                                                                
-                                          """
+                                    """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -1887,84 +1887,94 @@ public class BuyListener extends ListenerAdapter {
     }
 
     private TextChannel createTicketChannel(Payment payment) {
-        // 변수 선언
         long userId = payment.getRequestedBy();
+        JDA jda = DiscordBotManager.getInstance().getJda();
         TicketService ticketService = DatabaseManager.getTicketService();
 
-        // 카테고리 로딩
-        JDA jda = DiscordBotManager.getInstance().getJda();
-        Category category = jda.getCategoryById(TICKET_CATEGORY_ID);
-
-        // 채널 생성
-        long ticketIndex = ticketService.getLastIndex() + 1;
         String userName = jda.getUserById(userId).getEffectiveName();
-        TicketType ticketType = TicketType.PAYMENT;
-        TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
-                .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
-                .complete();
-
-        // Ticket Data 등록
-        ticketService.recordTicket(new Ticket(
-                userId,
-                0,
-                ticketChannel.getIdLong(),
-                ticketType,
-                ticketIndex
-        ));
-
-        // Ticket User Data 등록
-        net.dv8tion.jda.api.entities.User user = jda.getUserById(userId);
-
-        TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
-        ticketUserDataRepository.registerUser(userId, user);
-
-        // Ticket Type Data 등록
-        Map<Long, TicketType> userTicketTypeMap = TicketType.getUserTicketTypeMap();
-        userTicketTypeMap.put(userId, ticketType);
-
-        // Modal Data 등록
         int usedPoint = payment.getUsedPoint();
         Coupon usedCoupon = payment.getUsedCoupon();
         String dateStr = DATE_FORMAT.format(new Date());
         int price = payment.getFinalPrice();
 
-        TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
-        ticketModalDataRepository.registerModalData(
-                ticketChannel.getIdLong(),
-                payment.getProduct().getSummary(),
-                "자동결제 승인요청 (" + payment.getMethod().getKRName() + ")",
-                """
-                        > 결제 ID
-                        > %s
-                                        
-                        > 결제수단
-                        > %s
-                                        
-                        > 결제금액
-                        > 실결제액: %,d원, 쿠폰: %s, 포인트: %,d원
-                                        
-                        > 결제자
-                        > %s (%d)
-                                        
-                        > 결제일
-                        > %s
-                                        
-                        > 승인상태
-                        > %s
-                        """.formatted(
-                        payment.getPaymentId().toString(),
-                        payment.getMethod().getKRName(),
-                        price,
-                        usedCoupon != null ? usedCoupon.getDiscount().toString() : "해당없음",
-                        usedPoint,
-                        userName,
-                        userId,
-                        dateStr,
-                        payment.isAccepted() ? "완료 (승인)" : (payment.getApprovedAt() != null ? "완료 (거절)" : "대기")
-                )
+        String title = "자동결제 승인요청 (" + payment.getMethod().getKRName() + ")";
+        String description = """
+                > 결제 ID
+                > %s
+                                
+                > 결제수단
+                > %s
+                                
+                > 결제금액
+                > 실결제액: %,d원, 쿠폰: %s, 포인트: %,d원
+                                
+                > 결제자
+                > %s (%d)
+                                
+                > 결제일
+                > %s
+                                
+                > 승인상태
+                > %s
+                """.formatted(
+                payment.getPaymentId().toString(),
+                payment.getMethod().getKRName(),
+                price,
+                usedCoupon != null ? usedCoupon.getDiscount().toString() : "해당없음",
+                usedPoint,
+                userName,
+                userId,
+                dateStr,
+                payment.isAccepted() ? "완료 (승인)" : (payment.getApprovedAt() != null ? "완료 (거절)" : "대기")
         );
 
-        return ticketChannel;
+        if (ticketService.findByDiscordId(userId) == null) {
+            long ticketIndex = ticketService.getLastIndex() + 1;
+            TicketType ticketType = TicketType.PAYMENT;
+
+            Category category = jda.getCategoryById(TICKET_CATEGORY_ID);
+            TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
+                    .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
+                    .complete();
+
+            ticketService.recordTicket(new Ticket(
+                    userId,
+                    0,
+                    ticketChannel.getIdLong(),
+                    ticketType,
+                    ticketIndex
+            ));
+
+            net.dv8tion.jda.api.entities.User user = jda.getUserById(userId);
+
+            TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
+            ticketUserDataRepository.registerUser(userId, user);
+
+            Map<Long, TicketType> userTicketTypeMap = TicketType.getUserTicketTypeMap();
+            userTicketTypeMap.put(userId, ticketType);
+
+            TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
+            ticketModalDataRepository.registerModalData(
+                    ticketChannel.getIdLong(),
+                    payment.getProduct().getSummary(),
+                    title,
+                    description
+            );
+
+            return ticketChannel;
+        } else {
+            Ticket ticket = ticketService.findByDiscordId(userId);
+            TextChannel ticketChannel = jda.getTextChannelById(ticket.channelId());
+
+            ticketChannel.sendMessageEmbeds(new EmbedBuilder()
+                    .setColor(EMBED_COLOR)
+                    .setTitle(title)
+                    .setDescription("```\n" + description + "```")
+                    .build()
+            ).queue();
+
+            return ticketChannel;
+        }
     }
 
     private void affectPayment(Payment payment) {

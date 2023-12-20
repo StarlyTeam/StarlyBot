@@ -13,6 +13,7 @@ import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -41,44 +42,33 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
-            PermissionUtil.sendPermissionError(event);
-            return;
-        }
-
-        OptionMapping user = event.getOption("유저");
-        OptionMapping paymentId = event.getOption("거래id");
-        if (user != null && paymentId != null) {
+        OptionMapping userMapping = event.getOption("유저");
+        OptionMapping paymentIdMapping = event.getOption("거래id");
+        if (userMapping != null && paymentIdMapping != null) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
                     .setDescription("> **조회 조건은 하나만 선택해 주세요.**")
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
-        } else if (user != null) {
+        } if (paymentIdMapping != null) {
             PaymentService paymentService = DatabaseManager.getPaymentService();
-            List<Payment> payments = paymentService.getDataByUserId(user.getAsUser().getIdLong());
-
-            StringBuilder list = new StringBuilder();
-            for (Payment payment : payments) {
-                list
-                        .append(payment.getPaymentId())
-                        .append("\n");
+            Payment rawPayment = paymentService.getDataByPaymentId(paymentIdMapping.getAsString());
+            if (rawPayment == null) {
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_ERROR)
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
+                        .setDescription("> **거래 ID를 다시 확인해 주세요.**")
+                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .build();
+                event.replyEmbeds(embed).queue();
+                return;
+            } else if (rawPayment.getRequestedBy() != event.getUser().getIdLong()
+                    && !PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                PermissionUtil.sendPermissionError(event);
+                return;
             }
-
-            MessageEmbed embed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle("<a:loading:1168266572847128709> 목록 | 거래내역 <a:loading:1168266572847128709>")
-                    .setDescription("```\n" + list + "```")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .build();
-            event.replyEmbeds(embed).queue();
-        } else if (paymentId != null) {
-            PaymentService paymentService = DatabaseManager.getPaymentService();
-            Payment payment = paymentService.getDataByPaymentId(paymentId.getAsString());
 
             StringBuilder info = new StringBuilder();
             info.append("""
@@ -109,66 +99,65 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                     > 승인 상태
                     > %s
                     """.formatted(
-                        payment.getPaymentId(),
-                        payment.getProduct().getSummary(),
-                        payment.getMethod().getKRName(),
-                        payment.getUsedCoupon() == null ? "없음" : payment.getUsedCoupon().getCode() + "(" + payment.getUsedCoupon().getDiscount() + ")",
-                        payment.getUsedPoint(),
-                        payment.getFinalPrice(),
-                        "<@" + payment.getRequestedBy() + ">",
-                        DATE_FORMAT.format(payment.getApprovedAt()),
-                        payment.isAccepted() ? "승인됨" : "거절됨"
+                        rawPayment.getPaymentId(),
+                        rawPayment.getProduct().getSummary(),
+                        rawPayment.getMethod().getKRName(),
+                        rawPayment.getUsedCoupon() == null ? "없음" : rawPayment.getUsedCoupon().getCode() + "(" + rawPayment.getUsedCoupon().getDiscount() + ")",
+                        rawPayment.getUsedPoint(),
+                        rawPayment.getFinalPrice(),
+                        "<@" + rawPayment.getRequestedBy() + ">",
+                        DATE_FORMAT.format(rawPayment.getApprovedAt()),
+                        rawPayment.isAccepted() ? "승인됨" : "거절됨"
             ));
 
-            switch (payment.getMethod()) {
+            switch (rawPayment.getMethod()) {
                 case CREDIT_CARD -> {
-                    CreditCardPayment payment1 = (CreditCardPayment) payment;
+                    CreditCardPayment payment = (CreditCardPayment) rawPayment;
 
                     info.append("""
                             
                             
-                            **‼️ 민감한 고객 정보가 복호화 되어있습니다. ‼️**
+                            **‼️ 민감한 정보가 복호화 되어있습니다. ‼️**
                             **‼️ 정보 조회시 각별히 주의하시기 바랍니다. ‼️**
                             
                             > 결제 Key
                             > %s
                             
-                            > 카드번호 (Masked-Raw)
-                            > %s ||%s||
+                            > 카드번호
+                            > %s
                             
-                            > 카드 유효기간 월-일
-                            > ||%s-%s||
+                            > 카드 유효기간
+                            > %s/%s
                             
                             > 카드 할부기간
-                            > ||%d개월||
+                            > %d개월
                             
                             > 고객 생년월일
-                            > ||%s||
+                            > %s
                             
                             > 고객 이메일
-                            > ||%s||
+                            > %s
                             
                             > 고객 이름
-                            > ||%s||
+                            > %s
                             
                             > 영수증
-                            > ||%s||
+                            > [바로가기](%s)
                             """.formatted(
-                            payment1.getPaymentKey(),
-                            payment1.getCardNumber(),
-                            payment1.getMaskedCardNumber(),
-                            payment1.getCardExpirationMonth(),
-                            payment1.getCardExpirationYear(),
-                            payment1.getCardInstallmentPlan(),
-                            payment1.getCustomerBirthdate(),
-                            payment1.getCustomerEmail(),
-                            payment1.getCustomerName(),
-                            payment1.getReceiptUrl()
+                            payment.getPaymentKey(),
+                            payment.getMaskedCardNumber(),
+                            payment.getCardExpirationMonth(),
+                            payment.getCardExpirationYear(),
+                            payment.getCardInstallmentPlan(),
+                            payment.getCustomerBirthdate(),
+                            payment.getCustomerEmail(),
+                            payment.getCustomerName(),
+                            payment.getReceiptUrl()
                     ));
                 }
 
                 case BANK_TRANSFER -> {
-                    BankTransferPayment payment1 = (BankTransferPayment) payment;
+                    BankTransferPayment payment = (BankTransferPayment) rawPayment;
 
                     info.append("""
                             
@@ -176,12 +165,12 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                             > 입금자명
                             > %s
                             """.formatted(
-                            payment1.getDepositor()
+                            payment.getDepositor()
                     ));
                 }
 
                 case CULTURELAND -> {
-                    CulturelandPayment payment1 = (CulturelandPayment) payment;
+                    CulturelandPayment payment = (CulturelandPayment) rawPayment;
 
                     info.append("""
                             
@@ -189,26 +178,44 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                             > 문화상품권 핀번호
                             > %s
                             """.formatted(
-                            payment1.getPinNumber()
+                            payment.getPinNumber()
                     ));
                 }
             }
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("<a:loading:1168266572847128709> 목록 | 거래내역 <a:loading:1168266572847128709>")
-                    .setDescription("```\n" + info + "\n```")
+                    .setTitle("<a:loading:1168266572847128709> 정보 | 거래내역 <a:loading:1168266572847128709>")
+                    .setDescription(info)
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
-            event.replyEmbeds(embed).queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
         } else {
+            User target;
+            if (userMapping == null) {
+                target = event.getUser();
+            } else if (!PermissionUtil.hasPermission(event.getMember(), Permission.ADMINISTRATOR)) {
+                PermissionUtil.sendPermissionError(event);
+                return;
+            } else {
+                target = userMapping.getAsUser();
+            }
+
+            PaymentService paymentService = DatabaseManager.getPaymentService();
+            List<Payment> payments = paymentService.getDataByUserId(target.getIdLong());
+
+            StringBuilder list = new StringBuilder();
+            for (Payment payment : payments) {
+                list
+                        .append(payment.getPaymentId())
+                        .append("\n");
+            }
+
             MessageEmbed embed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
-                    .setDescription("> **조회 조건을 설정해 주세요.**")
+                    .setColor(EMBED_COLOR)
+                    .setTitle("<a:loading:1168266572847128709> 목록 | 거래내역 <a:loading:1168266572847128709>")
+                    .setDescription(payments.isEmpty() ? "없음\n" : list)
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).queue();
         }
