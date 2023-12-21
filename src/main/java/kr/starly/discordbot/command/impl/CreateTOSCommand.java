@@ -34,19 +34,19 @@ public class CreateTOSCommand implements DiscordCommand {
 
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<:tos:1168335473152892948> 이용약관 | 스탈리 <:ticket:1168335473152892948>")
+                .setTitle("<:tos:1168335473152892948> 약관 | 스탈리 <:ticket:1168335473152892948>")
                 .setDescription("""
-                        > **스탈리 스토어에 오신걸 환영합니다.**
-                        > **아래의 다운로드 버튼을 클릭하여 .pdf 파일 다운로드 후 필독하시기 바랍니다.**
+                        > **스탈리 스토어에 오신 것을 환영합니다.**
+                        > **아래의 버튼을 클릭하여 약관의 세부 내용을 확인하실 수 있습니다.**
                         
                         ─────────────────────────────────────────────────
                         """
                 )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("이용약관을 준수하지 않을 경우 처벌대상이 될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setFooter("이용약관을 준수하지 않을 경우 처벌 대상이 될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
 
-        Button tosButton = Button.link("https://file.starly.kr/tos.pdf", "다운로드").withEmoji(Emoji.fromFormatted("<:download:1168339542588268624>"));
+        Button tosButton = Button.link("https://file.starly.kr/terms/", "바로가기").withEmoji(Emoji.fromFormatted("<:download:1168339542588268624>"));
 
         event.getChannel().sendMessageEmbeds(embed).addActionRow(tosButton).queue();
     }
