@@ -46,7 +46,7 @@ public class CreateTOSCommand implements DiscordCommand {
                 .setFooter("이용약관을 준수하지 않을 경우 처벌 대상이 될 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
 
-        Button tosButton = Button.link("https://file.starly.kr/terms/", "바로가기").withEmoji(Emoji.fromFormatted("<:download:1168339542588268624>"));
+        Button tosButton = Button.link("https://file.starly.kr/policy/", "바로가기").withEmoji(Emoji.fromFormatted("<:download:1168339542588268624>"));
 
         event.getChannel().sendMessageEmbeds(embed).addActionRow(tosButton).queue();
     }
