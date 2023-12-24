@@ -13,6 +13,7 @@ import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -40,9 +41,10 @@ public class UserInfoCommand implements DiscordSlashCommand {
             return;
         }
 
-        Guild guild = DiscordBotManager.getInstance().getGuild();
-
         net.dv8tion.jda.api.entities.User discordUser = event.getOption("유저").getAsUser();
+
+        Guild guild = DiscordBotManager.getInstance().getGuild();
+        Member member = guild.getMember(discordUser);
 
         UserService userService = DatabaseManager.getUserService();
         User user = userService.getDataByDiscordId(discordUser.getIdLong());
@@ -67,7 +69,7 @@ public class UserInfoCommand implements DiscordSlashCommand {
                         """.formatted(
                         discordUser.getAsMention(),
                         guild.retrieveBan(discordUser).mapToResult().complete().isSuccess() ? "O" : "X",
-                        TimeFormat.DATE_TIME_SHORT.now().toString(),
+                        member != null ? TimeFormat.DATE_TIME_SHORT.atInstant(member.getTimeJoined().toInstant()).toString() : "X",
                         TimeFormat.DATE_TIME_SHORT.atInstant(user.verifiedAt().toInstant()).toString(),
                         warnService.getTotalWarn(discordUser.getIdLong()),
                         user.ip(),

@@ -68,7 +68,7 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
 
         MessageEmbed embed1 = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<a:loading:1168266572847128709> 대기 | 카드 결제 <a:loading:1168266572847128709>")
+                .setTitle("<a:loading:1168266572847128709> 대기 | 결제창 <a:loading:1168266572847128709>")
                 .setDescription("""
                         > **아래 `결제하기`버튼을 눌러 결제를 완료해 주세요.**
                         
@@ -86,7 +86,7 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
 
         MessageEmbed embed2 = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("<a:success:1168266537262657626> 성공 | 카드 결제 <a:success:1168266537262657626>")
+                .setTitle("<a:success:1168266537262657626> 성공 | 결제창 <a:success:1168266537262657626>")
                 .setDescription("> **결제창을 생성하였습니다.**")
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
