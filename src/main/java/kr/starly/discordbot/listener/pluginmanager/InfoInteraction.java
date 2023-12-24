@@ -120,9 +120,7 @@ public class InfoInteraction extends ListenerAdapter {
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                     .build();
-            event.replyEmbeds(embed)
-                    .setEphemeral(true)
-                    .queue();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
         }
     }
 }
