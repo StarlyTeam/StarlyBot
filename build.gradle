@@ -18,12 +18,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     api 'net.dv8tion:JDA:5.0.0-beta.15'
-
+    api 'org.mongodb:mongodb-driver-sync:4.10.2'
+    api 'ch.qos.logback:logback-classic:1.4.11'
+    api 'org.yaml:snakeyaml:2.2'
     api 'org.reflections:reflections:0.10.2'
     api 'com.google.code.gson:gson:2.10.1'
-    api 'ch.qos.logback:logback-classic:1.4.11'
-    api 'org.mongodb:mongodb-driver-sync:4.10.2'
-    api 'org.yaml:snakeyaml:2.2'
+    api 'net.lingala.zip4j:zip4j:2.11.5'
 }
 
 tasks.withType(JavaCompile).configureEach {
