@@ -58,9 +58,10 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                                 .setColor(EMBED_COLOR_ERROR)
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
                                 .setDescription("""
-                                        > **%s티켓을 생성하는 도중에 오류가 발생하였습니다.**
-                                                                    
+                                        > **티켓을 생성하는 도중에 오류가 발생하였습니다.**
+                                        
                                         ─────────────────────────────────────────────────
+                                        > **티켓: %s**
                                         """
                                 )
                                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")

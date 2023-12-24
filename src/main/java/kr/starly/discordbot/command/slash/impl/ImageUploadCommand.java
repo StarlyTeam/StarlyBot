@@ -64,7 +64,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 if (!image.isImage()) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 이미지 <a:loading:1168266572847128709>")
                             .setDescription("> **이미지 파일만 업로드할 수 있습니다. (jpg, jpeg, webp, png, gif)**")
                             .build();
                     event.replyEmbeds(embed).queue();
@@ -153,7 +153,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                     return;
                 }
 
-                StringBuilder sb = new StringBuilder();
+                StringBuilder description = new StringBuilder();
                 images.forEach(image -> {
                     JsonObject imageData = image.getAsJsonObject();
                     String filename = imageData.get("filename").getAsString();
@@ -161,7 +161,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
 
                     String imageLink = "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/" + id + "/public";
 
-                    sb.append("> **[바로가기](" + imageLink + ")")
+                    description.append("> **[바로가기](" + imageLink + ")")
                       .append(" : (" + filename + ")**")
                       .append("\n");
                 });
@@ -169,7 +169,7 @@ public class ImageUploadCommand implements DiscordSlashCommand {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 목록 | 이미지 <a:loading:1168266572847128709>")
-                        .setDescription(sb)
+                        .setDescription(description)
                         .build();
                 event.replyEmbeds(embed).queue();
             }

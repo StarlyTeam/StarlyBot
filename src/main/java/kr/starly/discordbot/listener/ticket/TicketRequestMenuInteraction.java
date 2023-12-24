@@ -44,6 +44,7 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                     .setDescription("""
                                 > **정말로 티켓을 열겠습니까?**
                                 
+                                ─────────────────────────────────────────────────
                                 """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
@@ -62,7 +63,6 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
                     .setDescription("""
                             > **평가를 남겨 주셔서 감사합니다 🥳**
                             > **앞으로도 좋은 서비스를 제공할 수 있도록 노력하겠습니다!**
-                                                        
                             """
                     )
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")

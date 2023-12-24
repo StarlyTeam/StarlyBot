@@ -32,11 +32,10 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                 if (userService.getDataByDiscordId(event.getMember().getIdLong()) != null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:warn:1168266548541145298> 오류 | 이미 인증된 유저입니다. <a:warn:1168266548541145298>")
+                            .setTitle("<a:warn:1168266548541145298> 오류 | 유저인증 <a:warn:1168266548541145298>")
                             .setDescription("""
                                     > **당신은 이미 인증된 유저예요! \uD83C\uDF89**
                                     > **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**
-                                    
                                     """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
                             .setFooter("이미 인증이 완료된 계정입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")

@@ -82,7 +82,6 @@ public class UpdateInteraction extends ListenerAdapter {
                     .setTitle("<a:loading:1168266572847128709> 수정 | 쿠폰 <a:loading:1168266572847128709>")
                     .setDescription("> **수정할 사용 조건을 선택해 주세요.**")
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .build();
             event.replyEmbeds(embed).addActionRow(add, delete, CANCEL_BUTTON).setEphemeral(true).queue();
         }
@@ -189,7 +188,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **지정일 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -219,7 +217,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **지정시간 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -243,7 +240,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **최대 사용 횟수 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
                             stopSession(userId);
@@ -266,7 +262,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **최대 사용 횟수 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -290,7 +285,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **상품 유형을 찾을 수 없습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -314,7 +308,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **최소 금액 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -338,7 +331,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **최대 금액 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -362,7 +354,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **역할 ID 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -380,7 +371,6 @@ public class UpdateInteraction extends ListenerAdapter {
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                     .setDescription("> **역할 요구 여부 형식이 올바르지 않습니다.**")
                                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                                     .build();
                             event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -401,7 +391,6 @@ public class UpdateInteraction extends ListenerAdapter {
                         .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 <a:success:1168266537262657626>")
                         .setDescription("> **사용 조건을 추가하였습니다.**")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
             }
@@ -434,7 +423,6 @@ public class UpdateInteraction extends ListenerAdapter {
                             .setTitle("<a:loading:1168266572847128709> 미존재 | 쿠폰 <a:loading:1168266572847128709>")
                             .setDescription("> **존재하지 않는 쿠폰입니다.**")
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -481,7 +469,6 @@ public class UpdateInteraction extends ListenerAdapter {
                             .setTitle("<a:loading:1168266572847128709> 미존재 | 쿠폰 <a:loading:1168266572847128709>")
                             .setDescription("> **존재하지 않는 쿠폰입니다.**")
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
                     return;
@@ -492,7 +479,6 @@ public class UpdateInteraction extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 수정 | 쿠폰 <a:loading:1168266572847128709>")
                         .setDescription("> **수정할 사용 조건을 선택해 주세요.**")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.replyEmbeds(embed).addActionRow(createRequirementSelectMenu()).setEphemeral(true).queue();
             }
@@ -616,7 +602,6 @@ public class UpdateInteraction extends ListenerAdapter {
                         .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 <a:success:1168266537262657626>")
                         .setDescription("> **사용 조건을 삭제하였습니다.**")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
             }

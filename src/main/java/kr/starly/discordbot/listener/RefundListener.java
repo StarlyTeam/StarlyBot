@@ -131,8 +131,7 @@ public class RefundListener extends ListenerAdapter {
                 .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
                 .setDescription("""
                         > **환불처리 승인이 완료되었습니다. 🥳**
-                        > **승인 결과: %s**
-                                                    
+                        > **승인 결과: %s**          
                         """.formatted(isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>")
                 )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -183,8 +182,9 @@ public class RefundListener extends ListenerAdapter {
                             .setTitle("<a:loading:1168266572847128709> 오류 | 환불 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **DM으로 메시지를 전송하지 못했습니다.**
-                                    > **%s**
-                                                                        
+                                    
+                                    ─────────────────────────────────────────────────
+                                    > **유저: %s**
                                     """.formatted("<@" + payment.getRequestedBy() + ">")
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")

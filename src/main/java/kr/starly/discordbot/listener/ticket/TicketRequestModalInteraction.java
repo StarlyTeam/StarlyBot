@@ -68,12 +68,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 고객센터 <a:loading:1168266572847128709>")
-                    .setDescription("""
-                            > **내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)**
-                            
-                            ─────────────────────────────────────────────────
-                            """
-                    )
+                    .setDescription("> **내부 오류가 발생하였습니다. (관리자에게 문의해 주세요.)**")
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .setFooter("문의하실 내용이 있으시면 언제든지 연락주시기 바랍니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
                     .build();

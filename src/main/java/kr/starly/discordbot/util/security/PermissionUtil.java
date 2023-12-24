@@ -38,7 +38,7 @@ public class PermissionUtil {
     private static MessageEmbed createEmbed() {
         return new EmbedBuilder()
                 .setColor(Color.decode(configProvider.getString("EMBED_COLOR_ERROR")))
-                .setTitle("<a:loading:1168266572847128709> 오류 | 권한 없음 <a:loading:1168266572847128709>")
+                .setTitle("<a:loading:1168266572847128709> 오류 | 사용권한 <a:loading:1168266572847128709>")
                 .setDescription("> **이 기능을 사용할 권한이 없습니다.**")
                 .build();
     }

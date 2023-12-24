@@ -100,8 +100,9 @@ public class WarnCommand implements DiscordSlashCommand {
                         .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
                         .setDescription("""
                                         > **%s님에게 경고 %d회가 추가되었습니다.**
-                                        > **사유: %s**
                                         
+                                        ─────────────────────────────────────────────────
+                                        > **사유: %s**
                                         """
                                 .formatted(target.getAsMention(), amount, reason)
                         )

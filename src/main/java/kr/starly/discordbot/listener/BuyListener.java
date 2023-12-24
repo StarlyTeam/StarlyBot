@@ -60,7 +60,7 @@ import java.util.*;
 
 
 @BotEvent
-public class BuyListener extends ListenerAdapter {
+public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
     private final Color EMBED_COLOR_SUCCESS = Color.decode(configProvider.getString("EMBED_COLOR_SUCCESS"));
@@ -102,9 +102,10 @@ public class BuyListener extends ListenerAdapter {
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("""
                                 > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                
+                                ─────────────────────────────────────────────────
                                 > **오류 코드: {MAL1}**
-                                                                                                           
-                                      """
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -133,9 +134,10 @@ public class BuyListener extends ListenerAdapter {
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("""
                                 > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                
+                                ─────────────────────────────────────────────────
                                 > **오류 코드: {MAL2}**
-                                                                                                           
-                                      """
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -164,9 +166,10 @@ public class BuyListener extends ListenerAdapter {
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("""
                                 > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                
+                                ─────────────────────────────────────────────────
                                 > **오류 코드: {MAL3}**
-                                                                                                           
-                                      """
+                                """
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -284,7 +287,6 @@ public class BuyListener extends ListenerAdapter {
                         .setDescription("""
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
                                 > **인증을 마치신 후 다시 시도해 주세요.**
-                                                                                                           
                                 """)
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -303,7 +305,6 @@ public class BuyListener extends ListenerAdapter {
                         .setDescription("""
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
                                 > **인증을 마치신 후 다시 시도해 주세요.**
-                                                                                                           
                                 """)
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -342,7 +343,6 @@ public class BuyListener extends ListenerAdapter {
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **해당 플러그인을 이미 구매하셨습니다.**
-                                                                        
                                     """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -393,11 +393,7 @@ public class BuyListener extends ListenerAdapter {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                        .setDescription("""
-                                > **데이터가 변조되었습니다.**
-                                                                                                           
-                                """
-                        )
+                        .setDescription("> **데이터가 변조되었습니다.**")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
@@ -408,11 +404,7 @@ public class BuyListener extends ListenerAdapter {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                        .setDescription("""
-                                > **이미 승인이 완료되었습니다.**
-                                                                                                           
-                                """
-                        )
+                        .setDescription("> **이미 승인이 완료되었습니다.**")
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .build();
@@ -507,8 +499,9 @@ public class BuyListener extends ListenerAdapter {
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
                                 .setDescription("""
                                         > **DM으로 메시지를 전송하지 못했습니다.**
-                                        > **%s**
-                                                                            
+                                        
+                                        ─────────────────────────────────────────────────
+                                        > **유저: %s**
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                 )
                                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -605,8 +598,9 @@ public class BuyListener extends ListenerAdapter {
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
                                 .setDescription("""
                                         > **DM으로 영수증을 전송하지 못했습니다.**
-                                        > **%s**
-                                                                            
+                                        
+                                        ─────────────────────────────────────────────────
+                                        > **유저: %s**
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                 )
                                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -640,10 +634,7 @@ public class BuyListener extends ListenerAdapter {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                        .setDescription("""
-                                > **데이터가 변조되었습니다. (거래를 취소합니다.)**
-                                                                                                           
-                                      """
+                        .setDescription("> **데이터가 변조되었습니다. (거래를 취소합니다.)**"
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -655,10 +646,7 @@ public class BuyListener extends ListenerAdapter {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                        .setDescription("""
-                                > **이미 승인이 완료되었습니다.**
-                                                                                                           
-                                      """
+                        .setDescription("> **이미 승인이 완료되었습니다.**"
                         )
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -675,7 +663,7 @@ public class BuyListener extends ListenerAdapter {
             // 메시지 전송
             MessageEmbed embed1 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:success:1168266537262657626> 실패 | 결제 <a:success:1168266537262657626>")
+                    .setTitle("<a:success:1168266537262657626> 오류 | 결제 <a:success:1168266537262657626>")
                     .setDescription("> **승인 결과: <a:cross:1058939340505497650>**")
                     .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -684,7 +672,7 @@ public class BuyListener extends ListenerAdapter {
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:success:1168266537262657626> 실패 | 결제 <a:success:1168266537262657626>")
+                    .setTitle("<a:success:1168266537262657626> 오류 | 결제 <a:success:1168266537262657626>")
                     .setDescription("""
                             > **승인 결과: <a:cross:1058939340505497650>**
                             > **결제자: %s**
@@ -704,8 +692,9 @@ public class BuyListener extends ListenerAdapter {
                                 .setTitle("<a:loading:1168266572847128709> 오류 | 결제 <a:loading:1168266572847128709>")
                                 .setDescription("""
                                         > **DM으로 메시지를 전송하지 못했습니다.**
-                                        > **%s**
-                                                                            
+                                        
+                                        ─────────────────────────────────────────────────
+                                        > **유저: %s**
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                 )
                                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
@@ -750,12 +739,7 @@ public class BuyListener extends ListenerAdapter {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("""
-                                    > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
-                                                                        
-                                    """
-                            )
+                            .setDescription("> **진행 중인 거래가 존재하지 않습니다.**")
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                             .build();

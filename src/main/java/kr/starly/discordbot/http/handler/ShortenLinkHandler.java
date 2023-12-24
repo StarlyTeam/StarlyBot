@@ -37,14 +37,13 @@ public class ShortenLinkHandler implements HttpHandler {
             ex.printStackTrace();
 
             AuditLogger.error(new EmbedBuilder()
-                    .setTitle("<a:cross:1058939340505497650> 실패 | 단축링크 <a:cross:1058939340505497650>")
+                    .setTitle("<a:cross:1058939340505497650> 오류 | 단축링크 <a:cross:1058939340505497650>")
                     .setDescription("""
                             > **원본링크로 이동하는데 실패했습니다.**
                             
+                            ─────────────────────────────────────────────────
                             > **단축링크: %s**
                             > **아이피: %s**
-                            
-                            ─────────────────────────────────────────────────
                             """
                             .formatted(shortenCode, userIp)
                     )

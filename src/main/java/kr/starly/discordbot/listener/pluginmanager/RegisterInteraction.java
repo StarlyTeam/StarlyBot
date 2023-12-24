@@ -123,7 +123,6 @@ public class RegisterInteraction extends ListenerAdapter {
                                     ─────────────────────────────────────────────────
                                     """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
@@ -134,13 +133,11 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
-                                    > **유니코드 이모지로만 설정하실 수 있습니다.**
-                                    > **다시 시도해 주세요.**
+                                    > **유니코드 이모지로만 설정하실 수 있습니다. (다시 시도해 주세요.)**
                                     
                                     ─────────────────────────────────────────────────
                                     """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
@@ -232,10 +229,10 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **플러그인 파일을 첨부해 주세요.**
+                                    
                                     ─────────────────────────────────────────────────
                                     """)
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.getMessage().replyEmbeds(embed).queue();
                     return;
@@ -260,7 +257,6 @@ public class RegisterInteraction extends ListenerAdapter {
                                     .formatted(String.join("\n", errors))
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
                     event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
@@ -276,7 +272,6 @@ public class RegisterInteraction extends ListenerAdapter {
                                     """
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.getMessage().replyEmbeds(embed).queue();
                 } else {
@@ -296,7 +291,6 @@ public class RegisterInteraction extends ListenerAdapter {
                                     )
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
                     event.getMessage().replyEmbeds(embed).queue();
                 }
@@ -473,7 +467,6 @@ public class RegisterInteraction extends ListenerAdapter {
                                     "─────────────────────────────────────────────────"
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
                     event.getMessage().replyEmbeds(embed)
@@ -493,7 +486,6 @@ public class RegisterInteraction extends ListenerAdapter {
                                     "─────────────────────────────────────────────────"
                             )
                             .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                             .build();
 
                     event.getMessage().replyEmbeds(embed)
@@ -589,6 +581,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setDescription("""
                                     > **영문 이름은 영문자와 숫자, 특수문자(-, _)만 입력할 수 있습니다.**
                                     > **플러그인 등록을 취소합니다. (채널이 5초뒤 청소됩니다.)**
+                                    
                                     ─────────────────────────────────────────────────
                                     """)
                         .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")

@@ -144,7 +144,7 @@ public class CouponCommand implements DiscordSlashCommand {
                 if (couponService.getData(couponCode) != null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 코드 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **이미 존재하는 쿠폰 코드입니다.**
                                                                 
@@ -192,10 +192,10 @@ public class CouponCommand implements DiscordSlashCommand {
                 if (couponService.getData(couponCode) == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 코드 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **존재하지 않는 쿠폰 코드입니다.**
-                                                                
+                                    
                                     ─────────────────────────────────────────────────
                                     """
                             )
@@ -229,10 +229,10 @@ public class CouponCommand implements DiscordSlashCommand {
                 if (couponService.getData(couponCode) == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 코드 오류 | 쿠폰 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **존재하지 않는 쿠폰 코드입니다.**
-                                                                
+                                    
                                     ─────────────────────────────────────────────────
                                     """
                             )

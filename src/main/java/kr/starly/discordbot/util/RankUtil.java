@@ -51,9 +51,8 @@ public class RankUtil {
 
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("<a:success:1168266537262657626> 발급 성공 | 쿠폰 <a:success:1168266537262657626>")
+                            .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 발급 <a:success:1168266537262657626>")
                             .setDescription("""
-                                    
                                     > **쿠폰이 발급되었습니다.**
                                     > **쿠폰 코드: %s**
                                     """
@@ -67,16 +66,15 @@ public class RankUtil {
                             .flatMap(channel -> channel.sendMessageEmbeds(embed))
                             .queue(null, (error) -> {
                                 AuditLogger.warning(new EmbedBuilder()
-                                        .setTitle("<a:loading:1168266572847128709> 발급 실패 | 쿠폰 <a:loading:1168266572847128709>")
+                                        .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                                         .setDescription("""
+                                            > **쿠폰 발급에 실패했습니다.**
+                                            
+                                            ─────────────────────────────────────────────────
                                             > **유저: %s**
-                                                                        
                                             > **쿠폰 코드: %s**
                                             > **사유: %s**
-                                                                        
-                                            ─────────────────────────────────────────────────
-                                    """
-                                                .formatted(user1.getAsTag(), codeStr, error.getMessage())
+                                            """.formatted(user1.getAsTag(), codeStr, error.getMessage())
                                         )
                                 );
                             });
@@ -87,10 +85,7 @@ public class RankUtil {
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 랭크 <a:success:1168266537262657626>")
-                .setDescription("""
-                                    > **랭크가 %s(으)로 상승하였습니다.**
-                                     """
-                        .formatted(rank.getName())
+                .setDescription("> **랭크가 %s(으)로 상승하였습니다.**".formatted(rank.getName())
                 )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
@@ -99,14 +94,14 @@ public class RankUtil {
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))
                 .queue(null, (error) -> {
                     AuditLogger.warning(new EmbedBuilder()
-                            .setTitle("<a:loading:1168266572847128709> 메시지 전송 실패 | 랭크 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 랭크 <a:loading:1168266572847128709>")
                             .setDescription("""
+                                            > **랭크 알림을 전송하지 못했습니다.**
+                                            
+                                            ─────────────────────────────────────────────────
                                             > **유저: %s**
-                                                                        
                                             > **랭크: %s**
                                             > **사유: %s**
-                                                                        
-                                            ─────────────────────────────────────────────────
                                     """
                                     .formatted(user1.getAsTag(), rank.getName(), error.getMessage())
                             )
@@ -143,11 +138,7 @@ public class RankUtil {
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("제목")
-                .setDescription("""
-                        > **%s 랭크 잃었음 ㅋㅋ**
-                         """
-                        .formatted(rank.getName())
-                )
+                .setDescription("> **%s 랭크를 잃었습니다.**".formatted(rank.getName()))
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
                 .build();
@@ -155,14 +146,14 @@ public class RankUtil {
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))
                 .queue(null, (error) -> {
                     AuditLogger.warning(new EmbedBuilder()
-                            .setTitle("<a:loading:1168266572847128709> 메시지 전송 실패 | 랭크 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 랭크 <a:loading:1168266572847128709>")
                             .setDescription("""
+                                    > **랭크 알림을 전송하지 못했습니다.**
+                                    
+                                    ─────────────────────────────────────────────────
                                     > **유저: %s**
-                                                                
                                     > **랭크: %s**
                                     > **사유: %s**
-                                                                
-                                    ─────────────────────────────────────────────────
                                     """
                                     .formatted(user1.getAsTag(), rank.getName(), error.getMessage())
                             )

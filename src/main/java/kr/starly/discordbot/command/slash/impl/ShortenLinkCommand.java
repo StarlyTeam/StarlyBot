@@ -69,7 +69,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 if (shortenLinkService.getDataByShortenUrl(shortenUrl) != null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 오류 | 존재하는 링크 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 단축링크 <a:loading:1168266572847128709>")
                             .setDescription("> **해당 단축링크는 이미 존재합니다.**")
                             .build();
                     event.replyEmbeds(embed).queue();
@@ -79,7 +79,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 shortenLinkService.saveData(originUrl, shortenUrl);
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1168266537262657626> 성공 | 단축링크 생성 <a:success:1168266537262657626>")
+                        .setTitle("<a:success:1168266537262657626> 성공 | 단축링크 <a:success:1168266537262657626>")
                         .setDescription("> **단축링크를 생성하였습니다.**\n" +
                                 "> **`" + originUrl + "` ↔ `" + shortenUrl + "`**"
                         )
@@ -94,7 +94,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 if (originUrl == null && shortenUrl == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 단축링크 <a:loading:1168266572847128709>")
                             .setDescription("> **원본링크, 단축링크 중 하나 이상은 입력해 주세요.**")
                             .build();
                     event.replyEmbeds(embed).queue();
@@ -109,7 +109,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                 ) == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 오류 | 미존재 <a:loading:1168266572847128709>")
+                            .setTitle("<a:loading:1168266572847128709> 오류 | 단축링크 <a:loading:1168266572847128709>")
                             .setDescription("> **해당 단축링크는 존재하지 않습니다..**")
                             .build();
                     event.replyEmbeds(embed).queue();
@@ -124,7 +124,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
 
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1168266537262657626> 성공 | 단축링크 삭제 <a:success:1168266537262657626>")
+                        .setTitle("<a:success:1168266537262657626> 성공 | 단축링크 <a:success:1168266537262657626>")
                         .setDescription("> **단축링크를 삭제하였습니다.**\n" +
                                 "> **" + originUrl + " ↔ " + shortenUrl + "**"
                         )

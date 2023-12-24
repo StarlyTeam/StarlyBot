@@ -35,8 +35,8 @@ public class CleanUpCommand implements DiscordCommand {
         if (args.length < 2) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
-                    .setDescription("> **청소할 메시지의 개수를 입력해 주세요. 예) ?청소 10**")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 청소 <a:loading:1168266572847128709>")
+                    .setDescription("> **청소할 메시지의 개수를 입력해 주세요.**")
                     .build();
             event.getChannel().sendMessageEmbeds(embed).queue();
             return;
@@ -47,7 +47,7 @@ public class CleanUpCommand implements DiscordCommand {
             if (count < 1 || count > 99) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
+                        .setTitle("<a:loading:1168266572847128709> 오류 | 청소 <a:loading:1168266572847128709>")
                         .setDescription("**메시지는 1개에서 99개까지만 삭제할 수 있습니다.**")
                         .build();
                 event.getChannel().sendMessageEmbeds(embed).queue();
@@ -57,8 +57,8 @@ public class CleanUpCommand implements DiscordCommand {
         } catch (NumberFormatException ignored) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:loading:1168266572847128709> 오류 | 잘못된 입력 <a:loading:1168266572847128709>")
-                    .setDescription("> **유효한 숫자를 입력해 주세요. 예) ?청소 10**")
+                    .setTitle("<a:loading:1168266572847128709> 오류 | 청소 <a:loading:1168266572847128709>")
+                    .setDescription("> **유효한 숫자를 입력해 주세요.**")
                     .build();
             event.getChannel().sendMessageEmbeds(embed).queue();
         }
@@ -80,7 +80,6 @@ public class CleanUpCommand implements DiscordCommand {
                         """
                 )
                 .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
                 .build();
         channel.sendMessageEmbeds(embed).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
     }

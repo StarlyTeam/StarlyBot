@@ -76,14 +76,13 @@ public class AuthHandler implements HttpHandler {
             sendResponse(exchange, 403, "이미 해당 IP 주소에서 인증된 다른 유저가 있습니다.");
 
             AuditLogger.warning(new EmbedBuilder()
-                    .setTitle("<a:cross:1058939340505497650> 실패 | 유저인증 <a:cross:1058939340505497650>")
+                    .setTitle("<a:cross:1058939340505497650> 오류 | 유저인증 <a:cross:1058939340505497650>")
                     .setDescription("""
                             > **이미 해당 IP 주소에서 인증된 다른 유저가 있습니다.**
                             
+                            ─────────────────────────────────────────────────
                             > **유저: %s**
                             > **아이피: %s**
-                            
-                            ─────────────────────────────────────────────────
                             """
                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                     )
@@ -92,35 +91,18 @@ public class AuthHandler implements HttpHandler {
         }
 
         BlacklistService blacklistService = DatabaseManager.getBlacklistService();
-        if (blacklistService.getDataByUserId(userId) != null) {
+        if (blacklistService.getDataByUserId(userId) != null
+            || blacklistService.getDataByIpAddress(userIp) != null) {
             sendResponse(exchange, 403, "당신은 블랙리스트에 등록되어 있습니다.");
 
             AuditLogger.warning(new EmbedBuilder()
-                    .setTitle("<a:cross:1058939340505497650> 실패 | 유저인증 <a:cross:1058939340505497650>")
+                    .setTitle("<a:cross:1058939340505497650> 오류 | 유저인증 <a:cross:1058939340505497650>")
                     .setDescription("""
                             > **블랙리스트에 등록된 유저가 인증을 시도했습니다.**
                             
+                            ─────────────────────────────────────────────────
                             > **유저: %s**
                             > **아이피: %s**
-                            
-                            ─────────────────────────────────────────────────
-                            """
-                            .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
-                    )
-            );
-            return;
-        } else if (blacklistService.getDataByIpAddress(userIp) != null) {
-            sendResponse(exchange, 403, "당신의 IP 주소는 블랙리스트에 등록되어 있습니다.");
-
-            AuditLogger.warning(new EmbedBuilder()
-                    .setTitle("<a:cross:1058939340505497650> 실패 | 유저인증 <a:cross:1058939340505497650>")
-                    .setDescription("""
-                            > **블랙리스트에 등록된 유저가 인증을 시도했습니다.**
-                            
-                            > **유저: %s**
-                            > **아이피: %s**
-                            
-                            ─────────────────────────────────────────────────
                             """
                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
                     )
@@ -152,9 +134,9 @@ public class AuthHandler implements HttpHandler {
                                     .setTitle("<a:success:1168266537262657626> 경고 | 유저 인증 <a:success:1168266537262657626>")
                                     .setDescription("""
                                             > **DM을 전송하지 못했습니다.**
-                                            > **유저: %s**
                                             
                                             ─────────────────────────────────────────────────
+                                            > **유저: %s**
                                             """
                                             .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")")
                                     )
@@ -169,17 +151,16 @@ public class AuthHandler implements HttpHandler {
             Rank rank1 = rankRepository.getRank(1);
 
             userService.saveData(new User(userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1))));
-            AuditLogger.info(
-                    new EmbedBuilder()
-                            .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
-                            .setDescription("""
-                                    > **유저: %s**
-                                    > **아이피: %s**
-                                                                            
-                                    ─────────────────────────────────────────────────
-                                    """
-                                    .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
-                            )
+            AuditLogger.info(new EmbedBuilder()
+                    .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
+                    .setDescription("""
+                            > **유저 인증에 성공했습니다.**
+                            
+                            > **유저: %s**
+                            > **아이피: %s**
+                            """
+                            .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)
+                    )
             );
         } else {
             AuditLogger.warning(
