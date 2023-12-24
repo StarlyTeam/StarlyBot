@@ -106,7 +106,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                         rawPayment.getUsedPoint(),
                         rawPayment.getFinalPrice(),
                         "<@" + rawPayment.getRequestedBy() + ">",
-                        DATE_FORMAT.format(rawPayment.getApprovedAt()),
+                        rawPayment.getApprovedAt() == null ? "-" : DATE_FORMAT.format(rawPayment.getApprovedAt()),
                         rawPayment.isAccepted() ? "승인됨" : "거절됨"
             ));
 
