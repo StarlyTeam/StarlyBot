@@ -80,10 +80,6 @@ public class Payment {
             price = usedCoupon.getDiscount().computeFinalPrice(price);
         }
 
-        if (method == PaymentMethod.CULTURELAND) {
-            price = (int) Math.ceil(price * 1.12);
-        }
-
         return price - usedPoint;
     }
 
