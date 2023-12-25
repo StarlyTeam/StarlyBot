@@ -96,7 +96,6 @@ public class DownloadListener extends ListenerAdapter {
                     token,
                     pluginFile,
                     event.getUser().getIdLong(),
-                    null,
                     false,
                     null,
                     false,
