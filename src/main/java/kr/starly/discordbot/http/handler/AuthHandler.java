@@ -156,6 +156,7 @@ public class AuthHandler implements HttpHandler {
                     .setDescription("""
                             > **유저 인증에 성공했습니다.**
                             
+                            ─────────────────────────────────────────────────
                             > **유저: %s**
                             > **아이피: %s**
                             """
