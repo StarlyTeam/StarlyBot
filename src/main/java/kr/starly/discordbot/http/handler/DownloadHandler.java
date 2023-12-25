@@ -14,7 +14,7 @@ import net.lingala.zip4j.ZipFile;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Base64;
 import java.util.Date;
 
 public class DownloadHandler implements HttpHandler {
@@ -34,20 +34,62 @@ public class DownloadHandler implements HttpHandler {
             return;
         }
 
+        download.updateIsUsed(true);
+        download.updateUsedAt(new Date());
+        downloadService.saveData(download);
+
         PluginFile pluginFile = download.getPluginFile();
         Plugin plugin = pluginFile.getPlugin();
 
-        new File("download/" + token).mkdirs();
+        File tempFolder = new File("download/" + token);
+        tempFolder.mkdirs();
 
-        File sourceFile = Files.copy(pluginFile.getFile().toPath(), Path.of("download/" + token + "/" + plugin.getENName() + ".jar")).toFile();
-        try (ZipFile zipFile = new ZipFile(sourceFile)) {
-            zipFile.addFile(new File("download/[!!필독!!] 이용안내.txt"));
+        File metaFolder = new File(tempFolder, "META-INF");
+        metaFolder.mkdirs();
+
+        File metadataFile = new File(metaFolder, "metadata");
+        metadataFile.createNewFile();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(metadataFile))) {
+            String encodedString = Base64.getEncoder().encodeToString("""
+                    UserId: %s
+                    
+                    DownloadToken: %s
+                    DownloadIP: %s
+                    DownloadTime: %s
+                    """.formatted(
+                    download.getUserId(),
+                    download.getToken(),
+                    exchange.getRequestHeaders().get("x-real-ip").get(0),
+                    download.getUsedAt()
+            ).getBytes(StandardCharsets.UTF_8));
+
+            bw.write(encodedString);
         }
 
-        File outputFile = new File("download/" + token + "/output.zip");
+        File sourceFile = Files.copy(pluginFile.getFile().toPath(), new File(tempFolder, plugin.getENName() + ".jar").toPath()).toFile();
+        try (ZipFile zipFile = new ZipFile(sourceFile)) {
+            zipFile.addFolder(metaFolder);
+            zipFile.addFile(new File("download/이용안내.txt"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            sendResponse(exchange, 500, ex.getMessage());
+
+            download.updateIsSuccess(false);
+            downloadService.saveData(download);
+            return;
+        }
+
+        File outputFile = new File(tempFolder, "output.zip");
         try (ZipFile zipFile = new ZipFile(outputFile)) {
             zipFile.addFile(sourceFile);
-            zipFile.addFile(new File("download/[!!필독!!] 이용안내.txt"));
+            zipFile.addFile(new File("download/이용안내.txt"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            sendResponse(exchange, 500, ex.getMessage());
+
+            download.updateIsSuccess(false);
+            downloadService.saveData(download);
+            return;
         }
 
         try {
@@ -68,17 +110,14 @@ public class DownloadHandler implements HttpHandler {
             sendResponse(exchange, 500, ex.getMessage());
 
             download.updateIsSuccess(false);
+            downloadService.saveData(download);
+            return;
         }
-
-        download.updateIsUsed(true);
-        download.updateUsedAt(new Date());
-        downloadService.saveData(download);
 
         AuditLogger.info(new EmbedBuilder()
                 .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 다운로드 <a:success:1168266537262657626>")
                 .setDescription("""
                                 > **%s님이 %s을(를) 다운로드하였습니다.**
-                                > **성공 여부: %s**
 
                                 ─────────────────────────────────────────────────
                                 > **플러그인: %s**
@@ -90,7 +129,6 @@ public class DownloadHandler implements HttpHandler {
                                 """.formatted(
                                 "<@" + download.getUserId() + ">",
                                 plugin.getENName() + "(" + plugin.getKRName() + ")",
-                                download.isSuccess() ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
                                 plugin.getENName() + "(" + plugin.getKRName() + ")",
                                 pluginFile.getMcVersion(),
                                 pluginFile.getVersion(),
@@ -107,7 +145,7 @@ public class DownloadHandler implements HttpHandler {
         exchange.sendResponseHeaders(rCode, rBody.getBytes(StandardCharsets.UTF_8).length);
 
         try (OutputStream os = exchange.getResponseBody()) {
-            os.write(rBody.getBytes());
+            os.write(rBody.getBytes(StandardCharsets.UTF_8));
         }
 
         exchange.close();
