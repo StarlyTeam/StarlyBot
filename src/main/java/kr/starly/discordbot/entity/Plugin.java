@@ -136,6 +136,7 @@ public class Plugin {
         document.put("threadId", threadId);
         document.put("version", version);
         document.put("price", price);
+
         return document;
     }
 

@@ -25,11 +25,9 @@ public class CouponPerk extends RankPerk {
 
     public Document serialize() {
         Document document = super.serialize();
-        document.put(
-                "coupons", coupons.stream()
+        document.put("coupons", coupons.stream()
                         .map(Coupon::getCode)
-                        .toList()
-        );
+                        .toList());
         document.put("oneTime", oneTime);
 
         return document;

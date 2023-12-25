@@ -25,6 +25,7 @@ public class Verify {
         document.put("userIp", userIp);
         document.put("isDMSent", isDMSent);
         document.put("verifiedAt", verifiedAt);
+
         return document;
     }
 

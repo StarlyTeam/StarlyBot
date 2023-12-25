@@ -55,7 +55,6 @@ public class Coupon {
         document.put("discount", discount.serialize());
         document.put("createdAt", getCreatedAt());
         document.put("createdBy", getCreatedBy());
-
         document.put("requirements", requirements.stream()
                 .map(CouponRequirement::serialize)
                 .toList()

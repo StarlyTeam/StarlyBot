@@ -14,13 +14,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CouponRedeem {
 
-    @NotNull private final UUID redeemId;
+    @NotNull
+    private final UUID redeemId;
 
-    @Nullable private final Coupon coupon;
-    @NotNull private final CouponState couponState;
+    @Nullable
+    private final Coupon coupon;
+    @NotNull
+    private final CouponState couponState;
 
-    @NotNull private final long requestedBy;
-    @NotNull private final Date requestedAt;
+    private final long requestedBy;
+    @NotNull
+    private final Date requestedAt;
     
     public Document serialize() {
         Document document = new Document();

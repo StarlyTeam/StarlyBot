@@ -61,6 +61,7 @@ public class Download {
         document.put("createdAt", createdAt);
         document.put("usedAt", usedAt);
         document.put("expireAt", expireAt);
+
         return document;
     }
 

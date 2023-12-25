@@ -39,6 +39,7 @@ public class PluginFile {
             document.put("plugin", plugin.serialize());
             document.put("mcVersion", mcVersion.toString());
             document.put("version", version);
+
             return document;
         }
 
