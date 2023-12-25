@@ -61,16 +61,15 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
                     .append("없음")
                     .append("\n");
         } else {
-            list.append("| 유저 | 일시 | IP | 플러그인 | 버전1 | 버전2 |");
+            list.append("| 유저 | 일시 | 플러그인 | 버전1 | 버전2 |");
 
             for (Download download : downloads) {
                 PluginFile pluginFile = download.getPluginFile();
 
                 list
-                        .append("| %s | %s | %s | %s | %s | %s |".formatted(
+                        .append("| %s | %s | %s | %s | %s |".formatted(
                                 download.getUserId(),
                                 DATE_FORMAT.format(download.getUsedAt()),
-                                download.getUserIp(),
                                 pluginFile.getPlugin().getENName(),
                                 pluginFile.getVersion(),
                                 pluginFile.getMcVersion()
