@@ -53,8 +53,8 @@ public class CreateServerRuleCommand implements DiscordCommand {
                         > **상기 규칙은 기본적인 것들로, 추가적인 상황은 운영진의 재량으로 처리될 수 있습니다. 규칙에 대해 의견이 있으시면 언제든지 <#1039505496496930866>를 통해 문의해 주세요.**
                         """
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("서버 규칙을 준수하지 않을 경우, 규정에 따른 조치가 취해질 수 있음을 알려드립니다", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("서버 규칙을 준수하지 않을 경우, 규정에 따른 조치가 취해질 수 있음을 알려드립니다", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
 
         event.getChannel().sendMessageEmbeds(embed).queue();

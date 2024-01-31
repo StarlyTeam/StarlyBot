@@ -48,8 +48,8 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 수동인증 <a:loading:1168266572847128709>")
                     .setDescription("> **해당 유저는 서버에 존재하지 않습니다.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -61,8 +61,8 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 수동인증 <a:loading:1168266572847128709>")
                     .setDescription("> **해당 유저는 이미 인증된 유저입니다.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -86,8 +86,8 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
                 .setColor(EMBED_COLOR_ERROR)
                 .setTitle("<a:success:1168266537262657626> 성공 | 수동인증 <a:success:1168266537262657626>")
                 .setDescription("> **해당 유저의 인증이 완료되었습니다.**")
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
         event.replyEmbeds(embed).queue();
     }

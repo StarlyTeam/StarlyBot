@@ -40,8 +40,8 @@ public class VerifyModalInteraction extends ListenerAdapter {
                             > **🕒 주의: 30분 후에 링크가 만료됩니다. 빨리 인증해 주세요!**
                             """.formatted(authLink)
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                    .setFooter("참고: DM을 허용해야 인증 성공 메시지를 받을 수 있습니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
+                    .setFooter("참고: DM을 허용해야 인증 성공 메시지를 받을 수 있습니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
         } else {
@@ -52,8 +52,8 @@ public class VerifyModalInteraction extends ListenerAdapter {
                             > **약관에 동의하지 않으셨습니다.**
                             > **서비스 이용을 원하시면 약관에 동의해 주세요.**
                             """)
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                    .setFooter("문제가 있으시면 관리자에게 연락해 주세요.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
+                    .setFooter("문제가 있으시면 관리자에게 연락해 주세요.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
         }

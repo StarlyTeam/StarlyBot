@@ -59,8 +59,8 @@ public class RefundCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
                     .setDescription("> **해당하는 거래를 찾을 수 없습니다.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -71,8 +71,8 @@ public class RefundCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
                     .setDescription("> **이미 처리가 완료된 거래건입니다.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -90,8 +90,8 @@ public class RefundCommand implements DiscordSlashCommand {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
                         .setDescription("> **환불처리 중 오류가 발생하였습니다.*")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -106,8 +106,8 @@ public class RefundCommand implements DiscordSlashCommand {
                                         > **오류: %s**
                                         """.formatted(payment.getPaymentId().toString(), ex.getMessage())
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 );
                 return;
             }
@@ -141,8 +141,8 @@ public class RefundCommand implements DiscordSlashCommand {
                     .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
                     .setDescription("> **환불 처리가 완료되었습니다.**"
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -158,8 +158,8 @@ public class RefundCommand implements DiscordSlashCommand {
                                                                 
                             """
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed)
                     .addActionRow(button)

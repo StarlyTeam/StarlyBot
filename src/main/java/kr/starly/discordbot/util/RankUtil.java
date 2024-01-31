@@ -58,8 +58,8 @@ public class RankUtil {
                                     """
                                     .formatted(codeStr)
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
 
                     user1.openPrivateChannel()
@@ -87,8 +87,8 @@ public class RankUtil {
                 .setTitle("<a:success:1168266537262657626> 성공 | 랭크 <a:success:1168266537262657626>")
                 .setDescription("> **랭크가 %s(으)로 상승하였습니다.**".formatted(rank.getName())
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                 .build();
         user1.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))
@@ -139,8 +139,8 @@ public class RankUtil {
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("제목")
                 .setDescription("> **%s 랭크를 잃었습니다.**".formatted(rank.getName()))
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                 .build();
         user1.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))

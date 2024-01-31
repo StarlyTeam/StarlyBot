@@ -79,8 +79,8 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
                         """
                         .formatted(orderName, price)
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("결제시 위 내용에 동의한 것으로 간주됩니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("결제시 위 내용에 동의한 것으로 간주됩니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
         event.getChannel().sendMessageEmbeds(embed1).addActionRow(button).queue();
 
@@ -88,7 +88,7 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 결제창 <a:success:1168266537262657626>")
                 .setDescription("> **결제창을 생성하였습니다.**")
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
         event.replyEmbeds(embed2).setEphemeral(true).queue();
     }

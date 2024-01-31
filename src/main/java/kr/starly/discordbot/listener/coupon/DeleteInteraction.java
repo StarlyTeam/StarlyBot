@@ -52,7 +52,7 @@ public class DeleteInteraction extends ListenerAdapter {
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 <a:success:1168266537262657626>")
                     .setDescription("> **쿠폰을 삭제하였습니다.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
 

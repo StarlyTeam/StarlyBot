@@ -41,20 +41,20 @@ public class CreateBRCommand implements DiscordCommand {
                                                 
                         ─────────────────────────────────────────────────
                         > <a:loading:1168266572847128709> **<< 사업자 정보 >>** <a:loading:1168266572847128709>
-                        > **`❇️` | 등록 번호: 210-36-72319**
-                        > **`📒` | 대표자명: 양대영**
-                        > **`♻️` | 등록 주소지: 경상남도 통영시 광도면 신죽xx길**
-                        > **`📩` | 이메일: yangdaeyeong0808@gmail.com**
+                        > **`❇️` | 등록 번호: 행정 처리중**
+                        > **`📒` | 대표자명: 호예준**
+                        > **`♻️` | 등록 주소지: 경기도 남양주시 다산동 4002-1**
+                        > **`📩` | 이메일: hyjcompany30@naver.com**
                         
                         > **추가 문의 사항이 있으시면 언제든지 연락 주시기 바랍니다.**
                         > **고객님의 신뢰를 최우선으로 생각하는 스탈리가 되겠습니다.**
                         """
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("정식 사업자 등록을 완료한 스탈리에서 안전하고 신뢰할 수 있는 서비스를 경험하세요.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("정식 사업자 등록을 완료한 스탈리에서 안전하고 신뢰할 수 있는 서비스를 경험하세요.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
 
-        Button tosButton = Button.link("https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2103672319", "사업자등록증 보기").withEmoji(Emoji.fromFormatted("<:tos:1168335473152892948>"));
+        Button tosButton = Button.link("https://www.ftc.go.kr/bizCommPop.do?wrkr_no=0000000000", "사업자등록 확인").withEmoji(Emoji.fromFormatted("<:tos:1168335473152892948>"));
 
         event.getChannel().sendMessageEmbeds(embed).addActionRow(tosButton).queue();
     }

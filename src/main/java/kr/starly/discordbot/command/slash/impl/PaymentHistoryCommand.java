@@ -49,7 +49,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
                     .setDescription("> **조회 조건은 하나만 선택해 주세요.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
         } if (paymentIdMapping != null) {
@@ -60,7 +60,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
                         .setDescription("> **거래 ID를 다시 확인해 주세요.**")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).queue();
                 return;
@@ -187,7 +187,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 정보 | 거래내역 <a:loading:1168266572847128709>")
                     .setDescription(info)
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
         } else {
@@ -215,7 +215,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 목록 | 거래내역 <a:loading:1168266572847128709>")
                     .setDescription(payments.isEmpty() ? "없음\n" : list)
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
         }

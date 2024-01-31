@@ -59,7 +59,7 @@ public class DownloadHandler implements HttpHandler {
                     """.formatted(
                     download.getUserId(),
                     download.getToken(),
-                    exchange.getRequestHeaders().get("x-real-ip").get(0),
+                    exchange.getRequestHeaders().get("x-forwarded-for").get(0),
                     download.getUsedAt()
             ).getBytes(StandardCharsets.UTF_8));
 
@@ -133,7 +133,7 @@ public class DownloadHandler implements HttpHandler {
                                 pluginFile.getMcVersion(),
                                 pluginFile.getVersion(),
                                 "<@" + download.getUserId() + ">",
-                                exchange.getRequestHeaders().get("x-real-ip").get(0),
+                                exchange.getRequestHeaders().get("x-forwarded-for").get(0),
                                 download.getToken()
                         )
                 )

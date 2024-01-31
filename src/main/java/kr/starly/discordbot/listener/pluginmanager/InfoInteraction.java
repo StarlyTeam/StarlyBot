@@ -81,8 +81,8 @@ public class InfoInteraction extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                         .setDescription("> **존재하지 않는 플러그인입니다.**"
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -114,8 +114,8 @@ public class InfoInteraction extends ListenerAdapter {
                             ─────────────────────────────────────────────────"""
                             .formatted(info.toString())
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
         }

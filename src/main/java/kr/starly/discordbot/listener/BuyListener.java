@@ -107,8 +107,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 > **오류 코드: {MAL1}**
                                 """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -139,8 +139,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 > **오류 코드: {MAL2}**
                                 """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -171,8 +171,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 > **오류 코드: {MAL3}**
                                 """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -288,8 +288,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
                                 > **인증을 마치신 후 다시 시도해 주세요.**
                                 """)
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -306,8 +306,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
                                 > **인증을 마치신 후 다시 시도해 주세요.**
                                 """)
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -345,8 +345,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                     > **해당 플러그인을 이미 구매하셨습니다.**
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
                     return;
@@ -368,11 +368,12 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
                     .setDescription("""
                             > **쿠폰을 사용하시겠습니까?**
+                            > **최초 구매자는 STARLY1 쿠폰을 사용하실 수 있습니다.**
                                                                 
                             """
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).addActionRow(withCouponBtn, withoutCouponBtn, CANCEL_BUTTON).setEphemeral(true).queue();
         } else if (componentId.startsWith(ID_PREFIX + "accept-")) {
@@ -394,8 +395,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("> **데이터가 변조되었습니다.**")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
@@ -405,8 +406,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("> **이미 승인이 완료되었습니다.**")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
@@ -458,8 +459,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                             event.getChannel().getAsMention()
                                     )
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
             );
 
             // 구매 처리
@@ -472,8 +473,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
                     .setDescription("> **승인 결과: <a:success:1168266537262657626>**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed1).queue();
 
@@ -486,8 +487,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                         
                             """.formatted("<@" + payment.getRequestedBy() + ">")
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
 
             requestedBy
@@ -504,8 +505,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                         > **유저: %s**
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                                 .build();
 
                         event.getChannel().sendMessageEmbeds(embed3).queue();
@@ -514,17 +515,17 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
             MessageEmbed receipt = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             requestedBy
                     .openPrivateChannel().complete()
                     .sendMessage("""
                             ```
-                            주소: 경상남도 통영시 광도면 신죽**길
-                            대표: 양대영
-                            사업자 번호: 210-36-72319
-                            이메일: yangdaeyeong0808@gmail.com
+                            주소: 경기도 남양주시 다산동 4002-1
+                            대표: 호예준
+                            사업자 번호: 행정 처리중
+                            이메일: hyjcompany30@naver.com
                             홈페이지: https://starly.kr/discord
                             ======================================
                                                             
@@ -603,8 +604,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                         > **유저: %s**
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                                 .build();
                         event.getChannel().sendMessageEmbeds(embed4).queue();
                     });
@@ -636,8 +637,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("> **데이터가 변조되었습니다. (거래를 취소합니다.)**"
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
@@ -648,8 +649,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("> **이미 승인이 완료되었습니다.**"
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
@@ -665,8 +666,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:success:1168266537262657626> 오류 | 결제 <a:success:1168266537262657626>")
                     .setDescription("> **승인 결과: <a:cross:1058939340505497650>**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed1).queue();
 
@@ -680,8 +681,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                         
                             """.formatted("<@" + payment.getRequestedBy() + ">", payment.getPaymentId().toString())
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.getJDA().getUserById(payment.getRequestedBy())
                     .openPrivateChannel()
@@ -697,8 +698,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                         > **유저: %s**
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                                 .build();
                         event.getChannel().sendMessageEmbeds(embed3)
                                 .queue();
@@ -728,8 +729,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                     
                                 """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed3).setEphemeral(true).queue();
             }
@@ -740,8 +741,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("> **진행 중인 거래가 존재하지 않습니다.**")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -771,8 +772,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -789,8 +790,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -811,8 +812,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                 
                                       """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed)
                         .addActionRow(createPaymentMethodSelectMenu(
@@ -834,8 +835,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                   
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -850,8 +851,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -881,8 +882,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                   
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -897,8 +898,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -922,8 +923,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                     > **계속하시겠습니까?**                                         
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                 } else if (point < POINT_USE_MINIMUM) {
@@ -947,8 +948,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                       
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn.withLabel("아니오"), CANCEL_BUTTON).setEphemeral(true).queue();
                 }
@@ -974,8 +975,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -990,8 +991,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1013,8 +1014,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
@@ -1032,8 +1033,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, withoutCouponBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
@@ -1055,8 +1056,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                     > **(할인 적용 금액 < 0)**
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, withoutCouponBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                 } else if (finalPrice == 0) {
@@ -1086,8 +1087,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     ticketChannel.sendMessageEmbeds(embed1).setActionRow(approveBtn, rejectBtn).queue();
 
@@ -1100,16 +1101,16 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(coupon.getCode())
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                             .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
                                     "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                            .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
+                            .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed2, embed3).setEphemeral(true).queue();
                 } else {
@@ -1129,8 +1130,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(coupon.getCode())
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                                 .build();
                         event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     } else {
@@ -1145,8 +1146,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(coupon.getCode())
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                                 .build();
                         event.replyEmbeds(embed).addActionRow(withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     }
@@ -1171,8 +1172,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1187,8 +1188,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1212,8 +1213,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
@@ -1231,8 +1232,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(POINT_USE_UNIT)
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
@@ -1248,8 +1249,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(POINT_USE_MINIMUM)
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
@@ -1272,8 +1273,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).addActionRow(retryBtn, withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
                     return;
@@ -1305,8 +1306,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                           """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     ticketChannel.sendMessageEmbeds(embed1)
                             .setActionRow(approveBtn, rejectBtn)
@@ -1321,16 +1322,16 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(amount)
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                             .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
                                     "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                            .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
+                            .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed2, embed3)
                             .setEphemeral(true)
@@ -1350,8 +1351,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                     
                                 """.formatted(amount)
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed)
                         .addActionRow(createPaymentMethodSelectMenu(
@@ -1377,8 +1378,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1421,8 +1422,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                                                
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1436,8 +1437,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                         
                                             """.formatted(event.getUser().getAsMention())
                                     )
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     );
                     stopSession(userId);
                     return;
@@ -1456,8 +1457,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                     > **결제 요청 도중 오류가 발생하였습니다.**
                                                                                                                
                                     """)
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1474,8 +1475,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                             
                                             """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention(), ex.getMessage())
                                     )
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     );
 
                     payment.updateAccepted(true);
@@ -1502,8 +1503,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1519,8 +1520,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                 
                                             """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention())
                                     )
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     );
 
                     stopSession(userId);
@@ -1543,8 +1544,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1560,8 +1561,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                                 
                                             """.formatted(payment.getPaymentId().toString(), event.getUser().getAsMention())
                                     )
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     );
 
                     stopSession(userId);
@@ -1600,25 +1601,25 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                 usedCoupon != null ? usedCoupon.getCode() : "없음"
                                         )
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 );
 
                 MessageEmbed receipt = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
                         .setDescription("[매출전표](" + payment.getReceiptUrl() + ")")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.getJDA().getUserById(payment.getRequestedBy())
                         .openPrivateChannel().complete()
                         .sendMessage("""
                                 ```
-                                주소: 경상남도 통영시 광도면 신죽**길
-                                대표: 양대영
-                                사업자 번호: 210-36-72319
-                                이메일: yangdaeyeong0808@gmail.com
+                                주소: 경기도 남양주시 다산동 4002-1
+                                대표: 호예준
+                                사업자 번호: 행정 처리중
+                                이메일: hyjcompany30@naver.com
                                 홈페이지: https://starly.kr/
                                 ======================================
                                                                 
@@ -1673,8 +1674,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                             
                                         """.formatted("<@" + payment.getRequestedBy() + ">")
                                     )
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public"));
+                                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png"));
                         });
 
                 MessageEmbed embed = new EmbedBuilder()
@@ -1706,8 +1707,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1749,8 +1750,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                   
                                 """.formatted(depositor)
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 ticketChannel.sendMessageEmbeds(embed1)
                         .setActionRow(approveBtn, rejectBtn)
@@ -1761,8 +1762,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                         .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
                                 "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                        .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
+                        .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed2).setEphemeral(true).queue();
 
@@ -1785,8 +1786,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -1828,8 +1829,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                   
                                 """.formatted(pinNumber)
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 ticketChannel.sendMessageEmbeds(embed1).setActionRow(approveBtn, rejectBtn).queue();
 
@@ -1838,8 +1839,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                         .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
                                 "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
-                        .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
+                        .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed2).setEphemeral(true).queue();
 
@@ -1860,11 +1861,11 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
         return onlyCreditCard ?
                 StringSelectMenu.create(ID_PREFIX + "payment-method")
                         .setPlaceholder("결제수단을 선택해주세요.")
-                        .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
+//                        .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
                         .build() :
                 StringSelectMenu.create(ID_PREFIX + "payment-method")
                         .setPlaceholder("결제수단을 선택해주세요.")
-                        .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
+//                        .addOption("카드", "credit_card", "카드로 결제합니다.", Emoji.fromUnicode("💳"))
                         .addOption("계좌이체", "bank_transfer", "계좌이체로 결제합니다.", Emoji.fromUnicode("💰"))
                         .addOption("문화상품권", "cultureland", "문화상품권로 결제합니다.", Emoji.fromUnicode("🪙"))
                         .build();
@@ -2014,8 +2015,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                                                         
                                     """.formatted(cashbackAmount)
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
 
             JDA jda = DiscordBotManager.getInstance().getJda();

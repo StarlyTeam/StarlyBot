@@ -40,8 +40,8 @@ public class CreatePluginManagementCommand implements DiscordCommand {
                         ─────────────────────────────────────────────────
                         """
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                 .build();
 
         StringSelectMenu pluginSelectionMenu = StringSelectMenu.create("plugin-management-action")

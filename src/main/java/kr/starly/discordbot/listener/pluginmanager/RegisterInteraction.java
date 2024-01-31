@@ -102,8 +102,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                 """
                                 .formatted(String.join(", ", dependency))
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
 
                 event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
@@ -122,7 +122,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     
                                     ─────────────────────────────────────────────────
                                     """)
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
@@ -137,7 +137,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     
                                     ─────────────────────────────────────────────────
                                     """)
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
                     return;
@@ -167,8 +167,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                 """
                                 .formatted("`\\" + ((UnicodeEmoji) emoji).getAsCodepoints() + "`")
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.getMessage().replyEmbeds(embed)
                         .addActionRow(managerSelectMenu)
@@ -193,8 +193,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                 ─────────────────────────────────────────────────
                                 """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
             }
@@ -216,8 +216,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                 
                                 ─────────────────────────────────────────────────
                                 """)
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
             }
@@ -232,7 +232,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     
                                     ─────────────────────────────────────────────────
                                     """)
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.getMessage().replyEmbeds(embed).queue();
                     return;
@@ -256,7 +256,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     """
                                     .formatted(String.join("\n", errors))
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
 
                     event.getMessage().replyEmbeds(embed).addActionRow(CANCEL_BUTTON).queue();
@@ -271,7 +271,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     ─────────────────────────────────────────────────
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.getMessage().replyEmbeds(embed).queue();
                 } else {
@@ -290,7 +290,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                             String.join("\n", errors)
                                     )
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.getMessage().replyEmbeds(embed).queue();
                 }
@@ -313,8 +313,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                         ─────────────────────────────────────────────────
                                     """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.getMessage().replyEmbeds(embed).queue();
 
@@ -348,8 +348,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                     ─────────────────────────────────────────────────
                                     """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
 
                 StringSelectMenu registerSelectMenu = StringSelectMenu.create(ID_PREFIX + "type")
@@ -466,7 +466,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     "> **아래에 구매자 역할을 선택해 주세요.**\n\n" +
                                     "─────────────────────────────────────────────────"
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
 
                     event.getMessage().replyEmbeds(embed)
@@ -485,7 +485,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                     "> **아래에 아이콘 URL을 전송해 주세요. (Cloudflare Images)**\n\n" +
                                     "─────────────────────────────────────────────────"
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
 
                     event.getMessage().replyEmbeds(embed)
@@ -518,8 +518,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                 "> **아래에 아이콘 이미지 URL을 전송해 주세요. (Cloudflare Images)**\n\n" +
                                 "─────────────────────────────────────────────────"
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.getMessage()
                         .replyEmbeds(embed)
@@ -552,8 +552,8 @@ public class RegisterInteraction extends ListenerAdapter {
                             
                             ─────────────────────────────────────────────────"""
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
             event.getMessage().replyEmbeds(embed).queue();
 
@@ -584,8 +584,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                     
                                     ─────────────────────────────────────────────────
                                     """)
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
 
                 event.replyEmbeds(messageEmbed).queue();
@@ -650,8 +650,8 @@ public class RegisterInteraction extends ListenerAdapter {
                                     NumberFormat.getCurrencyInstance(Locale.KOREA).format(price)
                             )
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
 
             event.replyEmbeds(messageEmbed).addActionRow(CANCEL_BUTTON).queue();

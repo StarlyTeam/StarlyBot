@@ -90,8 +90,8 @@ public class EditInteraction extends ListenerAdapter {
                             ─────────────────────────────────────────────────
                             """
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
 
             event.getChannel().sendMessageEmbeds(embed).queue();
@@ -113,8 +113,8 @@ public class EditInteraction extends ListenerAdapter {
                             ─────────────────────────────────────────────────
                             """
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
 
             event.getMessage().replyEmbeds(embed).queue();
@@ -128,8 +128,8 @@ public class EditInteraction extends ListenerAdapter {
                                                         
                             ─────────────────────────────────────────────────"""
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
             event.getMessage().replyEmbeds(embed).queue();
         } else {
@@ -147,8 +147,8 @@ public class EditInteraction extends ListenerAdapter {
                                     String.join("\n", errors)
                             )
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
             event.getMessage().replyEmbeds(embed).queue();
         }
@@ -199,8 +199,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                     .setDescription("> **요청이 거부되었습니다.**")
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -231,8 +231,8 @@ public class EditInteraction extends ListenerAdapter {
                                     """
                                         .formatted(description.toString())
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                 .build();
                         event.replyEmbeds(embed)
                                 .setEphemeral(true)
@@ -246,8 +246,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                     .setDescription("> **요청이 거부되었습니다.**")
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -258,8 +258,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                     .setDescription("> **이미 파일 업로드가 진행중입니다.**")
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -278,8 +278,8 @@ public class EditInteraction extends ListenerAdapter {
                                         ─────────────────────────────────────────────────
                                     """
                                 )
-                                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                 .build();
                         event.replyEmbeds(embed).queue();
 
@@ -293,8 +293,8 @@ public class EditInteraction extends ListenerAdapter {
                                     .setColor(EMBED_COLOR_ERROR)
                                     .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                     .setDescription("> **요청이 거부되었습니다.**")
-                                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                    .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                    .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                     .build();
                             event.replyEmbeds(embed)
                                     .setEphemeral(true)
@@ -441,7 +441,7 @@ public class EditInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                             .setDescription("> **해당 플러그인이 존재하지 않습니다.**")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
                     return;
@@ -457,8 +457,8 @@ public class EditInteraction extends ListenerAdapter {
                                 
                                 ─────────────────────────────────────────────────"""
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 Button fileButton = Button.primary(ID_PREFIX + "file", "파일 관리");
                 Button infoButton = Button.primary(ID_PREFIX + "info", "정보 관리");
@@ -476,7 +476,7 @@ public class EditInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                             .setDescription("> **요청이 거부되었습니다.**")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -493,7 +493,7 @@ public class EditInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                             .setDescription("> **마인크래프트 버전이 올바르지 않습니다.**")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -513,7 +513,7 @@ public class EditInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                             .setDescription("> **해당 플러그인 파일이 존재하지 않습니다.**")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -534,8 +534,8 @@ public class EditInteraction extends ListenerAdapter {
                                                             
                                 ─────────────────────────────────────────────────"""
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -552,7 +552,7 @@ public class EditInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                             .setDescription("> **요청이 거부되었습니다.**")
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
                     event.replyEmbeds(embed)
                             .setEphemeral(true)
@@ -581,8 +581,8 @@ public class EditInteraction extends ListenerAdapter {
                                                 ─────────────────────────────────────────────────
                                                 """
                                         )
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                         .build();
                                 event.replyEmbeds(embed).queue();
                                 continue;
@@ -611,8 +611,8 @@ public class EditInteraction extends ListenerAdapter {
                                                 ─────────────────────────────────────────────────
                                                 """
                                         )
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                         .build();
                                 event.getMessage().replyEmbeds(embed).queue();
                                 continue;
@@ -628,8 +628,8 @@ public class EditInteraction extends ListenerAdapter {
                                                 ─────────────────────────────────────────────────
                                                 """
                                         )
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                         .build();
                                 event.getMessage().replyEmbeds(embed).queue();
                                 continue;
@@ -672,8 +672,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setColor(EMBED_COLOR_ERROR)
                                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                         .setDescription("> **담당자가 올바르지 않습니다. (5초 뒤 청소됩니다.)**")
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
@@ -704,8 +704,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setColor(EMBED_COLOR_ERROR)
                                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                         .setDescription("> **역할이 올바르지 않습니다. (5초 뒤 청소됩니다.)**")
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
@@ -733,8 +733,8 @@ public class EditInteraction extends ListenerAdapter {
                                         .setColor(EMBED_COLOR_ERROR)
                                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                         .setDescription("> **가격이 올바르지 않습니다. (5초 뒤 청소됩니다.)**")
-                                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                                         .build();
                                 event.replyEmbeds(embed)
                                         .setEphemeral(true)
@@ -803,8 +803,8 @@ public class EditInteraction extends ListenerAdapter {
                                     ─────────────────────────────────────────────────
                                     """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 SelectMenu actionSelectMenu = StringSelectMenu.create(ID_PREFIX + "file")
                         .addOption("파일 목록", "list", "파일 목록을 확인합니다.")
@@ -827,8 +827,8 @@ public class EditInteraction extends ListenerAdapter {
                                     ─────────────────────────────────────────────────
                                     """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
-                        .setFooter("이 기능은 관리자 전용입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/e7a1b4a6-854c-499b-5bb2-5737af369900/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("이 기능은 관리자 전용입니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 SelectMenu infoSelectMenu = StringSelectMenu.create(ID_PREFIX + "info")
                         .addOption("영어 이름", "name-en", "영어 이름을 수정합니다.")

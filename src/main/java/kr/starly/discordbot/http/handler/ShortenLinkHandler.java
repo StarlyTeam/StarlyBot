@@ -26,7 +26,7 @@ public class ShortenLinkHandler implements HttpHandler {
         ShortenLink shortenLink = shortenLinkService.getDataByShortenUrl(shortenCode);
         if (shortenLink == null) return;
 
-        String userIp = exchange.getRequestHeaders().get("x-real-ip").get(0);
+        String userIp = exchange.getRequestHeaders().get("x-forwarded-for").get(0);
 
         try {
             String originUrl = shortenLink.originUrl();

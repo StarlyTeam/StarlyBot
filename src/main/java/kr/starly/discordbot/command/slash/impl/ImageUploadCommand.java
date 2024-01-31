@@ -2,7 +2,6 @@ package kr.starly.discordbot.command.slash.impl;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.util.external.CFImagesUtil;
@@ -12,37 +11,36 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 
-@BotSlashCommand(
-        command = "이미지",
-        description = "이미지를 관리합니다.",
-        subcommands = {
-                @BotSlashCommand.SubCommand(
-                        name = "업로드",
-                        description = "이미지를 업로드합니다.",
-                        optionName = {"이미지"},
-                        optionType = {OptionType.ATTACHMENT},
-                        optionDescription = {"이미지를 업로드하세요."},
-                        optionRequired = {true}
-                ),
-                @BotSlashCommand.SubCommand(
-                        name = "삭제",
-                        description = "이미지를 삭제합니다.",
-                        optionName = {"아이디"},
-                        optionType = {OptionType.STRING},
-                        optionDescription = {"삭제할 이미지의 아이디를 입력하세요."},
-                        optionRequired = {true}
-                ),
-                @BotSlashCommand.SubCommand(
-                        name = "목록",
-                        description = "이미지 목록을 확인합니다."
-                )
-        }
-)
+//@BotSlashCommand(
+//        command = "이미지",
+//        description = "이미지를 관리합니다.",
+//        subcommands = {
+//                @BotSlashCommand.SubCommand(
+//                        name = "업로드",
+//                        description = "이미지를 업로드합니다.",
+//                        optionName = {"이미지"},
+//                        optionType = {OptionType.ATTACHMENT},
+//                        optionDescription = {"이미지를 업로드하세요."},
+//                        optionRequired = {true}
+//                ),
+//                @BotSlashCommand.SubCommand(
+//                        name = "삭제",
+//                        description = "이미지를 삭제합니다.",
+//                        optionName = {"아이디"},
+//                        optionType = {OptionType.STRING},
+//                        optionDescription = {"삭제할 이미지의 아이디를 입력하세요."},
+//                        optionRequired = {true}
+//                ),
+//                @BotSlashCommand.SubCommand(
+//                        name = "목록",
+//                        description = "이미지 목록을 확인합니다."
+//                )
+//        }
+//)
 public class ImageUploadCommand implements DiscordSlashCommand {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();

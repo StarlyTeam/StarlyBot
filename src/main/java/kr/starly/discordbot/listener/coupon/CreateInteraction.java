@@ -62,7 +62,7 @@ public class CreateInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                         .setDescription("> **할인 유형을 찾을 수 없습니다.**")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -78,7 +78,7 @@ public class CreateInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 쿠폰 <a:loading:1168266572847128709>")
                         .setDescription("> **할인 값이 올바르지 않습니다.**")
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -103,7 +103,7 @@ public class CreateInteraction extends ListenerAdapter {
                     .setColor(EMBED_COLOR_SUCCESS)
                     .setTitle("<a:success:1168266537262657626> 성공 | 쿠폰 <a:success:1168266537262657626>")
                     .setDescription("> **쿠폰을 생성하였습니다.**")
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
         }

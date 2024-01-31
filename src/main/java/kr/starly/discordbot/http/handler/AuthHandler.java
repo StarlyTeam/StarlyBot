@@ -50,7 +50,7 @@ public class AuthHandler implements HttpHandler {
             return;
         }
 
-        String userIp = exchange.getRequestHeaders().get("x-real-ip").get(0);
+        String userIp = exchange.getRequestHeaders().get("x-forwarded-for").get(0);
 
         Guild guild = DiscordBotManager.getInstance().getJda().getGuilds().get(0);
         Member member = guild.getMemberById(userId);
@@ -121,8 +121,8 @@ public class AuthHandler implements HttpHandler {
                         > **이제 커뮤니티의 모든 기능을 마음껏 즐기실 수 있습니다! 🥳**
                         > **즐거운 시간 보내세요! \uD83C\uDF88**
                         \u1CBB""")
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                 .build();
 
         AtomicBoolean isDMSent = new AtomicBoolean(true);

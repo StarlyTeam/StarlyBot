@@ -106,8 +106,8 @@ public class CouponCommand implements DiscordSlashCommand {
                             ─────────────────────────────────────────────────
                             """
                     )
-                    .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
 
             event.replyEmbeds(embed).setEphemeral(true).queue();
@@ -151,8 +151,8 @@ public class CouponCommand implements DiscordSlashCommand {
                                     ─────────────────────────────────────────────────
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
 
                     event.replyEmbeds(embed).setEphemeral(true).queue();
@@ -199,8 +199,8 @@ public class CouponCommand implements DiscordSlashCommand {
                                     ─────────────────────────────────────────────────
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -218,8 +218,8 @@ public class CouponCommand implements DiscordSlashCommand {
                                     ─────────────────────────────────────────────────
                                     """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).addActionRow(confirm, CANCEL_BUTTON).queue();
             }
@@ -236,8 +236,8 @@ public class CouponCommand implements DiscordSlashCommand {
                                     ─────────────────────────────────────────────────
                                     """
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -257,8 +257,8 @@ public class CouponCommand implements DiscordSlashCommand {
                                     ─────────────────────────────────────────────────
                                     """
                         )
-                        .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                        .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).addActionRow(updateInfo, updateRequirements, CANCEL_BUTTON).setEphemeral(true).queue();
             }

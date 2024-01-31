@@ -134,8 +134,8 @@ public class RefundListener extends ListenerAdapter {
                         > **승인 결과: %s**          
                         """.formatted(isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>")
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
         event.replyEmbeds(embed1)
                 .queue();
@@ -153,8 +153,8 @@ public class RefundListener extends ListenerAdapter {
                                 payment.getPaymentId().toString()
                         )
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
         );
 
         MessageEmbed embed2 = new EmbedBuilder()
@@ -169,8 +169,8 @@ public class RefundListener extends ListenerAdapter {
                         isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
                         payment.getPaymentId().toString())
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
 
         event.getJDA().getUserById(payment.getRequestedBy())
@@ -187,8 +187,8 @@ public class RefundListener extends ListenerAdapter {
                                     > **유저: %s**
                                     """.formatted("<@" + payment.getRequestedBy() + ">")
                             )
-                            .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                            .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
 
                     event.getChannel().sendMessageEmbeds(embed3).queue();
@@ -284,8 +284,8 @@ public class RefundListener extends ListenerAdapter {
                                                             
                         """
                 )
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
-                .setFooter("스탈리에서 발송된 메시지입니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/c51e380e-1d18-4eb5-6bee-21921b2ee100/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
         ticketChannel.sendMessageEmbeds(embed)
                 .setActionRow(approveBtn, rejectBtn)
@@ -301,7 +301,7 @@ public class RefundListener extends ListenerAdapter {
                         """
                         .formatted(ticketChannel.getAsMention())
                 )
-                .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/fd6f9e61-52e6-478d-82fd-d3e9e4e91b00/public")
+                .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                 .build();
         event.replyEmbeds(embed2).setEphemeral(true).queue();
     }

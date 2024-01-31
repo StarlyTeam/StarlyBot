@@ -57,8 +57,8 @@ public class CreateVerifyCommand implements DiscordCommand {
                                 **> 3일 이내에서 서버를 퇴장할 경우 다운로드가 금지됩니다.**
                                 **> 부계정 사용을 금지됩니다. **
                                 """, true)
-                .setThumbnail("https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
-                .setFooter("인증시 위 내용에 동의한 것으로 간주됩니다.", "https://imagedelivery.net/zI1a4o7oosLEca8Wq4ML6w/474a5e10-44fd-4a6d-da08-9053a1149600/public")
+                .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
+                .setFooter("인증시 위 내용에 동의한 것으로 간주됩니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                 .build();
 
         Button verify = Button.success("successVerify", "인증하기");
