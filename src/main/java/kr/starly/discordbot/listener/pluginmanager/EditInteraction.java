@@ -748,34 +748,34 @@ public class EditInteraction extends ListenerAdapter {
                             description.append("> 가격 | [" + mappingValue + "]\n");
                         }
                     }
+                }
 
-                    String originENName = sessionMap.get(userId);
-                    if (!plugin.getENName().equals(originENName)) {
-                        pluginService.deleteDataByENName(originENName);
-                    }
+                String originENName = sessionMap.get(userId);
+                if (!plugin.getENName().equals(originENName)) {
+                    pluginService.deleteDataByENName(originENName);
+                }
 
-                    pluginService.saveData(plugin);
-                    PluginForumUtil.updatePluginChannel(plugin);
+                pluginService.saveData(plugin);
+                PluginForumUtil.updatePluginChannel(plugin);
 
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_SUCCESS)
-                            .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 관리 <a:success:1168266537262657626>")
-                            .setDescription("""
+                MessageEmbed embed = new EmbedBuilder()
+                        .setColor(EMBED_COLOR_SUCCESS)
+                        .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 관리 <a:success:1168266537262657626>")
+                        .setDescription("""
                                     > **플러그인 수정을 완료하였습니다.**
                                     
                                     ─────────────────────────────────────────────────
                                     > **%s**
                                     """
-                                    .formatted(description)
-                            )
-                            .setThumbnail(plugin.getIconUrl())
-                            .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
+                                .formatted(description)
+                        )
+                        .setThumbnail(plugin.getIconUrl())
+                        .build();
+                event.replyEmbeds(embed)
+                        .setEphemeral(true)
+                        .queue();
 
-                    sessionMap.remove(userId);
-                }
+                sessionMap.remove(userId);
             }
         }
     }
