@@ -1913,7 +1913,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                 payment.isAccepted() ? "완료 (승인)" : (payment.getApprovedAt() != null ? "완료 (거절)" : "대기")
         );
 
-        if (ticketService.findByDiscordId(userId) == null) {
+        Ticket recentTicket = ticketService.findByDiscordId(userId);
+        if (recentTicket == null || recentTicket.closedBy() == 0) {
             long ticketIndex = ticketService.getLastIndex() + 1;
             TicketType ticketType = TicketType.PAYMENT;
 

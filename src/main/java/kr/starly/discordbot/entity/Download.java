@@ -15,25 +15,19 @@ public class Download {
     @Getter @NotNull private PluginFile pluginFile;
     @Getter @NotNull private Long userId;
 
-    @NotNull private Boolean isUsed;
     @Nullable private Boolean isSuccess;
-    @NotNull private Boolean isExpired;
     @Getter @NotNull  private Date createdAt;
     @Getter @Nullable private Date usedAt;
     @Getter @NotNull private Date expireAt;
 
-    public Boolean isUsed() {
-        return isUsed;
+    public boolean isUsed() {
+        return usedAt != null;
     }
     public Boolean isSuccess() {
         return isSuccess;
     }
-    public Boolean isExpired() {
+    public boolean isExpired() {
         return new Date().after(expireAt);
-    }
-
-    public void updateIsUsed(Boolean isUsed) {
-        this.isUsed = isUsed;
     }
 
     public void updateIsSuccess(Boolean isSuccess) {
@@ -49,9 +43,7 @@ public class Download {
         document.put("token", token);
         document.put("pluginFile", pluginFile.serialize());
         document.put("userId", userId);
-        document.put("isUsed", isUsed);
         document.put("isSuccess", isSuccess);
-        document.put("isExpired", isExpired);
         document.put("createdAt", createdAt);
         document.put("usedAt", usedAt);
         document.put("expireAt", expireAt);
@@ -66,13 +58,11 @@ public class Download {
         String token = document.getString("token");
         PluginFile file = PluginFile.deserialize(document.get("pluginFile", Document.class));
         Long userId = document.getLong("userId");
-        Boolean isUsed = document.getBoolean("isUsed");
         Boolean isSuccess = document.getBoolean("isSuccess");
-        Boolean isExpired = document.getBoolean("isExpired");
         Date createdAt = document.getDate("createdAt");
         Date usedAt = document.getDate("usedAt");
         Date expireAt = document.getDate("expireAt");
 
-        return new Download(token, file, userId, isUsed, isSuccess, isExpired, createdAt, usedAt, expireAt);
+        return new Download(token, file, userId, isSuccess, createdAt, usedAt, expireAt);
     }
 }

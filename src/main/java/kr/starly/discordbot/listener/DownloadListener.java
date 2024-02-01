@@ -92,16 +92,15 @@ public class DownloadListener extends ListenerAdapter {
 
             // 토큰 생성 및 등록
             String token = TokenUtil.generateToken();
+            Date now = new Date();
             Download download = new Download(
                     token,
                     pluginFile,
                     event.getUser().getIdLong(),
-                    false,
                     null,
-                    false,
-                    new Date(),
+                    now,
                     null,
-                    new Date(new Date().getTime() + 1000 * 60 * 30)
+                    new Date(now.getTime() + 1000 * 60 * 30)
             );
 
             DownloadService downloadService = DatabaseManager.getDownloadService();

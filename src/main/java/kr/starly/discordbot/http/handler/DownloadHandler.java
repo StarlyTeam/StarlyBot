@@ -34,10 +34,6 @@ public class DownloadHandler implements HttpHandler {
             return;
         }
 
-        download.updateIsUsed(true);
-        download.updateUsedAt(new Date());
-        downloadService.saveData(download);
-
         PluginFile pluginFile = download.getPluginFile();
         Plugin plugin = pluginFile.getPlugin();
 
@@ -81,7 +77,6 @@ public class DownloadHandler implements HttpHandler {
 
         File outputFile = new File(tempFolder, "output.zip");
         try (ZipFile zipFile = new ZipFile(outputFile)) {
-            zipFile.addFile(sourceFile);
             zipFile.addFile(new File("download/이용안내.txt"));
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -113,6 +108,9 @@ public class DownloadHandler implements HttpHandler {
             downloadService.saveData(download);
             return;
         }
+
+        download.updateUsedAt(new Date());
+        downloadService.saveData(download);
 
         AuditLogger.info(new EmbedBuilder()
                 .setTitle("<a:success:1168266537262657626> 성공 | 플러그인 다운로드 <a:success:1168266537262657626>")
