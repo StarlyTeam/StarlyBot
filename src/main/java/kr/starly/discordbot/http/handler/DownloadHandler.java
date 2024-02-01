@@ -39,12 +39,13 @@ public class DownloadHandler implements HttpHandler {
 
         File tempFolder = new File("download/" + token);
         tempFolder.mkdirs();
-
         File metaFolder = new File(tempFolder, "META-INF");
         metaFolder.mkdirs();
-
         File metadataFile = new File(metaFolder, "metadata");
         metadataFile.createNewFile();
+
+        Date now = new Date();
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(metadataFile))) {
             String encodedString = Base64.getEncoder().encodeToString("""
                     UserId: %s
@@ -56,7 +57,7 @@ public class DownloadHandler implements HttpHandler {
                     download.getUserId(),
                     download.getToken(),
                     exchange.getRequestHeaders().get("x-forwarded-for").get(0),
-                    download.getUsedAt()
+                    now
             ).getBytes(StandardCharsets.UTF_8));
 
             bw.write(encodedString);
@@ -109,7 +110,7 @@ public class DownloadHandler implements HttpHandler {
             return;
         }
 
-        download.updateUsedAt(new Date());
+        download.updateUsedAt(now);
         downloadService.saveData(download);
 
         AuditLogger.info(new EmbedBuilder()
