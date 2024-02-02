@@ -78,6 +78,7 @@ public class DownloadHandler implements HttpHandler {
 
         File outputFile = new File(tempFolder, "output.zip");
         try (ZipFile zipFile = new ZipFile(outputFile)) {
+            zipFile.addFile(sourceFile);
             zipFile.addFile(new File("download/이용안내.txt"));
         } catch (IOException ex) {
             ex.printStackTrace();
