@@ -246,7 +246,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setPlaceholder("입금자명을 입력해주세요.")
                             .setRequired(true)
                             .build();
-                    Modal modal = Modal.create(ID_PREFIX + "bank-transfer", "무통장 입금")
+                    Modal modal = Modal.create(ID_PREFIX + "bank-transfer", "계좌이체")
                             .addActionRow(depositor)
                             .build();
                     event.replyModal(modal).queue();
@@ -423,7 +423,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
             int finalPrice = payment.getFinalPrice();
 
             // 구매 로그
-            PremiumPluginProduct product = payment.getProduct().asPremiumPlugin();
+            Product product = payment.getProduct();
             int usedPoint = payment.getUsedPoint();
             CouponState usedCoupon = payment.getUsedCoupon();
 
@@ -1913,54 +1913,39 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                 payment.isAccepted() ? "완료 (승인)" : (payment.getApprovedAt() != null ? "완료 (거절)" : "대기")
         );
 
-        Ticket recentTicket = ticketService.findByDiscordId(userId);
-        if (recentTicket == null || recentTicket.closedBy() == 0) {
-            long ticketIndex = ticketService.getLastIndex() + 1;
-            TicketType ticketType = TicketType.PAYMENT;
+        long ticketIndex = ticketService.getLastIndex() + 1;
+        TicketType ticketType = TicketType.PAYMENT;
 
-            Category category = jda.getCategoryById(TICKET_CATEGORY_ID);
-            TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
-                    .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
-                    .complete();
+        Category category = jda.getCategoryById(TICKET_CATEGORY_ID);
+        TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
+                .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
+                .complete();
 
-            ticketService.recordTicket(new Ticket(
-                    userId,
-                    0,
-                    ticketChannel.getIdLong(),
-                    ticketType,
-                    ticketIndex
-            ));
+        ticketService.recordTicket(new Ticket(
+                userId,
+                0,
+                ticketChannel.getIdLong(),
+                ticketType,
+                ticketIndex
+        ));
 
-            net.dv8tion.jda.api.entities.User user = jda.getUserById(userId);
+        net.dv8tion.jda.api.entities.User user = jda.getUserById(userId);
 
-            TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
-            ticketUserDataRepository.registerUser(userId, user);
+        TicketUserDataRepository ticketUserDataRepository = TicketUserDataRepository.getInstance();
+        ticketUserDataRepository.registerUser(userId, user);
 
-            Map<Long, TicketType> userTicketTypeMap = TicketType.getUserTicketTypeMap();
-            userTicketTypeMap.put(userId, ticketType);
+        Map<Long, TicketType> userTicketTypeMap = TicketType.getUserTicketTypeMap();
+        userTicketTypeMap.put(userId, ticketType);
 
-            TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
-            ticketModalDataRepository.registerModalData(
-                    ticketChannel.getIdLong(),
-                    payment.getProduct().getSummary(),
-                    title,
-                    description
-            );
+        TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
+        ticketModalDataRepository.registerModalData(
+                ticketChannel.getIdLong(),
+                payment.getProduct().getSummary(),
+                title,
+                description
+        );
 
-            return ticketChannel;
-        } else {
-            Ticket ticket = ticketService.findByDiscordId(userId);
-            TextChannel ticketChannel = jda.getTextChannelById(ticket.channelId());
-
-            ticketChannel.sendMessageEmbeds(new EmbedBuilder()
-                    .setColor(EMBED_COLOR)
-                    .setTitle(title)
-                    .setDescription("```\n" + description + "```")
-                    .build()
-            ).queue();
-
-            return ticketChannel;
-        }
+        return ticketChannel;
     }
 
     private void affectPayment(Payment payment) {
