@@ -28,11 +28,11 @@ public class CouponRedeem {
     
     public Document serialize() {
         Document document = new Document();
-        document.put("redeemId", getRedeemId());
-        document.put("couponState", getCouponState().serialize());
-        document.put("coupon", getCoupon().serialize());
-        document.put("requestedBy", getRequestedBy());
-        document.put("requestedAt", getRequestedAt());
+        document.put("redeemId", redeemId.toString());
+        document.put("couponState", couponState.serialize());
+        document.put("coupon", coupon.serialize());
+        document.put("requestedBy", requestedAt);
+        document.put("requestedAt", requestedAt);
         
         return document;
     }
@@ -41,7 +41,7 @@ public class CouponRedeem {
     public static CouponRedeem deserialize(Document document) {
         if (document == null) return null;
 
-        UUID redeemId = document.get("redeemId", UUID.class);
+        UUID redeemId = UUID.fromString(document.getString("redeemId"));
         CouponState couponState = CouponState.deserialize(document.get("couponState", Document.class));
         Coupon coupon = DatabaseManager.getCouponService().getData(couponState.getCode());
         long requestedBy = document.getLong("requestedBy");
