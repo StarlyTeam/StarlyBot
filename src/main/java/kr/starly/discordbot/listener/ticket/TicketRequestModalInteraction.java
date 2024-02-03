@@ -59,6 +59,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
                             """
                             .formatted(ticketChannel.getAsMention())
                     )
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                     .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();

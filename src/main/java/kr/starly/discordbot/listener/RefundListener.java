@@ -149,8 +149,8 @@ public class RefundListener extends ListenerAdapter {
                                 > **환불처리 승인이 완료되었습니다.**
                                 
                                 ─────────────────────────────────────────────────
-                                > **승인 결과: %s**
                                 > **결제 번호: %s**
+                                > **승인 결과: %s**
                                 """.formatted(
                                 isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
                                 payment.getPaymentId().toString()
@@ -167,8 +167,8 @@ public class RefundListener extends ListenerAdapter {
                         > **환불처리 승인이 완료되었습니다.**
                         
                         ─────────────────────────────────────────────────
-                        > **승인 결과: %s**
                         > **결제 번호: %s**
+                        > **승인 결과: %s**
                         """.formatted(
                         isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
                         payment.getPaymentId().toString())
@@ -305,6 +305,7 @@ public class RefundListener extends ListenerAdapter {
                         """
                         .formatted(ticketChannel.getAsMention())
                 )
+                .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                 .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                 .build();
         event.replyEmbeds(embed2).setEphemeral(true).queue();
