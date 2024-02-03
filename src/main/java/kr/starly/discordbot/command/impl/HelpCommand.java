@@ -46,8 +46,7 @@ public class HelpCommand implements DiscordCommand {
             String description = annotation.description();
             String usage = annotation.usage();
 
-            embed.addField(usage, description, false);
-            embed.addBlankField(false);
+            embed.addField(usage, description, true);
         });
 
         event.getChannel().sendMessageEmbeds(embed.build()).queue();
