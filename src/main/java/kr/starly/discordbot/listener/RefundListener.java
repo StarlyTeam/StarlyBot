@@ -146,16 +146,15 @@ public class RefundListener extends ListenerAdapter {
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 환불 <a:success:1168266537262657626>")
                 .setDescription("""
-                                > **환불처리 승인이 완료되었습니다.**
-                                
-                                ─────────────────────────────────────────────────
-                                > **결제 번호: %s**
-                                > **승인 결과: %s**
-                                """.formatted(
-                                isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
-                                payment.getPaymentId().toString()
-                        )
-                )
+                        > **환불처리 승인이 완료되었습니다.**
+                        
+                        ─────────────────────────────────────────────────
+                        > **결제 번호: %s**
+                        > **승인 결과: %s**
+                        """.formatted(
+                        payment.getPaymentId().toString(),
+                        isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>"
+                ))
                 .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                 .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
         );
@@ -170,9 +169,9 @@ public class RefundListener extends ListenerAdapter {
                         > **결제 번호: %s**
                         > **승인 결과: %s**
                         """.formatted(
-                        isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>",
-                        payment.getPaymentId().toString())
-                )
+                        payment.getPaymentId().toString(),
+                        isAccepted ? "<a:success:1168266537262657626>" : "<a:cross:1058939340505497650>"
+                ))
                 .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                 .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
