@@ -139,11 +139,10 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
                 String bukkit = data.get(1);
                 String description = data.get(2);
 
-                String log = data.get(3);
                 ticketModalFileRepository.save(ticket,
                         "버전: " + version + "\n" +
-                                "본문: " + description + "\n" +
-                                "로그 \n" + log);
+                                "본문: " + description
+                );
 
                 File file = ticketModalFileRepository.getFile(ticket);
 

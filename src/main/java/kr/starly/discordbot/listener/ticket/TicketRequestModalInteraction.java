@@ -120,12 +120,11 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
 
             case "modal-plugin-error" -> {
                 String version = event.getValue("mcVersion").getAsString();
-                String log = event.getValue("log").getAsString();
                 String bukkitValue = event.getValue("type").getAsString();
                 String bukkit = bukkitValue.isEmpty() ? "spigot" : bukkitValue;
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), version, bukkit, log, description);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), version, bukkit, description);
             }
 
             case "modal-other-error" -> {

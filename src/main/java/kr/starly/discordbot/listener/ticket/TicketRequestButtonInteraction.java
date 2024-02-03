@@ -74,7 +74,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
                 TextInput normalDescription = TextInput.create("description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("내용을 입력해 주시기 바랍니다.")
-                        .setMaxLength(900)
+                        .setMaxLength(500)
                         .build();
 
                 modal = Modal.create("modal-general", "일반 문의")
@@ -97,7 +97,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
                 TextInput questionDescription = TextInput.create("description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("질문의 내용을 입력해 주시기 바랍니다.")
-                        .setMaxLength(880)
+                        .setMaxLength(500)
                         .build();
 
                 modal = Modal.create("modal-question", "질문 하기")
@@ -190,7 +190,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
 
                 TextInput bugReportTicketDescription = TextInput.create("description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("상황 설명을 구체적으로 입력해 주시기 바랍니다.")
-                        .setMaxLength(900)
+                        .setMaxLength(500)
                         .build();
 
                 modal = Modal.create("modal-other-error", "기타 버그 문의")
@@ -207,28 +207,21 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .setMaxLength(6)
                         .build();
 
-                TextInput log = TextInput.create("log", "버킷 로그", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("버킷 로그를 첨부해 주시기 바랍니다.")
-                        .setMaxLength(4000)
-                        .setRequired(false)
-                        .build();
-
                 TextInput bukkit = TextInput.create("type", "버킷 종류", TextInputStyle.PARAGRAPH)
-                        .setPlaceholder("사용중인 버킷 이름을 입력해 주시기 바랍니다.\n(예: spigot/paper/purpur)")
+                        .setPlaceholder("사용중인 버킷을 입력해 주시기 바랍니다.\n(예: spigot/paper/purpur)")
                         .setMaxLength(10)
-                        .setRequired(false)
+                        .setRequired(true)
                         .build();
 
                 TextInput description = TextInput.create("description", "상황", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("상황 설명을 구체적으로 입력해 주시기 바랍니다.")
-                        .setMaxLength(900)
+                        .setMaxLength(500)
                         .build();
 
                 modal = Modal.create("modal-plugin-error", "플러그인 버그 문의")
                         .addComponents(
                                 ActionRow.of(version),
                                 ActionRow.of(bukkit),
-                                ActionRow.of(log),
                                 ActionRow.of(description))
                         .build();
             }
@@ -240,7 +233,7 @@ public class TicketRequestButtonInteraction extends ListenerAdapter {
                         .build();
                 TextInput etcDescription = TextInput.create("description", "본문", TextInputStyle.PARAGRAPH)
                         .setPlaceholder("본문을 입력해 주시기 바랍니다.")
-                        .setMaxLength(900)
+                        .setMaxLength(500)
                         .build();
                 modal = Modal.create("modal-other", "기타 문의")
                         .addComponents(
