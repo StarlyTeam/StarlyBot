@@ -15,7 +15,7 @@ public class Discount {
     public int computeFinalPrice(int originalPrice) {
         switch (type) {
             case PERCENTAGE -> {
-                return originalPrice * (100 - value);
+                return originalPrice / 100 * (100 - value);
             }
 
             case FIXED -> {
