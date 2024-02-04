@@ -413,6 +413,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                 return;
             }
 
+            event.deferReply().queue();
+
             // Payment 객체: update & query
             payment.updateAccepted(true);
             payment.updateApprovedAt(new Date());
@@ -476,7 +478,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
-            event.replyEmbeds(embed1).queue();
+            event.deferEdit().setEmbeds(embed1).queue();
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
@@ -658,6 +660,8 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                 return;
             }
 
+            event.deferReply().queue();
+
             // Payment 객체: update & query
             payment.updateAccepted(false);
             payment.updateApprovedAt(new Date());
@@ -671,7 +675,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
-            event.replyEmbeds(embed1).queue();
+            event.deferEdit().setEmbeds(embed1).queue();
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
@@ -703,8 +707,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                                 .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                                 .build();
-                        event.getChannel().sendMessageEmbeds(embed3)
-                                .queue();
+                        event.getChannel().sendMessageEmbeds(embed3).queue();
                     });
 
             // 컴포넌트 전체 비활성화
