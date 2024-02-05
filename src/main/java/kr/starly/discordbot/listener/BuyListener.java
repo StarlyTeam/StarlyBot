@@ -40,6 +40,7 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
@@ -400,8 +401,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
-            }
-            if (payment.getApprovedAt() != null) {
+            } else if (payment.getApprovedAt() != null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
@@ -413,7 +413,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                 return;
             }
 
-            event.deferReply().queue();
+            InteractionHook callback = event.deferReply().complete();
 
             // Payment 객체: update & query
             payment.updateAccepted(true);
@@ -478,7 +478,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
-            event.deferEdit().setEmbeds(embed1).queue();
+            callback.editOriginalEmbeds(embed1).queue();
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
@@ -646,8 +646,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
                 return;
-            }
-            if (payment.getApprovedAt() != null) {
+            } else if (payment.getApprovedAt() != null) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
@@ -660,7 +659,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                 return;
             }
 
-            event.deferReply().queue();
+            InteractionHook callback = event.deferReply().complete();
 
             // Payment 객체: update & query
             payment.updateAccepted(false);
@@ -675,7 +674,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
-            event.deferEdit().setEmbeds(embed1).queue();
+            callback.editOriginalEmbeds(embed1).queue();
 
             MessageEmbed embed2 = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
@@ -717,246 +716,246 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .map(LayoutComponent::asDisabled)
                             .toList()
             ).queue();
-        }
-
-        switch (componentId) {
-            case ID_PREFIX + "cancel" -> {
-                if (!productMap.containsKey(userId) && !couponMap.containsKey(userId) && !pointMap.containsKey(userId))
-                    return;
-
-                stopSession(userId);
-
-                MessageEmbed embed3 = new EmbedBuilder()
-                        .setColor(EMBED_COLOR_SUCCESS)
-                        .setTitle("<a:success:1168266537262657626> 취소 | 결제 <a:success:1168266537262657626>")
-                        .setDescription("""
-                                > **결제를 취소하였습니다.**
-                                                                    
-                                """
-                        )
-                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                        .build();
-                event.replyEmbeds(embed3).setEphemeral(true).queue();
-            }
-
-            case ID_PREFIX + "point-yes" -> {
-                if (!productMap.containsKey(userId)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("> **진행 중인 거래가 존재하지 않습니다.**")
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                            .build();
-                    event.replyEmbeds(embed).setEphemeral(true).queue();
+        } else {
+            switch (componentId) {
+                case ID_PREFIX + "cancel" -> {
+                    if (!productMap.containsKey(userId) && !couponMap.containsKey(userId) && !pointMap.containsKey(userId))
+                        return;
 
                     stopSession(userId);
-                    return;
-                } else if (pointMap.containsKey(userId)) return;
 
-                TextInput amountInput = TextInput.create("amount", "사용액", TextInputStyle.SHORT)
-                        .setMinLength(4)
-                        .setPlaceholder("사용할 포인트의 금액을 입력해주세요.")
-                        .setRequired(true)
-                        .build();
-                Modal modal = Modal.create(ID_PREFIX + "point", "포인트 할인")
-                        .addActionRow(amountInput)
-                        .build();
-                event.replyModal(modal).queue();
-            }
-
-            case ID_PREFIX + "point-no" -> {
-                if (!productMap.containsKey(userId)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                    MessageEmbed embed3 = new EmbedBuilder()
+                            .setColor(EMBED_COLOR_SUCCESS)
+                            .setTitle("<a:success:1168266537262657626> 취소 | 결제 <a:success:1168266537262657626>")
                             .setDescription("""
-                                    > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
+                                    > **결제를 취소하였습니다.**
                                                                         
                                     """
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
-
-                    stopSession(userId);
-                    return;
-                } else if (pointMap.containsKey(userId)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("""
-                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
-                                                                                                               
-                                          """
-                            )
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                            .build();
-                    event.replyEmbeds(embed)
-                            .setEphemeral(true)
-                            .queue();
-
-                    stopSession(userId);
-                    return;
+                    event.replyEmbeds(embed3).setEphemeral(true).queue();
                 }
 
-                pointMap.put(userId, 0);
+                case ID_PREFIX + "point-yes" -> {
+                    if (!productMap.containsKey(userId)) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("> **진행 중인 거래가 존재하지 않습니다.**")
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).setEphemeral(true).queue();
 
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
-                        .setDescription("""
-                                > **포인트를 사용하지 않고 결제를 진행합니다.**
-                                > **결제 수단을 선택해 주세요.**
-                                                                
-                                      """
-                        )
-                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                        .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                        .build();
-                event.replyEmbeds(embed)
-                        .addActionRow(createPaymentMethodSelectMenu(
-                                false /* productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE */
-                        ))
-                        .addActionRow(CANCEL_BUTTON)
-                        .setEphemeral(true)
-                        .queue();
-            }
+                        stopSession(userId);
+                        return;
+                    } else if (pointMap.containsKey(userId)) return;
 
-            case ID_PREFIX + "coupon-yes" -> {
-                if (!productMap.containsKey(userId)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("""
-                                    > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
-                                                                                                                  
-                                          """
-                            )
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                    TextInput amountInput = TextInput.create("amount", "사용액", TextInputStyle.SHORT)
+                            .setMinLength(4)
+                            .setPlaceholder("사용할 포인트의 금액을 입력해주세요.")
+                            .setRequired(true)
                             .build();
-                    event.replyEmbeds(embed).setEphemeral(true).queue();
-
-                    stopSession(userId);
-                    return;
-                } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("""
-                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
-                                                                                                               
-                                          """
-                            )
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                    Modal modal = Modal.create(ID_PREFIX + "point", "포인트 할인")
+                            .addActionRow(amountInput)
                             .build();
-                    event.replyEmbeds(embed).setEphemeral(true).queue();
-
-                    stopSession(userId);
-                    return;
+                    event.replyModal(modal).queue();
                 }
 
-                TextInput couponInput = TextInput.create("code", "쿠폰", TextInputStyle.SHORT)
-                        .setPlaceholder("쿠폰 코드를 입력해주세요.")
-                        .setRequired(true)
-                        .build();
-                Modal modal = Modal.create(ID_PREFIX + "coupon", "쿠폰 할인")
-                        .addActionRow(couponInput)
-                        .build();
-                event.replyModal(modal).queue();
-            }
+                case ID_PREFIX + "point-no" -> {
+                    if (!productMap.containsKey(userId)) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **진행 중인 거래가 존재하지 않습니다.**
+                                        > **처음부터 다시 시도해 주세요.**
+                                                                            
+                                        """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed)
+                                .setEphemeral(true)
+                                .queue();
 
-            case ID_PREFIX + "coupon-no" -> {
-                if (!productMap.containsKey(userId)) {
+                        stopSession(userId);
+                        return;
+                    } else if (pointMap.containsKey(userId)) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                                   
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed)
+                                .setEphemeral(true)
+                                .queue();
 
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("""
-                                    > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
-                                                                                                                  
-                                          """
-                            )
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                            .build();
-                    event.replyEmbeds(embed).setEphemeral(true).queue();
+                        stopSession(userId);
+                        return;
+                    }
 
-                    stopSession(userId);
-                    return;
-                } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
-                            .setDescription("""
-                                    > **데이터가 변조되었습니다. (거래를 취소합니다.)**
-                                                                                                               
-                                          """
-                            )
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                            .build();
-                    event.replyEmbeds(embed).setEphemeral(true).queue();
+                    pointMap.put(userId, 0);
 
-                    stopSession(userId);
-                    return;
-                }
-
-                UserService userService = DatabaseManager.getUserService();
-                User user = userService.getDataByDiscordId(userId);
-                int point = user.point();
-
-                Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
-
-                if (point == 0) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
-                            .setDescription("""
-                                    > **보유 중인 포인트가 없습니다..**
-                                    > **포인트를 사용하지 않고 결제를 진행합니다.**
-                                    > **계속하시겠습니까?**                                         
-                                          """
-                            )
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
-                            .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                            .build();
-                    event.replyEmbeds(embed).addActionRow(withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
-                } else if (point < POINT_USE_MINIMUM) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
-                            .setTitle("제목")
-                            .setDescription("보유중인 포인트가 %d 이하이므로 쿠폰, 포인트를 모두 사용하지 않고 결제를 진행합니다.\n(최소 사용금액 미달로 인한 적용 불가능)\n\n계속하시겠습니까?".formatted(POINT_USE_MINIMUM))
-                            .build();
-                    event.replyEmbeds(embed)
-                            .addActionRow(withoutPointBtn, CANCEL_BUTTON)
-                            .setEphemeral(true)
-                            .queue();
-                } else {
-                    Button withPointBtn = Button.primary(ID_PREFIX + "point-yes", "예");
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
                             .setDescription("""
-                                    > **쿠폰을 사용하지 않고 결제를 진행합니다.**
-                                    > **포인트를 사용하시겠습니까?**
-                                                                      
+                                    > **포인트를 사용하지 않고 결제를 진행합니다.**
+                                    > **결제 수단을 선택해 주세요.**
+                                                                    
                                           """
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                             .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
-                    event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn.withLabel("아니오"), CANCEL_BUTTON).setEphemeral(true).queue();
+                    event.replyEmbeds(embed)
+                            .addActionRow(createPaymentMethodSelectMenu(
+                                    false /* productMap.get(userId).getType() != ProductType.PREMIUM_RESOURCE */
+                            ))
+                            .addActionRow(CANCEL_BUTTON)
+                            .setEphemeral(true)
+                            .queue();
+                }
+
+                case ID_PREFIX + "coupon-yes" -> {
+                    if (!productMap.containsKey(userId)) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **진행 중인 거래가 존재하지 않습니다.**
+                                        > **처음부터 다시 시도해 주세요.**
+                                                                                                                      
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).setEphemeral(true).queue();
+
+                        stopSession(userId);
+                        return;
+                    } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                                   
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).setEphemeral(true).queue();
+
+                        stopSession(userId);
+                        return;
+                    }
+
+                    TextInput couponInput = TextInput.create("code", "쿠폰", TextInputStyle.SHORT)
+                            .setPlaceholder("쿠폰 코드를 입력해주세요.")
+                            .setRequired(true)
+                            .build();
+                    Modal modal = Modal.create(ID_PREFIX + "coupon", "쿠폰 할인")
+                            .addActionRow(couponInput)
+                            .build();
+                    event.replyModal(modal).queue();
+                }
+
+                case ID_PREFIX + "coupon-no" -> {
+                    if (!productMap.containsKey(userId)) {
+
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **진행 중인 거래가 존재하지 않습니다.**
+                                        > **처음부터 다시 시도해 주세요.**
+                                                                                                                      
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).setEphemeral(true).queue();
+
+                        stopSession(userId);
+                        return;
+                    } else if (couponMap.containsKey(userId) || pointMap.containsKey(userId)) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
+                                .setDescription("""
+                                        > **데이터가 변조되었습니다. (거래를 취소합니다.)**
+                                                                                                                   
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).setEphemeral(true).queue();
+
+                        stopSession(userId);
+                        return;
+                    }
+
+                    UserService userService = DatabaseManager.getUserService();
+                    User user = userService.getDataByDiscordId(userId);
+                    int point = user.point();
+
+                    Button withoutPointBtn = Button.secondary(ID_PREFIX + "point-no", "포인트 없이 진행");
+
+                    if (point == 0) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                        > **보유 중인 포인트가 없습니다..**
+                                        > **포인트를 사용하지 않고 결제를 진행합니다.**
+                                        > **계속하시겠습니까?**                                         
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).addActionRow(withoutPointBtn, CANCEL_BUTTON).setEphemeral(true).queue();
+                    } else if (point < POINT_USE_MINIMUM) {
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR)
+                                .setTitle("제목")
+                                .setDescription("보유중인 포인트가 %d 이하이므로 쿠폰, 포인트를 모두 사용하지 않고 결제를 진행합니다.\n(최소 사용금액 미달로 인한 적용 불가능)\n\n계속하시겠습니까?".formatted(POINT_USE_MINIMUM))
+                                .build();
+                        event.replyEmbeds(embed)
+                                .addActionRow(withoutPointBtn, CANCEL_BUTTON)
+                                .setEphemeral(true)
+                                .queue();
+                    } else {
+                        Button withPointBtn = Button.primary(ID_PREFIX + "point-yes", "예");
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setColor(EMBED_COLOR_ERROR)
+                                .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
+                                .setDescription("""
+                                        > **쿠폰을 사용하지 않고 결제를 진행합니다.**
+                                        > **포인트를 사용하시겠습니까?**
+                                                                          
+                                              """
+                                )
+                                .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                                .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                                .build();
+                        event.replyEmbeds(embed).addActionRow(withPointBtn, withoutPointBtn.withLabel("아니오"), CANCEL_BUTTON).setEphemeral(true).queue();
+                    }
                 }
             }
         }
