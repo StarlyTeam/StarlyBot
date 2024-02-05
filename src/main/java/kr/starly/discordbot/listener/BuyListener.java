@@ -519,7 +519,6 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
             MessageEmbed receipt = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
-                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                     .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             requestedBy
@@ -1613,7 +1612,6 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 영수증 | 스탈리 <a:loading:1168266572847128709>")
                         .setDescription("[매출전표](" + payment.getReceiptUrl() + ")")
-                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.getJDA().getUserById(payment.getRequestedBy())
