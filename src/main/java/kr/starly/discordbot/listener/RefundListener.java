@@ -26,6 +26,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.LayoutComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
@@ -95,6 +96,17 @@ public class RefundListener extends ListenerAdapter {
 
         PaymentService paymentService = DatabaseManager.getPaymentService();
         Payment payment = paymentService.getDataByPaymentId(paymentId.replace("_", "-"));
+        if (payment.isRefunded() || payment.getRefundedAt() != null) {
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(EMBED_COLOR_ERROR)
+                    .setTitle("<a:cross:1058939340505497650> 오류 | 환불 <a:cross:1058939340505497650>")
+                    .setDescription("> **이미 승인이 완료되었습니다.**")
+                    .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
+                    .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                    .build();
+            event.replyEmbeds(embed).setEphemeral(true).queue();
+            return;
+        }
 
         if (isAccepted) {
             payment.updateRefundedAt(new Date());
@@ -196,6 +208,14 @@ public class RefundListener extends ListenerAdapter {
 
                     event.getChannel().sendMessageEmbeds(embed3).queue();
                 });
+
+        // 컴포넌트 전체 비활성화
+        event.getMessage().editMessageComponents(
+                event.getMessage()
+                        .getComponents().stream()
+                        .map(LayoutComponent::asDisabled)
+                        .toList()
+        ).queue();
     }
 
     // MODAL
