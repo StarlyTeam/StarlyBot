@@ -20,7 +20,7 @@ public class MongoCouponRedeemRepository implements CouponRedeemRepository {
 
     @Override
     public void put(CouponRedeem couponRedeem) {
-        Document filter = new Document("redeemId", couponRedeem.getRedeemId());
+        Document filter = new Document("redeemId", couponRedeem.getRedeemId().toString());
         Document document = couponRedeem.serialize();
 
         if (collection.find(filter).first() != null) {
