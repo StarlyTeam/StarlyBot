@@ -5,17 +5,16 @@ import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Ticket;
 import kr.starly.discordbot.entity.Warn;
 import kr.starly.discordbot.listener.BotEvent;
+import kr.starly.discordbot.manager.DiscordBotManager;
 import kr.starly.discordbot.repository.impl.TicketFileRepository;
 import kr.starly.discordbot.repository.impl.TicketModalFileRepository;
+import kr.starly.discordbot.service.BlacklistService;
 import kr.starly.discordbot.service.TicketService;
 import kr.starly.discordbot.service.WarnService;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -25,7 +24,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -138,9 +137,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
 
             long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-joke-", ""));
             User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
-
             Ticket ticketInfo = ticketService.findByChannel(ticketChannel.getIdLong());
-
             ticketService.recordTicket(
                     new Ticket(ticketUserId, 0, ticketChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
@@ -151,20 +148,42 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                         Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
                         warnService.saveData(warnInfo);
 
-                        MessageEmbed embed = new EmbedBuilder()
+                        MessageEmbed embed1 = new EmbedBuilder()
                                 .setColor(EMBED_COLOR_SUCCESS)
                                 .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
                                 .setDescription("""
                                         > **%s님에게 경고 %d회가 추가되었습니다.**
                                         > **사유: %s**
-                                        
                                         """
                                         .formatted(ticketUser.getAsMention(), warnInfo.amount(), warnInfo.reason())
                                 )
                                 .setThumbnail(ticketUser.getAvatarUrl())
                                 .build();
-                        event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed).queue();
-                        privateChannel.sendMessageEmbeds(embed).queue();
+
+                        if (warnService.getTotalWarn(ticketUser.getIdLong()) >= 3) {
+                            Guild guild = DiscordBotManager.getInstance().getGuild();
+                            guild.kick(ticketUser)
+                                    .reason("경고 3회 이상 누적")
+                                    .queueAfter(5, TimeUnit.SECONDS);
+
+                            BlacklistService blacklistService = DatabaseManager.getBlacklistService();
+                            blacklistService.saveData(ticketUser.getIdLong(), null, 0, "경고 3회 이상 누적");
+
+                            MessageEmbed embed2 = new EmbedBuilder()
+                                    .setColor(EMBED_COLOR)
+                                    .setTitle("<a:success:1168266537262657626> 차단 완료 | 경고 <a:success:1168266537262657626>")
+                                    .setDescription("> **" + ticketUser.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.**\n" +
+                                            "> 사유 : 경고 3회 이상 누적")
+                                    .setThumbnail(ticketUser.getAvatarUrl())
+                                    .build();
+
+                            event.replyEmbeds(embed1, embed2).queue();
+                            event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1, embed2).queue();
+                            privateChannel.sendMessageEmbeds(embed1, embed2).queue();
+                        } else {
+                            event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1).queue();
+                            privateChannel.sendMessageEmbeds(embed1).queue();
+                        }
                     });
 
             ticketModalFileRepository.delete(ticketService.findByDiscordId(ticketUser.getIdLong()));

@@ -6,6 +6,7 @@ import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
 import kr.starly.discordbot.entity.Warn;
 import kr.starly.discordbot.manager.DiscordBotManager;
+import kr.starly.discordbot.service.BlacklistService;
 import kr.starly.discordbot.service.WarnService;
 import kr.starly.discordbot.util.security.PermissionUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -100,8 +101,6 @@ public class WarnCommand implements DiscordSlashCommand {
                         .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
                         .setDescription("""
                                         > **%s님에게 경고 %d회가 추가되었습니다.**
-                                        
-                                        ─────────────────────────────────────────────────
                                         > **사유: %s**
                                         """
                                 .formatted(target.getAsMention(), amount, reason)
@@ -128,9 +127,12 @@ public class WarnCommand implements DiscordSlashCommand {
 
                 if (warnService.getTotalWarn(target.getIdLong()) >= 3) {
                     Guild guild = DiscordBotManager.getInstance().getGuild();
-                    guild.ban(target, 5, TimeUnit.SECONDS)
-                            .reason(reason)
-                            .queue();
+                    guild.kick(target)
+                            .reason("경고 3회 이상 누적")
+                            .queueAfter(5, TimeUnit.SECONDS);
+
+                    BlacklistService blacklistService = DatabaseManager.getBlacklistService();
+                    blacklistService.saveData(target.getIdLong(), null, 0, "경고 3회 이상 누적");
 
                     MessageEmbed embed3 = new EmbedBuilder()
                             .setColor(EMBED_COLOR)
