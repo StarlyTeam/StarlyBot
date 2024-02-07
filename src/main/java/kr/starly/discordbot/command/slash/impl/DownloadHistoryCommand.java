@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 @BotSlashCommand(
@@ -53,26 +54,25 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
         } else {
             downloads = downloadService.getAllData();
         }
-        downloads.subList(Math.max(0, downloads.size() - 50), downloads.size());
 
-        StringBuilder list = new StringBuilder();
+        downloads.subList(Math.max(0, downloads.size() - 50), downloads.size());
+        Collections.reverse(downloads);
+
+        StringBuilder description = new StringBuilder();
         if (downloads.isEmpty()) {
-            list
+            description
                     .append("없음")
                     .append("\n");
         } else {
-            list.append("| 유저 | 일시 | 플러그인 | 버전1 | 버전2 |");
+            description.append("| 일시 | 플러그인 |\n");
 
             for (Download download : downloads) {
                 PluginFile pluginFile = download.getPluginFile();
 
-                list
-                        .append("| %s | %s | %s | %s | %s |".formatted(
-                                download.getUserId(),
-                                DATE_FORMAT.format(download.getUsedAt()),
-                                pluginFile.getPlugin().getENName(),
-                                pluginFile.getVersion(),
-                                pluginFile.getMcVersion()
+                description
+                        .append("| %s | %s |".formatted(
+                                download.getUsedAt() == null ? "없음" : DATE_FORMAT.format(download.getUsedAt()),
+                                pluginFile.getPlugin().getENName() + "-" + pluginFile.getMcVersion() + "-" + pluginFile.getVersion()
                         ))
                         .append("\n");
             }
@@ -85,7 +85,7 @@ public class DownloadHistoryCommand implements DiscordSlashCommand {
                         .setDescription("""
                                 ```
                                 %s```
-                                """.formatted(list.toString()))
+                                """.formatted(description.substring(0, Math.min(description.length(), 4085))))
                         .build()
         ).queue();
     }
