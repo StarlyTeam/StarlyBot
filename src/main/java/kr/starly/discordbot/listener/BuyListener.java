@@ -1971,14 +1971,14 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
         }
 
         // 역할 지급
-        if (product.getType() == ProductType.PREMIUM_RESOURCE) {
-            Guild guild = DiscordBotManager.getInstance().getGuild();
-            Role buyerRole = guild.getRoleById(configProvider.getString("BUYER_ROLE_ID"));
+        Guild guild = DiscordBotManager.getInstance().getGuild();
+        Role buyerRole = guild.getRoleById(configProvider.getString("BUYER_ROLE_ID"));
+        guild.addRoleToMember(UserSnowflake.fromId(userId), buyerRole).queue();
 
+        if (product.getType() == ProductType.PREMIUM_RESOURCE) {
             Plugin plugin = product.asPremiumPlugin().getPlugin();
             Role pluginBuyerRole = guild.getRoleById(plugin.getBuyerRole());
 
-            guild.addRoleToMember(UserSnowflake.fromId(userId), buyerRole).queue();
             guild.addRoleToMember(UserSnowflake.fromId(userId), pluginBuyerRole).queue();
         }
 
@@ -2013,6 +2013,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
 
         // 랭크 지급
         PaymentService paymentService = DatabaseManager.getPaymentService();
+        Rank rank2 = RankRepository.getInstance().getRank(2);
         Rank rank3 = RankRepository.getInstance().getRank(3);
         Rank rank4 = RankRepository.getInstance().getRank(4);
         Rank rank5 = RankRepository.getInstance().getRank(5);
@@ -2027,5 +2028,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
         if (totalPrice >= 3000000 && !userRanks.contains(rank5)) {
             RankUtil.giveRank(userId, rank5);
         }
+
+        RankUtil.giveRank(userId, rank2);
     }
 }

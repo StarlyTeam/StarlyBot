@@ -58,10 +58,9 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             }
 
             String userId = event.getComponentId().replace("ticket-close", "");
-            User user = ticketChannel.getJDA().getUserById(userId);
 
-            Button closeButtonCheck = Button.primary("ticket-check-twice-close-" + user.getId(), "확인");
-            Button closeButtonJoke = Button.danger("ticket-check-joke-" + user.getId(), "장난 티켓");
+            Button closeButtonCheck = Button.primary("ticket-check-twice-close-" + userId, "확인");
+            Button closeButtonJoke = Button.danger("ticket-check-joke-" + userId, "장난 티켓");
 
             event.getInteraction().editComponents(ActionRow.of(closeButtonCheck, closeButtonJoke)).queue();
             return;
@@ -74,7 +73,6 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             }
 
             long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-twice-close-", ""));
-            User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
 
             MessageEmbed embed1 = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
@@ -99,11 +97,14 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     .addOption("매우 불만족", "ticket-rate-1", "", Emoji.fromUnicode("\uD83D\uDE21"))
                     .build();
 
-            ticketUser
-                    .openPrivateChannel().complete()
-                    .sendMessageEmbeds(embed1)
-                    .addComponents(ActionRow.of(rateSelectMenu))
-                    .queue(null, (ignored) -> {});
+            User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
+            if (ticketUser != null) {
+                ticketUser
+                        .openPrivateChannel().complete()
+                        .sendMessageEmbeds(embed1)
+                        .addComponents(ActionRow.of(rateSelectMenu))
+                        .queue(null, (ignored) -> {});
+            }
 
             Ticket ticketInfo = ticketService.findByChannel(ticketChannel.getIdLong());
 
@@ -136,55 +137,59 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
             }
 
             long ticketUserId = Long.valueOf(event.getComponentId().replace("ticket-check-joke-", ""));
-            User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
             Ticket ticketInfo = ticketService.findByChannel(ticketChannel.getIdLong());
             ticketService.recordTicket(
                     new Ticket(ticketUserId, 0, ticketChannel.getIdLong(), ticketInfo.ticketType(), ticketInfo.index())
             );
 
-            ticketUser
-                    .openPrivateChannel()
-                    .queue(privateChannel -> {
-                        Warn warnInfo = new Warn(ticketUser.getIdLong(), event.getUser().getIdLong(), "장난 티켓", 1, new Date());
-                        warnService.saveData(warnInfo);
+            Warn warnInfo = new Warn(ticketUserId, event.getUser().getIdLong(), "장난 티켓", 1, new Date());
+            warnService.saveData(warnInfo);
 
-                        MessageEmbed embed1 = new EmbedBuilder()
-                                .setColor(EMBED_COLOR_SUCCESS)
-                                .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
-                                .setDescription("""
+            if (warnService.getTotalWarn(ticketUserId) >= 3) {
+                Guild guild = DiscordBotManager.getInstance().getGuild();
+                guild.kick(UserSnowflake.fromId(ticketUserId))
+                        .reason("경고 3회 이상 누적")
+                        .queueAfter(5, TimeUnit.SECONDS);
+
+                BlacklistService blacklistService = DatabaseManager.getBlacklistService();
+                blacklistService.saveData(ticketUserId, null, 0, "경고 3회 이상 누적");
+            }
+
+            User ticketUser = ticketChannel.getJDA().getUserById(ticketUserId);
+            if (ticketUser != null) {
+                ticketUser
+                        .openPrivateChannel()
+                        .queue(privateChannel -> {
+                            MessageEmbed embed1 = new EmbedBuilder()
+                                    .setColor(EMBED_COLOR_SUCCESS)
+                                    .setTitle("<a:warn:1168266548541145298> 경고 알림 <a:warn:1168266548541145298>")
+                                    .setDescription("""
                                         > **%s님에게 경고 %d회가 추가되었습니다.**
                                         > **사유: %s**
                                         """
-                                        .formatted(ticketUser.getAsMention(), warnInfo.amount(), warnInfo.reason())
-                                )
-                                .setThumbnail(ticketUser.getAvatarUrl())
-                                .build();
-
-                        if (warnService.getTotalWarn(ticketUser.getIdLong()) >= 3) {
-                            Guild guild = DiscordBotManager.getInstance().getGuild();
-                            guild.kick(ticketUser)
-                                    .reason("경고 3회 이상 누적")
-                                    .queueAfter(5, TimeUnit.SECONDS);
-
-                            BlacklistService blacklistService = DatabaseManager.getBlacklistService();
-                            blacklistService.saveData(ticketUser.getIdLong(), null, 0, "경고 3회 이상 누적");
-
-                            MessageEmbed embed2 = new EmbedBuilder()
-                                    .setColor(EMBED_COLOR)
-                                    .setTitle("<a:success:1168266537262657626> 차단 완료 | 경고 <a:success:1168266537262657626>")
-                                    .setDescription("> **" + ticketUser.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.**\n" +
-                                            "> 사유 : 경고 3회 이상 누적")
+                                            .formatted(ticketUser.getAsMention(), warnInfo.amount(), warnInfo.reason())
+                                    )
                                     .setThumbnail(ticketUser.getAvatarUrl())
                                     .build();
 
-                            event.replyEmbeds(embed1, embed2).queue();
-                            event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1, embed2).queue();
-                            privateChannel.sendMessageEmbeds(embed1, embed2).queue();
-                        } else {
-                            event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1).queue();
-                            privateChannel.sendMessageEmbeds(embed1).queue();
-                        }
-                    });
+                            if (warnService.getTotalWarn(ticketUser.getIdLong()) >= 3) {
+                                MessageEmbed embed2 = new EmbedBuilder()
+                                        .setColor(EMBED_COLOR)
+                                        .setTitle("<a:success:1168266537262657626> 차단 완료 | 경고 <a:success:1168266537262657626>")
+                                        .setDescription("> **" + ticketUser.getAsMention() + " 님을 성공적으로 차단처리 하였습니다.**\n" +
+                                                "> 사유 : 경고 3회 이상 누적")
+                                        .setThumbnail(ticketUser.getAvatarUrl())
+                                        .build();
+
+                                event.replyEmbeds(embed1, embed2).queue();
+                                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1, embed2).queue();
+                                privateChannel.sendMessageEmbeds(embed1, embed2).queue();
+                            } else {
+                                event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1).queue();
+                                privateChannel.sendMessageEmbeds(embed1).queue();
+                            }
+                        });
+            }
 
             ticketModalFileRepository.delete(ticketService.findByDiscordId(ticketUser.getIdLong()));
 
