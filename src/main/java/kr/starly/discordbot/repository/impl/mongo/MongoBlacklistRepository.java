@@ -23,6 +23,7 @@ public class MongoBlacklistRepository implements BlacklistRepository {
 
         Document document = new Document();
         document.put("userId", blacklist.userId());
+        document.put("ipAddress", blacklist.ipAddress());
         document.put("moderatorId", blacklist.moderatorId());
         document.put("reason", blacklist.reason());
         document.put("listedAt", blacklist.listedAt());
