@@ -185,14 +185,14 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                                 event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1, embed2).queue();
                                 privateChannel.sendMessageEmbeds(embed1, embed2).queue();
                             } else {
+                                event.replyEmbeds(embed1).queue();
                                 event.getJDA().getTextChannelById(WARN_CHANNEL_ID).sendMessageEmbeds(embed1).queue();
                                 privateChannel.sendMessageEmbeds(embed1).queue();
                             }
                         });
             }
 
-            ticketModalFileRepository.delete(ticketService.findByDiscordId(ticketUser.getIdLong()));
-
+            ticketModalFileRepository.delete(ticketService.findByDiscordId(ticketUserId));
             event.getChannel().delete().queue();
         }
     }
