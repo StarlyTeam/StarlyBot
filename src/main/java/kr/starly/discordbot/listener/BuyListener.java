@@ -527,7 +527,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             ```
                             주소: 경기도 남양주시 다산동 4002-1
                             대표: 호예준
-                            사업자 번호: 행정 처리중
+                            사업자 번호: 362-43-01146
                             이메일: hyjcompany30@naver.com
                             홈페이지: https://starly.kr/discord
                             ======================================
@@ -1620,7 +1620,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 ```
                                 주소: 경기도 남양주시 다산동 4002-1
                                 대표: 호예준
-                                사업자 번호: 행정 처리중
+                                사업자 번호: 362-43-01146
                                 이메일: hyjcompany30@naver.com
                                 홈페이지: https://starly.kr/
                                 ======================================
