@@ -83,7 +83,7 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
         verifyService.saveData(verify);
 
         MessageEmbed embed = new EmbedBuilder()
-                .setColor(EMBED_COLOR_ERROR)
+                .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 수동인증 <a:success:1168266537262657626>")
                 .setDescription("> **해당 유저의 인증이 완료되었습니다.**")
                 .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
