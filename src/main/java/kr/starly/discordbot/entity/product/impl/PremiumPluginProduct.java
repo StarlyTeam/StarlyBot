@@ -12,7 +12,7 @@ public class PremiumPluginProduct extends Product {
     private final Plugin plugin;
 
     public PremiumPluginProduct(Plugin plugin, String summary) {
-        super(plugin.getPrice(), summary);
+        super(plugin == null ? -1 : plugin.getPrice(), summary);
 
         this.plugin = plugin;
     }
