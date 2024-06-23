@@ -25,7 +25,7 @@ public abstract class Product {
             Plugin plugin = this1.getPlugin();
             return plugin.getKRName() + "(" + plugin.getENName() + ")";
         } else if (this instanceof OutSourcingProduct this1) {
-            return this1.getName();
+            return this1.getProjectName();
         } else if (this instanceof CustomPriceProduct this1) {
             return this1.getOrderName();
         } else return null;
