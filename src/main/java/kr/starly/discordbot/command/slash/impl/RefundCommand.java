@@ -33,7 +33,7 @@ import java.util.List;
         description = "결제건을 환불처리합니다.",
         optionName = {"거래id"},
         optionType = {OptionType.STRING},
-        optionDescription = {"환불처리를 할 거래의 ID를 입력해 주세요."},
+        optionDescription = {"환불처리를 할 거래의 ID를 입력해주세요."},
         optionRequired = {true}
 )
 public class RefundCommand implements DiscordSlashCommand {
@@ -154,7 +154,7 @@ public class RefundCommand implements DiscordSlashCommand {
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 입력 | 환불 <a:loading:1168266572847128709>")
                     .setDescription("""
-                            > **환불처리를 받기 위해 환불 계좌를 입력해 주세요.**
+                            > **환불처리를 받기 위해 환불 계좌를 입력해주세요.**
                                                                 
                             """
                     )

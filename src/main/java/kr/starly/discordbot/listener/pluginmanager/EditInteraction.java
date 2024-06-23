@@ -85,7 +85,7 @@ public class EditInteraction extends ListenerAdapter {
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                     .setDescription("""
-                            > **플러그인 파일을 첨부해 주세요.**
+                            > **플러그인 파일을 첨부해주세요.**
                                                         
                             ─────────────────────────────────────────────────
                             """
@@ -108,7 +108,7 @@ public class EditInteraction extends ListenerAdapter {
                     .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                     .setDescription("""
                             > **플러그인 파일을 모두 업로드하지 못했습니다.**
-                            > **다시 시도해 주세요.**
+                            > **다시 시도해주세요.**
                                                         
                             ─────────────────────────────────────────────────
                             """
@@ -175,7 +175,7 @@ public class EditInteraction extends ListenerAdapter {
         if (componentId.equals("plugin-management-action")) {
             if (selectedOption.equals("plugin-edit")) {
                 TextInput name = TextInput.create("name-en", "플러그인 이름 (영어)", TextInputStyle.SHORT)
-                        .setPlaceholder("수정할 플러그인의 영어 이름을 입력해 주세요.")
+                        .setPlaceholder("수정할 플러그인의 영어 이름을 입력해주세요.")
                         .setRequired(true)
                         .build();
 
@@ -273,7 +273,7 @@ public class EditInteraction extends ListenerAdapter {
                                 .setColor(EMBED_COLOR)
                                 .setTitle("<a:loading:1168266572847128709> 파일 업로드 | 플러그인 관리 <a:loading:1168266572847128709>")
                                 .setDescription("""
-                                        > **아래에 플러그인 파일을 첨부해 주세요.**
+                                        > **아래에 플러그인 파일을 첨부해주세요.**
                                                                     
                                         ─────────────────────────────────────────────────
                                     """
@@ -453,7 +453,7 @@ public class EditInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 수정 | 플러그인 관리 <a:loading:1168266572847128709>")
                         .setDescription("""
-                                > **수정할 내용을 아래에서 선택해 주세요.**
+                                > **수정할 내용을 아래에서 선택해주세요.**
                                 
                                 ─────────────────────────────────────────────────"""
                         )
@@ -606,7 +606,7 @@ public class EditInteraction extends ListenerAdapter {
                                         .setColor(EMBED_COLOR_ERROR)
                                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 관리 <a:loading:1168266572847128709>")
                                         .setDescription("""
-                                                > **올바른 이미지를 입력해 주세요.**
+                                                > **올바른 이미지를 입력해주세요.**
                                                 
                                                 ─────────────────────────────────────────────────
                                                 """
@@ -798,7 +798,7 @@ public class EditInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 액션 | 플러그인 관리 <a:loading:1168266572847128709>")
                         .setDescription("""
-                                    > **관리 액션을 아래에서 선택해 주세요.**
+                                    > **관리 액션을 아래에서 선택해주세요.**
                                                                 
                                     ─────────────────────────────────────────────────
                                     """
@@ -822,7 +822,7 @@ public class EditInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 수정 | 플러그인 관리 <a:loading:1168266572847128709>")
                         .setDescription("""
-                                    > **수정할 항목을 아래에서 선택해 주세요.**
+                                    > **수정할 항목을 아래에서 선택해주세요.**
                                                                 
                                     ─────────────────────────────────────────────────
                                     """

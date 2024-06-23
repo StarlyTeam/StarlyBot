@@ -30,7 +30,7 @@ public class PluginFileUtil {
 
             String[] fileNameSplit = fileName.replace("." + attachment.getFileExtension(), "").split("-");
             if (fileNameSplit.length != 2) {
-                uploadErrors.add("플러그인 파일명이 올바르지 않습니다. 파일명을 확인해 주세요. [" + fileName + "]");
+                uploadErrors.add("플러그인 파일명이 올바르지 않습니다. 파일명을 확인해주세요. [" + fileName + "]");
                 continue;
             }
 

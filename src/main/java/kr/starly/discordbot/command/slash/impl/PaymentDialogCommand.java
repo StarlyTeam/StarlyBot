@@ -70,7 +70,7 @@ public class PaymentDialogCommand implements DiscordSlashCommand {
                 .setColor(EMBED_COLOR)
                 .setTitle("<a:loading:1168266572847128709> 대기 | 결제창 <a:loading:1168266572847128709>")
                 .setDescription("""
-                        > **아래 `결제하기`버튼을 눌러 결제를 완료해 주세요.**
+                        > **아래 `결제하기`버튼을 눌러 결제를 완료해주세요.**
                         
                         > **상품명: %s**
                         > **결제 금액: %d**

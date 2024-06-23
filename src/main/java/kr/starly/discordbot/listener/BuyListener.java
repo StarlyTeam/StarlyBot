@@ -287,7 +287,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("""
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
-                                > **인증을 마치신 후 다시 시도해 주세요.**
+                                > **인증을 마치신 후 다시 시도해주세요.**
                                 """)
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
@@ -305,7 +305,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                         .setDescription("""
                                 > **상품을 구매하기 전 유저 인증을 마쳐야 합니다.**
-                                > **인증을 마치신 후 다시 시도해 주세요.**
+                                > **인증을 마치신 후 다시 시도해주세요.**
                                 """)
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")
                         .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/Starly/white.png")
@@ -770,7 +770,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                                 .setDescription("""
                                         > **진행 중인 거래가 존재하지 않습니다.**
-                                        > **처음부터 다시 시도해 주세요.**
+                                        > **처음부터 다시 시도해주세요.**
                                                                             
                                         """
                                 )
@@ -810,7 +810,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:loading:1168266572847128709> 대기 | 결제 <a:loading:1168266572847128709>")
                             .setDescription("""
                                     > **포인트를 사용하지 않고 결제를 진행합니다.**
-                                    > **결제 수단을 선택해 주세요.**
+                                    > **결제 수단을 선택해주세요.**
                                                                     
                                           """
                             )
@@ -833,7 +833,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                                 .setDescription("""
                                         > **진행 중인 거래가 존재하지 않습니다.**
-                                        > **처음부터 다시 시도해 주세요.**
+                                        > **처음부터 다시 시도해주세요.**
                                                                                                                       
                                               """
                                 )
@@ -880,7 +880,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                                 .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                                 .setDescription("""
                                         > **진행 중인 거래가 존재하지 않습니다.**
-                                        > **처음부터 다시 시도해 주세요.**
+                                        > **처음부터 다시 시도해주세요.**
                                                                                                                       
                                               """
                                 )
@@ -974,7 +974,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
+                                    > **처음부터 다시 시도해주세요.**
                                                                         
                                     """
                             )
@@ -1111,7 +1111,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                             .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
-                                    "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
+                                    "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n")
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                             .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                             .build();
@@ -1171,7 +1171,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
+                                    > **처음부터 다시 시도해주세요.**
                                                                         
                                     """
                             )
@@ -1332,7 +1332,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                             .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
-                                    "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
+                                    "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n")
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                             .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                             .build();
@@ -1350,7 +1350,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:success:1168266537262657626> 성공 | 결제 <a:success:1168266537262657626>")
                         .setDescription("""
                                 > **포인트(%s원)을 적용하였습니다.**
-                                > **결제 수단을 선택해 주세요.**
+                                > **결제 수단을 선택해주세요.**
                                                                     
                                 """.formatted(amount)
                         )
@@ -1377,7 +1377,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
+                                    > **처음부터 다시 시도해주세요.**
                                                                         
                                     """
                             )
@@ -1502,7 +1502,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **결제 정보 저장 도중 오류가 발생하였습니다.**
-                                    > **카드사에 비용이 청구되었을 수 있으니, 고객센터를 통하여 관리자에게 문의해 주세요.**
+                                    > **카드사에 비용이 청구되었을 수 있으니, 고객센터를 통하여 관리자에게 문의해주세요.**
                                                                         
                                     """
                             )
@@ -1543,7 +1543,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **상품 지급 도중 오류가 발생하였습니다.**
-                                    > **카드사에 비용이 청구되었을 수 있으니, 고객센터를 통하여 관리자에게 문의해 주세요.**
+                                    > **카드사에 비용이 청구되었을 수 있으니, 고객센터를 통하여 관리자에게 문의해주세요.**
                                                                         
                                     """
                             )
@@ -1685,7 +1685,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setTitle("<a:success:1168266537262657626> 결제가 완료되었습니다! <a:success:1168266537262657626>")
                         .setDescription("> **🥳 축하드려요! 결제가 성공적으로 완료되었습니다!**\n" +
                                 "> **또한, [여기를 클릭](" + payment.getReceiptUrl() + ")하면 영수증을 확인하실 수 있어요.**\n" +
-                                "> **정말 감사합니다! 🙏**\n\u1CBB")
+                                "> **정말 감사합니다! 🙏**\n")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -1705,7 +1705,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
+                                    > **처음부터 다시 시도해주세요.**
                                                                         
                                     """
                             )
@@ -1763,7 +1763,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                         .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
-                                "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
+                                "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                         .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                         .build();
@@ -1784,7 +1784,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                             .setTitle("<a:cross:1058939340505497650> 오류 | 결제 <a:cross:1058939340505497650>")
                             .setDescription("""
                                     > **진행 중인 거래가 존재하지 않습니다.**
-                                    > **처음부터 다시 시도해 주세요.**
+                                    > **처음부터 다시 시도해주세요.**
                                                                         
                                     """
                             )
@@ -1840,7 +1840,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                         .setColor(EMBED_COLOR_SUCCESS)
                         .setTitle("<a:success:1168266537262657626> 티켓 생성 완료! <a:success:1168266537262657626>")
                         .setDescription("> **🥳 축하드려요! 티켓이 성공적으로 생성되었습니다!** \n" +
-                                "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n\u1CBB")
+                                "> **" + ticketChannel.getAsMention() + " 곧 답변 드리겠습니다. 감사합니다! 🙏**\n")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                         .setFooter("빠르게 답변 드리겠습니다! 감사합니다! 🌟", "https://file.starly.kr/images/Logo/StarlyTicket/StarlyTicket_YELLOW.png")
                         .build();

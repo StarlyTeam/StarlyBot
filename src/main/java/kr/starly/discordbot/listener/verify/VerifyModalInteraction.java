@@ -33,11 +33,11 @@ public class VerifyModalInteraction extends ListenerAdapter {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
-                    .setTitle("<a:success:1168266537262657626> 유저인증 | 인증 단계를 완료해 주세요! <a:success:1168266537262657626>")
+                    .setTitle("<a:success:1168266537262657626> 유저인증 | 인증 단계를 완료해주세요! <a:success:1168266537262657626>")
                     .setDescription("""
-                            > **커뮤니티를 막힘 없이 이용하려면, 인증을 완료해 주세요! 😊**
-                            > **[여기를 클릭](%s)하여 인증을 완료해 주세요! 😊**
-                            > **🕒 주의: 30분 후에 링크가 만료됩니다. 빨리 인증해 주세요!**
+                            > **커뮤니티를 막힘 없이 이용하려면, 인증을 완료해주세요! 😊**
+                            > **[여기를 클릭](%s)하여 인증을 완료해주세요! 😊**
+                            > **🕒 주의: 30분 후에 링크가 만료됩니다. 빨리 인증해주세요!**
                             """.formatted(authLink)
                     )
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
@@ -50,10 +50,10 @@ public class VerifyModalInteraction extends ListenerAdapter {
                     .setTitle("<a:amount:1168266548541145298> 오류 | 유저인증 <a:amount:1168266548541145298>")
                     .setDescription("""
                             > **약관에 동의하지 않으셨습니다.**
-                            > **서비스 이용을 원하시면 약관에 동의해 주세요.**
+                            > **서비스 이용을 원하시면 약관에 동의해주세요.**
                             """)
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                    .setFooter("문제가 있으시면 관리자에게 연락해 주세요.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
+                    .setFooter("문제가 있으시면 관리자에게 연락해주세요.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
         }

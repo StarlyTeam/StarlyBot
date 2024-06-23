@@ -55,7 +55,7 @@ public class ManualTicketCommand implements DiscordSlashCommand {
                     .setTitle("<a:loading:1168266572847128709> 오류 | 수동티켓 <a:loading:1168266572847128709>")
                     .setDescription("> **해당 유저는 서버에 존재하지 않습니다.**")
                     .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
             return;
@@ -101,7 +101,7 @@ public class ManualTicketCommand implements DiscordSlashCommand {
                 .setTitle("<a:success:1168266537262657626> 성공 | 수동티켓 <a:success:1168266537262657626>")
                 .setDescription("> **해당 유저의 티켓 생성이 완료되었습니다.**")
                 .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                 .build();
         event.replyEmbeds(embed).queue();
     }

@@ -95,7 +95,7 @@ public class ShortenLinkCommand implements DiscordSlashCommand {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 단축링크 <a:loading:1168266572847128709>")
-                            .setDescription("> **원본링크, 단축링크 중 하나 이상은 입력해 주세요.**")
+                            .setDescription("> **원본링크, 단축링크 중 하나 이상은 입력해주세요.**")
                             .build();
                     event.replyEmbeds(embed).queue();
                     return;

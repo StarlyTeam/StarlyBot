@@ -78,7 +78,7 @@ public class TicketManagerButtonInteraction extends ListenerAdapter {
                     .setColor(EMBED_COLOR)
                     .setTitle(" <a:loading:1168266572847128709> 평가하기 | 고객센터 <a:loading:1168266572847128709>")
                     .setDescription("""
-                            > **상담이 도움 되셨나요? 아래 별점을 통해 평가해 주세요.**
+                            > **상담이 도움 되셨나요? 아래 별점을 통해 평가해주세요.**
                             
                             ─────────────────────────────────────────────────
                             """

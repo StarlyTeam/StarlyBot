@@ -59,7 +59,7 @@ public class RankUtil {
                                     .formatted(codeStr)
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                             .build();
 
                     user1.openPrivateChannel()
@@ -88,7 +88,7 @@ public class RankUtil {
                 .setDescription("> **랭크가 %s(으)로 상승하였습니다.**".formatted(rank.getName())
                 )
                 .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                 .build();
         user1.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))
@@ -140,7 +140,7 @@ public class RankUtil {
                 .setTitle("제목")
                 .setDescription("> **%s 랭크를 잃었습니다.**".formatted(rank.getName()))
                 .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                 .build();
         user1.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessageEmbeds(embed))

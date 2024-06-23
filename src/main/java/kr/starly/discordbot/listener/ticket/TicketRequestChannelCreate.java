@@ -80,137 +80,26 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         MessageEmbed embed = null;
 
         switch (ticketType) {
-            case GENERAL -> {
-                String title = data.get(0);
-                String description = data.get(1);
-                embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("제목", "```" + title + "```", true)
-                        .addField("설명", "```" + description + "```", false)
-                        .build();
-
-                ticketModalFileRepository.save(ticket,
-                        "제목: " + title + "\n" +
-                                "본문: " + description);
-            }
-
-            case OTHER_ERROR -> {
-                String title = data.get(0);
-                String description = data.get(1);
-                String tag = data.get(2);
-
-                embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("제목", "`" + title + "`", true)
-                        .addField("태그", "`" + tag + "`", true)
-                        .addField("설명", "```" + description + "```", false)
-                        .build();
-
-                ticketModalFileRepository.save(ticket,
-                        "제목: " + title + "\n" +
-                                "태그: " + tag + "\n" +
-                                "본문: " + description);
-            }
-
-            case CONSULTING -> {
-                String title = data.get(0);
-                String description = data.get(1);
-
-                String type = "네".equals(data.get(2)) && data.get(2) != null ? "통화" : "채팅";
-
-                embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("제목", "`" + title + "`", true)
-                        .addField("통화 여부", "`" + type + "`", true)
-                        .addField("설명", "```" + description + "```", false)
-                        .build();
-
-                ticketModalFileRepository.save(ticket,
-                        "제목: " + title + "\n" +
-                                "본문: " + description);
-
-            }
-
-            case PLUGIN_ERROR -> {
-                String version = data.get(0);
-                String bukkit = data.get(1);
-                String description = data.get(2);
-
-                ticketModalFileRepository.save(ticket,
-                        "버전: " + version + "\n" +
-                                "본문: " + description
-                );
-
-                File file = ticketModalFileRepository.getFile(ticket);
-
-                MessageEmbed descriptionEmbed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("버전", "`" + version + "`", true)
-                        .addField("버킷", "`" + bukkit + "`", true)
-                        .addField("설명", "```" + description + "```", false)
-                        .build();
-
-                FileUpload fileUpload = FileUpload.fromData(file);
-
-                textChannel.sendMessageEmbeds(descriptionEmbed).queue();
-                textChannel.sendFiles(fileUpload).queue();
-                textChannel.sendMessageComponents(ActionRow.of(button)).queue();
-
-                ticketModalDataRepository.removeModalData(channelId);
-                return;
-            }
-
-            case PUNISHMENT -> {
+            case GENERAL, PUNISHMENT -> {
                 embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
                         .addField("제목", "```" + data.get(0) + "```", true)
                         .addField("설명", "```" + data.get(1) + "```", false)
                         .build();
-
-                ticketModalDataRepository.removeModalData(channelId);
             }
 
             case PAYMENT -> {
                 embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("제목", "```" + data.get(0) + "```", true)
-                        .addField("설명", "```" + data.get(1) + "```", false)
-                        .addField("종류", "```" + data.get(2) + "```", false)
-                        .build();
-
-                ticketModalDataRepository.removeModalData(channelId);
-            }
-
-            case QUESTION -> {
-                embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("제목", "`" + data.get(0) + "`", true)
-                        .addField("사유", "`" + data.get(2) + "`", true)
-                        .addField("내용", "```" + data.get(1) + "```", false)
-                        .build();
-            }
-
-            case OTHER -> {
-                embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 알림 | 고객센터 <a:loading:1168266572847128709>")
-                        .addField("제목", "```" + data.get(0) + "```", true)
+                        .addField("종류", "```" + data.get(0) + "```", true)
                         .addField("설명", "```" + data.get(1) + "```", false)
                         .build();
-
-                ticketModalDataRepository.removeModalData(channelId);
             }
         }
 
         textChannel.sendMessageEmbeds(embed).addActionRow(button).queue();
-
         textChannel.sendMessage(event.getJDA().getRoleById(ADMIN_ROLE).getAsMention())
                 .setAllowedMentions(EnumSet.of(Message.MentionType.ROLE))
                 .mentionRoles(ADMIN_ROLE)

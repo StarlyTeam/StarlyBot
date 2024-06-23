@@ -48,7 +48,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
-                    .setDescription("> **조회 조건은 하나만 선택해 주세요.**")
+                    .setDescription("> **조회 조건은 하나만 선택해주세요.**")
                     .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).queue();
@@ -59,7 +59,7 @@ public class PaymentHistoryCommand implements DiscordSlashCommand {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 오류 | 거래내역 <a:loading:1168266572847128709>")
-                        .setDescription("> **거래 ID를 다시 확인해 주세요.**")
+                        .setDescription("> **거래 ID를 다시 확인해주세요.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).queue();

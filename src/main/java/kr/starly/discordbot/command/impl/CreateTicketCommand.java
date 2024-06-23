@@ -34,34 +34,18 @@ public class CreateTicketCommand implements DiscordCommand {
         event.getMessage().delete().queue();
 
         StringSelectMenu stringSelectMenu = StringSelectMenu.create("ticket-select-category")
-                .setPlaceholder("원하시는 상담 카테고리를 선택해 주세요.")
+                .setPlaceholder("원하시는 상담 카테고리를 선택해주세요.")
                 .addOptions(SelectOption.of("일반 문의", "general")
-                        .withDescription("서비스에 대한 일반적인 문의사항을 전달해 주세요.")
-                        .withEmoji(Emoji.fromUnicode("ℹ\uFE0F")))
-
-                .addOptions(SelectOption.of("제품 질문", "question")
-                        .withDescription("제품이나 서비스에 대한 궁금한 점을 알려주세요.")
-                        .withEmoji(Emoji.fromUnicode("❓")))
-
-                .addOptions(SelectOption.of("맞춤 상담", "consulting")
-                        .withDescription("개인 맞춤형 조언이나 지원을 원하시면 선택해 주세요.")
-                        .withEmoji(Emoji.fromUnicode("\uD83D\uDDE3\uFE0F")))
+                        .withDescription("서비스 및 주문제작")
+                        .withEmoji(Emoji.fromUnicode("ℹ️")))
 
                 .addOptions(SelectOption.of("결제 문의", "payment")
-                        .withDescription("결제, 환불, 청구 등에 대한 문의사항을 보내주세요.")
-                        .withEmoji(Emoji.fromUnicode("\uD83D\uDCB3")))
+                        .withDescription("결제, 환불, 청구")
+                        .withEmoji(Emoji.fromUnicode("💳")))
 
                 .addOptions(SelectOption.of("서비스 제한 문의", "punishment")
-                        .withDescription("계정이나 서비스의 제한 관련 문의를 해 주세요.")
-                        .withEmoji(Emoji.fromUnicode("\uD83D\uDCCE")))
-
-                .addOptions(SelectOption.of("버그 보고", "error")
-                        .withDescription("시스템에 발견된 오류나 버그에 대해 알려주세요.")
-                        .withEmoji(Emoji.fromUnicode("\uD83D\uDC1E")))
-
-                .addOptions(SelectOption.of("기타 문의", "other")
-                        .withDescription("기타 분류에 속하지 않는 문의사항을 보내주세요.")
-                        .withEmoji(Emoji.fromUnicode("\uD83D\uDEAB")))
+                        .withDescription("계정 및 서비스의 제한")
+                        .withEmoji(Emoji.fromUnicode("📎")))
                 .build();
 
         MessageEmbed embed = new EmbedBuilder()
@@ -73,7 +57,7 @@ public class CreateTicketCommand implements DiscordCommand {
                         
                         ─────────────────────────────────────────────────
                         > **`\uD83D\uDC5F` 모든 문의는 신속하고 친절하게 처리될 것입니다.**
-                        > **`\uD83E\uDDE8` 직원에게 폭언이나 성희롱을 할 경우 법적 처벌을 받을 수 있습니다.**
+                        > **`\uD83E\uDDE8` 직원에게 폭언이나 성희롱을 하실 경우, 법적 처벌을 받을 수 있습니다.**
                         > **`\uD83D\uDC9D` 스탈리에서 행복한 시간을 보내시길 바랍니다.**
                         """
                 )

@@ -35,36 +35,27 @@ public class CreateVerifyCommand implements DiscordCommand {
                 .setColor(EMBED_COLOR)
                 .setTitle("<a:success:1168266537262657626> 유저인증 | 스탈리 <a:success:1168266537262657626>")
                 .setDescription("""
-                        > **스탈리에 오신걸 환영합니다.**
-                        > **서버에 입장하기 전 아래 `인증하기` 버튼을 클릭해 주세요.**
+                        > **스탈리에 오신 것을 환영합니다.**
+                        > **서버에 입장하기 전 아래 `인증하기` 버튼을 클릭해주세요.**
 
                         ─────────────────────────────────────────────────
                         """
                 )
                 .addField("> <:notice:1168265600301277284> 필독 사항",
                         """
-                                **> 이용약관을 필독해 주세요.**
-                                **> 서버규칙을 필독해 주세요.**
-                                **> 불법적인 서버에서 활동 중이라면 지금 당장 퇴장해 주세요.**
-                                **> 디스코드 닉네임 또는 아이디를 적절하게 변경해 주세요. **\u1CBB""", true)
-                .addField("> <a:loading:1168266572847128709> 인증 오류",
-                        """
-                                **> 자신의 디스코드 계정에 전화번호가 추가되어있는지 확인해 보세요.**
-                                **> 30일 이내에 생성된 계정은 아닌지 확인해 보세요.**
-                                **> 블랙리스트 유저로 등재되지 않았는지 확인해 보세요.**""", true)
-                .addField("> <a:warn:1168266548541145298> 주의 사항",
-                        """
-                                **> 3일 이내에서 서버를 퇴장할 경우 다운로드가 금지됩니다.**
-                                **> 부계정 사용을 금지됩니다. **
-                                """, true)
+                                **> 이용약관을 필독해주세요.**
+                                **> 서버규칙을 필독해주세요.**
+                                **> 불법적인 서버에서 활동 중이라면 지금 당장 퇴장해주세요.**
+                                **> 디스코드 닉네임 또는 아이디를 적절하게 변경해주세요. **
+                                **> 부계정을 이용하지 말아주세요.**""", true)
                 .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                 .setFooter("인증시 위 내용에 동의한 것으로 간주됩니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                 .build();
 
         Button verify = Button.success("successVerify", "인증하기");
         Button help = Button.danger("helpVerify", "인증이 안되시나요?");
-        Button termsOfService = Button.primary("termsOfService", "이용약관");
-        Button serverRule = Button.primary("serverRule", "서버규칙");
+        Button termsOfService = Button.link("https://discord.com/channels/1038714452352192553/1168253041812701398", "이용약관");
+        Button serverRule = Button.link("https://discord.com/channels/1038714452352192553/1038741748941340732", "서버규칙");
         event.getChannel().sendMessageEmbeds(verifyEmbed).addActionRow(verify, help, termsOfService, serverRule).queue();
     }
 }

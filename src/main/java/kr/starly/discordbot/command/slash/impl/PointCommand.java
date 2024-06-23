@@ -60,10 +60,6 @@ import java.util.concurrent.atomic.AtomicInteger;
                         optionType = {OptionType.USER},
                         optionDescription = {"유저를 선택하세요."},
                         optionRequired = {true}
-                ),
-                @BotSlashCommand.SubCommand(
-                        name = "순위",
-                        description = "포인트 순위를 확인합니다."
                 )
         }
 )
@@ -140,36 +136,6 @@ public class PointCommand implements DiscordSlashCommand {
                         .setThumbnail(target.getAvatarUrl())
                         .build();
                 event.replyEmbeds(embed).queue();
-            }
-
-            case "순위" -> {
-                List<User> topUsers = DatabaseManager.getUserService().getTopUsersByPoints(10);
-                StringBuilder rankMessage = new StringBuilder();
-                AtomicInteger processedUsers = new AtomicInteger(0);
-
-                for (User user : topUsers) {
-                    event.getJDA().retrieveUserById(user.discordId()).queue(retrievedUser -> {
-                        if (retrievedUser != null) {
-                            rankMessage.append("> ")
-                                    .append("**")
-                                    .append(processedUsers.incrementAndGet())
-                                    .append(".")
-                                    .append(" <@" + user.discordId() + "> ")
-                                    .append(": ")
-                                    .append(user.point())
-                                    .append(" 포인트**\n");
-
-                            if (processedUsers.get() == topUsers.size()) {
-                                MessageEmbed topEmbed = new EmbedBuilder()
-                                        .setColor(EMBED_COLOR)
-                                        .setTitle("<a:loading:1168266572847128709> 순위 | 포인트 <a:loading:1168266572847128709>")
-                                        .setDescription(rankMessage)
-                                        .build();
-                                event.replyEmbeds(topEmbed).queue();
-                            }
-                        }
-                    });
-                }
             }
 
             default -> {

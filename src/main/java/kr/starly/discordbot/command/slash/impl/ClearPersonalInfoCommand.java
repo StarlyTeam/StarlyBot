@@ -58,7 +58,10 @@ public class ClearPersonalInfoCommand implements DiscordSlashCommand {
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
                 .setTitle("<a:success:1168266537262657626> 성공 | 개인정보삭제 <a:success:1168266537262657626>")
-                .setDescription("> **성공적으로 개인정보를 삭제했습니다. (블랙리스트, 경고 제외)**")
+                .setDescription("""
+                        > **성공적으로 `쿠폰 사용내역`, `다운로드 내역`, `결제 내역`, `티켓 내역`, `유저 정보`, `인증 내역`을 삭제했습니다.**
+                        > **단, 이용약관에 의거하여 `티켓 내화내역`, `처벌 내역`, `블랙리스트` 등은 삭제되지 않음을 유념하시기 바랍니다.**
+                        """)
                 .build();
         event.replyEmbeds(embed).queue();
     }

@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
                         description = "경고를 추가합니다.",
                         optionName = {"유저", "경고", "사유"},
                         optionType = {OptionType.USER, OptionType.INTEGER, OptionType.STRING},
-                        optionDescription = {"유저를 선택하세요.", "경고를 입력하세요.", "사유를 입력해 주세요."},
+                        optionDescription = {"유저를 선택하세요.", "경고를 입력하세요.", "사유를 입력해주세요."},
                         optionRequired = {true, true, true}
                 ),
                 @BotSlashCommand.SubCommand(
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
                         description = "경고를 제거합니다.",
                         optionName = {"유저", "경고", "사유"},
                         optionType = {OptionType.USER, OptionType.INTEGER, OptionType.STRING},
-                        optionDescription = {"유저를 선택하세요.", "경고를 입력하세요.", "사유를 입력해 주세요."},
+                        optionDescription = {"유저를 선택하세요.", "경고를 입력하세요.", "사유를 입력해주세요."},
                         optionRequired = {true, true, true}
                 ),
                 @BotSlashCommand.SubCommand(

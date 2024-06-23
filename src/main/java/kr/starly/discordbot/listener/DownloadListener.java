@@ -62,7 +62,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 다운로드 <a:loading:1168266572847128709>")
                         .setDescription("> **플러그인 구매 후에 다운로드가 가능합니다.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -82,7 +82,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 다운로드 <a:loading:1168266572847128709>")
                         .setDescription("> **지원되지 않는 마인크래프트 버전입니다.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -120,7 +120,7 @@ public class DownloadListener extends ListenerAdapter {
                             """
                     )
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                    .setFooter("항상 라이선스를 준수해 주셔서 감사합니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("항상 라이선스를 준수해주셔서 감사합니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
             Button button = Button.link(url, "다운로드");
             event.replyEmbeds(embed)
@@ -146,7 +146,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 다운로드 <a:loading:1168266572847128709>")
                         .setDescription("> **다운로드를 위해 인증 절차가 필요합니다.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -163,7 +163,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
                         .setDescription("> **다운로드를 위해 인증 절차가 필요합니다.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -180,7 +180,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
                         .setDescription("> **블랙리스트에 등록된 유저는 플러그인일 다운로드 할 수 없습니다.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -200,7 +200,7 @@ public class DownloadListener extends ListenerAdapter {
                         .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 <a:loading:1168266572847128709>")
                         .setDescription("> **플러그인을 구매하신 후에 다운로드가 가능합니다.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed)
                         .setEphemeral(true)
@@ -221,13 +221,13 @@ public class DownloadListener extends ListenerAdapter {
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 다운로드 | 플러그인 <a:loading:1168266572847128709>")
                     .setDescription("""
-                            > **사용하실 마인크래프트 버전을 선택해 주세요.**
+                            > **사용하실 마인크래프트 버전을 선택해주세요.**
                             
                             ─────────────────────────────────────────────────
                             """
                     )
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
-                    .setFooter("항상 라이선스를 준수해 주셔서 감사합니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
+                    .setFooter("항상 라이선스를 준수해주셔서 감사합니다.", "https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
                     .build();
             event.replyEmbeds(embed)
                     .addActionRow(selectOptionBuilder.build())

@@ -19,7 +19,6 @@ import java.awt.*;
 public class VerifyButtonInteraction extends ListenerAdapter {
 
     private final ConfigProvider configProvider = ConfigProvider.getInstance();
-    private final Color EMBED_COLOR = Color.decode(configProvider.getString("EMBED_COLOR"));
     private final Color EMBED_COLOR_ERROR = Color.decode(configProvider.getString("EMBED_COLOR_ERROR"));
 
     @Override
@@ -64,43 +63,20 @@ public class VerifyButtonInteraction extends ListenerAdapter {
                         .setTitle("<:notice:1168265600301277284> 유저인증 | 인증이 안되시나요? <:notice:1168265600301277284>")
                         .setDescription("""
                                 > **인증이 안 될 경우 아래 항목을 확인해보세요.**
-                                > **문제가 계속되면 관리자에게 DM으로 문의해 주세요.**
+                                > **문제가 계속되면 관리자에게 DM으로 문의해주세요.**
                                 
                                 ─────────────────────────────────────────────────
-                                > **`1️⃣` 계정 상태 (인증된 계정, 차단된 계정 등)를 확인하세요.**
+                                > **`1️⃣` 처벌내역이 존재하지 않은지 확인하세요.**
                                 > **`2️⃣` 인터넷 연결이 원활한지 확인하세요.**
-                                > **`3️⃣` 웹 브라우저의 캐시와 쿠키를 지우고 다시 시도해보세요.**
+                                > **`3️⃣` 웹 브라우저의 캐시와 쿠키를 삭제하세요.**
                                 > **`4️⃣` 사용 중인 브라우저 혹은 앱이 최신 버전인지 확인하세요.**
                                 > **`5️⃣` 방화벽이나 보안 프로그램이 인증을 차단하고 있지 않은지 확인하세요.**
-                                > **`6️⃣` 자신의 디스코드 계정에 전화번호가 추가되어있는지 확인하세요.**
-                                > **`7️⃣` 30일 이내에 생성된 계정인지 확인하세요.**
-                                > **`8️⃣` 디스코드 DM(Direct Message) 수신을 차단하였는지 확인하세요.**
-                                > **`9️⃣` 블랙리스트 유저일 경우 인증이 되지 않을 수 있습니다.**
+                                > **`6️⃣` 자신의 디스코드 계정에 전화번호가 인증 되어있는지 확인하세요.**
+                                > **`7️⃣` 30일 이내에 생성된 계정은 아닌지 확인하세요.**
+                                > **`8️⃣` 디스코드 DM 수신을 차단하지는 않았는지 확인하세요.**
                                 """)
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                         .setFooter("도움이 필요하시면 언제든지 관리자에게 문의하세요.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                        .build();
-                event.replyEmbeds(embed).setEphemeral(true).queue();
-            }
-
-            case "termsOfService" -> {
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 유저인증 | 이용약관 <a:loading:1168266572847128709>")
-                        .setDescription("> **이용약관은 <#1168253041812701398> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
-                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                        .setFooter("이용약관을 준수하지 않을 경우 서비스 이용이 제한될 수 있습니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                        .build();
-                event.replyEmbeds(embed).setEphemeral(true).queue();
-            }
-
-            case "serverRule" -> {
-                MessageEmbed embed = new EmbedBuilder()
-                        .setColor(EMBED_COLOR)
-                        .setTitle("<a:loading:1168266572847128709> 유저인증 | 서버규칙 <a:loading:1168266572847128709>")
-                        .setDescription("> **서버규칙은 <#1038741748941340732> 채널에서 확인하실 수 있으며, 클릭하면 해당 채널로 이동합니다.**\n\u1CBB")
-                        .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                        .setFooter("규칙을 위반할 경우 제재가 이루어질 수 있습니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                         .build();
                 event.replyEmbeds(embed).setEphemeral(true).queue();
             }

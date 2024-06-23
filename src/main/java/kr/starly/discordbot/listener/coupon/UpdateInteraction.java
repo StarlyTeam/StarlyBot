@@ -80,7 +80,7 @@ public class UpdateInteraction extends ListenerAdapter {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR)
                     .setTitle("<a:loading:1168266572847128709> 수정 | 쿠폰 <a:loading:1168266572847128709>")
-                    .setDescription("> **수정할 사용 조건을 선택해 주세요.**")
+                    .setDescription("> **수정할 사용 조건을 선택해주세요.**")
                     .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
             event.replyEmbeds(embed).addActionRow(add, delete, CANCEL_BUTTON).setEphemeral(true).queue();
@@ -477,7 +477,7 @@ public class UpdateInteraction extends ListenerAdapter {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 수정 | 쿠폰 <a:loading:1168266572847128709>")
-                        .setDescription("> **수정할 사용 조건을 선택해 주세요.**")
+                        .setDescription("> **수정할 사용 조건을 선택해주세요.**")
                         .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).addActionRow(createRequirementSelectMenu()).setEphemeral(true).queue();

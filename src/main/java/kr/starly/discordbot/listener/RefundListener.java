@@ -58,15 +58,15 @@ public class RefundListener extends ListenerAdapter {
             String paymentIdFromId = componentId.substring((ID_PREFIX + "start-").length());
 
             TextInput holder = TextInput.create("holder", "예금주명", TextInputStyle.SHORT)
-                    .setPlaceholder("환불계좌의 예금주명을 입력해 주세요.")
+                    .setPlaceholder("환불계좌의 예금주명을 입력해주세요.")
                     .setRequired(true)
                     .build();
             TextInput number = TextInput.create("number", "계좌번호", TextInputStyle.SHORT)
-                    .setPlaceholder("환불계좌의 계좌번호를 입력해 주세요.")
+                    .setPlaceholder("환불계좌의 계좌번호를 입력해주세요.")
                     .setRequired(true)
                     .build();
             TextInput bank = TextInput.create("bank", "계좌은행", TextInputStyle.SHORT)
-                    .setPlaceholder("환불계좌의 은행을 입력해 주세요.")
+                    .setPlaceholder("환불계좌의 은행을 입력해주세요.")
                     .setRequired(true)
                     .build();
 

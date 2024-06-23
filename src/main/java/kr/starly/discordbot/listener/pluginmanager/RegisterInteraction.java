@@ -95,7 +95,7 @@ public class RegisterInteraction extends ListenerAdapter {
                                 > **[ 등록 정보 ]**
                                 > **의존성 플러그인: %s**
                                                                 
-                                > **아래에 이모지를 입력해 주세요. (백틱 사이에 넣어주세요)**
+                                > **아래에 이모지를 입력해주세요. (백틱 사이에 넣어주세요)**
                                 > **예) `\uD83C\uDF20`**
                                 
                                 ─────────────────────────────────────────────────
@@ -118,7 +118,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
-                                    > **올바른 이모지를 입력해 주세요.**
+                                    > **올바른 이모지를 입력해주세요.**
                                     
                                     ─────────────────────────────────────────────────
                                     """)
@@ -133,7 +133,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
-                                    > **유니코드 이모지로만 설정하실 수 있습니다. (다시 시도해 주세요.)**
+                                    > **유니코드 이모지로만 설정하실 수 있습니다. (다시 시도해주세요.)**
                                     
                                     ─────────────────────────────────────────────────
                                     """)
@@ -151,7 +151,7 @@ public class RegisterInteraction extends ListenerAdapter {
                 sessionStatusMap.put(userId, RegisterStatus.SELECT_MANAGER);
 
                 SelectMenu managerSelectMenu = EntitySelectMenu.create(ID_PREFIX + "manager", EntitySelectMenu.SelectTarget.USER)
-                        .setPlaceholder("담당자를 선택해 주세요.")
+                        .setPlaceholder("담당자를 선택해주세요.")
                         .setRequiredRange(1, 10)
                         .build();
 
@@ -161,7 +161,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setDescription("""
                                 > **[ 등록 정보 ]**
                                 > **이모지: %s**
-                                > **아래에 플러그인 담당자를 선택해 주세요.**
+                                > **아래에 플러그인 담당자를 선택해주세요.**
                                 
                                 ─────────────────────────────────────────────────
                                 """
@@ -188,7 +188,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setTitle("<a:success:1168266537262657626> gif | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
                                 > **아이콘 이미지 설정을 완료하였습니다.**
-                                > **아래에 .gif 이미지 URL을 입력해 주세요. (Cloudflare Images)**
+                                > **아래에 .gif 이미지 URL을 입력해주세요. (Cloudflare Images)**
                                 
                                 ─────────────────────────────────────────────────
                                 """
@@ -211,7 +211,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setTitle("<a:success:1168266537262657626> 파일 | 플러그인 등록 <a:success:1168266537262657626>")
                         .setDescription("""
                                 > **.gif 이미지를 설정을 완료하였습니다.**
-                                > **아래에 플러그인 파일을 첨부해 주세요.**
+                                > **아래에 플러그인 파일을 첨부해주세요.**
                                 > **예) `v1_12-1.0.jar`, `v1_17-1.1.zip`**
                                 
                                 ─────────────────────────────────────────────────
@@ -228,7 +228,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
-                                    > **플러그인 파일을 첨부해 주세요.**
+                                    > **플러그인 파일을 첨부해주세요.**
                                     
                                     ─────────────────────────────────────────────────
                                     """)
@@ -249,7 +249,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setColor(EMBED_COLOR_ERROR)
                             .setTitle("<a:loading:1168266572847128709> 오류 | 플러그인 등록 <a:loading:1168266572847128709>")
                             .setDescription("""
-                                    > **플러그인 파일을 모두 업로드하지 못했습니다. (다시 시도해 주세요.)**
+                                    > **플러그인 파일을 모두 업로드하지 못했습니다. (다시 시도해주세요.)**
                                     > **%s**
                                     
                                     ─────────────────────────────────────────────────
@@ -342,7 +342,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setColor(EMBED_COLOR)
                         .setTitle("<a:loading:1168266572847128709> 플러그인 관리 | 스탈리 (관리자 전용) <a:loading:1168266572847128709>")
                         .setDescription("""
-                                    > **플러그인의 유형을 선택해 주세요.**\s
+                                    > **플러그인의 유형을 선택해주세요.**\s
                                     > **무료 또는 유료 중 원하는 타입을 선택하세요.**\s
 
                                     ─────────────────────────────────────────────────
@@ -353,7 +353,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .build();
 
                 StringSelectMenu registerSelectMenu = StringSelectMenu.create(ID_PREFIX + "type")
-                        .setPlaceholder("플러그인의 유형을 선택해 주세요.")
+                        .setPlaceholder("플러그인의 유형을 선택해주세요.")
                         .addOption("무료", "free", "무료로 사용할 수 있는 플러그인입니다.", Emoji.fromUnicode("🆓"))
                         .addOption("유료", "premium", "구매가 필요한 유료 플러그인입니다.", Emoji.fromUnicode("💰"))
                         .build();
@@ -371,31 +371,31 @@ public class RegisterInteraction extends ListenerAdapter {
             case ID_PREFIX + "type" -> {
                 boolean isPremium = selectedOptions.get(0).getValue().equals("premium");
                 TextInput ENName = TextInput.create("name-en", "플러그인 이름 (영문)", TextInputStyle.SHORT)
-                        .setPlaceholder("플러그인 이름을 영문으로 입력해 주세요.")
+                        .setPlaceholder("플러그인 이름을 영문으로 입력해주세요.")
                         .setMinLength(1)
                         .setMaxLength(25)
                         .setRequired(true)
                         .build();
                 TextInput KRName = TextInput.create("name-kr", "플러그인 이름 (한글)", TextInputStyle.SHORT)
-                        .setPlaceholder("플러그인 이름을 한글로 입력해 주세요.")
+                        .setPlaceholder("플러그인 이름을 한글로 입력해주세요.")
                         .setMinLength(1)
                         .setMaxLength(25)
                         .setRequired(true)
                         .build();
                 TextInput wikiUrl = TextInput.create("wiki-url", "위키 링크", TextInputStyle.SHORT)
-                        .setPlaceholder("위키 링크를 전체 주소로 입력해 주세요.")
+                        .setPlaceholder("위키 링크를 전체 주소로 입력해주세요.")
                         .setMinLength(1)
                         .setMaxLength(150)
                         .setRequired(true)
                         .build();
                 TextInput videoUrl = TextInput.create("video-url", "영상 링크 (선택)", TextInputStyle.SHORT)
-                        .setPlaceholder("영상 링크를 전체 주소로 입력해 주세요.")
+                        .setPlaceholder("영상 링크를 전체 주소로 입력해주세요.")
                         .setMinLength(0)
                         .setMaxLength(150)
                         .setRequired(false)
                         .build();
                 TextInput price = TextInput.create("price", "가격 (필수)", TextInputStyle.SHORT)
-                        .setPlaceholder("가격을 입력해 주세요.")
+                        .setPlaceholder("가격을 입력해주세요.")
                         .setMinLength(0)
                         .setMaxLength(10)
                         .setRequired(true)
@@ -463,7 +463,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setDescription(
                                     "> **[ 등록 정보 ]**\n" +
                                     "> **담당자: " + managerMention + "**\n\n" +
-                                    "> **아래에 구매자 역할을 선택해 주세요.**\n\n" +
+                                    "> **아래에 구매자 역할을 선택해주세요.**\n\n" +
                                     "─────────────────────────────────────────────────"
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
@@ -482,7 +482,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             .setDescription(
                                     "> **[ 등록 정보 ]**\n" +
                                     "> **담당자: " + managerMention + "**\n\n" +
-                                    "> **아래에 아이콘 URL을 전송해 주세요. (Cloudflare Images)**\n\n" +
+                                    "> **아래에 아이콘 URL을 전송해주세요. (Cloudflare Images)**\n\n" +
                                     "─────────────────────────────────────────────────"
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
@@ -515,7 +515,7 @@ public class RegisterInteraction extends ListenerAdapter {
                         .setDescription(
                                 "> **[ 등록 정보 ]**\n" +
                                 "> **구매자 역할: " + role.getAsMention() + "**\n\n" +
-                                "> **아래에 아이콘 이미지 URL을 전송해 주세요. (Cloudflare Images)**\n\n" +
+                                "> **아래에 아이콘 이미지 URL을 전송해주세요. (Cloudflare Images)**\n\n" +
                                 "─────────────────────────────────────────────────"
                         )
                         .setThumbnail("https://file.starly.kr/images/Logo/StarlyPlugin/StarlyPlugin_YELLOW.png")
@@ -637,7 +637,7 @@ public class RegisterInteraction extends ListenerAdapter {
                             > **영상 링크: %s**
                             > **가격: %s**
                             
-                            > **아래에 의존성 플러그인을 입력해 주세요.**
+                            > **아래에 의존성 플러그인을 입력해주세요.**
                             > **예) StarlyCore, Vault**
                             
                             ─────────────────────────────────────────────────

@@ -45,7 +45,7 @@ public class CreatePluginManagementCommand implements DiscordCommand {
                 .build();
 
         StringSelectMenu pluginSelectionMenu = StringSelectMenu.create("plugin-management-action")
-                .setPlaceholder("원하시는 작업을 선택해 주세요.")
+                .setPlaceholder("원하시는 작업을 선택해주세요.")
                 .addOption("플러그인 등록", "plugin-register", "플러그인을 등록합니다.", Emoji.fromUnicode("➕"))
                 .addOption("플러그인 삭제", "plugin-delete", "플러그인을 삭제합니다.", Emoji.fromUnicode("❌"))
                 .addOption("플러그인 수정", "plugin-edit", "플러그인 정보를 수정합니다.", Emoji.fromUnicode("✏"))

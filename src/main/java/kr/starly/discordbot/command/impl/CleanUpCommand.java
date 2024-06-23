@@ -36,7 +36,7 @@ public class CleanUpCommand implements DiscordCommand {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 청소 <a:loading:1168266572847128709>")
-                    .setDescription("> **청소할 메시지의 개수를 입력해 주세요.**")
+                    .setDescription("> **청소할 메시지의 개수를 입력해주세요.**")
                     .build();
             event.getChannel().sendMessageEmbeds(embed).queue();
             return;
@@ -58,7 +58,7 @@ public class CleanUpCommand implements DiscordCommand {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
                     .setTitle("<a:loading:1168266572847128709> 오류 | 청소 <a:loading:1168266572847128709>")
-                    .setDescription("> **유효한 숫자를 입력해 주세요.**")
+                    .setDescription("> **유효한 숫자를 입력해주세요.**")
                     .build();
             event.getChannel().sendMessageEmbeds(embed).queue();
         }

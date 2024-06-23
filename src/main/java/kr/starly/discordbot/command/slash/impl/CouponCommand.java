@@ -107,7 +107,7 @@ public class CouponCommand implements DiscordSlashCommand {
                             """
                     )
                     .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                     .build();
 
             event.replyEmbeds(embed).setEphemeral(true).queue();
@@ -152,7 +152,7 @@ public class CouponCommand implements DiscordSlashCommand {
                                     """
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
 
                     event.replyEmbeds(embed).setEphemeral(true).queue();
@@ -200,7 +200,7 @@ public class CouponCommand implements DiscordSlashCommand {
                                     """
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -219,7 +219,7 @@ public class CouponCommand implements DiscordSlashCommand {
                                     """
                         )
                         .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).addActionRow(confirm, CANCEL_BUTTON).queue();
             }
@@ -237,7 +237,7 @@ public class CouponCommand implements DiscordSlashCommand {
                                     """
                             )
                             .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                            .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                             .build();
                     event.replyEmbeds(embed).setEphemeral(true).queue();
 
@@ -252,13 +252,13 @@ public class CouponCommand implements DiscordSlashCommand {
                         .setColor(EMBED_COLOR_ERROR)
                         .setTitle("<a:loading:1168266572847128709> 수정 | 쿠폰 <a:loading:1168266572847128709>")
                         .setDescription("""
-                                    > **수정할 정보를 선택해 주세요..**
+                                    > **수정할 정보를 선택해주세요..**
                                                                 
                                     ─────────────────────────────────────────────────
                                     """
                         )
                         .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해 주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
+                        .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
                         .build();
                 event.replyEmbeds(embed).addActionRow(updateInfo, updateRequirements, CANCEL_BUTTON).setEphemeral(true).queue();
             }

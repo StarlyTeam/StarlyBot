@@ -120,7 +120,7 @@ public class AuthHandler implements HttpHandler {
                         > **🎉 축하합니다! 인증이 성공적으로 완료되었습니다.**
                         > **이제 커뮤니티의 모든 기능을 마음껏 즐기실 수 있습니다! 🥳**
                         > **즐거운 시간 보내세요! \uD83C\uDF88**
-                        \u1CBB""")
+                        """)
                 .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                 .setFooter("스탈리에서 발송된 메시지입니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
                 .build();
