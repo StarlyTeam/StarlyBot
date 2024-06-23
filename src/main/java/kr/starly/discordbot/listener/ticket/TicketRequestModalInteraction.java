@@ -81,66 +81,18 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
 
         ticketUserDataRepository.registerUser(discordId, event.getUser());
         switch (event.getModalId()) {
-            case "modal-general" -> {
+            case "modal-general", "modal-punishment" -> {
                 String title = event.getValue("title").getAsString();
                 String description = event.getValue("description").getAsString();
 
                 ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description);
-            }
-
-            case "modal-question" -> {
-                String title = event.getValue("title").getAsString();
-                String description = event.getValue("description").getAsString();
-                String type = event.getValue("type").getAsString();
-
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, type);
-            }
-
-            case "modal-consulting" -> {
-                String title = event.getValue("title").getAsString();
-                String isCall = event.getValue("call").getAsString();
-                String description = event.getValue("description").getAsString();
-
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, isCall);
             }
 
             case "modal-payment" -> {
-                String title = event.getValue("title").getAsString();
-                String description = event.getValue("description").getAsString();
                 String type = event.getValue("type").getAsString();
-
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, type);
-            }
-
-            case "modal-punishment" -> {
-                String title = event.getValue("title").getAsString();
                 String description = event.getValue("description").getAsString();
 
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description);
-            }
-
-            case "modal-plugin-error" -> {
-                String version = event.getValue("mcVersion").getAsString();
-                String bukkitValue = event.getValue("type").getAsString();
-                String bukkit = bukkitValue.isEmpty() ? "spigot" : bukkitValue;
-                String description = event.getValue("description").getAsString();
-
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), version, bukkit, description);
-            }
-
-            case "modal-other-error" -> {
-                String title = event.getValue("title").getAsString();
-                String tag = event.getValue("tag").getAsString();
-                String description = event.getValue("description").getAsString();
-
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description, tag);
-            }
-
-            case "modal-other" -> {
-                String title = event.getValue("title").getAsString();
-                String description = event.getValue("description").getAsString();
-
-                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), title, description);
+                ticketModalDataRepository.registerModalData(ticketChannel.getIdLong(), type, description);
             }
         }
     }
