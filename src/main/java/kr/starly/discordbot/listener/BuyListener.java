@@ -1884,23 +1884,23 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
         String dateStr = DATE_FORMAT.format(new Date());
         int price = payment.getFinalPrice();
 
-        String title = "자동결제 승인요청 (" + payment.getMethod().getKRName() + ")";
+        String title = "자동결제 승인요청 (" + payment.getProduct().getSummary() + " :: " + payment.getMethod().getKRName() + ")";
         String description = """
                 > 결제 ID
                 > %s
-                                
+                
                 > 결제수단
                 > %s
-                                
+                
                 > 결제금액
                 > 실결제액: %,d원, 쿠폰: %s, 포인트: %,d원
-                                
+                
                 > 결제자
                 > %s (%d)
-                                
+                
                 > 결제일
                 > %s
-                                
+                
                 > 승인상태
                 > %s
                 """.formatted(
@@ -1942,7 +1942,6 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
         TicketModalDataRepository ticketModalDataRepository = TicketModalDataRepository.getInstance();
         ticketModalDataRepository.registerModalData(
                 ticketChannel.getIdLong(),
-                payment.getProduct().getSummary(),
                 title,
                 description
         );
