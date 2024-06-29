@@ -150,7 +150,7 @@ public class AuthHandler implements HttpHandler {
             RankRepository rankRepository = RankRepository.getInstance();
             Rank rank1 = rankRepository.getRank(1);
 
-            userService.saveData(new User(userId, userIp, new Date(), 0, new ArrayList<>(List.of(rank1))));
+            userService.saveData(new User(userId, userIp, new Date(), 0, List.of(rank1)));
             AuditLogger.info(new EmbedBuilder()
                     .setTitle("<a:success:1168266537262657626> 성공 | 유저 인증 <a:success:1168266537262657626>")
                     .setDescription("""
@@ -170,10 +170,10 @@ public class AuthHandler implements HttpHandler {
                             .setDescription("""
                                     > **데이터가 존재하는 유저가 인증을 시도했습니다.**
                                     > **다만, 인증은 처리되었습니다.**
-                                                                            
+                                    
                                     > **유저: %s**
                                     > **아이피: %s**
-                                                                            
+                                    
                                     ─────────────────────────────────────────────────
                                     """
                                     .formatted(member.getAsMention() + " (" + member.getEffectiveName() + ")", userIp)

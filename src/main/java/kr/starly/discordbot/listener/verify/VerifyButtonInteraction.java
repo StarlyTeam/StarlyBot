@@ -27,22 +27,6 @@ public class VerifyButtonInteraction extends ListenerAdapter {
 
         switch (buttonId) {
             case "successVerify" -> {
-                UserService userService = DatabaseManager.getUserService();
-                if (userService.getDataByDiscordId(event.getMember().getIdLong()) != null) {
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(EMBED_COLOR_ERROR)
-                            .setTitle("<a:warn:1168266548541145298> 오류 | 유저인증 <a:warn:1168266548541145298>")
-                            .setDescription("""
-                                    > **당신은 이미 인증된 유저예요! \uD83C\uDF89**
-                                    > **추가적으로 인증하지 않아도 됩니다! \uD83E\uDD73**
-                                    """)
-                            .setThumbnail("https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                            .setFooter("이미 인증이 완료된 계정입니다.", "https://file.starly.kr/images/Logo/StarlyOne/StarlyOne_YELLOW.png")
-                            .build();
-                    event.replyEmbeds(embed).setEphemeral(true).queue();
-                    return;
-                }
-
                 TextInput verifyMessage = TextInput.create("verify-tos", "이용약관 및 개인정보처리방침에 동의하시면, '네'라고 입력 해주세요.", TextInputStyle.SHORT)
                         .setPlaceholder("네")
                         .setMinLength(1)

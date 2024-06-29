@@ -4,8 +4,10 @@ import kr.starly.discordbot.command.slash.BotSlashCommand;
 import kr.starly.discordbot.command.slash.DiscordSlashCommand;
 import kr.starly.discordbot.configuration.ConfigProvider;
 import kr.starly.discordbot.configuration.DatabaseManager;
+import kr.starly.discordbot.entity.Rank;
 import kr.starly.discordbot.entity.User;
 import kr.starly.discordbot.entity.Verify;
+import kr.starly.discordbot.repository.impl.RankRepository;
 import kr.starly.discordbot.service.UserService;
 import kr.starly.discordbot.service.VerifyService;
 import kr.starly.discordbot.util.security.PermissionUtil;
@@ -19,6 +21,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @BotSlashCommand(
         command = "수동인증",
@@ -55,22 +58,11 @@ public class ManualVerifyCommand implements DiscordSlashCommand {
             return;
         }
 
-        UserService userService = DatabaseManager.getUserService();
-        if (userService.getDataByDiscordId(target.getIdLong()) != null) {
-            MessageEmbed embed = new EmbedBuilder()
-                    .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:loading:1168266572847128709> 오류 | 수동인증 <a:loading:1168266572847128709>")
-                    .setDescription("> **해당 유저는 이미 인증된 유저입니다.**")
-                    .setThumbnail("https://file.starly.kr/images/Logo/Starly/white.png")
-                    .setFooter("문제가 발생한 경우, 고객 상담을 통해 문의해주십시오.", "https://file.starly.kr/images/Logo/Starly/white.png")
-                    .build();
-            event.replyEmbeds(embed).queue();
-            return;
-        }
+        RankRepository rankRepository = RankRepository.getInstance();
+        Rank rank1 = rankRepository.getRank(1);
 
-        userService.saveData(new User(
-                target.getIdLong(), "-", new Date(), 0, new ArrayList<>()
-        ));
+        UserService userService = DatabaseManager.getUserService();
+        userService.saveData(new User(target.getIdLong(), "-", new Date(), 0, List.of(rank1)));
 
         VerifyService verifyService = DatabaseManager.getVerifyService();
         Verify verify = new Verify(
