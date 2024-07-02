@@ -117,34 +117,15 @@ public class TicketRequestMenuInteraction extends ListenerAdapter {
 
         switch (ticketType) {
             case GENERAL -> {
-                Button normalButton = Button.primary("button-general", "일반 문의하기");
+                Button normalButton = Button.primary("button-general", "문의하기");
                 buttons.add(normalButton);
             }
-            case QUESTION -> {
-                Button questionButton = Button.primary("button-question", "질문하기");
-                buttons.add(questionButton);
-            }
-            case CONSULTING -> {
-                Button consultingButton = Button.primary("button-consulting", "상담하기");
-                buttons.add(consultingButton);
-            }
             case PAYMENT -> {
-                Button purchaseInquiryButton = Button.primary("button-payment", "결제 문의하기");
+                Button purchaseInquiryButton = Button.primary("button-payment", "문의하기");
                 buttons.add(purchaseInquiryButton);
             }
             case PUNISHMENT -> {
                 Button restrictionButton = Button.primary("button-punishment", "문의하기");
-                buttons.add(restrictionButton);
-            }
-            case ERROR -> {
-                Button bukkitBugButton = Button.primary("button-plugin-error", "플러그인 버그");
-                Button systemBugButton = Button.primary("button-other-error", "기타 버그");
-
-                buttons.add(bukkitBugButton);
-                buttons.add(systemBugButton);
-            }
-            case OTHER -> {
-                Button restrictionButton = Button.primary("button-other", "기타 문의하기");
                 buttons.add(restrictionButton);
             }
         }

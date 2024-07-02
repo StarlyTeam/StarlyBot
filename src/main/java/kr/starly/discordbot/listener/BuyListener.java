@@ -1919,7 +1919,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
         TicketType ticketType = TicketType.PAYMENT;
 
         Category category = jda.getCategoryById(TICKET_CATEGORY_ID);
-        TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
+        TextChannel ticketChannel = category.createTextChannel(ticketType.getIcon() + "-" + ticketIndex + "-" + userName)
                 .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                 .complete();
 
