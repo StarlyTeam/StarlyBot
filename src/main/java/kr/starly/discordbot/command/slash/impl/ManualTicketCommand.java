@@ -69,7 +69,7 @@ public class ManualTicketCommand implements DiscordSlashCommand {
         TicketType ticketType = TicketType.GENERAL;
 
         Category category = jda.getCategoryById(TICKET_CATEGORY_ID);
-        TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + target.getEffectiveName() + "-" + ticketType.getName())
+        TextChannel ticketChannel = category.createTextChannel(ticketType.getIcon() + "・" + ticketIndex + "-" + jda.getUserById(userId).getEffectiveName())
                 .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                 .complete();
 

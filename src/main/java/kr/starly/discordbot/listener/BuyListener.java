@@ -1999,7 +1999,7 @@ public class BuyListener extends ListenerAdapter { // 코드 꼬라지..
                     .setTitle("<a:loading:1168266572847128709> 캐시백 | 결제 <a:loading:1168266572847128709>")
                     .setDescription("""
                                     > **랭크 특권으로 %d원을 캐시백 받았습니다.**
-                                                                        
+                                    
                                     """.formatted(cashbackAmount)
                     )
                     .setThumbnail("https://file.starly.kr/images/Logo/StarlyBot/StarlyBot_YELLOW.png")

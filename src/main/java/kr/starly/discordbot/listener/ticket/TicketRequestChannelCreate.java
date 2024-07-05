@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @BotEvent
 public class TicketRequestChannelCreate extends ListenerAdapter {
@@ -100,10 +101,18 @@ public class TicketRequestChannelCreate extends ListenerAdapter {
         }
 
         textChannel.sendMessageEmbeds(embed).addActionRow(button).queue();
-        textChannel.sendMessage(event.getJDA().getRoleById(ADMIN_ROLE).getAsMention())
-                .setAllowedMentions(EnumSet.of(Message.MentionType.ROLE))
-                .mentionRoles(ADMIN_ROLE)
-                .queue(message -> message.delete().queue());
+        textChannel.sendMessage(event.getJDA().getRoleById(ADMIN_ROLE).getAsMention()).queueAfter(5, TimeUnit.MINUTES, (message) -> message.delete().queue());
+        textChannel.sendMessage("""
+                # 안녕하세요!
+                현재, 관리자가 부재중인 상태로 문의를 받을 수 없습니다.
+                가능한 빠른 시일내로 답변드릴 수 있도록 하겠습니다.
+                
+                계좌이체 결제의 경우, 다음 계좌로 이체 해주세요.
+                > **토스뱅크 1000-7980-3632**
+                
+                항상 스탈리 스토어를 이용해주셔서 대단히 감사합니다.
+                ||@everyone||
+                """).queue();
 
         ticketModalDataRepository.removeModalData(channelId);
         ticketUserDataRepository.deleteUser(user.getIdLong());

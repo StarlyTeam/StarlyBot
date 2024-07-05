@@ -242,7 +242,7 @@ public class RefundListener extends ListenerAdapter {
         long ticketIndex = ticketService.getLastIndex() + 1;
         String userName = jda.getUserById(userId).getEffectiveName();
         TicketType ticketType = TicketType.PAYMENT;
-        TextChannel ticketChannel = category.createTextChannel(ticketIndex + "-" + userName + "-" + ticketType.getName())
+        TextChannel ticketChannel = category.createTextChannel(ticketType.getIcon() + "・" + ticketIndex + "-" + userName)
                 .addMemberPermissionOverride(userId, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
                 .complete();
 

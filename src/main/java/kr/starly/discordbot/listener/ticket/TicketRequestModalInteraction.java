@@ -44,7 +44,7 @@ public class TicketRequestModalInteraction extends ListenerAdapter {
 
         try {
             Category category = event.getGuild().getCategoryById(TICKET_CATEGORY_ID);
-            ticketChannel = category.createTextChannel((ticketService.getLastIndex() + 1) + "-" + event.getUser().getEffectiveName() + "-" + ticketType.getName())
+            ticketChannel = category.createTextChannel(ticketType.getIcon() + "・" + (ticketService.getLastIndex() + 1) + "-" + event.getUser().getEffectiveName())
                     .addRolePermissionOverride(event.getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND))
                     .addRolePermissionOverride(Long.parseLong(configProvider.getString("VERIFIED_ROLE_ID")), null, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND))
                     .addMemberPermissionOverride(event.getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null)
